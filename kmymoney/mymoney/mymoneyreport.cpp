@@ -144,6 +144,7 @@ MyMoneyReport::MyMoneyReport(ERowType _rt, unsigned _ct, dateOptionE _dl, EDetai
   if (_rt == MyMoneyReport::eAssetLiability) {
     addAccountGroup(MyMoneyAccount::Asset);
     addAccountGroup(MyMoneyAccount::Liability);
+    addAccountGroup(MyMoneyAccount::Equity);
     m_showRowTotals = true;
   }
   if (_rt == MyMoneyReport::eExpenseIncome) {
@@ -242,6 +243,7 @@ void MyMoneyReport::setRowType(ERowType _rt)
   if (_rt == MyMoneyReport::eAssetLiability) {
     addAccountGroup(MyMoneyAccount::Asset);
     addAccountGroup(MyMoneyAccount::Liability);
+    addAccountGroup(MyMoneyAccount::Equity);
   }
   if (_rt == MyMoneyReport::eExpenseIncome) {
     addAccountGroup(MyMoneyAccount::Expense);
