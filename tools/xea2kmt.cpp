@@ -87,7 +87,7 @@ int toKMyMoneyAccountType(const QString &type)
     else if (type == "STOCK") return MyMoneyAccount::Stock;
     else if (type == "MUTUAL") return MyMoneyAccount::Stock;
     else if (type == "EQUITY") return MyMoneyAccount::Equity;
-    else return 99; // unknown
+    else return MyMoneyAccount::Unknown; // unknown
 }
 
 class TemplateAccount {

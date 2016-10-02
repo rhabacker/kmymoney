@@ -109,7 +109,8 @@ public:
     Equity,               /**< Denotes an equity account e.g. opening/closeing balance */
 
     /* insert new account types above this line */
-    MaxAccountTypes       /**< Denotes the number of different account types */
+    MaxAccountTypes,      /**< Denotes the number of different account types */
+    Unknown = 99
   } accountTypeE;
 
   /**
