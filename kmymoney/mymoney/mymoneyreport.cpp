@@ -234,6 +234,15 @@ MyMoneyReport::MyMoneyReport(Row::Type _rt, unsigned _ct, dateOptionE _dl, Detai
   if (m_accounts.size() > 0)
     dbg << m_accounts;
 #endif
+  //add the corresponding account groups
+  if (_rt == MyMoneyReport::eJournal) {
+    addAccountGroup(MyMoneyAccount::Asset);
+    addAccountGroup(MyMoneyAccount::Liability);
+    addAccountGroup(MyMoneyAccount::Expense);
+    addAccountGroup(MyMoneyAccount::Income);
+    addAccountGroup(MyMoneyAccount::Equity);
+    m_showRowTotals = true;
+  }
 }
 
 MyMoneyReport::MyMoneyReport(const QDomElement& node) :
@@ -313,6 +322,13 @@ void MyMoneyReport::setRowType(Row::Type _rt)
   if (_rt == MyMoneyReport::Row::ExpenseIncome) {
     addAccountGroup(MyMoneyAccount::Expense);
     addAccountGroup(MyMoneyAccount::Income);
+  }
+  if (_rt == MyMoneyReport::eJournal) {
+    addAccountGroup(MyMoneyAccount::Asset);
+    addAccountGroup(MyMoneyAccount::Liability);
+    addAccountGroup(MyMoneyAccount::Expense);
+    addAccountGroup(MyMoneyAccount::Income);
+    addAccountGroup(MyMoneyAccount::Equity);
   }
 }
 
