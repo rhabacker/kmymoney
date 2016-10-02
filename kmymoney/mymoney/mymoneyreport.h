@@ -58,7 +58,7 @@ public:
   // When adding a new row type, be sure to add a corresponding entry in kTypeArray
   class Row {
   public:
-    enum Type { NoRows = 0, AssetLiability, ExpenseIncome, Category, TopCategory, Account, Tag, Payee, Month, Week, TopAccount, AccountByTopAccount, EquityType, AccountType, Institution, Budget, BudgetActual, Schedule, AccountInfo, AccountLoanInfo, AccountReconcile, CashFlow};
+    enum Type { NoRows = 0, AssetLiability, ExpenseIncome, Category, TopCategory, Account, Tag, Payee, Month, Week, TopAccount, AccountByTopAccount, EquityType, AccountType, Institution, Budget, BudgetActual, Schedule, AccountInfo, AccountLoanInfo, AccountReconcile, CashFlow, Journal};
     /**
      * Return row type as string.
      *

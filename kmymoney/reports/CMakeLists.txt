@@ -14,6 +14,7 @@ kde4_add_library(reports STATIC ${libreports_a_SOURCES})
 target_link_libraries(reports kmm_kdchart)
 
 add_dependencies(reports kmm_settings)
+target_link_libraries(reports kmm_mymoney)
 
 ############## tests ####################
 if( KDE4_BUILD_TESTS )

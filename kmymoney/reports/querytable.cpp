@@ -272,6 +272,15 @@ void QueryTable::init()
       m_columns = "accountid,postdate";
       break;
 
+    case MyMoneyReport::Row::Journal:
+      m_config.setRowType(MyMoneyReport::Row::Account);
+      constructTransactionTable();
+      m_config.setRowType(MyMoneyReport::Row::Category);
+      constructTransactionTable();
+      m_config.setRowType(MyMoneyReport::Row::Journal);
+      m_columns = "accountid,postdate";
+      break;
+      
     case MyMoneyReport::Row::Payee:
     case MyMoneyReport::Row::Tag:
     case MyMoneyReport::Row::Month:
@@ -304,6 +313,7 @@ void QueryTable::init()
     case MyMoneyReport::Row::TopAccount:
       m_group = "topaccount,account";
       break;
+    case MyMoneyReport::Row::Journal:
     case MyMoneyReport::Row::Account:
       m_group = "account";
       break;
@@ -452,6 +462,13 @@ void QueryTable::constructTransactionTable()
   // support for opening and closing balances
   QMap<QString, MyMoneyAccount> accts;
 
+  QList<MyMoneyAccount> accounts;
+  file->accountList(accounts);
+
+  foreach(MyMoneyAccount account, accounts) {
+    accts.insert(account.id(), account);
+  }
+
   //get all transactions for this report
   QList<MyMoneyTransaction> transactions = file->transactionList(report);
   for (QList<MyMoneyTransaction>::const_iterator it_transaction = transactions.constBegin(); it_transaction != transactions.constEnd(); ++it_transaction) {
@@ -459,6 +476,8 @@ void QueryTable::constructTransactionTable()
     TableRow qA, qS;
     QDate pd;
     QList<QString> tagIdListCache;
+    MyMoneyTransaction current = * it_transaction;
+    qDebug() << current.id() << current.splits();
 
     qA["id"] = qS["id"] = (* it_transaction).id();
     qA["entrydate"] = qS["entrydate"] = (* it_transaction).entryDate().toString(Qt::ISODate);
@@ -478,7 +497,7 @@ void QueryTable::constructTransactionTable()
         qA["currency"] = qS["currency"] = (*it_transaction).commodity();
       }
     }
-
+    
     // to handle splits, we decide on which account to base the split
     // (a reference point or point of view so to speak). here we take the
     // first account that is a stock account or loan account (or the first account
@@ -490,6 +509,7 @@ void QueryTable::constructTransactionTable()
     QList<MyMoneySplit>::const_iterator myBegin, it_split;
 
     for (it_split = splits.begin(), myBegin = splits.end(); it_split != splits.end(); ++it_split) {
+      qDebug() << (* it_split);
       ReportAccount splitAcc = (* it_split).accountId();
       // always put split with a "stock" account if it exists
       if (splitAcc.isInvest())
@@ -649,7 +669,7 @@ void QueryTable::constructTransactionTable()
               qA["category"] = i18n("[Split Transaction]");
               qA["topcategory"] = i18nc("Split transaction", "Split");
               qA["categorytype"] = i18nc("Split transaction", "Split");
-
+              qDebug() << "adding qA" << qA;
               m_rows += qA;
             }
           }
@@ -657,7 +677,11 @@ void QueryTable::constructTransactionTable()
           // track accts that will need opening and closing balances
           //FIXME in some cases it will show the opening and closing
           //balances but no transactions if the splits are all filtered out -- asoliverez
-          accts.insert(splitAcc.id(), splitAcc);
+          qDebug() << "adding account from split" << splitAcc.id();
+          if (!accts.contains(splitAcc.id())) {
+            accts.insert(splitAcc.id(), splitAcc);
+            qDebug() << splitAcc.id();
+          }
         }
 
       } else {
@@ -766,9 +790,11 @@ void QueryTable::constructTransactionTable()
                   else
                     for (int i = 0; i < tagIdListCache.size(); i++) {
                       qA["tag"] = file->tag(tagIdListCache[i]).name().simplified();
+                      qDebug() << "adding" << qA;
                       m_rows += qA;
                     }
                 } else {
+                  qDebug() << "adding qA" << qA;
                   m_rows += qA;
                 }
               }
@@ -819,10 +845,15 @@ void QueryTable::constructTransactionTable()
                 || (!m_config.isInvertingText()
                     && (transaction_text
                         || m_config.match(&(*it_split))))) {
+              qDebug() << "adding qS" << qS;
               m_rows += qS;
 
               // track accts that will need opening and closing balances
-              accts.insert(splitAcc.id(), splitAcc);
+              qDebug() << "adding 2" << splitAcc.id();
+              if (!accts.contains(splitAcc.id())) {
+                  accts.insert(splitAcc.id(), splitAcc);
+                  qDebug() << splitAcc.id();
+              }
             }
           }
         }
@@ -831,13 +862,25 @@ void QueryTable::constructTransactionTable()
       ++it_split;
 
       // look for wrap-around
-      if (it_split == splits.end())
+      if (it_split == splits.end()) {
+        qDebug() << "wrap around";
         it_split = splits.begin();
+      }
 
       // but terminate if this transaction has only a single split
       if (splits.count() < 2)
         break;
 
+#if 0
+      switch (m_config.rowType()) {
+        case MyMoneyReport::eJournal:
+          qDebug() << "adding aS" << qS;
+          m_rows += qS;
+          break;
+        default:
+          break;
+      }
+#endif 
       //check if there have been more passes than there are splits
       //this is to prevent infinite loops in cases of data inconsistency -- asoliverez
       ++pass;
@@ -846,6 +889,7 @@ void QueryTable::constructTransactionTable()
 
     } while (it_split != myBegin);
     if (loan_special_case) {
+      qDebug() << "adding qA" << qA;
       m_rows += qA;
     }
   }
@@ -853,6 +897,7 @@ void QueryTable::constructTransactionTable()
   // now run through our accts list and add opening and closing balances
 
   switch (m_config.rowType()) {
+    case MyMoneyReport::Row::Journal:
     case MyMoneyReport::Row::Account:
     case MyMoneyReport::Row::TopAccount:
       break;
@@ -929,6 +974,7 @@ void QueryTable::constructTransactionTable()
     qA["balance"] = startBalance.convert(fraction).toString();
     qA["value"].clear();
     qA["id"] = 'A';
+    qDebug() << "adding" << qA;
     m_rows += qA;
 
     //ending balance
@@ -941,6 +987,7 @@ void QueryTable::constructTransactionTable()
     qA["postdate"] = strEndDate;
     qA["balance"] = endBalance.toString();
     qA["id"] = 'Z';
+    qDebug() << "adding" << qA;
     m_rows += qA;
   }
 }
@@ -1486,6 +1533,7 @@ void QueryTable::constructSplitsTable()
   switch (m_config.rowType()) {
     case MyMoneyReport::Row::Account:
     case MyMoneyReport::Row::TopAccount:
+    case MyMoneyReport::Row::Journal:
       break;
 
       // case MyMoneyReport::eCategory:

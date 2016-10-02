@@ -1743,6 +1743,21 @@ void KReportsView::defaultReports(QList<ReportGroup>& groups)
     list.back().setConvertCurrency(false);
     groups.push_back(list);
   }
+#if 1
+  {
+    ReportGroup list("Business", i18n("Business"));
+
+    list.push_back(MyMoneyReport(
+                     MyMoneyReport::eJournal,
+                     MyMoneyReport::eQCnumber | MyMoneyReport::eQCpayee | MyMoneyReport::eQCcategory | MyMoneyReport::eQCtag | MyMoneyReport::eQCbalance,
+                     MyMoneyTransactionFilter::yearToDate,
+                     MyMoneyReport::eDetailAll,
+                     i18n("Journal"),
+                     i18n("Default Report")
+                   ));
+    groups.push_back(list);
+  }
+#endif
 }
 
 bool KReportsView::columnsAlreadyAdjusted()
