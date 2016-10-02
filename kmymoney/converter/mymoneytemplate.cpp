@@ -404,10 +404,7 @@ bool MyMoneyTemplate::addAccountStructure(QDomElement& parent, const MyMoneyAcco
   QDomElement account = m_doc.createElement("account");
   parent.appendChild(account);
 
-  if (MyMoneyFile::instance()->isStandardAccount(acc.id()))
-    account.setAttribute(QString("name"), QString());
-  else
-    account.setAttribute(QString("name"), acc.name());
+  account.setAttribute(QString("name"), acc.name());
   account.setAttribute(QString("type"), acc.accountType());
 
   // FIXME: add tax flag stuff
