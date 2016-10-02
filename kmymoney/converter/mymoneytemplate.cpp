@@ -350,11 +350,11 @@ bool MyMoneyTemplate::exportTemplate(void(*callback)(int, int, const QString&))
   QDomElement accounts = m_doc.createElement("accounts");
   mainElement.appendChild(accounts);
 
-  // addAccountStructure(accounts, MyMoneyFile::instance()->asset());
-  // addAccountStructure(accounts, MyMoneyFile::instance()->liability());
-  addAccountStructure(accounts, MyMoneyFile::instance()->income());
+  addAccountStructure(accounts, MyMoneyFile::instance()->asset());
+  addAccountStructure(accounts, MyMoneyFile::instance()->equity());
+  addAccountStructure(accounts, MyMoneyFile::instance()->liability());
   addAccountStructure(accounts, MyMoneyFile::instance()->expense());
-  // addAccountStructure(accounts, MyMoneyFile::instance()->equity());
+  addAccountStructure(accounts, MyMoneyFile::instance()->income());
 
   return true;
 }
@@ -374,15 +374,17 @@ const QString& MyMoneyTemplate::longDescription() const
   return m_longDesc;
 }
 
+static bool nameLessThan(MyMoneyAccount &a1, MyMoneyAccount &a2)
+{
+    return a1.name() < a2.name();
+}
+
 bool MyMoneyTemplate::addAccountStructure(QDomElement& parent, const MyMoneyAccount& acc)
 {
   QDomElement account = m_doc.createElement("account");
   parent.appendChild(account);
 
-  if (MyMoneyFile::instance()->isStandardAccount(acc.id()))
-    account.setAttribute(QString("name"), QString());
-  else
-    account.setAttribute(QString("name"), acc.name());
+  account.setAttribute(QString("name"), acc.name());
   account.setAttribute(QString("type"), acc.accountType());
 
   // FIXME: add tax flag stuff
@@ -391,6 +393,7 @@ bool MyMoneyTemplate::addAccountStructure(QDomElement& parent, const MyMoneyAcco
   if (acc.accountList().count() > 0) {
     QList<MyMoneyAccount> list;
     MyMoneyFile::instance()->accountList(list, acc.accountList(), false);
+    qSort(list.begin(), list.end(), nameLessThan);
     QList<MyMoneyAccount>::Iterator it;
     for (it = list.begin(); it != list.end(); ++it) {
       addAccountStructure(account, *it);
