@@ -24,6 +24,7 @@
 
 #include "mymoneysplit.h"
 #include "mymoneytransaction.h"
+#include <QtDebug>
 
 const char MyMoneySplit::ActionCheck[] = "Check";
 const char MyMoneySplit::ActionDeposit[] = "Deposit";
@@ -345,4 +346,13 @@ QDebug operator<<(QDebug dbg, const MyMoneySplit &a)
       << "value" << a.value()
       << ")";
   return dbg;
+
+MyMoneySplit::operator QString() const
+{
+    return QString("MyMoneySplit{id:%1 AccountId:%2 Price:%3 Memo:%4}")
+                   .arg(id())
+                   .arg(accountId())
+                   .arg(price().toDouble())
+                   .arg(memo())
+                  ;
 }

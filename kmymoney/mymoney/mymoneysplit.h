@@ -254,6 +254,8 @@ public:
    */
   bool replaceId(const QString& newId, const QString& oldId);
 
+  operator QString() const;
+
   static const char ActionCheck[];
   static const char ActionDeposit[];
   static const char ActionTransfer[];
