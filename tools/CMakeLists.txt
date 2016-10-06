@@ -8,3 +8,6 @@ include_directories(
 )
 add_executable(xea2kmt xea2kmt.cpp)
 target_link_libraries(xea2kmt ${QT_QTCORE_LIBRARIES} ${QT_QTXMLPATTERNS_LIBRARIES} kmm_mymoney)
+
+add_executable(datev2kmt datev2kmt.cpp)
+target_link_libraries(datev2kmt ${QT_QTCORE_LIBRARIES} ${QT_QTXMLPATTERNS_LIBRARIES} kmm_mymoney)
