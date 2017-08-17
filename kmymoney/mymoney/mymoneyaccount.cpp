@@ -24,6 +24,7 @@
 #include <QPixmap>
 #include <QPixmapCache>
 #include <QPainter>
+#include <QtDebug>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -852,3 +853,12 @@ QList< payeeIdentifier > MyMoneyAccount::payeeIdentifiers() const
   return list;
 }
 
+QDebug operator<<(QDebug dbg, const MyMoneyAccount &a)
+{
+  dbg << "MyMoneyAccount("
+      << "id" << a.id()
+      << "accountType" << MyMoneyAccount::accountTypeToString(a.accountType());
+  dbg = operator<<(dbg, static_cast<const MyMoneyKeyValueContainer&>(a))
+      << ")";
+  return dbg;
+}

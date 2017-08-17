@@ -778,4 +778,6 @@ QList< payeeIdentifierTyped< ::payeeIdentifiers::ibanBic> > MyMoneyAccount::paye
   */
 Q_DECLARE_METATYPE(MyMoneyAccount)
 
+QDebug operator<<(QDebug dbg, const MyMoneyAccount &a);
+
 #endif

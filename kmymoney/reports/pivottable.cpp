@@ -2292,3 +2292,12 @@ int PivotTable::currentDateColumn()
 }
 
 } // namespace
+
+
+QDebug operator<<(QDebug dbg, reports::PivotTable &a)
+{
+  dbg << "reports::PivotTable("
+      << "grid" << a.grid()
+      << ")";
+  return dbg;
+}

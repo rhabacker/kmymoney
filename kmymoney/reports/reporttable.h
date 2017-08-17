@@ -160,5 +160,6 @@ public:
 };
 
 }
+QDebug operator<<(QDebug dbg, const reports::ReportTable& a);
 #endif
 // REPORTTABLE_H

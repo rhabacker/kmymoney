@@ -150,5 +150,12 @@ public:
 
 }
 
+QDebug operator<<(QDebug dbg, reports::PivotGrid &a);
+QDebug operator<<(QDebug dbg, const reports::PivotCell &a);
+QDebug operator<<(QDebug dbg, const reports::ReportAccount &a);
+QDebug operator<<(QDebug dbg, const QMap<QString, reports::PivotOuterGroup> &a);
+QDebug operator<<(QDebug dbg, const QMap<QString, reports::PivotInnerGroup> &a);
+QDebug operator<<(QDebug dbg, const QMap<reports::ReportAccount, reports::PivotGridRowSet> &a);
+QDebug operator<<(QDebug dbg, const QMap<reports::ERowType, reports::PivotGridRow> &a);
 #endif
 // PIVOTGRID_H
