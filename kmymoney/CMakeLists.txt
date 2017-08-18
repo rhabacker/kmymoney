@@ -73,7 +73,7 @@ set( kmymoney_common_LIBS
   endingbalancedlg wizardpages
   dialogs widgets settings converter models kmm_settings
   kmm_widgets
-  kmm_storage kmm_mymoney kgpgfile interfaces kmm_plugin dialogs kmm_kdchart
+  kmm_storage kmm_mymoney kgpgfile interfaces kmm_plugin dialogs kmm_kdchart kmm_utils_validators
   ${QT_AND_KDECORE_LIBS} ${QT_QTSQL_LIBRARY}
   ${KDE4_KHTML_LIBS} ${KDE4_KDEUI_LIBS} ${KDEPIMLIBS_KPIMIDENTITIES_LIBS} ${KDEPIMLIBS_AKONADI_CONTACT_LIBS} ${KDE4_KFILE_LIBS} ${KDE4_KUTILS_LIBRARY}
   )
@@ -86,7 +86,7 @@ qt4_add_dbus_adaptor(kmymoney_SRCS org.kde.kmymoney.xml kmymoney.h KMyMoneyApp)
 kde4_add_app_icon( kmymoney_SRCS hi*-app-kmymoney.png )
 
 kde4_add_executable( kmymoney ${kmymoney_SRCS} )
-target_link_libraries( kmymoney ${kmymoney_common_LIBS} )
+target_link_libraries( kmymoney ${kmymoney_common_LIBS}   kmm_mymoney)
 
 ########### install files ###############
 

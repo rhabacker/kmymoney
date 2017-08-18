@@ -160,6 +160,7 @@ public:
 };
 
 }
-QDebug operator<<(QDebug dbg, const reports::ReportTable& a);
+
+KMM_MYMONEY_EXPORT QDebug operator<<(QDebug dbg, const reports::ReportTable& a);
 #endif
 // REPORTTABLE_H

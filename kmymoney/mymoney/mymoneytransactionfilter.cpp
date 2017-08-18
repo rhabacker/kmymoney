@@ -25,6 +25,8 @@
 // ----------------------------------------------------------------------------
 // QT Includes
 
+#include "misc/debugindenter.h"
+
 // ----------------------------------------------------------------------------
 // KDE Includes
 
@@ -903,4 +905,16 @@ void MyMoneyTransactionFilter::removeReference(const QString& id)
     qDebug("%s", qPrintable(QString("Remove tag '%1' from report").arg(id)));
     m_tags.remove(id);
   }
+}
+
+QDebug operator<<(QDebug dbg, const MyMoneyTransactionFilter &a)
+{
+  QStringList accounts;
+  a.accounts(accounts);
+  QStringList payees;
+  a.accounts(payees);
+  return DebugIndenter(dbg, typeid(a).name())
+    << "accounts" << accounts
+    << "payees" << payees
+  ;
 }

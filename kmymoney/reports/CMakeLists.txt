@@ -22,9 +22,9 @@ if( KDE4_BUILD_TESTS )
   set( pivotgridtest_SRCS pivotgridtest.cpp reportstestcommon.cpp )
 
   kde4_add_unit_test( pivotgridtest TESTNAME kmymoney-pivotgridtest ${pivotgridtest_SRCS} )
-  add_dependencies( pivotgridtest reports kmymoney_base kmymoney_common kmm_storage )
+  add_dependencies( pivotgridtest reports kmymoney_base kmymoney_common kmm_storage kmm_mymoney)
 
-  target_link_libraries( pivotgridtest reports kmymoney_base kmymoney_common kmm_storage ${KDE4_KDEUI_LIBS} ${KDE4_KDECORE_LIBS} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTTEST_LIBRARY} )
+  target_link_libraries( pivotgridtest kmm_mymoney reports kmymoney_base kmymoney_common kmm_storage ${KDE4_KDEUI_LIBS} ${KDE4_KDECORE_LIBS} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTTEST_LIBRARY} )
 
   # Pivot Table
   set( pivottabletest_SRCS pivottabletest.cpp reportstestcommon.cpp ../mymoney/mymoneytestutils.cpp )

@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include "reporttable.h"
+#include "misc/debugindenter.h"
 
 // ----------------------------------------------------------------------------
 // QT Includes
@@ -139,11 +140,12 @@ QString reports::ReportTable::renderHTML(QWidget* widget,
 
 QDebug operator<<(QDebug dbg, const reports::ReportTable &a)
 {
-    dbg << "reports::ReportTable("
-        //<< "encoding" << a.m_encoding
-        //<< "resourceHtml" <<  a.m_resourceHtml
-        //<< "reportStyleSheet" << a.m_reportStyleSheet
-        //<< "cssFileDefault" << a.m_cssFileDefault
-        << ")";
-    return dbg;
+  return DebugIndenter(dbg, typeid(a).name());
+//    dbg << "reports::ReportTable("
+//        //<< "encoding" << a.m_encoding
+//        //<< "resourceHtml" <<  a.m_resourceHtml
+//        //<< "reportStyleSheet" << a.m_reportStyleSheet
+//        //<< "cssFileDefault" << a.m_cssFileDefault
+//        << ")";
+//    return dbg;
 }

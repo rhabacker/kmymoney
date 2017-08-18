@@ -315,6 +315,9 @@ void KHomeView::showNetWorthGraph()
   reportCfg.setIncludingForecast(true);
   reportCfg.setDateFilter(QDate::currentDate(), QDate::currentDate().addDays(+ 90));
   reports::PivotTable table(reportCfg);
+  
+  qDebug() << reportCfg;
+  qDebug() << table;
 
   reports::KReportChartView* chartWidget = new reports::KReportChartView(0);
 

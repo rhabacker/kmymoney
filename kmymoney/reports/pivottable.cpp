@@ -48,6 +48,7 @@
 #include "kmymoneyutils.h"
 #include "mymoneyforecast.h"
 #include <mymoneyprice.h>
+#include <misc/debugindenter.h>
 
 namespace reports
 {
@@ -2293,11 +2294,8 @@ int PivotTable::currentDateColumn()
 
 } // namespace
 
-
 QDebug operator<<(QDebug dbg, reports::PivotTable &a)
 {
-  dbg << "reports::PivotTable("
-      << "grid" << a.grid()
-      << ")";
-  return dbg;
+  return DebugIndenter(dbg, typeid(a).name())
+    << "grid" << a.grid();
 }

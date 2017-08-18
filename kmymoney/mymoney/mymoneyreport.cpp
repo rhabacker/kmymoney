@@ -17,6 +17,7 @@
 
 #include "mymoneyreport.h"
 #include <kmymoneyglobalsettings.h>
+#include <misc/debugindenter.h>
 
 // ----------------------------------------------------------------------------
 // QT Includes
@@ -863,4 +864,53 @@ int MyMoneyReport::m_lineWidth = 2;
 void MyMoneyReport::setLineWidth(int width)
 {
   m_lineWidth = width;
+}
+
+QDebug operator<<(QDebug dbg, const MyMoneyReport &a)
+{
+  QList<MyMoneyAccount::accountTypeE> list;
+  a.accountGroups(list);
+  return DebugIndenter(dbg, a)
+    << "accountGroups" << list
+    << "budget" << a.budget()
+    << "chartLineWidth" << a.chartLineWidth()
+    << "chartType" << a.chartType()
+    << "columnPitch" << a.columnPitch()
+    << "columnType" << a.columnType()
+    << "comment" << a.comment()
+    << "currentDateColumn" << a.currentDateColumn()
+    << "detailLevel" << a.detailLevel()
+    << "name" << a.name()
+    << "group" << a.group()
+    << "hasBudget" << a.hasBudget()
+    << "id" << a.id()
+    << "isConvertCurrency" << a.isConvertCurrency()
+    << "isFavorite" << a.isFavorite()
+    << "isInvestmentsOnly" << a.isInvestmentsOnly()
+    << "isChartDataLabels" << a.isChartDataLabels()
+    << "isChartGridLines" << a.isChartGridLines()
+    << "isChartByDefault" << a.isChartByDefault()
+    << "isColumnsAreDays" << a.isColumnsAreDays()
+    << "isIncludingAveragePrice" << a.isIncludingAveragePrice()
+    << "isIncludingBudgetActuals" << a.isIncludingBudgetActuals()
+    << "isIncludingForecast" << a.isIncludingForecast()
+    << "isIncludingMovingAverage" << a.isIncludingMovingAverage()
+    << "isIncludingPrice" << a.isIncludingPrice()
+    << "isIncludingSchedules" << a.isIncludingSchedules()
+    << "isIncludingTransfers" << a.isIncludingTransfers()
+    << "isIncludingUnusedAccounts" << a.isIncludingUnusedAccounts()
+    << "isLoansOnly" << a.isLoansOnly()
+    << "isMixedTime" << a.isMixedTime()
+    << "isRunningSum" << a.isRunningSum()
+    << "isSkippingZero" << a.isSkippingZero()
+    << "isShowingColumnTotals" << a.isShowingColumnTotals()
+    << "isShowingRowTotals" << a.isShowingRowTotals()
+    << "isTax" << a.isTax()
+    << "isUserDefined" << a.isUserDefined()
+    << "queryColumns" << a.queryColumns()
+    << "movingAverageDays" << a.movingAverageDays()
+    << "rowType" << MyMoneyReport::Row::toString(a.rowType())
+    << "reportType" << MyMoneyReport::Report::toString(a.reportType())
+       // TODO Transactionfilter
+    ;
 }

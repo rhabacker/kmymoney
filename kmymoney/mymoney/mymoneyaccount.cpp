@@ -24,7 +24,6 @@
 #include <QPixmap>
 #include <QPixmapCache>
 #include <QPainter>
-#include <QtDebug>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -42,6 +41,7 @@
 #include "payeeidentifier/payeeidentifiertyped.h"
 #include "payeeidentifier/ibanandbic/ibanbic.h"
 #include "payeeidentifier/nationalaccount/nationalaccount.h"
+#include "misc/debugindenter.h"
 
 MyMoneyAccount::MyMoneyAccount() :
     m_accountType(UnknownAccountType),
@@ -855,10 +855,32 @@ QList< payeeIdentifier > MyMoneyAccount::payeeIdentifiers() const
 
 QDebug operator<<(QDebug dbg, const MyMoneyAccount &a)
 {
-  dbg << "MyMoneyAccount("
-      << "id" << a.id()
-      << "accountType" << MyMoneyAccount::accountTypeToString(a.accountType());
-  dbg = operator<<(dbg, static_cast<const MyMoneyKeyValueContainer&>(a))
-      << ")";
-  return dbg;
+  return DebugIndenter(dbg, a)
+    << "accountList " << a.accountList()
+    << "accountType" << MyMoneyAccount::accountTypeToString(a.accountType())
+    << "balance " << a.balance()
+    << "brokerageName " << a.brokerageName()
+    << "currencyId" << a.currencyId()
+    << "description " << a.description()
+    << "fraction" << a.fraction()
+    << "institutionId " << a.institutionId()
+    << "isClosed" << a.isClosed()
+    << "lastModified" << a.lastModified()
+    << "lastReconciliationDate" << a.lastReconciliationDate()
+    << "name" << a.name()
+    << "number" << a.number()
+    << "onlineBankingSettings " << a.onlineBankingSettings()
+    << "openingDate " << a.openingDate()
+    << "parentAccountId " << a.parentAccountId()
+    //<< "reconciliationHistory " << a.reconciliationHistory()
+    << static_cast<const MyMoneyObject&>(a)
+    << static_cast<const MyMoneyKeyValueContainer&>(a);
+}
+
+QDebug operator<<(QDebug dbg, const QList<MyMoneyAccount::accountTypeE> &a)
+{
+  QStringList l;
+  foreach(const MyMoneyAccount::accountTypeE accountType, a)
+    l << MyMoneyAccount::accountTypeToString(accountType);
+  return DebugIndenter(dbg, typeid(a).name()) << l;
 }

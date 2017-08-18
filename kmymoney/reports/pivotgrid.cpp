@@ -21,13 +21,14 @@
 // ----------------------------------------------------------------------------
 // QT Includes
 
-#include <QtDebug>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
 
 // ----------------------------------------------------------------------------
 // Project Includes
+
+#include <misc/debugindenter.h>
 
 namespace reports
 {
@@ -139,86 +140,63 @@ PivotGridRowSet PivotGrid::rowSet(QString id)
 
 QDebug operator<<(QDebug dbg, reports::PivotGrid &a)
 {
-  dbg.nospace() << "reports::PivotGrid("
-   << "QMap(";
+  DebugIndenter d(dbg, typeid(a).name());
+  DebugIndenter e(dbg, "QMap");
    foreach(const QString &key, a.keys()) {
-    dbg.nospace() << key << ": " << a[key] << ",";
+    dbg.nospace() << key << ":" << a[key];
   }
-  dbg << ")"
-      << ")";
   return dbg;
 }
 
 QDebug operator<<(QDebug dbg, const reports::PivotCell &a)
 {
-  dbg.space() << "reports::PivotCell("
-  //;dbg = operator<<(dbg, static_cast<const MyMoneyMoney&>(a))
-      << "MyMoneyMoney("
-      << "isAutoCalc" << a.isAutoCalc()
-      << "isNegative" << a.isNegative()
-      << "isPositive" << a.isPositive()
-      << "isZero" << a.isZero()
-      << "value" << a.toString()
-      << ")"
-      << ")";
-  return dbg;
+  return DebugIndenter(dbg, typeid(a).name())
+    << static_cast<const MyMoneyMoney&>(a)
+    << "isUsed" << a.isUsed();
 }
 
 QDebug operator<<(QDebug dbg, const reports::ReportAccount &a)
 {
-  dbg.space() << "reports::ReportAccount("
-  //;dbg = operator<<(dbg, static_cast<const MyMoneyAccount&>(a))
-      << "id" << a.id()
-      << "accountType" << MyMoneyAccount::accountTypeToString(a.accountType())
-    << ")";
-  return dbg;
+  return DebugIndenter(dbg, typeid(a).name())
+    << static_cast<const MyMoneyAccount&>(a);
 }
 
 QDebug operator<<(QDebug dbg, const QMap<QString, reports::PivotOuterGroup> &a)
 {
-  dbg.space() << "reports::PivotOuterGroup("
-      << "QMap(";
+  DebugIndenter d(dbg, typeid(a).name());
+  DebugIndenter e(dbg, "QMap");
   foreach(const QString &key, a.keys()) {
-    dbg << key << ":" << a[key] << ",";
+    dbg.nospace() << key << ":" << a[key];
   }
-  dbg << ")"
-      << ")";
   return dbg;
 }
 
 QDebug operator<<(QDebug dbg, const QMap<QString, reports::PivotInnerGroup> &a)
 {
-  dbg.space() << "reports::PivotInnerGroup("
-      << "QMap(";
+  DebugIndenter d(dbg, typeid(a).name());
+  DebugIndenter e(dbg, "QMap");
   foreach(const QString &key, a.keys()) {
-    dbg << key << ":" << a[key] << ",";
+    dbg.nospace() << key << ":" << a[key];
   }
-  dbg << ")"
-      << ")";
   return dbg;
 }
 
 QDebug operator<<(QDebug dbg, const QMap<reports::ReportAccount, reports::PivotGridRowSet> &a)
 {
-  dbg.space() << "reports::PivotGridRowSet("
-      << "QMap(";
+  DebugIndenter d(dbg, typeid(a).name());
+  DebugIndenter e(dbg, "QMap");
   foreach(const reports::ReportAccount &key, a.keys()) {
-    dbg << key << ":" << a[key] << ",";
+    dbg.nospace() << key << ":" << a[key];
   }
-  dbg << ")"
-      << ")";
   return dbg;
 }
 
 QDebug operator<<(QDebug dbg, const QMap<reports::ERowType, reports::PivotGridRow> &a)
 {
-  dbg.space() << "reports::PivotGridRow("
-      << "QMap(";
+  DebugIndenter d(dbg, typeid(a).name());
+  DebugIndenter e(dbg, "QMap");
   foreach(const reports::ERowType &key, a.keys()) {
-    dbg << key << ":" << a[key] << ",";
+    dbg.nospace() << key << ":" << a[key];
   }
-  dbg << ")"
-      << ")";
   return dbg;
 }
-

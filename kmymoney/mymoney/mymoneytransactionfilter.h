@@ -615,4 +615,5 @@ protected:
   */
 Q_DECLARE_METATYPE(MyMoneyTransactionFilter)
 
+KMM_MYMONEY_EXPORT QDebug operator<<(QDebug dbg, const MyMoneyTransactionFilter &a);
 #endif

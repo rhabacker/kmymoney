@@ -24,6 +24,7 @@
 
 #include <QMap>
 #include <QList>
+#include <QtDebug>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
