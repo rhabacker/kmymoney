@@ -161,6 +161,16 @@ QDebug operator<<(QDebug dbg, const reports::ReportAccount &a)
     << static_cast<const MyMoneyAccount&>(a);
 }
 
+QDebug operator<<(QDebug dbg, const QList<reports::PivotCell> &a)
+{
+  DebugIndenter d(dbg, typeid(a).name());
+  DebugIndenter e(dbg, "QList");
+  foreach(const reports::PivotCell &value, a) {
+    dbg.nospace() << value;
+  }
+  return dbg;
+}
+
 QDebug operator<<(QDebug dbg, const QMap<QString, reports::PivotOuterGroup> &a)
 {
   DebugIndenter d(dbg, typeid(a).name());

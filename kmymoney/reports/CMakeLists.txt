@@ -11,7 +11,7 @@ set (libreports_a_SOURCES
 )
 
 kde4_add_library(reports STATIC ${libreports_a_SOURCES})
-target_link_libraries(reports kmm_kdchart)
+target_link_libraries(reports kmm_kdchart kmm_utils_validators)
 
 add_dependencies(reports kmm_settings)
 
