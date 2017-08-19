@@ -21,5 +21,12 @@
 #include "debugindenter.h"
 
 int DebugIndenter::m_level = 0;
+QByteArray DebugIndenter::m_fill;
+bool DebugIndenter::m_skipIndent = false;
 
-
+QDebug operator<<(QDebug dbg, const L&a)
+{
+  dbg.nospace() << DebugIndenter::indent() << a.s;
+  dbg.space();
+  return dbg;
+}

@@ -28,6 +28,14 @@
 
 #include "mymoneyobject.h"
 
+class L {
+public:
+  L(const char *_s) : s(_s) {}
+  const char *s;
+};
+
+#define QDebugMember(a,s) L(#s) << a.s()
+
 class DebugIndenter : public QDebug
 {
 public:
@@ -53,25 +61,42 @@ public:
   {
     int status = 0;
     m_level++;
-    m_dbg.nospace() << "\n" << fill().toLatin1().constData() << abi::__cxa_demangle(name, 0, 0, &status) << "(";
+    resizeIndent();
+    m_dbg.nospace() << abi::__cxa_demangle(name, 0, 0, &status) << "[" << indent();
     m_dbg.space();
+    m_skipIndent = true;
   }
   
-  QString fill()
+  void resizeIndent()
   {
-    return QString().fill(QLatin1Char(' '), m_level*2);
+    m_fill.fill(' ', m_level*2+1);
+    m_fill[0] = '\n';
+  }
+
+  static const char *indent()
+  {
+    if (m_skipIndent) {
+      m_skipIndent = false;
+      return "";
+    }
+    return m_fill.constData();
   }
 
   ~DebugIndenter()
   {
     --m_level;
-    m_dbg.nospace() << ")\n" << fill().toLatin1().constData();
+    resizeIndent();
+    m_dbg.nospace() << indent() << " ]";
     m_dbg.space();
   }
 
 protected:
   static int m_level;
   QDebug &m_dbg;
+  static bool m_skipIndent;
+  static QByteArray m_fill;
 };
+
+QDebug operator<<(QDebug dbg, const L&a);
 
 #endif // DEBUGINDENTER_H
