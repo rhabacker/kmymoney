@@ -51,7 +51,7 @@ public:
 
   void init(const char *name)
   {
-    int status;
+    int status = 0;
     m_level++;
     m_dbg.nospace() << "\n" << fill().toLatin1().constData() << abi::__cxa_demangle(name, 0, 0, &status) << "(";
     m_dbg.space();
