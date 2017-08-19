@@ -27,6 +27,8 @@
 // ----------------------------------------------------------------------------
 // Project Includes
 
+#include <misc/debugindenter.h>
+
 namespace reports
 {
 
@@ -133,3 +135,77 @@ PivotGridRowSet PivotGrid::rowSet(QString id)
 }
 
 } // namespace
+
+
+QDebug operator<<(QDebug dbg, reports::PivotGrid &a)
+{
+  DebugIndenter d(dbg, typeid(a).name());
+  DebugIndenter e(dbg, "QMap");
+   foreach(const QString &key, a.keys()) {
+    dbg.nospace() << key << ":" << a[key];
+  }
+  return dbg;
+}
+
+QDebug operator<<(QDebug dbg, const reports::PivotCell &a)
+{
+  return DebugIndenter(dbg, typeid(a).name())
+    << static_cast<const MyMoneyMoney&>(a)
+    << "isUsed" << a.isUsed();
+}
+
+QDebug operator<<(QDebug dbg, const reports::ReportAccount &a)
+{
+  return DebugIndenter(dbg, typeid(a).name())
+    << static_cast<const MyMoneyAccount&>(a);
+}
+
+QDebug operator<<(QDebug dbg, const QList<reports::PivotCell> &a)
+{
+  DebugIndenter d(dbg, typeid(a).name());
+  DebugIndenter e(dbg, "QList");
+  foreach(const reports::PivotCell &value, a) {
+    dbg.nospace() << value;
+  }
+  return dbg;
+}
+
+QDebug operator<<(QDebug dbg, const QMap<QString, reports::PivotOuterGroup> &a)
+{
+  DebugIndenter d(dbg, typeid(a).name());
+  DebugIndenter e(dbg, "QMap");
+  foreach(const QString &key, a.keys()) {
+    dbg.nospace() << key << ":" << a[key];
+  }
+  return dbg;
+}
+
+QDebug operator<<(QDebug dbg, const QMap<QString, reports::PivotInnerGroup> &a)
+{
+  DebugIndenter d(dbg, typeid(a).name());
+  DebugIndenter e(dbg, "QMap");
+  foreach(const QString &key, a.keys()) {
+    dbg.nospace() << key << ":" << a[key];
+  }
+  return dbg;
+}
+
+QDebug operator<<(QDebug dbg, const QMap<reports::ReportAccount, reports::PivotGridRowSet> &a)
+{
+  DebugIndenter d(dbg, typeid(a).name());
+  DebugIndenter e(dbg, "QMap");
+  foreach(const reports::ReportAccount &key, a.keys()) {
+    dbg.nospace() << key << ":" << a[key];
+  }
+  return dbg;
+}
+
+QDebug operator<<(QDebug dbg, const QMap<reports::ERowType, reports::PivotGridRow> &a)
+{
+  DebugIndenter d(dbg, typeid(a).name());
+  DebugIndenter e(dbg, "QMap");
+  foreach(const reports::ERowType &key, a.keys()) {
+    dbg.nospace() << key << ":" << a[key];
+  }
+  return dbg;
+}

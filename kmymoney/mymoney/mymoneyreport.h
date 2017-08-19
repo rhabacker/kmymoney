@@ -710,4 +710,5 @@ private:
   */
 Q_DECLARE_METATYPE(MyMoneyReport)
 
+KMM_MYMONEY_EXPORT QDebug operator<<(QDebug dbg, const MyMoneyReport &a);
 #endif // MYMONEYREPORT_H
