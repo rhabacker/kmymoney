@@ -370,5 +370,7 @@ protected:
 
 
 }
+
+QDebug operator<<(QDebug dbg, reports::PivotTable &a);
 #endif
 // PIVOTTABLE_H

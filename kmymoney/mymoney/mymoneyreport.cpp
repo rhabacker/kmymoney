@@ -17,13 +17,13 @@
 
 #include "mymoneyreport.h"
 #include <kmymoneyglobalsettings.h>
+#include <mymoneydebug.h>
 
 // ----------------------------------------------------------------------------
 // QT Includes
 
 #include <QString>
 #include <QList>
-#include <QtDebug>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -867,4 +867,53 @@ QString MyMoneyReport::toString(MyMoneyReport::EReportType type)
   case eInfoTable:  return "eInfoTable";
   default:          return "undefined";
   }
+}
+
+QDebug operator<<(QDebug dbg, const MyMoneyReport &a)
+{
+  QList<MyMoneyAccount::accountTypeE> list;
+  a.accountGroups(list);
+  return MyMoneyDebug(dbg, typeid(a).name())
+    << DebugLabel("accountGroups") << list
+    << DebugMember(a, budget)
+    << DebugMember(a, chartLineWidth)
+    << DebugMember(a, chartType)
+    << DebugMember(a, columnPitch)
+    << DebugMember(a, columnType)
+    << DebugMember(a, comment)
+    << DebugMember(a, currentDateColumn)
+    << DebugMember(a, detailLevel)
+    << DebugMember(a, name)
+    << DebugMember(a, group)
+    << DebugMember(a, hasBudget)
+    << DebugMember(a, id)
+    << DebugMember(a, isConvertCurrency)
+    << DebugMember(a, isFavorite)
+    << DebugMember(a, isInvestmentsOnly)
+    << DebugMember(a, isChartDataLabels)
+    << DebugMember(a, isChartGridLines)
+    << DebugMember(a, isChartByDefault)
+    << DebugMember(a, isColumnsAreDays)
+    << DebugMember(a, isIncludingAveragePrice)
+    << DebugMember(a, isIncludingBudgetActuals)
+    << DebugMember(a, isIncludingForecast)
+    << DebugMember(a, isIncludingMovingAverage)
+    << DebugMember(a, isIncludingPrice)
+    << DebugMember(a, isIncludingSchedules)
+    << DebugMember(a, isIncludingTransfers)
+    << DebugMember(a, isIncludingUnusedAccounts)
+    << DebugMember(a, isLoansOnly)
+    << DebugMember(a, isMixedTime)
+    << DebugMember(a, isRunningSum)
+    << DebugMember(a, isSkippingZero)
+    << DebugMember(a, isShowingColumnTotals)
+    << DebugMember(a, isShowingRowTotals)
+    << DebugMember(a, isTax)
+    << DebugMember(a, isUserDefined)
+    << DebugMember(a, queryColumns)
+    << DebugMember(a, movingAverageDays)
+    << DebugMember(a, rowType)
+    << DebugMember(a, reportType)
+    << static_cast<const MyMoneyTransactionFilter&>(a)
+    ;
 }

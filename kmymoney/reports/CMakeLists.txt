@@ -12,7 +12,9 @@ set (libreports_a_SOURCES
 
 kde4_add_library(reports STATIC ${libreports_a_SOURCES})
 
-add_dependencies(reports kmm_config)
+target_link_libraries(reports kmm_mymoney)
+
+add_dependencies(reports kmm_config kmm_mymoney)
 
 ############## tests ####################
 if( KDE4_BUILD_TESTS )

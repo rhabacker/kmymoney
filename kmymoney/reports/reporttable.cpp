@@ -27,6 +27,7 @@
 // Project Includes
 
 #include "kmymoneyglobalsettings.h"
+#include "mymoneydebug.h"
 
 reports::ReportTable::ReportTable():
     m_resourceHtml("html"),
@@ -135,4 +136,13 @@ QString reports::ReportTable::renderHTML(QWidget* widget,
   html += renderFooter();
 
   return html;
+}
+
+QDebug operator<<(QDebug dbg, const reports::ReportTable &a)
+{
+  return MyMoneyDebug(dbg, typeid(a).name())
+    << "encoding" << a.encoding()
+    << "resourceHtml" <<  a.resourceHtml()
+    << "reportStyleSheet" << a.reportStyleSheet()
+    << "cssFileDefault" << a.cssFileDefault();
 }

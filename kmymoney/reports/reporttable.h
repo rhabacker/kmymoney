@@ -157,8 +157,35 @@ public:
    */
   QString renderHTML(QWidget* widget, const QByteArray& encoding,
                      const QString& title, bool includeCSS = false);
+
+   /**
+    * Return name of application resource type.
+    */
+  const char* resourceType() const { return m_resourceType; }
+
+  /**
+    * Return subdirectory for html-resources of application.
+    */
+  QString resourceHtml() const { return m_resourceHtml; }
+
+  /**
+   * Return reportstylesheet.
+   */
+  QString reportStyleSheet() const { return m_reportStyleSheet; }
+
+  /**
+    * Return filename of default css file.
+    */
+  QString cssFileDefault() const { return m_cssFileDefault; }
+
+  /**
+   * Return character set encoding for the report.
+   */
+  QByteArray encoding() const { return m_encoding; }
 };
 
 }
+
+KMM_MYMONEY_EXPORT QDebug operator<<(QDebug dbg, const reports::ReportTable& a);
 #endif
 // REPORTTABLE_H

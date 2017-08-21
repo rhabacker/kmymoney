@@ -32,6 +32,7 @@
 // Project Includes
 
 #include "mymoneyfile.h"
+#include "mymoneydebug.h"
 
 MyMoneyTransactionFilter::MyMoneyTransactionFilter()
 {
@@ -903,4 +904,69 @@ void MyMoneyTransactionFilter::removeReference(const QString& id)
     qDebug("%s", qPrintable(QString("Remove tag '%1' from report").arg(id)));
     m_tags.remove(id);
   }
+}
+
+class StringResultSet
+{
+public:
+  QStringList data;
+  QString name;
+  bool enabled;
+};
+
+class IntResultSet
+{
+public:
+  QList<int> data;
+  QString name;
+  bool enabled;
+};
+
+QDebug operator<<(QDebug dbg, const StringResultSet &a)
+{
+  if (!a.enabled)
+    return dbg;
+
+  return dbg << a.name << a.data;
+}
+
+QDebug operator<<(QDebug dbg, const IntResultSet &a)
+{
+  if (!a.enabled)
+    return dbg;
+
+  return dbg << a.name << a.data;
+}
+
+QDebug operator<<(QDebug dbg, const MyMoneyTransactionFilter &a)
+{
+  StringResultSet accounts;
+  accounts.enabled = a.accounts(accounts.data);
+
+  StringResultSet categories;
+  categories.enabled = a.categories(categories.data);
+
+  StringResultSet tags;
+  tags.enabled = a.tags(tags.data);
+
+  StringResultSet payees;
+  payees.enabled = a.payees(payees.data);
+
+  IntResultSet types;
+  types.enabled = a.types(types.data);
+
+  IntResultSet states;
+  states.enabled = a.types(states.data);
+
+  return MyMoneyDebug(dbg, typeid(a).name())
+    << "accounts" << accounts
+    << "fromDate" << a.fromDate()
+    << "toDate" << a.toDate()
+    << accounts
+    << categories
+    << payees
+    << tags
+    << "isInvertingText" << a.isInvertingText()
+    //<< "filterSet" << a.filterSet()
+  ;
 }

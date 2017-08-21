@@ -22,6 +22,7 @@
 #endif
 
 #include "mymoneymoney.h"
+#include "mymoneydebug.h"
 
 // ----------------------------------------------------------------------------
 // QT Includes
@@ -333,12 +334,10 @@ int MyMoneyMoney::denomToPrec(signed64 fract)
 
 QDebug operator<<(QDebug dbg, const MyMoneyMoney &a)
 {
-  dbg << "MyMoneyMoney("
-      << "isAutoCalc" << a.isAutoCalc()
-      << "isNegative" << a.isNegative()
-      << "isPositive" << a.isPositive()
-      << "isZero" << a.isZero()
-      << "value" << a.toString()
-      << ")";
-  return dbg;
+  return MyMoneyDebug(dbg, typeid(a).name())
+    << "isAutoCalc" << a.isAutoCalc()
+    << "isNegative" << a.isNegative()
+    << "isPositive" << a.isPositive()
+    << "isZero" << a.isZero()
+    << "value" << a.toString();
 }
