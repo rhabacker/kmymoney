@@ -136,7 +136,7 @@ public:
    * KMyMoney asks for accounts over and over again which causes a lot of "Job not supported with this account" error messages.
    * This function filters messages with that string.
    */
-  static int gwenLogHook(GWEN_GUI* gui, const char* domain, GWEN_LOGGER_LEVEL level, const char* message) {
+  static int GWENHYWFAR_CB gwenLogHook(GWEN_GUI* gui, const char* domain, GWEN_LOGGER_LEVEL level, const char* message) {
     Q_UNUSED(gui);
     Q_UNUSED(domain);
     Q_UNUSED(level);
