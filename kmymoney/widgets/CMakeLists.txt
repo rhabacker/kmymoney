@@ -173,6 +173,9 @@ kde4_add_library(widgets STATIC
   ${widgets_ui_srcs}
   )
 target_link_libraries(widgets kmymoney_base)
+if( WIN32 )
+  target_compile_definitions(widgets PUBLIC KMM_MYMONEY_EXPORT=)
+endif()
 
 add_dependencies(widgets kmm_config)
 

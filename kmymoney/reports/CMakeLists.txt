@@ -11,7 +11,9 @@ set (libreports_a_SOURCES
 )
 
 kde4_add_library(reports STATIC ${libreports_a_SOURCES})
-
+if( WIN32 )
+  target_compile_definitions(reports PUBLIC KMM_MYMONEY_EXPORT=)
+endif()
 add_dependencies(reports kmm_config)
 
 ############## tests ####################
