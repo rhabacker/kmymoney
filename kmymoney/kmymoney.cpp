@@ -2655,15 +2655,8 @@ void KMyMoneyApp::slotBackupFile()
       slotBackupMount();
     } else {
       progressCallback(0, 300, "");
-#ifdef Q_OS_WIN
       d->m_ignoreBackupExitCode = true;
       QTimer::singleShot(0, this, SLOT(slotBackupHandleEvents()));
-#else
-      // If we don't have to mount a device, we just issue
-      // a dummy command to start the copy operation
-      d->m_proc.setProgram("true");
-      d->m_proc.start();
-#endif
     }
 
   }
@@ -2696,17 +2689,10 @@ bool KMyMoneyApp::slotBackupWriteFile()
   }
 
   progressCallback(50, 0, i18n("Writing %1", backupfile));
-  d->m_proc.clearProgram();
-#ifdef Q_OS_WIN
-  d->m_proc << "cmd.exe" << "/c" << "copy" << "/b" << "/y";
-  d->m_proc << (QDir::toNativeSeparators(d->m_fileName.toLocalFile()) + "+ nul") << QDir::toNativeSeparators(backupfile);
-#else
-  d->m_proc << "cp" << "-f";
-  d->m_proc << d->m_fileName.path(KUrl::LeaveTrailingSlash) << backupfile;
-#endif
   d->m_backupState = BACKUP_COPYING;
-  d->m_proc.start();
-  return true;
+  d->m_backupResult = !KIO::NetAccess::upload(d->m_fileName.toLocalFile(), backupfile, this);
+  QTimer::singleShot(0, this, SLOT(slotBackupHandleEvents()));
+  return !d->m_backupResult;
 }
 
 void KMyMoneyApp::slotBackupUnmount()
@@ -2753,8 +2739,7 @@ void KMyMoneyApp::slotBackupHandleEvents()
       break;
 
     case BACKUP_COPYING:
-      if (d->m_proc.exitStatus() == QProcess::NormalExit && d->m_proc.exitCode() == 0) {
-
+      if (!d->m_backupResult) {
         if (d->m_backupMount) {
           slotBackupUnmount();
         } else {
@@ -2763,7 +2748,6 @@ void KMyMoneyApp::slotBackupHandleEvents()
           slotBackupFinish();
         }
       } else {
-        qDebug("copy exit code is %d", d->m_proc.exitCode());
         d->m_backupResult = 1;
         KMessageBox::information(this, i18n("Error copying file to device"), i18n("Backup"));
         if (d->m_backupMount)
@@ -2787,7 +2771,7 @@ void KMyMoneyApp::slotBackupHandleEvents()
       break;
 
     default:
-      qWarning("Unknown state for backup operation!");
+      qWarning("Unknown state for backup operation %d!", d->m_backupState);
       progressCallback(-1, -1, QString());
       ready();
       break;
