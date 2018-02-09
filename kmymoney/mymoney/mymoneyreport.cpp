@@ -111,6 +111,7 @@ MyMoneyReport::MyMoneyReport() :
     m_chartGridLines(true),
     m_chartByDefault(false),
     m_chartPalette(ChartPalette::Application),
+    m_autoAdjustVerticalRangeToData(true),
     m_includeSchedules(false),
     m_includeTransfers(false),
     m_includeBudgetActuals(false),
@@ -159,6 +160,7 @@ MyMoneyReport::MyMoneyReport(Row::Type _rt, unsigned _ct, dateOptionE _dl, Detai
     m_chartGridLines(true),
     m_chartByDefault(false),
     m_chartPalette(ChartPalette::Application),
+    m_autoAdjustVerticalRangeToData(true),
     m_includeSchedules(false),
     m_includeTransfers(false),
     m_includeBudgetActuals(false),
@@ -438,6 +440,7 @@ void MyMoneyReport::write(QDomElement& e, QDomDocument *doc, bool anonymous) con
   e.setAttribute("chartdatalabels", m_chartDataLabels);
   e.setAttribute("chartgridlines", m_chartGridLines);
   e.setAttribute("chartbydefault", m_chartByDefault);
+  e.setAttribute("autoadjustverticalrangetodata", m_autoAdjustVerticalRangeToData);
   e.setAttribute("chartlinewidth", m_chartLineWidth);
   e.setAttribute("chartpalette", ChartPalette::kText[m_chartPalette]);
   e.setAttribute("skipZero", m_skipZero);
@@ -755,11 +758,13 @@ bool MyMoneyReport::read(const QDomElement& e)
       m_chartDataLabels = e.attribute("chartdatalabels", "1").toUInt();
       m_chartGridLines = e.attribute("chartgridlines", "1").toUInt();
       m_chartByDefault = e.attribute("chartbydefault", "0").toUInt();
+      m_autoAdjustVerticalRangeToData = e.attribute("autoadjustverticalrangetodata", "1").toUInt();
       m_chartLineWidth = e.attribute("chartlinewidth", QString(m_lineWidth)).toUInt();
     } else {
       m_chartDataLabels = true;
       m_chartGridLines = true;
       m_chartByDefault = false;
+      m_autoAdjustVerticalRangeToData = true;
       m_chartLineWidth = 1;
     }
 

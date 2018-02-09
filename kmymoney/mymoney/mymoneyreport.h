@@ -190,6 +190,9 @@ public:
   bool isChartByDefault() const {
     return m_chartByDefault;
   }
+  bool isAutoAdjustVerticalRangeToData() const {
+    return m_autoAdjustVerticalRangeToData;
+  }
   uint chartLineWidth() const {
     return m_chartLineWidth;
   }
@@ -295,6 +298,10 @@ public:
   void setChartByDefault(bool _f) {
     m_chartByDefault = _f;
   }
+  void setAutoAdjustVerticalRangeToData(bool _f) {
+    m_autoAdjustVerticalRangeToData = _f;
+  }
+
   void setChartLineWidth(uint _f) {
     m_chartLineWidth = _f;
   }
@@ -642,6 +649,11 @@ private:
     * should be shown as a textual report)
     */
   bool m_chartByDefault;
+  /**
+    * Whether this report should be shown with vertical range adjusted to data by default
+    * (otherwise it should be shown from zero to the maximum value)
+    */
+  bool m_autoAdjustVerticalRangeToData;
   /**
    * Width of the chart lines
    */

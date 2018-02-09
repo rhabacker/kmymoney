@@ -517,15 +517,20 @@ void KReportChartView::drawPivotChart(const PivotGrid &grid, const MyMoneyReport
     removeLegend();
   }
 
-  // fix vertical plane range in case only one value is displayed
   CartesianCoordinatePlane* plane = dynamic_cast<CartesianCoordinatePlane*>(coordinatePlane());
   if (plane) {
-    QPair<qreal,qreal> range = plane->verticalRange();
-    double center = (range.first + range.second) / 2.0;
-    if (fabs(range.first - range.second) < 0.01) {
-      range.first = center - 1.001;
-      range.second = center + 1.001;
-      plane->setVerticalRange(range);
+    if (!config.isAutoAdjustVerticalRangeToData())
+      plane->setAutoAdjustVerticalRangeToData(101);
+    else {
+      // fix vertical plane range in case only one value is displayed
+      QPair<qreal,qreal> range = plane->verticalRange();
+      double center = (range.first + range.second) / 2.0;
+      if (fabs(range.first - range.second) < 0.01) {
+        range.first = center - 1.001;
+        range.second = center + 1.001;
+        plane->setVerticalRange(range);
+      } else
+        plane->setAutoAdjustVerticalRangeToData(67);
     }
   }
 }

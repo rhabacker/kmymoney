@@ -246,6 +246,7 @@ void KReportConfigurationFilterDlg::slotSearch()
     m_currentState.setChartGridLines(m_tabChart->findChild<QCheckBox*>("m_checkGridLines")->isChecked());
     m_currentState.setChartDataLabels(m_tabChart->findChild<QCheckBox*>("m_checkValues")->isChecked());
     m_currentState.setChartByDefault(m_tabChart->findChild<QCheckBox*>("m_checkShowChart")->isChecked());
+    m_currentState.setAutoAdjustVerticalRangeToData(m_tabChart->findChild<QCheckBox*>("m_autoAdjustVerticalRangeToData")->isChecked());
     m_currentState.setChartLineWidth(m_tabChart->findChild<QSpinBox*>("m_lineWidth")->value());
   }
 
@@ -468,6 +469,7 @@ void KReportConfigurationFilterDlg::slotReset()
     m_tabChart->findChild<QCheckBox*>("m_checkGridLines")->setChecked(m_initialState.isChartGridLines());
     m_tabChart->findChild<QCheckBox*>("m_checkValues")->setChecked(m_initialState.isChartDataLabels());
     m_tabChart->findChild<QCheckBox*>("m_checkShowChart")->setChecked(m_initialState.isChartByDefault());
+    m_tabChart->findChild<QCheckBox*>("m_autoAdjustVerticalRangeToData")->setChecked(m_initialState.isAutoAdjustVerticalRangeToData());
     m_tabChart->findChild<QSpinBox*>("m_lineWidth")->setValue(m_initialState.chartLineWidth());
   }
 
