@@ -197,10 +197,9 @@ int main(int argc, char *argv[])
 int runKMyMoney(KApplication *a, KStartupLogo *splash)
 {
   int rc = 0;
-  do {
     if (QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.kmymoney")) {
       const QList<QString> instances = kmymoney->instanceList();
-      if (instances.count() > 0) {
+      foreach(const QString &primary, instances) {
 
         // If the user launches a second copy of the app and includes a file to
         // open, they are probably attempting a "WebConnect" session.  In this case,
@@ -211,7 +210,6 @@ int runKMyMoney(KApplication *a, KStartupLogo *splash)
           KUrl url = args->url(0);
           if (kmymoney->isImportableFile(url.path())) {
             // if there are multiple instances, we'll send this to the first one
-            QString primary = instances[0];
 
             // send a message to the primary client to import this file
             QDBusInterface remoteApp(primary, "/KMymoney", "org.kde.kmymoney");
@@ -224,15 +222,24 @@ int runKMyMoney(KApplication *a, KStartupLogo *splash)
 
             delete kmymoney;
             delete splash;
-            break;
+            return 0;
+          } else {
+            // send a message to the primary client to get the recently loaded file
+            QDBusInterface remoteApp(primary, "/KMymoney", "org.kde.kmymoney");
+            QDBusMessage result = remoteApp.call("filename");
+            QList<QVariant> outArgs = result.arguments();
+            QString filename = outArgs.at(0).toString();
+            if (filename == url.url()) {
+              remoteApp.call("webConnect", url.path(), kapp->startupId());
+              // Before we delete the application, we make sure that we destroy all
+              // widgets by running the event loop for some time to catch all those
+              // widgets that are requested to be destroyed using the deleteLater() method.
+              QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 10);
+              delete kmymoney;
+              delete splash;
+              return 0;
+            }
           }
-        }
-
-        if (KMessageBox::questionYesNo(0, i18n("Another instance of KMyMoney is already running. Do you want to quit?")) == KMessageBox::Yes) {
-          rc = 1;
-          delete kmymoney;
-          delete splash;
-          break;
         }
       }
     } else {
@@ -285,7 +292,6 @@ int runKMyMoney(KApplication *a, KStartupLogo *splash)
       kmymoney->centralWidget()->setEnabled(true);
       rc = a->exec();
     }
-  } while (0);
   return rc;
 }
 
