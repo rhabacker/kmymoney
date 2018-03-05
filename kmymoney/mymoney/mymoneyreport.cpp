@@ -32,9 +32,7 @@
 // Project Includes
 
 #include "mymoneyfile.h"
-
-// define this to debug reports
-// #define DEBUG_REPORTS
+#include "reportdebug.h"
 
 const MyMoneyReport::Report::Type MyMoneyReport::Report::kTypeArray[] = { NoReport, PivotTable, PivotTable, QueryTable, QueryTable, QueryTable, QueryTable, QueryTable, QueryTable, QueryTable, QueryTable, QueryTable, QueryTable, QueryTable, QueryTable, PivotTable, PivotTable, InfoTable, InfoTable, InfoTable, QueryTable, QueryTable, NoReport };
 const QStringList MyMoneyReport::Column::kTypeText = QString("none,months,bimonths,quarters,4,5,6,weeks,8,9,10,11,years").split(',');
