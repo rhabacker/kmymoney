@@ -60,6 +60,13 @@ public:
   public:
     enum Type { NoRows = 0, AssetLiability, ExpenseIncome, Category, TopCategory, Account, Tag, Payee, Month, Week, TopAccount, AccountByTopAccount, EquityType, AccountType, Institution, Budget, BudgetActual, Schedule, AccountInfo, AccountLoanInfo, AccountReconcile, CashFlow};
     static QString toString(Type type);
+    inline Row(Type type = NoRows) : m_type(type) {}
+    inline bool operator ==(Row &a) const { return m_type == a.m_type; }
+    inline bool operator ==(Type a) const { return m_type == a; }
+    inline bool operator !=(Type a) const { return m_type != a; }
+    inline operator Type() const { return m_type; }
+  protected:
+    Type m_type;
    };
 
   class Report {
@@ -112,7 +119,7 @@ public:
   Report::Type reportType() const {
     return m_reportType;
   }
-  Row::Type rowType() const {
+  Row rowType() const {
     return m_rowType;
   }
   Column::Type columnType() const {
