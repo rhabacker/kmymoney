@@ -21,9 +21,14 @@
     <label>When auto fill with previous transaction data use the memos</label>
     <default>true</default>
   </entry>
-  <entry name="AutoIncCheckNumber" type="Bool">
+  <entry name="AutoIncCheckNumber" type="Enum">
    <label>Auto increment check number</label>
-   <default>true</default>
+   <default>Day</default>
+   <choices name="AutoIncrementMode">
+     <choice name="No"/>
+     <choice name="Yes"/>
+     <choice name="OnSpecialKey"/>
+   </choices>
   </entry>
   <entry name="AutoSaveFile" type="Bool">
    <label>Autosave file periodically</label>

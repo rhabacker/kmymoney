@@ -462,11 +462,11 @@ bool TransactionEditor::fixTransactionCommodity(const MyMoneyAccount& account)
   return rc;
 }
 
-void TransactionEditor::assignNextNumber()
+void TransactionEditor::assignNextNumber(bool major)
 {
   if (canAssignNumber()) {
     kMyMoneyLineEdit* number = dynamic_cast<kMyMoneyLineEdit*>(haveWidget("number"));
-    QString num = KMyMoneyUtils::nextCheckNumber(m_account);
+    QString num = KMyMoneyUtils::nextCheckNumber(m_account, major);
     bool showMessage = true;
     int rc = KMessageBox::No;
     QString schedInfo;
@@ -1076,7 +1076,7 @@ void StdTransactionEditor::loadEditWidgets(KMyMoneyRegister::Action action)
       if (m_transaction.id().isEmpty()                              // new transaction
           && dynamic_cast<kMyMoneyLineEdit*>(w)->text().isEmpty()   // no number filled in
           && m_account.accountType() == MyMoneyAccount::Checkings   // checkings account
-          && KMyMoneyGlobalSettings::autoIncCheckNumber()           // and auto inc number turned on?
+          && KMyMoneyGlobalSettings::autoIncCheckNumber() != KMyMoneySettings::No // and auto inc number turned on?
           && action != KMyMoneyRegister::ActionDeposit              // only transfers or withdrawals
           && (m_scheduleInfo.isEmpty()                              // normal transactions
               || m_paymentMethod == MyMoneySchedule::STYPE_WRITECHEQUE)) {// only for STYPE_WRITECHEQUE schedule transaction

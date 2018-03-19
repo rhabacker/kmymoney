@@ -968,6 +968,11 @@ void KMyMoneyApp::initActions()
   transaction_assign_number->setShortcut(KShortcut("Ctrl+Shift+N"));
   connect(transaction_assign_number, SIGNAL(triggered()), this, SLOT(slotTransactionAssignNumber()));
 
+  KAction *transaction_assign_major_number = actionCollection()->addAction("transaction_assign_major_number");
+  transaction_assign_major_number->setText(i18n("Assign next major number"));
+  transaction_assign_major_number->setShortcut(KShortcut("Ctrl+Shift+M"));
+  connect(transaction_assign_major_number, SIGNAL(triggered()), this, SLOT(slotTransactionAssignMajorNumber()));
+
   KAction *transaction_combine = actionCollection()->addAction("transaction_combine");
   transaction_combine->setText(i18nc("Combine transactions", "Combine"));
   connect(transaction_combine, SIGNAL(triggered()), this, SLOT(slotTransactionCombine()));
@@ -5975,6 +5980,12 @@ void KMyMoneyApp::slotTransactionAssignNumber()
 {
   if (d->m_transactionEditor)
     d->m_transactionEditor->assignNextNumber();
+}
+
+void KMyMoneyApp::slotTransactionAssignMajorNumber()
+{
+  if (d->m_transactionEditor)
+    d->m_transactionEditor->assignNextNumber(true);
 }
 
 void KMyMoneyApp::slotTransactionCombine()
