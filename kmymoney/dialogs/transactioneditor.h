@@ -127,7 +127,7 @@ public:
   virtual bool fixTransactionCommodity(const MyMoneyAccount& account);
 
   virtual bool canAssignNumber() const;
-  virtual void assignNextNumber();
+  virtual void assignNextNumber(bool major = false);
 
   /**
     * Returns a pointer to the widget that should receive

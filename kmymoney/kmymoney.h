@@ -438,6 +438,7 @@ protected slots:
   /**
     */
   void slotTransactionAssignNumber();
+  void slotTransactionAssignMajorNumber();
 
   /**
     */

@@ -350,12 +350,19 @@ void KMyMoneyUtils::calculateAutoLoan(const MyMoneySchedule& schedule, MyMoneyTr
   }
 }
 
-QString KMyMoneyUtils::nextCheckNumber(const MyMoneyAccount& acc)
+QString KMyMoneyUtils::nextCheckNumber(const MyMoneyAccount& acc, bool major)
 {
   QString number;
+  QRegExp statement(QString("(\\d+).(\\d+)"));
   //                   +-#1--+ +#2++-#3-++-#4--+
   QRegExp exp(QString("(.*\\D)?(0*)(\\d+)(\\D.*)?"));
-  if (exp.indexIn(acc.value("lastNumberUsed")) != -1) {
+
+  if (statement.indexIn(acc.value("lastNumberUsed")) != -1) {
+    setLastNumberUsed(acc.value("lastNumberUsed"));
+    QString arg1 = major ? QString::number(statement.cap(1).toULong() + 1) : statement.cap(1);
+    QString arg2 = major ? "1" : QString::number(statement.cap(2).toULong() + 1);
+    number = QString("%1.%2").arg(arg1).arg(arg2);
+  } else if (exp.indexIn(acc.value("lastNumberUsed")) != -1) {
     setLastNumberUsed(acc.value("lastNumberUsed"));
     QString arg1 = exp.cap(1);
     QString arg2 = exp.cap(2);
@@ -370,7 +377,7 @@ QString KMyMoneyUtils::nextCheckNumber(const MyMoneyAccount& acc)
       number = QString("%1%2%3%4").arg(arg1).arg(arg2).arg(arg3).arg(arg4);
     }
   } else {
-    number = '1';
+    number = major ? "1.1" : "1";
   }
   return number;
 }

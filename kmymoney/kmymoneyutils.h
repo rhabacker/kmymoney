@@ -362,7 +362,7 @@ public:
   /**
     * Return next check number for account @a acc.
     */
-  static QString nextCheckNumber(const MyMoneyAccount& acc);
+  static QString nextCheckNumber(const MyMoneyAccount& acc, bool major = false);
 
   static void updateLastNumberUsed(const MyMoneyAccount& acc, const QString& number);
 
