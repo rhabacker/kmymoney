@@ -419,8 +419,7 @@ public:
     */
   static QPixmap overlayIcon(const QString source, const QString overlay, const Qt::Corner corner = Qt::BottomRightCorner, int size = 0);
 
-
-
+  static void invokeHelp(const QString &anchor = QString(), const QString &appname = QString());
 };
 
 #endif

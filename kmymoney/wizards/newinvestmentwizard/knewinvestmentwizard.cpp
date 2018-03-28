@@ -163,7 +163,7 @@ void KNewInvestmentWizard::slotCheckForExistingSymbol(const QString& symbol)
 
 void KNewInvestmentWizard::slotHelp()
 {
-  KToolInvocation::invokeHelp("details.investments.newinvestmentwizard");
+  KMyMoneyUtils::invokeHelp("details.investments.newinvestmentwizard");
 }
 
 void KNewInvestmentWizard::createObjects(const QString& parentId)

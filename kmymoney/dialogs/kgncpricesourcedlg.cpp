@@ -29,7 +29,7 @@
 #include <kurlrequester.h>
 #include <ktextbrowser.h>
 #include <klocale.h>
-#include <ktoolinvocation.h>
+#include "kmymoneyutils.h"
 #include <klistwidget.h>
 
 // ----------------------------------------------------------------------------
@@ -138,5 +138,5 @@ bool KGncPriceSourceDlg::alwaysUse() const
 
 void KGncPriceSourceDlg::slotHelp()
 {
-  KToolInvocation::invokeHelp("details.impexp.gncquotes");
+  KMyMoneyUtils::invokeHelp("details.impexp.gncquotes");
 }

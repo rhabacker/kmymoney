@@ -31,7 +31,7 @@
 #include <kurlrequester.h>
 #include <ktextbrowser.h>
 #include <klocale.h>
-#include <ktoolinvocation.h>
+#include "kmymoneyutils.h"
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -111,5 +111,5 @@ QTextCodec* KGncImportOptionsDlg::decodeOption()
 
 void KGncImportOptionsDlg::slotHelp()
 {
-  KToolInvocation::invokeHelp("details.impexp.gncoptions");
+  KMyMoneyUtils::invokeHelp("details.impexp.gncoptions");
 }

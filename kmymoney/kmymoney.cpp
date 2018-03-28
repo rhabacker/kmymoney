@@ -179,7 +179,7 @@
 
 #include <transactioneditor.h>
 #include "konlinetransferform.h"
-#include <ktoolinvocation.h>
+#include "kmymoneyutils.h"
 
 #include "kmymoneyutils.h"
 

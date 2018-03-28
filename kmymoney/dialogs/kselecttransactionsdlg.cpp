@@ -39,7 +39,7 @@
 #include <mymoneytransaction.h>
 #include <kmymoneyglobalsettings.h>
 #include "kmergetransactionsdlg.h"
-#include <ktoolinvocation.h>
+#include "kmymoneyutils.h"
 
 KSelectTransactionsDlg::KSelectTransactionsDlg(const MyMoneyAccount& _account, QWidget* parent) :
     KSelectTransactionsDlgDecl(parent),
@@ -117,7 +117,7 @@ int KSelectTransactionsDlg::exec()
 
 void KSelectTransactionsDlg::slotHelp()
 {
-  // KToolInvocation::invokeHelp("details.ledgers.match");
+  // KMyMoneyUtils::invokeHelp("details.ledgers.match");
 }
 
 void KSelectTransactionsDlg::showEvent(QShowEvent* event)

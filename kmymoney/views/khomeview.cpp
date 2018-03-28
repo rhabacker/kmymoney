@@ -56,7 +56,7 @@
 #include <kcodecs.h>
 #include <kglobalsettings.h>
 #include <kiconloader.h>
-#include <ktoolinvocation.h>
+#include "kmymoneyutils.h"
 #include <KToggleAction>
 #include <khtml_part.h>
 

@@ -597,7 +597,7 @@ void KEditScheduleDlg::updateTransactionsRemaining()
 
 void KEditScheduleDlg::slotShowHelp()
 {
-  KToolInvocation::invokeHelp("details.schedules.intro");
+  KMyMoneyUtils::invokeHelp("details.schedules.intro");
 }
 
 void KEditScheduleDlg::slotFilterPaymentType(int index)

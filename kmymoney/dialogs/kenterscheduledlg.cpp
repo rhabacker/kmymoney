@@ -47,7 +47,7 @@
 #include <kmymoneycategory.h>
 #include <kmymoneyaccountselector.h>
 #include <kmymoneydateinput.h>
-#include <ktoolinvocation.h>
+#include "kmymoneyutils.h"
 #include <kmymoneyglobalsettings.h>
 
 #include "kmymoney.h"
@@ -348,5 +348,5 @@ bool KEnterScheduleDlg::focusNextPrevChild(bool next)
 
 void KEnterScheduleDlg::slotShowHelp()
 {
-  KToolInvocation::invokeHelp("details.schedules.entering");
+  KMyMoneyUtils::invokeHelp("details.schedules.entering");
 }

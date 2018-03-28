@@ -16,6 +16,7 @@
 
 #include "kmymoneywizard.h"
 #include "kmymoneywizard_p.h"
+#include "kmymoneyutils.h"
 
 // ----------------------------------------------------------------------------
 // QT Includes
@@ -35,6 +36,7 @@
 #include <kpushbutton.h>
 #include <kglobalsettings.h>
 #include <kiconloader.h>
+#include <KIcon>
 #include <kapplication.h>
 #include <KColorScheme>
 
@@ -359,7 +361,8 @@ void KMyMoneyWizard::helpButtonClicked()
   QString ctx = currentPage->helpContext();
   if (ctx.isEmpty())
     ctx = m_helpContext;
-  KToolInvocation::invokeHelp(ctx);
+  KMyMoneyUtils::invokeHelp(ctx);
+
 }
 
 void KMyMoneyWizard::completeStateChanged()

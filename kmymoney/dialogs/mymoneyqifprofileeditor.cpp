@@ -38,7 +38,7 @@
 #include <kiconloader.h>
 #include <kapplication.h>
 #include <kinputdialog.h>
-#include <ktoolinvocation.h>
+#include "kmymoneyutils.h"
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -429,7 +429,7 @@ void MyMoneyQifProfileEditor::slotDelete()
 
 void MyMoneyQifProfileEditor::slotHelp()
 {
-  KToolInvocation::invokeHelp("details.impexp.qifimp.profile");
+  KMyMoneyUtils::invokeHelp("details.impexp.qifimp.profile");
 }
 
 void MyMoneyQifProfileEditor::slotAmountTypeSelected()

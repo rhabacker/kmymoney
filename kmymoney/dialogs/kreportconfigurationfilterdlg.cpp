@@ -61,7 +61,7 @@
 #include <kmymoneymvccombo.h>
 #include <mymoneyfile.h>
 #include <mymoneyreport.h>
-#include <ktoolinvocation.h>
+#include "kmymoneyutils.h"
 #include "ui_kfindtransactiondlgdecl.h"
 
 KReportConfigurationFilterDlg::KReportConfigurationFilterDlg(
@@ -666,7 +666,7 @@ void KReportConfigurationFilterDlg::slotDateChanged()
 
 void KReportConfigurationFilterDlg::slotShowHelp()
 {
-  KToolInvocation::invokeHelp("details.reports.config");
+  KMyMoneyUtils::invokeHelp("details.reports.config");
 }
 
 //TODO Fix the reports and engine to include transfers even if categories are filtered - bug #1523508

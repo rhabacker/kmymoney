@@ -36,6 +36,7 @@
 
 #include <klocale.h>
 #include <kglobal.h>
+#include <kicon.h>
 #include <kiconloader.h>
 #include <kmessagebox.h>
 #include <kconfig.h>
@@ -580,4 +581,16 @@ QPixmap KMyMoneyUtils::overlayIcon(const QString icon, const QString overlay, co
   QPixmapCache::insert(overlaidIcon, result);
 
   return result;
+}
+
+#if QT_VERSION >= 0x050000
+#include <KHelpClient>
+#define HelpNameSpace KHelpClient
+#else
+#define HelpNameSpace KToolInvocation
+#endif
+
+void KMyMoneyUtils::invokeHelp(const QString &anchor, const QString &appname)
+{
+  HelpNameSpace::invokeHelp(anchor);
 }

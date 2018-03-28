@@ -35,7 +35,7 @@
 // Project Includes
 
 #include <kgpgfile.h>
-#include <ktoolinvocation.h>
+#include "kmymoneyutils.h"
 
 KGpgKeySelectionDlg::KGpgKeySelectionDlg(QWidget *parent) :
     KDialog(parent),
@@ -94,7 +94,7 @@ void KGpgKeySelectionDlg::slotShowHelp()
   if (anchor.isEmpty())
     anchor = QString("details.search");
 
-  KToolInvocation::invokeHelp(anchor);
+  KMyMoneyUtils::invokeHelp(anchor);
 }
 #endif
 

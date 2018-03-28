@@ -48,7 +48,7 @@
 #include <kdebug.h>
 #include <kapplication.h>
 #include <keditlistbox.h>
-#include <ktoolinvocation.h>
+#include "kmymoneyutils.h"
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -662,7 +662,7 @@ void KTagsView::slotTagNew()
 
 void KTagsView::slotHelp()
 {
-  KToolInvocation::invokeHelp("details.tags.attributes");
+  KMyMoneyUtils::invokeHelp("details.tags.attributes");
   //FIXME-ALEX update help file
 }
 

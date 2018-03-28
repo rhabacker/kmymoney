@@ -56,7 +56,7 @@
 #include <kmymoneyglobalsettings.h>
 #include <register.h>
 #include <transaction.h>
-#include <ktoolinvocation.h>
+#include "kmymoneyutils.h"
 #include "ui_kfindtransactiondlgdecl.h"
 #include "ui_ksortoptiondlg.h"
 
@@ -970,7 +970,7 @@ void KFindTransactionDlg::slotShowHelp()
   if (anchor.isEmpty())
     anchor = QString("details.search");
 
-  KToolInvocation::invokeHelp(anchor);
+  KMyMoneyUtils::invokeHelp(anchor);
 }
 
 void KFindTransactionDlg::slotSortOptions()

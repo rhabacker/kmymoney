@@ -370,7 +370,7 @@ void KEndingBalanceDlg::help()
   if (anchor.isEmpty())
     anchor = QString("details.reconcile.whatis");
 
-  KToolInvocation::invokeHelp(anchor);
+  KMyMoneyUtils::invokeHelp(anchor);
 }
 
 int KEndingBalanceDlg::nextId() const

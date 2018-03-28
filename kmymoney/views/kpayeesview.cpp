@@ -54,7 +54,7 @@
 #include <kdebug.h>
 #include <kapplication.h>
 #include <keditlistbox.h>
-#include <ktoolinvocation.h>
+#include "kmymoneyutils.h"
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -852,7 +852,7 @@ void KPayeesView::slotPayeeNew()
 
 void KPayeesView::slotHelp()
 {
-  KToolInvocation::invokeHelp("details.payees");
+  KMyMoneyUtils::invokeHelp("details.payees");
 }
 
 void KPayeesView::slotChangeFilter(int index)
