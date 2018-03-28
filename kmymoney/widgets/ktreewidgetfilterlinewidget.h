@@ -19,8 +19,10 @@
 #ifndef KTREEWIDGETFILTERLINEWIDGET_H
 #define KTREEWIDGETFILTERLINEWIDGET_H
 
-#include <ktreewidgetsearchline.h>
 #include "kmm_widgets_export.h"
+
+// KDE includes
+#include <ktreewidgetsearchlinewidget.h>
 
 class KMM_WIDGETS_EXPORT KTreeWidgetFilterLineWidget : public KTreeWidgetSearchLineWidget
 {

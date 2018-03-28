@@ -42,6 +42,7 @@
 // KDE Includes
 
 #include <kglobal.h>
+#include <kicon.h>
 #include <klocale.h>
 #include <kpushbutton.h>
 #include <kshortcut.h>

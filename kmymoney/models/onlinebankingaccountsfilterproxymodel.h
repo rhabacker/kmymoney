@@ -19,7 +19,7 @@
 #ifndef ONLINEBANKINGACCOUNTSFILTERPROXYMODEL_H
 #define ONLINEBANKINGACCOUNTSFILTERPROXYMODEL_H
 
-#include <QtGui/QSortFilterProxyModel>
+#include <QSortFilterProxyModel>
 
 class OnlineBankingAccountsFilterProxyModel : public QSortFilterProxyModel
 {

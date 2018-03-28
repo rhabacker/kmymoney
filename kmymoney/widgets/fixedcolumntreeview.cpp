@@ -26,11 +26,11 @@
 
 #include <QtCore/QEvent>
 
-#include <QtGui/QScrollBar>
-#include <QtGui/QStyledItemDelegate>
-#include <QtGui/QHeaderView>
-#include <QtGui/QApplication>
-#include <QtGui/QMouseEvent>
+#include <QScrollBar>
+#include <QStyledItemDelegate>
+#include <QHeaderView>
+#include <QApplication>
+#include <QMouseEvent>
 
 // ----------------------------------------------------------------------------
 // KDE Includes

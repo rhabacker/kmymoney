@@ -27,6 +27,7 @@
 #include <kpushbutton.h>
 #include <kglobalsettings.h>
 #include <kglobal.h>
+#include <kicon.h>
 #include <kiconloader.h>
 #include <klocale.h>
 #include <ktextedit.h>

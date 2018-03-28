@@ -20,8 +20,8 @@
 // ----------------------------------------------------------------------------
 // QT Headers
 
-#include <QtGui/QWizard>
-#include <QtGui/QWizardPage>
+#include <QWizard>
+#include <QWizardPage>
 #include <QCloseEvent>
 #include <QDebug>
 #include <QDesktopWidget>

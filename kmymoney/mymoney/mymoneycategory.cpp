@@ -15,6 +15,7 @@
  ***************************************************************************/
 
 #include "mymoneycategory.h"
+#include <QDataStream>
 
 MyMoneyCategory::MyMoneyCategory()
 {

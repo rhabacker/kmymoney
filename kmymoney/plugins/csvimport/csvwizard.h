@@ -18,11 +18,11 @@
 #ifndef CSVWIZARD_H
 #define CSVWIZARD_H
 
-#include <QtGui/QWidget>
-#include <QtGui/QWizard>
-#include <QtGui/QLabel>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QScrollBar>
+#include <QWidget>
+#include <QWizard>
+#include <QLabel>
+#include <QVBoxLayout>
+#include <QScrollBar>
 
 #include <KComboBox>
 

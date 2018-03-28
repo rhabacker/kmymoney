@@ -32,6 +32,7 @@
 // ----------------------------------------------------------------------------
 // KDE Includes
 
+#include <kicon.h>
 #include <klocale.h>
 #include <kpushbutton.h>
 #include <kdebug.h>

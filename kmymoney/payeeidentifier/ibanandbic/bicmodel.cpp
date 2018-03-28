@@ -19,6 +19,7 @@
 #include "bicmodel.h"
 
 #include <KDebug>
+#include <KGlobal>
 #include <KServiceTypeTrader>
 #include <KStandardDirs>
 #include <QtSql/QSqlQuery>

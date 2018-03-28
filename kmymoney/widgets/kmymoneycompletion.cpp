@@ -31,7 +31,9 @@
 #include <QEvent>
 #include <QDesktopWidget>
 #include <QLineEdit>
+#if QT_VERSION < 0x050000
 #include <QInputContext>
+#endif
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -155,9 +157,11 @@ void kMyMoneyCompletion::show(bool presetSelected)
   }
   KVBox::show();
 
+#if QT_VERSION < 0x050000
   // make sure that the parent is the input context's focus widget instead of the selector's list
   if (qApp->inputContext()->focusWidget() == m_selector->listView())
     qApp->inputContext()->setFocusWidget(m_parent);
+#endif
 }
 
 void kMyMoneyCompletion::hide()

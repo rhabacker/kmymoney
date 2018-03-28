@@ -20,6 +20,8 @@
 #include "transactionsortoptionimpl.h"
 
 #include <kiconloader.h>
+#include <KIcon>
+
 #include "register.h"
 
 #include "ui_transactionsortoptiondecl.h"

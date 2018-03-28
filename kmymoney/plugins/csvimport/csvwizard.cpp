@@ -17,8 +17,8 @@
 
 #include "csvwizard.h"
 
-#include <QtGui/QWizard>
-#include <QtGui/QWizardPage>
+#include <QWizard>
+#include <QWizardPage>
 #include <QTimer>
 #include <QDebug>
 #include <QDesktopWidget>

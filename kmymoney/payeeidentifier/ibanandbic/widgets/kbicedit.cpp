@@ -19,12 +19,12 @@
 #include "kbicedit.h"
 
 #include <QDebug>
-#include <QtGui/QApplication>
-#include <QtGui/QCompleter>
-#include <QtGui/QListView>
-#include <QtGui/QStyledItemDelegate>
-#include <QtGui/QPainter>
-#include <QtGui/QStyle>
+#include <QApplication>
+#include <QCompleter>
+#include <QListView>
+#include <QStyledItemDelegate>
+#include <QPainter>
+#include <QStyle>
 
 #include "../bicmodel.h"
 #include "bicvalidator.h"
