@@ -827,8 +827,8 @@ void MyMoneyStatementReader::processTransactionEntry(const MyMoneyStatement::Tra
 
       transfervalue = statementTransactionUnderImport.m_amount;
 
-      } else if ((statementTransactionUnderImport.m_eAction == MyMoneyStatement::Transaction::eaBuy) ||
-                 (statementTransactionUnderImport.m_eAction == MyMoneyStatement::Transaction::eaSell)) {
+    } else if ((statementTransactionUnderImport.m_eAction == MyMoneyStatement::Transaction::eaBuy) ||
+               (statementTransactionUnderImport.m_eAction == MyMoneyStatement::Transaction::eaSell)) {
       s1.setAction(MyMoneySplit::ActionBuyShares);
       if (!statementTransactionUnderImport.m_price.isZero())  {
         s1.setPrice(statementTransactionUnderImport.m_price.abs());
@@ -837,9 +837,9 @@ void MyMoneyStatementReader::processTransactionEntry(const MyMoneyStatement::Tra
         s1.setPrice((total / statementTransactionUnderImport.m_shares).abs().convert(MyMoneyMoney::precToDenom(KMyMoneyGlobalSettings::pricePrecision())));
       }
       if (statementTransactionUnderImport.m_eAction == MyMoneyStatement::Transaction::eaBuy)
-          s1.setShares(statementTransactionUnderImport.m_shares.abs());
+        s1.setShares(statementTransactionUnderImport.m_shares.abs());
       else
-          s1.setShares(-statementTransactionUnderImport.m_shares.abs());
+        s1.setShares(-statementTransactionUnderImport.m_shares.abs());
       s1.setValue(-(statementTransactionUnderImport.m_amount + statementTransactionUnderImport.m_fees.abs()));
       transfervalue = statementTransactionUnderImport.m_amount;
 
