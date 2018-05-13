@@ -263,7 +263,8 @@ public:
   static const char ActionAmortization[];
   static const char ActionInterest[];
 
-  static const char ActionBuyShares[];  // negative amount is sellShares
+  static const char ActionBuyShares[];
+  static const char ActionSellShares[];
   static const char ActionDividend[];
   static const char ActionReinvestDividend[];
   static const char ActionYield[];

@@ -482,6 +482,8 @@ void CsvUtil::dissectTransaction(const MyMoneyTransaction& transaction, const My
     transactionType = (!split.shares().isNegative()) ? MyMoneySplit::AddShares : MyMoneySplit::RemoveShares;
   } else if (split.action() == MyMoneySplit::ActionBuyShares) {
     transactionType = (!split.value().isNegative()) ? MyMoneySplit::BuyShares : MyMoneySplit::SellShares;
+  } else if (split.action() == MyMoneySplit::ActionSellShares) {
+    transactionType = MyMoneySplit::SellShares;
   } else if (split.action() == MyMoneySplit::ActionDividend) {
     transactionType = MyMoneySplit::Dividend;
   } else if (split.action() == MyMoneySplit::ActionReinvestDividend) {

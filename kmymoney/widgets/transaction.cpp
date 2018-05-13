@@ -815,6 +815,8 @@ StdTransaction::StdTransaction(Register *parent, const MyMoneyTransaction& trans
       } else {
         addon = i18n("Buy");
       }
+    } else if (split.action() == MyMoneySplit::ActionSellShares) {
+      addon = i18n("Sell");
     } else if (split.action() == MyMoneySplit::ActionDividend) {
       addon = i18n("Dividend");
     } else if (split.action() == MyMoneySplit::ActionYield) {

@@ -566,7 +566,8 @@ void QueryTable::constructTransactionTable()
         qA["shares"] = shares.isZero() ? "" : (*it_split).shares().toString();
         qA["price"] = shares.isZero() ? "" : xr.convert(MyMoneyMoney::precToDenom(KMyMoneyGlobalSettings::pricePrecision())).toString();
 
-        if (((*it_split).action() == MyMoneySplit::ActionBuyShares) && (*it_split).shares().isNegative())
+        if (((*it_split).action() == MyMoneySplit::ActionSellShares) ||
+            ((*it_split).action() == MyMoneySplit::ActionBuyShares) && (*it_split).shares().isNegative())
           qA["action"] = "Sell";
 
         qA["investaccount"] = splitAcc.parent().name();
@@ -1047,6 +1048,11 @@ void QueryTable::constructPerformanceRow(const ReportAccount& account, TableRow&
       returnInvestment += value;
       //convert to lowest fraction
       returnInvestment = returnInvestment.convert(fraction);
+    } else if (action == MyMoneySplit::ActionSellShares) {
+        sells += CashFlowListItem((*it_transaction).postDate(), -value);
+        returnInvestment += value;
+        //convert to lowest fraction
+        returnInvestment = returnInvestment.convert(fraction);
     } else if (action == MyMoneySplit::ActionReinvestDividend) {
       reinvestincome += CashFlowListItem((*it_transaction).postDate(), value);
     } else if (action == MyMoneySplit::ActionDividend || action == MyMoneySplit::ActionYield) {
@@ -1359,7 +1365,8 @@ void QueryTable::constructSplitsTable()
         qA["shares"] = shares.isZero() ? "" : (*it_split).shares().toString();
         qA["price"] = shares.isZero() ? "" : xr.convert(MyMoneyMoney::precToDenom(KMyMoneyGlobalSettings::pricePrecision())).toString();
 
-        if (((*it_split).action() == MyMoneySplit::ActionBuyShares) && (*it_split).shares().isNegative())
+        if (((*it_split).action() == MyMoneySplit::ActionSellShares) ||
+            ((*it_split).action() == MyMoneySplit::ActionBuyShares) && (*it_split).shares().isNegative())
           qA["action"] = "Sell";
 
         qA["investaccount"] = splitAcc.parent().name();
