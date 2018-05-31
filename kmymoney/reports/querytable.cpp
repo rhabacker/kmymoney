@@ -567,7 +567,7 @@ void QueryTable::constructTransactionTable()
         qA["price"] = shares.isZero() ? "" : xr.convert(MyMoneyMoney::precToDenom(KMyMoneyGlobalSettings::pricePrecision())).toString();
 
         if (((*it_split).action() == MyMoneySplit::ActionSellShares) ||
-            ((*it_split).action() == MyMoneySplit::ActionBuyShares) && (*it_split).shares().isNegative())
+            (((*it_split).action() == MyMoneySplit::ActionBuyShares) && (*it_split).shares().isNegative()))
           qA["action"] = "Sell";
 
         qA["investaccount"] = splitAcc.parent().name();
@@ -1069,6 +1069,27 @@ void QueryTable::constructPerformanceRow(const ReportAccount& account, TableRow&
       }
     } else if (action == MyMoneySplit::ActionAddShares) {
       // Add shares is not a buy operation, do nothing
+    } else if (action == MyMoneySplit::ActionSellShares) {
+        //if value is zero, get the price for that date
+        if (s.value().isZero()) {
+          if (m_config.isConvertCurrency()) {
+            price = account.deepCurrencyPrice((*it_transaction).postDate()) * account.baseCurrencyPrice((*it_transaction).postDate());
+          } else {
+            price = account.deepCurrencyPrice((*it_transaction).postDate());
+          }
+          value = s.shares() * price;
+          sells += CashFlowListItem((*it_transaction).postDate(), value);
+          returnInvestment -= value;
+        } else {
+          value = s.value() * price;
+          if (s.value().isPositive()) {
+            buys += CashFlowListItem((*it_transaction).postDate(), -value);
+          } else {
+            sells += CashFlowListItem((*it_transaction).postDate(), -value);
+          }
+          returnInvestment += value;
+        }
+
     } else {
       //if the split does not match any action above, add it as buy or sell depending on sign
 
@@ -1366,7 +1387,7 @@ void QueryTable::constructSplitsTable()
         qA["price"] = shares.isZero() ? "" : xr.convert(MyMoneyMoney::precToDenom(KMyMoneyGlobalSettings::pricePrecision())).toString();
 
         if (((*it_split).action() == MyMoneySplit::ActionSellShares) ||
-            ((*it_split).action() == MyMoneySplit::ActionBuyShares) && (*it_split).shares().isNegative())
+            (((*it_split).action() == MyMoneySplit::ActionBuyShares) && (*it_split).shares().isNegative()))
           qA["action"] = "Sell";
 
         qA["investaccount"] = splitAcc.parent().name();

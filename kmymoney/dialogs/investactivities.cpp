@@ -335,7 +335,7 @@ bool Sell::createTransaction(MyMoneyTransaction& t, MyMoneySplit& s0, MyMoneySpl
   kMyMoneyEdit* sharesEdit = dynamic_cast<kMyMoneyEdit*>(haveWidget("shares"));
   kMyMoneyEdit* priceEdit = dynamic_cast<kMyMoneyEdit*>(haveWidget("price"));
 
-  s0.setAction(MyMoneySplit::BuyShares);
+  s0.setAction(MyMoneySplit::SellShares);
 
   MyMoneyMoney shares = s0.shares();
   MyMoneyMoney price;
@@ -343,7 +343,7 @@ bool Sell::createTransaction(MyMoneyTransaction& t, MyMoneySplit& s0, MyMoneySpl
     price = (s0.value() / s0.shares()).reduce();
 
   if (!isMultiSelection() || (isMultiSelection() && !sharesEdit->value().isZero())) {
-    shares = -sharesEdit->value().abs();
+    shares = sharesEdit->value();
     s0.setShares(shares);
     s0.setValue((shares * price).reduce());
     s0.setPrice(price);
