@@ -57,11 +57,15 @@ protected slots:
   void slotLoadWidgets();
   void slotEntryChanged();
   void slotNewEntry();
+  void slotCheckEntry();
+  void slotLogStatus(const QString &s);
+  void slotLogQuote(const QString &id, const QString &symbol, const QString &date, double price);
   void slotEntryRenamed(QListWidgetItem* item);
   void slotStartRename(QListWidgetItem* item);
 
 protected:
   void loadList(const bool updateResetList = false);
+  void setupIcons(int state, const WebPriceQuote::Errors &errors = WebPriceQuote::Errors::noError);
 
 private:
   QList<WebPriceQuoteSource>  m_resetList;

@@ -53,6 +53,8 @@
 QString WebPriceQuote::m_financeQuoteScriptPath;
 QStringList WebPriceQuote::m_financeQuoteSources;
 
+WebPriceQuote::Errors WebPriceQuote::Errors::noError;
+
 class WebPriceQuote::Private
 {
 public:
@@ -88,21 +90,21 @@ WebPriceQuote::~WebPriceQuote()
   delete d;
 }
 
-bool WebPriceQuote::launch(const QString& _symbol, const QString& _id, const QString& _sourcename)
+bool WebPriceQuote::launch(const QString& _symbol, const QString& _id, const QString& _sourcename, Errors &_errors)
 {
   if (_sourcename.contains("Finance::Quote"))
-    return (launchFinanceQuote(_symbol, _id, _sourcename));
+    return (launchFinanceQuote(_symbol, _id, _sourcename, _errors));
   else
-    return (launchNative(_symbol, _id, _sourcename));
+    return (launchNative(_symbol, _id, _sourcename, _errors));
 }
 
-bool WebPriceQuote::launchNative(const QString& _symbol, const QString& _id, const QString& _sourcename)
+bool WebPriceQuote::launchNative(const QString& _symbol, const QString& _id, const QString& _sourcename, Errors &_errors)
 {
   bool result = true;
   d->m_symbol = _symbol;
   d->m_id = _id;
 
-//   emit status(QString("(Debug) symbol=%1 id=%2...").arg(_symbol,_id));
+  emit status(QString("(Debug) symbol=%1 id=%2...").arg(_symbol,_id));
 
   // Get sources from the config file
   QString sourcename = _sourcename;
@@ -111,8 +113,11 @@ bool WebPriceQuote::launchNative(const QString& _symbol, const QString& _id, con
 
   if (quoteSources().contains(sourcename))
     d->m_source = WebPriceQuoteSource(sourcename);
-  else
+  else {
     emit error(i18n("Source <placeholder>%1</placeholder> does not exist.", sourcename));
+    _errors |= Errors::Source;
+    result = false;
+  }
 
   KUrl url;
 
@@ -144,7 +149,8 @@ bool WebPriceQuote::launchNative(const QString& _symbol, const QString& _id, con
       result = true;
     } else {
       emit error(i18n("Unable to launch: %1", url.toLocalFile()));
-      slotParseQuote(QString());
+      _errors |= Errors::Script;
+      result = slotParseQuote(QString(), _errors);
     }
   } else {
     emit status(i18n("Fetching URL %1...", url.prettyUrl()));
@@ -155,7 +161,6 @@ bool WebPriceQuote::launchNative(const QString& _symbol, const QString& _id, con
       kDebug(Private::dbgArea()) << "Downloaded" << tmpFile << "from" << url;
       QFile f(tmpFile);
       if (f.open(QIODevice::ReadOnly)) {
-        result = true;
         // Find out the page encoding and convert it to unicode
         QByteArray page = f.readAll();
         KEncodingProber prober(KEncodingProber::Universal);
@@ -165,22 +170,25 @@ bool WebPriceQuote::launchNative(const QString& _symbol, const QString& _id, con
           codec = QTextCodec::codecForLocale();
         QString quote = codec->toUnicode(page);
         f.close();
-        slotParseQuote(quote);
+        emit status(i18n("URL found: %1...", url.prettyUrl()));
+        result = slotParseQuote(quote, _errors);
       } else {
         emit error(i18n("Failed to open downloaded file"));
-        slotParseQuote(QString());
+        _errors |= Errors::URL;
+        result = slotParseQuote(QString(), _errors);
       }
       KIO::NetAccess::removeTempFile(tmpFile);
     } else {
       emit error(KIO::NetAccess::lastErrorString());
-      slotParseQuote(QString());
+      _errors |= Errors::URL;
+      result = slotParseQuote(QString(), _errors);
     }
   }
   return result;
 }
 
 bool WebPriceQuote::launchFinanceQuote(const QString& _symbol, const QString& _id,
-                                       const QString& _sourcename)
+                                       const QString& _sourcename, Errors &_errors)
 {
   bool result = true;
   d->m_symbol = _symbol;
@@ -204,21 +212,29 @@ bool WebPriceQuote::launchFinanceQuote(const QString& _symbol, const QString& _i
 
   // This seems to work best if we just block until done.
   if (d->m_filter.waitForFinished()) {
-    result = true;
   } else {
     emit error(i18n("Unable to launch: %1", m_financeQuoteScriptPath));
-    slotParseQuote(QString());
+    _errors |= Errors::Script;
+    result = slotParseQuote(QString(), _errors);
   }
 
   return result;
 }
 
-void WebPriceQuote::slotParseQuote(const QString& _quotedata)
+/**
+ * Parse quote data according to currently selected web price quote source
+ *
+ * @param _quotedata quote data to parse
+ * @return true parsing successful
+ * @return false parsing unsuccessful
+ */
+bool WebPriceQuote::slotParseQuote(const QString& _quotedata, Errors &errors)
 {
   QString quotedata = _quotedata;
   d->m_quoteData = quotedata;
   bool gotprice = false;
   bool gotdate = false;
+  bool result = true;
 
   kDebug(Private::dbgArea()) << "quotedata" << _quotedata;
 
@@ -246,6 +262,9 @@ void WebPriceQuote::slotParseQuote(const QString& _quotedata)
     if (symbolRegExp.indexIn(quotedata) > -1) {
       kDebug(Private::dbgArea()) << "Symbol" << symbolRegExp.cap(1);
       emit status(i18n("Symbol found: '%1'", symbolRegExp.cap(1)));
+    } else {
+      errors |= Errors::Symbol;
+      emit error(i18n("Unable to parse symbol for %1", d->m_symbol));
     }
 
     if (priceRegExp.indexIn(quotedata) > -1) {
@@ -273,34 +292,50 @@ void WebPriceQuote::slotParseQuote(const QString& _quotedata)
       d->m_price = pricestr.toDouble();
       kDebug(Private::dbgArea()) << "Price" << pricestr;
       emit status(i18n("Price found: '%1' (%2)", pricestr, d->m_price));
+    } else {
+      errors |= Errors::Price;
+      emit error(i18n("Unable to parse price for %1", d->m_symbol));
+      result = false;
     }
 
     if (dateRegExp.indexIn(quotedata) > -1) {
       QString datestr = dateRegExp.cap(1);
+      emit status(i18n("Date found: '%1'", datestr));
 
       MyMoneyDateFormat dateparse(d->m_source.m_dateformat);
       try {
         d->m_date = dateparse.convertString(datestr, false /*strict*/);
         gotdate = true;
         kDebug(Private::dbgArea()) << "Date" << datestr;
-        emit status(i18n("Date found: '%1'", d->m_date.toString()));;
-      } catch (const MyMoneyException &) {
-        // emit error(i18n("Unable to parse date %1 using format %2: %3").arg(datestr,dateparse.format(),e.what()));
+        emit status(i18n("Date format found: '%1' -> %2", datestr, d->m_date.toString()));
+      } catch (const MyMoneyException &e) {
+        errors |= Errors::DateFormat;
+        emit error(i18n("Unable to parse date %1 using format %2: %3").arg(datestr,dateparse.format(), e.what()));
         d->m_date = QDate::currentDate();
+        emit status(i18n("Using current date for %1").arg(d->m_symbol));
         gotdate = true;
       }
+    } else {
+      errors |= Errors::Date;
+      emit error(i18n("Unable to parse date for %1").arg(d->m_symbol));
+      d->m_date = QDate::currentDate();
+      emit status(i18n("Using current date for %1").arg(d->m_symbol));
+      gotdate = true;
     }
 
     if (gotprice && gotdate) {
       emit quote(d->m_id, d->m_symbol, d->m_date, d->m_price);
     } else {
-      emit error(i18n("Unable to update price for %1 (no price or no date)", d->m_symbol));
       emit failed(d->m_id, d->m_symbol);
+      result = false;
     }
   } else {
+    errors |= Errors::Data;
     emit error(i18n("Unable to update price for %1 (empty quote data)", d->m_symbol));
     emit failed(d->m_id, d->m_symbol);
+    result = false;
   }
+  return result;
 }
 
 const QMap<QString, WebPriceQuoteSource> WebPriceQuote::defaultQuoteSources()

@@ -134,6 +134,35 @@ public:
   explicit WebPriceQuote(QObject* = 0);
   ~WebPriceQuote();
 
+  /**
+   * holds errors reported from price quote fetching and parsing
+   */
+  class Errors {
+  public:
+    enum Type {
+      None,
+      Data,
+      Date,
+      DateFormat,
+      Price,
+      Script,
+      Source,
+      Symbol,
+      Success,
+      URL,
+    };
+
+    inline Errors() { }
+    inline Errors(Type type) { m_type.append(type); }
+    inline Errors(const Errors &e) { m_type = e.m_type; }
+    inline Errors &operator |=(Type t) { if (!m_type.contains(t)) m_type.append(t); return *this; }
+    inline bool operator &(Type t) const { return m_type.contains(t); }
+
+    static Errors noError;
+  protected:
+    QList<Type> m_type;
+  };
+
   typedef enum _quoteSystemE {
     Native = 0,
     FinanceQuote
@@ -150,10 +179,12 @@ public:
     * @param _source the source of the quote (must be a valid value returned
     *                by quoteSources().  Send QString() to use the default
     *                source.
+    * @param errors  returns errors that occurred when fetching the quote.
+    *                This parameter is optional
     * @return bool Whether the quote fetch process was launched successfully
     */
 
-  bool launch(const QString& _symbol, const QString& _id, const QString& _source = QString());
+  bool launch(const QString& _symbol, const QString& _id, const QString& _source = QString(), Errors &_errors = Errors::noError);
 
   /**
     * This returns a list of the names of the quote sources
@@ -171,14 +202,14 @@ signals:
   void error(const QString&);
 
 protected slots:
-  void slotParseQuote(const QString&);
+  bool slotParseQuote(const QString&, Errors &errors = Errors::noError);
 
 protected:
   static const QMap<QString, WebPriceQuoteSource> defaultQuoteSources();
 
 private:
-  bool launchNative(const QString& _symbol, const QString& _id, const QString& _source = QString());
-  bool launchFinanceQuote(const QString& _symbol, const QString& _id, const QString& _source = QString());
+  bool launchNative(const QString& _symbol, const QString& _id, const QString& _source = QString(), Errors &_errors = Errors::noError);
+  bool launchFinanceQuote(const QString& _symbol, const QString& _id, const QString& _source = QString(), Errors &_errors = Errors::noError);
   void enter_loop();
 
   static const QStringList quoteSourcesNative();
