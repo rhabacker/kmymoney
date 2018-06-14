@@ -31,6 +31,7 @@
 #include <klocale.h>
 #include <kiconloader.h>
 #include <kguiitem.h>
+#include <KMessageBox>
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -74,6 +75,7 @@ KSettingsOnlineQuotes::KSettingsOnlineQuotes(QWidget *parent)
   connect(m_updateButton, SIGNAL(clicked()), this, SLOT(slotUpdateEntry()));
   connect(m_newButton, SIGNAL(clicked()), this, SLOT(slotNewEntry()));
   connect(m_checkButton, SIGNAL(clicked()), this, SLOT(slotCheckEntry()));
+  connect(m_deleteButton, SIGNAL(clicked()), this, SLOT(slotDeleteEntry()));
 
   connect(m_quoteSourceList, SIGNAL(itemSelectionChanged()), this, SLOT(slotLoadWidgets()));
   connect(m_quoteSourceList, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(slotEntryRenamed(QListWidgetItem*)));
@@ -86,8 +88,6 @@ KSettingsOnlineQuotes::KSettingsOnlineQuotes(QWidget *parent)
   connect(m_editPrice, SIGNAL(textChanged(QString)), this, SLOT(slotEntryChanged()));
   connect(m_skipStripping, SIGNAL(toggled(bool)), this, SLOT(slotEntryChanged()));
 
-  // FIXME deleting a source is not yet implemented
-  m_deleteButton->setEnabled(false);
   m_logWindow->setVisible(false);
 }
 
@@ -189,6 +189,26 @@ void KSettingsOnlineQuotes::slotEntryChanged()
 
   m_updateButton->setEnabled(modified);
   m_checkButton->setEnabled(!modified);
+}
+
+void KSettingsOnlineQuotes::slotDeleteEntry()
+{
+  QListWidgetItem* item = m_quoteSourceList->findItems(m_currentItem.m_name, Qt::MatchExactly).at(0);
+  if (!item)
+    return;
+
+  int ret = KMessageBox::warningContinueCancel(this,
+                i18n("Are you sure to delete this online quote ?"),
+                i18n("Delete online quote"),
+                KStandardGuiItem::cont(),
+                KStandardGuiItem::cancel(),
+                QString("DeletingOnlineQuote"));
+  if (ret == KMessageBox::Cancel)
+    return;
+
+  delete item;
+  m_currentItem.remove();
+  slotEntryChanged();
 }
 
 void KSettingsOnlineQuotes::slotUpdateEntry()
