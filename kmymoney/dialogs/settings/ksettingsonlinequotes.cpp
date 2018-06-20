@@ -22,6 +22,7 @@
 
 #include <QRegExp>
 #include <QCheckBox>
+#include <QDesktopServices>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -31,6 +32,7 @@
 #include <klocale.h>
 #include <kiconloader.h>
 #include <kguiitem.h>
+#include <KMessageBox>
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -47,7 +49,7 @@ KSettingsOnlineQuotes::KSettingsOnlineQuotes(QWidget *parent)
 
   m_updateButton->setEnabled(false);
 
-  KGuiItem updateButtenItem(i18nc("Accepts the entered data and stores it", "&Update"),
+  KGuiItem updateButtenItem(i18nc("Accepts the entered data and stores it", "&Accept"),
                             KIcon("dialog-ok"),
                             i18n("Accepts the entered data and stores it"),
                             i18n("Use this to accept the modified data."));
@@ -59,6 +61,18 @@ KSettingsOnlineQuotes::KSettingsOnlineQuotes(QWidget *parent)
                             i18n("Use this to delete the selected online source entry"));
   m_deleteButton->setGuiItem(deleteButtenItem);
 
+  KGuiItem checkButtonItem(i18nc("Check the selected source entry", "&Check Source"),
+                            KIcon("document-edit-verify"),
+                            i18n("Check the selected source entry"),
+                            i18n("Use this to check the selected online source entry"));
+  m_checkButton->setGuiItem(checkButtonItem);
+
+  KGuiItem showButtonItem(i18nc("Show the selected source entry in a web browser", "&Show page"),
+                            KIcon("applications-internet"),
+                            i18n("Show the selected source entry in a web browser"),
+                            i18n("Use this to show the selected online source entry"));
+  m_showButton->setGuiItem(showButtonItem);
+
   KGuiItem newButtenItem(i18nc("Create a new source entry for online quotes", "&New..."),
                          KIcon("document-new"),
                          i18n("Create a new source entry for online quotes"),
@@ -67,6 +81,9 @@ KSettingsOnlineQuotes::KSettingsOnlineQuotes(QWidget *parent)
 
   connect(m_updateButton, SIGNAL(clicked()), this, SLOT(slotUpdateEntry()));
   connect(m_newButton, SIGNAL(clicked()), this, SLOT(slotNewEntry()));
+  connect(m_checkButton, SIGNAL(clicked()), this, SLOT(slotCheckEntry()));
+  connect(m_deleteButton, SIGNAL(clicked()), this, SLOT(slotDeleteEntry()));
+  connect(m_showButton, SIGNAL(clicked()), this, SLOT(slotShowEntry()));
 
   connect(m_quoteSourceList, SIGNAL(itemSelectionChanged()), this, SLOT(slotLoadWidgets()));
   connect(m_quoteSourceList, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(slotEntryRenamed(QListWidgetItem*)));
@@ -79,8 +96,9 @@ KSettingsOnlineQuotes::KSettingsOnlineQuotes(QWidget *parent)
   connect(m_editPrice, SIGNAL(textChanged(QString)), this, SLOT(slotEntryChanged()));
   connect(m_skipStripping, SIGNAL(toggled(bool)), this, SLOT(slotEntryChanged()));
 
-  // FIXME deleting a source is not yet implemented
-  m_deleteButton->setEnabled(false);
+  m_logWindow->setVisible(false);
+  m_checkSymbol->setText("ORCL");
+  m_checkSymbol2->setText("BTC GBP");
 }
 
 void KSettingsOnlineQuotes::loadList(const bool updateResetList)
@@ -171,6 +189,7 @@ void KSettingsOnlineQuotes::slotLoadWidgets()
 
 void KSettingsOnlineQuotes::slotEntryChanged()
 {
+  clearIcons();
   bool modified = m_editURL->text() != m_currentItem.m_url
                   || m_editSymbol->text() != m_currentItem.m_sym
                   || m_editDate->text() != m_currentItem.m_date
@@ -179,6 +198,37 @@ void KSettingsOnlineQuotes::slotEntryChanged()
                   || m_skipStripping->isChecked() != m_currentItem.m_skipStripping;
 
   m_updateButton->setEnabled(modified);
+  m_checkButton->setEnabled(!modified);
+  m_checkSymbol->setEnabled(!m_currentItem.m_url.contains("%2"));
+  m_checkSymbol2->setEnabled(m_currentItem.m_url.contains("%2"));
+}
+
+void KSettingsOnlineQuotes::slotDeleteEntry()
+{
+  QListWidgetItem* item = m_quoteSourceList->findItems(m_currentItem.m_name, Qt::MatchExactly).at(0);
+  if (!item)
+    return;
+
+  int ret = KMessageBox::warningContinueCancel(this,
+                i18n("Are you sure to delete this online quote ?"),
+                i18n("Delete online quote"),
+                KStandardGuiItem::cont(),
+                KStandardGuiItem::cancel(),
+                QString("DeletingOnlineQuote"));
+  if (ret == KMessageBox::Cancel)
+    return;
+
+  delete item;
+  m_currentItem.remove();
+  slotEntryChanged();
+}
+
+void KSettingsOnlineQuotes::slotShowEntry()
+{
+  if (m_currentItem.m_url.contains("%2"))
+    QDesktopServices::openUrl(m_currentItem.m_url.arg(m_checkSymbol2->text()));
+  else
+    QDesktopServices::openUrl(m_currentItem.m_url.arg(m_checkSymbol->text()));
 }
 
 void KSettingsOnlineQuotes::slotUpdateEntry()
@@ -190,6 +240,7 @@ void KSettingsOnlineQuotes::slotUpdateEntry()
   m_currentItem.m_price = m_editPrice->text();
   m_currentItem.m_skipStripping = m_skipStripping->isChecked();
   m_currentItem.write();
+  m_checkButton->setEnabled(true);
   slotEntryChanged();
 }
 
@@ -203,6 +254,71 @@ void KSettingsOnlineQuotes::slotNewEntry()
     m_quoteSourceList->setCurrentItem(item);
     slotLoadWidgets();
   }
+}
+
+void KSettingsOnlineQuotes::clearIcons()
+{
+  QPixmap emptyIcon;
+  m_urlCheckLabel->setPixmap(emptyIcon);
+  m_dateCheckLabel->setPixmap(emptyIcon);
+  m_priceCheckLabel->setPixmap(emptyIcon);
+  m_symbolCheckLabel->setPixmap(emptyIcon);
+  m_dateFormatCheckLabel->setPixmap(emptyIcon);
+}
+
+void KSettingsOnlineQuotes::setupIcons(const WebPriceQuote::Errors &errors)
+{
+  QPixmap okIcon(BarIcon("dialog-ok-apply"));
+  QPixmap failIcon(BarIcon("dialog-cancel"));
+
+  if (errors & WebPriceQuote::Errors::URL)
+    m_urlCheckLabel->setPixmap(failIcon);
+  else {
+    m_urlCheckLabel->setPixmap(okIcon);
+    m_symbolCheckLabel->setPixmap(errors & WebPriceQuote::Errors::Symbol ? failIcon : okIcon);
+    m_priceCheckLabel->setPixmap(errors & WebPriceQuote::Errors::Price ? failIcon : okIcon);
+    if (errors & WebPriceQuote::Errors::Date)
+      m_dateCheckLabel->setPixmap(failIcon);
+    else {
+      m_dateCheckLabel->setPixmap(okIcon);
+      m_dateFormatCheckLabel->setPixmap(errors & WebPriceQuote::Errors::DateFormat? failIcon : okIcon);
+    }
+  }
+}
+
+void KSettingsOnlineQuotes::slotCheckEntry()
+{
+  WebPriceQuote quote;
+  m_logWindow->setVisible(true);
+  m_logWindow->clear();
+  clearIcons();
+
+  connect(&quote, SIGNAL(status(QString)), this, SLOT(slotLogStatus(QString)));
+  connect(&quote, SIGNAL(error(QString)), this, SLOT(slotLogStatus(QString)));
+  connect(&quote, SIGNAL(failed(QString, QString)), this, SLOT(slotLogFailed(QString, QString)));
+  connect(&quote, SIGNAL(quote(QString, QString, QDate, double)), this, SLOT(slotLogQuote(QString, QString, QDate, double)));
+  if (m_currentItem.m_url.contains("%2"))
+    quote.launch(m_checkSymbol2->text(), m_checkSymbol2->text(), m_currentItem.m_name);
+  else
+    quote.launch(m_checkSymbol->text(), m_checkSymbol->text(), m_currentItem.m_name);
+  setupIcons(quote.errors());
+}
+
+void KSettingsOnlineQuotes::slotLogStatus(const QString &s)
+{
+    new QListWidgetItem(s, m_logWindow);
+    m_logWindow->scrollToBottom();
+}
+
+void KSettingsOnlineQuotes::slotLogFailed(const QString &id, const QString &symbol)
+{
+    new QListWidgetItem(QString("%1 %2").arg(id, symbol), m_logWindow);
+    m_logWindow->scrollToBottom();
+}
+
+void KSettingsOnlineQuotes::slotLogQuote(const QString &id, const QString &symbol, const QDate &date, double price)
+{
+  slotLogStatus(QString("%1 %2 %3 %4").arg(id, symbol, date.toString()).arg(price));
 }
 
 void KSettingsOnlineQuotes::slotStartRename(QListWidgetItem* item)

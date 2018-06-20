@@ -12,6 +12,7 @@ set (libconverter_a_SOURCES
 )
 
 kde4_add_library(converter STATIC ${libconverter_a_SOURCES})
+target_link_libraries(converter QtWebKit)
 
 # we rely on some dialogs to be generated
 add_dependencies(converter dialogs)

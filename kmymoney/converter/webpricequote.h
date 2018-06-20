@@ -134,6 +134,38 @@ public:
   explicit WebPriceQuote(QObject* = 0);
   ~WebPriceQuote();
 
+  /**
+   * Hold errors reported from price quote fetching and parsing
+   *
+   * The implementation provides a type safe way to use
+   * bit operations like '|=' for combining values and '&'
+   * for checking value presence.
+   */
+  class Errors {
+  public:
+    enum Type {
+      None,
+      Data,
+      Date,
+      DateFormat,
+      Price,
+      Script,
+      Source,
+      Symbol,
+      Success,
+      URL,
+    };
+
+    inline Errors() { }
+    inline Errors(Type type) { m_type.append(type); }
+    inline Errors(const Errors &e) { m_type = e.m_type; }
+    inline Errors &operator |=(Type t) { if (!m_type.contains(t)) m_type.append(t); return *this; }
+    inline bool operator &(Type t) const { return m_type.contains(t); }
+
+  protected:
+    QList<Type> m_type;
+  };
+
   typedef enum _quoteSystemE {
     Native = 0,
     FinanceQuote
@@ -151,9 +183,18 @@ public:
     *                by quoteSources().  Send QString() to use the default
     *                source.
     * @return bool Whether the quote fetch process was launched successfully
+    *              In case of failures it returns false and @ref errors()
+    *              could be used to get error details.
     */
-
   bool launch(const QString& _symbol, const QString& _id, const QString& _source = QString());
+
+  /**
+    * If @ref launch(), @ref launchNative() or @ref launchFinanceQuote() returns false,
+    * this method can be used to get details about the errors that occurred.
+    *
+    * @return bit map of errors, see class @ref Errors for details
+   */
+  const Errors &errors();
 
   /**
     * This returns a list of the names of the quote sources
@@ -171,15 +212,22 @@ signals:
   void error(const QString&);
 
 protected slots:
-  void slotParseQuote(const QString&);
-
+  void slotLoadStarted();
+  void slotLoadFinishedHtmlParser(bool ok);
+  void slotLoadFinishedCssSelector(bool ok);
+  bool slotParseQuote(const QString& _quotedata);
 protected:
   static const QMap<QString, WebPriceQuoteSource> defaultQuoteSources();
 
 private:
-  bool launchNative(const QString& _symbol, const QString& _id, const QString& _source = QString());
-  bool launchFinanceQuote(const QString& _symbol, const QString& _id, const QString& _source = QString());
+  bool initLaunch(const QString &_symbol, const QString &_id, const QString &_source);
+  bool launchWebKitCssSelector(const QString &_symbol, const QString &_id, const QString &_source);
+  bool launchWebKitHtmlParser(const QString &_symbol, const QString &_id, const QString &_source);
+  bool launchNative(const QString& _symbol, const QString& _id, const QString& _source);
+  bool launchFinanceQuote(const QString& _symbol, const QString& _id, const QString& _source);
   void enter_loop();
+  bool parsePrice(const QString &pricestr);
+  bool parseDate(const QString &datestr);
 
   static const QStringList quoteSourcesNative();
   static const QStringList quoteSourcesFinanceQuote();

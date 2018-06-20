@@ -22,6 +22,7 @@
 
 #include <QFile>
 #include <QRegExp>
+#include <QtWebKit>
 #include <QTextStream>
 #include <QTextCodec>
 #include <QByteArray>
@@ -63,6 +64,10 @@ public:
   QDate m_date;
   double m_price;
   WebPriceQuoteSource m_source;
+  WebPriceQuote::Errors m_errors;
+  KUrl m_url;
+  QEventLoop *m_eventLoop;
+  QWebView *m_webView;
 
   static int dbgArea() {
     static int s_area = KDebug::registerArea("KMyMoney (WebPriceQuote)");
@@ -88,31 +93,54 @@ WebPriceQuote::~WebPriceQuote()
   delete d;
 }
 
-bool WebPriceQuote::launch(const QString& _symbol, const QString& _id, const QString& _sourcename)
+bool WebPriceQuote::launch(const QString& _symbol, const QString& _id, const QString& _source)
 {
-  if (_sourcename.contains("Finance::Quote"))
-    return (launchFinanceQuote(_symbol, _id, _sourcename));
+  if (_source.contains("Finance::Quote"))
+    return launchFinanceQuote(_symbol, _id, _source);
+  else if (_source.endsWith(".css"))
+    return launchWebKitCssSelector(_symbol, _id, _source);
+  else if (_source.endsWith(".webkit"))
+    return launchWebKitHtmlParser(_symbol, _id, _source);
   else
-    return (launchNative(_symbol, _id, _sourcename));
+    return launchNative(_symbol, _id, _source);
 }
 
-bool WebPriceQuote::launchNative(const QString& _symbol, const QString& _id, const QString& _sourcename)
+const WebPriceQuote::Errors &WebPriceQuote::errors()
 {
-  bool result = true;
+    return d->m_errors;
+}
+
+int addProperty(QStringList &list, QWebFrame *frame, const QString &pattern)
+{
+    QWebElementCollection collection = frame->findAllElements(pattern);
+    foreach(QWebElement element, collection)
+    {
+        QString text = element.toPlainText();
+        list << text;
+    }
+    return list.size();
+}
+
+bool WebPriceQuote::initLaunch(const QString& _symbol, const QString& _id, const QString& _source)
+{
   d->m_symbol = _symbol;
   d->m_id = _id;
+  d->m_errors = Errors::None;
 
-//   emit status(QString("(Debug) symbol=%1 id=%2...").arg(_symbol,_id));
+  emit status(QString("(Debug) symbol=%1 id=%2...").arg(_symbol,_id));
 
   // Get sources from the config file
-  QString sourcename = _sourcename;
-  if (sourcename.isEmpty())
-    sourcename = "KMyMoney Currency";
+  QString source = _source;
+  if (source.isEmpty())
+    source = "KMyMoney Currency";
 
-  if (quoteSources().contains(sourcename))
-    d->m_source = WebPriceQuoteSource(sourcename);
-  else
-    emit error(i18n("Source <placeholder>%1</placeholder> does not exist.", sourcename));
+  if (!quoteSources().contains(source)) {
+    emit error(i18n("Source <placeholder>%1</placeholder> does not exist.", source));
+    d->m_errors |= Errors::Source;
+    return false;
+  }
+
+  d->m_source = WebPriceQuoteSource(source);
 
   KUrl url;
 
@@ -130,6 +158,108 @@ bool WebPriceQuote::launchNative(const QString& _symbol, const QString& _id, con
     // a regular one-symbol quote
     url = KUrl(d->m_source.m_url.arg(d->m_symbol));
 
+  d->m_url = url;
+
+  return true;
+}
+
+void WebPriceQuote::slotLoadFinishedHtmlParser(bool ok)
+{
+  if (!ok) {
+    emit error(i18n("Unable to fetch url for %1").arg(d->m_symbol));
+    d->m_errors |= Errors::URL;
+    emit failed(d->m_id, d->m_symbol);
+  } else {
+    // parse symbol
+    QWebFrame *frame = d->m_webView->page()->mainFrame();
+    slotParseQuote(frame->toHtml());
+  }
+}
+
+void WebPriceQuote::slotLoadFinishedCssSelector(bool ok)
+{
+  if (!ok) {
+    emit error(i18n("Unable to fetch url for %1").arg(d->m_symbol));
+    d->m_errors |= Errors::URL;
+    emit failed(d->m_id, d->m_symbol);
+  } else {
+    // parse symbol
+    QWebFrame *frame = d->m_webView->page()->mainFrame();
+    QWebElement element = frame->findFirstElement(d->m_source.m_sym);
+    QString symbol = element.toPlainText();
+    if (!symbol.isEmpty()) {
+      emit status(i18n("Symbol found: '%1'", symbol));
+    } else {
+      d->m_errors |= Errors::Symbol;
+      emit error(i18n("Unable to parse symbol for %1", d->m_symbol));
+    }
+
+    // parse price
+    element = frame->findFirstElement(d->m_source.m_price);
+    QString price = element.toPlainText();
+    bool gotprice = parsePrice(price);
+
+    // parse date
+    element = frame->findFirstElement(d->m_source.m_date);
+    QString date = element.toPlainText();
+    bool gotdate = parseDate(date);
+
+    if (gotprice && gotdate) {
+      emit quote(d->m_id, d->m_symbol, d->m_date, d->m_price);
+    } else {
+      emit failed(d->m_id, d->m_symbol);
+    }
+  }
+  d->m_eventLoop->exit();
+}
+
+void WebPriceQuote::slotLoadStarted()
+{
+  emit status(i18n("Fetching URL %1...", d->m_url.prettyUrl()));
+}
+
+bool WebPriceQuote::launchWebKitCssSelector(const QString& _symbol, const QString& _id, const QString& _source)
+{
+  if (!initLaunch(_symbol, _id, _source))
+    return false;
+  d->m_webView = new QWebView;
+  connect(d->m_webView, SIGNAL(loadStarted(bool)), this, SLOT(slotLoadStarted(bool)));
+  connect(d->m_webView, SIGNAL(loadFinished(bool)), this, SLOT(slotLoadFinishedCssSelector(bool)));
+  d->m_webView->setUrl(d->m_url);
+  d->m_eventLoop = new QEventLoop;
+  d->m_eventLoop->exec();
+  delete d->m_eventLoop;
+  delete d->m_webView;
+
+  return !(d->m_errors & Errors::URL || d->m_errors & Errors::Price || d->m_errors & Errors::Date || d->m_errors & Errors::Data);
+//      webView->page()->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+//      QWebInspector *inspector = new QWebInspector;
+//      inspector->setPage(webView->page());
+//      inspector->show();
+}
+
+bool WebPriceQuote::launchWebKitHtmlParser(const QString& _symbol, const QString& _id, const QString& _source)
+{
+  if (!initLaunch(_symbol, _id, _source))
+    return false;
+  d->m_webView = new QWebView;
+  connect(d->m_webView, SIGNAL(loadFinished(bool)), this, SLOT(slotLoadFinishedHtmlParser(bool)));
+  d->m_webView->setUrl(d->m_url);
+  d->m_eventLoop = new QEventLoop;
+  d->m_eventLoop->exec();
+  delete d->m_eventLoop;
+  delete d->m_webView;
+
+  return !(d->m_errors & Errors::URL || d->m_errors & Errors::Price || d->m_errors & Errors::Date || d->m_errors & Errors::Data);
+}
+
+bool WebPriceQuote::launchNative(const QString& _symbol, const QString& _id, const QString& _source)
+{
+  bool result = true;
+  if (!initLaunch(_symbol, _id, _source))
+    return false;
+
+  KUrl url = d->m_url;
   if (url.isLocalFile()) {
     emit status(i18nc("The process x is executing", "Executing %1...", url.toLocalFile()));
 
@@ -144,10 +274,11 @@ bool WebPriceQuote::launchNative(const QString& _symbol, const QString& _id, con
       result = true;
     } else {
       emit error(i18n("Unable to launch: %1", url.toLocalFile()));
-      slotParseQuote(QString());
+      d->m_errors |= Errors::Script;
+      result = slotParseQuote(QString());
     }
   } else {
-    emit status(i18n("Fetching URL %1...", url.prettyUrl()));
+    slotLoadStarted();
 
     QString tmpFile;
     if (KIO::NetAccess::download(url, tmpFile, 0)) {
@@ -155,7 +286,6 @@ bool WebPriceQuote::launchNative(const QString& _symbol, const QString& _id, con
       kDebug(Private::dbgArea()) << "Downloaded" << tmpFile << "from" << url;
       QFile f(tmpFile);
       if (f.open(QIODevice::ReadOnly)) {
-        result = true;
         // Find out the page encoding and convert it to unicode
         QByteArray page = f.readAll();
         KEncodingProber prober(KEncodingProber::Universal);
@@ -165,15 +295,18 @@ bool WebPriceQuote::launchNative(const QString& _symbol, const QString& _id, con
           codec = QTextCodec::codecForLocale();
         QString quote = codec->toUnicode(page);
         f.close();
-        slotParseQuote(quote);
+        emit status(i18n("URL found: %1...", url.prettyUrl()));
+        result = slotParseQuote(quote);
       } else {
         emit error(i18n("Failed to open downloaded file"));
-        slotParseQuote(QString());
+        d->m_errors |= Errors::URL;
+        result = slotParseQuote(QString());
       }
       KIO::NetAccess::removeTempFile(tmpFile);
     } else {
       emit error(KIO::NetAccess::lastErrorString());
-      slotParseQuote(QString());
+      d->m_errors |= Errors::URL;
+      result = slotParseQuote(QString());
     }
   }
   return result;
@@ -185,6 +318,8 @@ bool WebPriceQuote::launchFinanceQuote(const QString& _symbol, const QString& _i
   bool result = true;
   d->m_symbol = _symbol;
   d->m_id = _id;
+  d->m_errors = Errors::None;
+
   QString FQSource = _sourcename.section(' ', 1);
   d->m_source = WebPriceQuoteSource(_sourcename, m_financeQuoteScriptPath,
                                     "\"([^,\"]*)\",.*",  // symbol regexp
@@ -204,21 +339,88 @@ bool WebPriceQuote::launchFinanceQuote(const QString& _symbol, const QString& _i
 
   // This seems to work best if we just block until done.
   if (d->m_filter.waitForFinished()) {
-    result = true;
   } else {
     emit error(i18n("Unable to launch: %1", m_financeQuoteScriptPath));
-    slotParseQuote(QString());
+    d->m_errors |= Errors::Script;
+    result = slotParseQuote(QString());
   }
 
   return result;
 }
 
-void WebPriceQuote::slotParseQuote(const QString& _quotedata)
+bool WebPriceQuote::parsePrice(const QString &_pricestr)
+{
+  bool result = true;
+  // Deal with european quotes that come back as X.XXX,XX or XX,XXX
+  //
+  // We will make the assumption that ALL prices have a decimal separator.
+  // So "1,000" always means 1.0, not 1000.0.
+  //
+  // Remove all non-digits from the price string except the last one, and
+  // set the last one to a period.
+  QString pricestr(_pricestr);
+  if (!pricestr.isEmpty()) {
+    int pos = pricestr.lastIndexOf(QRegExp("\\D"));
+    if (pos > 0) {
+      pricestr[pos] = '.';
+      pos = pricestr.lastIndexOf(QRegExp("\\D"), pos - 1);
+    }
+    while (pos > 0) {
+      pricestr.remove(pos, 1);
+      pos = pricestr.lastIndexOf(QRegExp("\\D"), pos);
+    }
+
+    d->m_price = pricestr.toDouble();
+    kDebug(Private::dbgArea()) << "Price" << pricestr;
+    emit status(i18n("Price found: '%1' (%2)", pricestr, d->m_price));
+  } else {
+    d->m_errors |= Errors::Price;
+    emit error(i18n("Unable to parse price for %1", d->m_symbol));
+    result = false;
+  }
+  return result;
+}
+
+bool WebPriceQuote::parseDate(const QString &datestr)
+{
+  if (!datestr.isEmpty()) {
+    emit status(i18n("Date found: '%1'", datestr));
+
+    MyMoneyDateFormat dateparse(d->m_source.m_dateformat);
+    try {
+      d->m_date = dateparse.convertString(datestr, false /*strict*/);
+      kDebug(Private::dbgArea()) << "Date" << datestr;
+      emit status(i18n("Date format found: '%1' -> %2", datestr, d->m_date.toString()));
+    } catch (const MyMoneyException &e) {
+      d->m_errors |= Errors::DateFormat;
+      emit error(i18n("Unable to parse date %1 using format %2: %3").arg(datestr,dateparse.format(), e.what()));
+      d->m_date = QDate::currentDate();
+      emit status(i18n("Using current date for %1").arg(d->m_symbol));
+    }
+  } else {
+    d->m_errors |= Errors::Date;
+    emit error(i18n("Unable to parse date for %1").arg(d->m_symbol));
+    d->m_date = QDate::currentDate();
+    emit status(i18n("Using current date for %1").arg(d->m_symbol));
+  }
+  return true;
+}
+
+
+/**
+ * Parse quote data according to currently selected web price quote source
+ *
+ * @param _quotedata quote data to parse
+ * @return true parsing successful
+ * @return false parsing unsuccessful
+ */
+bool WebPriceQuote::slotParseQuote(const QString& _quotedata)
 {
   QString quotedata = _quotedata;
   d->m_quoteData = quotedata;
   bool gotprice = false;
   bool gotdate = false;
+  bool result = true;
 
   kDebug(Private::dbgArea()) << "quotedata" << _quotedata;
 
@@ -246,61 +448,40 @@ void WebPriceQuote::slotParseQuote(const QString& _quotedata)
     if (symbolRegExp.indexIn(quotedata) > -1) {
       kDebug(Private::dbgArea()) << "Symbol" << symbolRegExp.cap(1);
       emit status(i18n("Symbol found: '%1'", symbolRegExp.cap(1)));
+    } else {
+      d->m_errors |= Errors::Symbol;
+      emit error(i18n("Unable to parse symbol for %1", d->m_symbol));
     }
 
     if (priceRegExp.indexIn(quotedata) > -1) {
       gotprice = true;
-
-      // Deal with european quotes that come back as X.XXX,XX or XX,XXX
-      //
-      // We will make the assumption that ALL prices have a decimal separator.
-      // So "1,000" always means 1.0, not 1000.0.
-      //
-      // Remove all non-digits from the price string except the last one, and
-      // set the last one to a period.
       QString pricestr = priceRegExp.cap(1);
-
-      int pos = pricestr.lastIndexOf(QRegExp("\\D"));
-      if (pos > 0) {
-        pricestr[pos] = '.';
-        pos = pricestr.lastIndexOf(QRegExp("\\D"), pos - 1);
-      }
-      while (pos > 0) {
-        pricestr.remove(pos, 1);
-        pos = pricestr.lastIndexOf(QRegExp("\\D"), pos);
-      }
-
-      d->m_price = pricestr.toDouble();
-      kDebug(Private::dbgArea()) << "Price" << pricestr;
-      emit status(i18n("Price found: '%1' (%2)", pricestr, d->m_price));
+      parsePrice(pricestr);
+    } else {
+      parsePrice(QString());
     }
 
     if (dateRegExp.indexIn(quotedata) > -1) {
+      gotdate = true;
       QString datestr = dateRegExp.cap(1);
-
-      MyMoneyDateFormat dateparse(d->m_source.m_dateformat);
-      try {
-        d->m_date = dateparse.convertString(datestr, false /*strict*/);
-        gotdate = true;
-        kDebug(Private::dbgArea()) << "Date" << datestr;
-        emit status(i18n("Date found: '%1'", d->m_date.toString()));;
-      } catch (const MyMoneyException &) {
-        // emit error(i18n("Unable to parse date %1 using format %2: %3").arg(datestr,dateparse.format(),e.what()));
-        d->m_date = QDate::currentDate();
-        gotdate = true;
-      }
+      parseDate(datestr);
+    } else {
+      parseDate(QString());
     }
 
     if (gotprice && gotdate) {
       emit quote(d->m_id, d->m_symbol, d->m_date, d->m_price);
     } else {
-      emit error(i18n("Unable to update price for %1 (no price or no date)", d->m_symbol));
       emit failed(d->m_id, d->m_symbol);
+      result = false;
     }
   } else {
+    d->m_errors |= Errors::Data;
     emit error(i18n("Unable to update price for %1 (empty quote data)", d->m_symbol));
     emit failed(d->m_id, d->m_symbol);
+    result = false;
   }
+  return result;
 }
 
 const QMap<QString, WebPriceQuoteSource> WebPriceQuote::defaultQuoteSources()

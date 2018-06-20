@@ -56,6 +56,7 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     "KMyMoney install prefix defaults to the KDE4 install prefix: ${KDE4_INSTALL_PREFIX}" FORCE)
 endif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
+set(QT_USE_QTWEBKIT 1)
 find_package(KDE4 4.6.0 REQUIRED)
 
 if(NOT TARGET Qt4::moc)
