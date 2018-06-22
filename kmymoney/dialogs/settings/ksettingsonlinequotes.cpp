@@ -33,6 +33,8 @@
 #include <kiconloader.h>
 #include <kguiitem.h>
 #include <KMessageBox>
+#include <knewstuff3/downloaddialog.h>
+#include <knewstuff3/uploaddialog.h>
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -84,6 +86,7 @@ KSettingsOnlineQuotes::KSettingsOnlineQuotes(QWidget *parent)
   connect(m_checkButton, SIGNAL(clicked()), this, SLOT(slotCheckEntry()));
   connect(m_deleteButton, SIGNAL(clicked()), this, SLOT(slotDeleteEntry()));
   connect(m_showButton, SIGNAL(clicked()), this, SLOT(slotShowEntry()));
+  connect(m_installButton, SIGNAL(clicked()), this, SLOT(slotInstallEntries()));
 
   connect(m_quoteSourceList, SIGNAL(itemSelectionChanged()), this, SLOT(slotLoadWidgets()));
   connect(m_quoteSourceList, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(slotEntryRenamed(QListWidgetItem*)));
@@ -112,11 +115,15 @@ void KSettingsOnlineQuotes::loadList(const bool updateResetList)
   m_quoteSourceList->clear();
   QStringList::Iterator it;
   for (it = groups.begin(); it != groups.end(); ++it) {
+    WebPriceQuoteSource source(*it);
+    if (!source.isValid())
+      continue;
+
     QListWidgetItem* item = new QListWidgetItem(*it);
     item->setFlags(Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     m_quoteSourceList->addItem(item);
     if (updateResetList)
-      m_resetList += WebPriceQuoteSource(*it);
+      m_resetList += source;
   }
   m_quoteSourceList->sortItems();
 
@@ -228,10 +235,7 @@ void KSettingsOnlineQuotes::slotDeleteEntry()
 
 void KSettingsOnlineQuotes::slotShowEntry()
 {
-  if (m_currentItem.m_url.contains("%2"))
-    QDesktopServices::openUrl(m_currentItem.m_url.arg(m_checkSymbol2->text()));
-  else
-    QDesktopServices::openUrl(m_currentItem.m_url.arg(m_checkSymbol->text()));
+  QDesktopServices::openUrl(expandedUrl());
 }
 
 void KSettingsOnlineQuotes::slotUpdateEntry()
@@ -352,4 +356,20 @@ void KSettingsOnlineQuotes::slotEntryRenamed(QListWidgetItem* item)
   }
   m_quoteSourceList->sortItems();
   m_newButton->setEnabled(m_quoteSourceList->findItems(i18n("New Quote Source"), Qt::MatchExactly).count() == 0);
+}
+
+void KSettingsOnlineQuotes::slotInstallEntries()
+{
+  QPointer<KNS3::DownloadDialog> dialog = new KNS3::DownloadDialog("skrooge_unit.knsrc", this);
+  dialog->exec();
+  delete dialog;
+  loadList();
+}
+
+QString KSettingsOnlineQuotes::expandedUrl() const
+{
+  if (m_currentItem.m_url.contains("%2"))
+    return m_currentItem.m_url.arg(m_checkSymbol2->text());
+  else
+    return m_currentItem.m_url.arg(m_checkSymbol->text());
 }

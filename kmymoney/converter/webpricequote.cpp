@@ -21,6 +21,7 @@
 // QT Headers
 
 #include <QFile>
+#include <QFileInfo>
 #include <QRegExp>
 #include <QtWebKit>
 #include <QTextStream>
@@ -657,10 +658,13 @@ const QMap<QString, WebPriceQuoteSource> WebPriceQuote::defaultQuoteSources()
 
 const QStringList WebPriceQuote::quoteSources(const _quoteSystemE _system)
 {
+  QStringList result;
   if (_system == Native)
-    return (quoteSourcesNative());
+    result << quoteSourcesNative();
   else
-    return (quoteSourcesFinanceQuote());
+    result << quoteSourcesFinanceQuote();
+  result << quoteSourcesSkrooge();
+  return result;
 }
 
 const QStringList WebPriceQuote::quoteSourcesNative()
@@ -736,6 +740,20 @@ const QStringList WebPriceQuote::quoteSourcesFinanceQuote()
   return (m_financeQuoteSources);
 }
 
+const QStringList WebPriceQuote::quoteSourcesSkrooge()
+{
+  QStringList sources;
+  foreach(const QString &file, KStandardDirs().findAllResources("data", QString::fromLatin1("skrooge/quotes/*.txt"))) {
+    QFileInfo f(file);
+    QString file2 = f.fileName();
+    if (!sources.contains(file2)) {
+      sources.push_back(file2);
+    }
+  }
+
+  return sources;
+}
+
 //
 // Helper class to load/save an individual source
 //
@@ -752,30 +770,68 @@ WebPriceQuoteSource::WebPriceQuoteSource(const QString& name, const QString& url
 
 WebPriceQuoteSource::WebPriceQuoteSource(const QString& name)
 {
-  m_name = name;
-  KSharedConfigPtr kconfig = KGlobal::config();
-  KConfigGroup grp = kconfig->group(QString("Online-Quote-Source-%1").arg(m_name));
-  m_sym = grp.readEntry("SymbolRegex");
-  m_date = grp.readEntry("DateRegex");
-  m_dateformat = grp.readEntry("DateFormatRegex", "%m %d %y");
-  m_price = grp.readEntry("PriceRegex");
-  m_url = grp.readEntry("URL");
-  m_skipStripping = grp.readEntry("SkipStripping", false);
+  if (name.endsWith(".txt")) {
+    QString configFile = KStandardDirs::locate("data", "skrooge/quotes/" + name);
+    if (configFile.isEmpty())
+      return;
+    KConfig config(configFile);
+    KConfigGroup group(&config, "<default>");
+
+//      url=https://markets.ft.com/data/funds/tearsheet/charts?s=%1
+//      mode=HTML
+//      price=<span class="mod-ui-data-list__value">([^<]*)</span>
+//      date=Data delayed at least 15 minutes, as of ([^\.]*)\.
+//      dateformat=MMM dd yyyy
+    if (group.hasKey("mode") && group.readEntry("mode") == "HTML" &&
+        group.hasKey("url") && group.hasKey("date") &&
+        group.hasKey("dateformat") && group.hasKey("price")) {
+      m_skipStripping = false;
+      m_name = name;
+      //m_name.replace(".txt", " (skrooge)");
+      m_url = group.readEntry("url");
+      m_price = group.readEntry("price");
+      m_date = group.readEntry("date");
+      m_dateformat = group.readEntry("dateformat");
+    }
+  } else {
+    m_name = name;
+    KSharedConfigPtr kconfig = KGlobal::config();
+    KConfigGroup grp = kconfig->group(QString("Online-Quote-Source-%1").arg(m_name));
+    m_sym = grp.readEntry("SymbolRegex");
+    m_date = grp.readEntry("DateRegex");
+    m_dateformat = grp.readEntry("DateFormatRegex", "%m %d %y");
+    m_price = grp.readEntry("PriceRegex");
+    m_url = grp.readEntry("URL");
+    m_skipStripping = grp.readEntry("SkipStripping", false);
+  }
 }
 
 void WebPriceQuoteSource::write() const
 {
-  KSharedConfigPtr kconfig = KGlobal::config();
-  KConfigGroup grp = kconfig->group(QString("Online-Quote-Source-%1").arg(m_name));
-  grp.writeEntry("URL", m_url);
-  grp.writeEntry("PriceRegex", m_price);
-  grp.writeEntry("DateRegex", m_date);
-  grp.writeEntry("DateFormatRegex", m_dateformat);
-  grp.writeEntry("SymbolRegex", m_sym);
-  if (m_skipStripping)
-    grp.writeEntry("SkipStripping", m_skipStripping);
-  else
-    grp.deleteEntry("SkipStripping");
+  if (m_name.endsWith(".txt")) {
+    QString configFile = KStandardDirs::locateLocal("data", "skrooge/quotes/" + m_name);
+    if (configFile.isEmpty())
+      return;
+    KConfig config(configFile);
+    KConfigGroup group(&config, "<default>");
+    group.writeEntry("url", m_url);
+    group.writeEntry("price", m_price);
+    group.writeEntry("date", m_date);
+    group.writeEntry("dateformat", m_dateformat);
+    group.writeEntry("mode", "HTML");
+  } else {
+    KSharedConfigPtr kconfig = KGlobal::config();
+    KConfigGroup grp = kconfig->group(QString("Online-Quote-Source-%1").arg(m_name));
+    grp.writeEntry("URL", m_url);
+    grp.writeEntry("PriceRegex", m_price);
+    grp.writeEntry("DateRegex", m_date);
+    grp.writeEntry("DateFormatRegex", m_dateformat);
+    grp.writeEntry("SymbolRegex", m_sym);
+    if (m_skipStripping)
+      grp.writeEntry("SkipStripping", m_skipStripping);
+    else
+      grp.deleteEntry("SkipStripping");
+  }
 }
 
 void WebPriceQuoteSource::rename(const QString& name)

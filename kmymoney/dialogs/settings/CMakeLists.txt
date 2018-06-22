@@ -23,5 +23,8 @@ set (libsettings_a_UI
 kde4_add_ui_files(libsettings_a_SOURCES ${libsettings_a_UI} )
 
 kde4_add_library(settings STATIC ${libsettings_a_SOURCES})
+target_link_libraries(settings knewstuff3)
 
 add_dependencies(settings widgets kmm_settings)
+
+INSTALL(FILES skrooge_unit.knsrc DESTINATION ${CONFIG_INSTALL_DIR})

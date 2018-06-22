@@ -108,6 +108,7 @@ struct WebPriceQuoteSource {
   explicit WebPriceQuoteSource(const QString& name);
   WebPriceQuoteSource(const QString& name, const QString& url, const QString& sym, const QString& price, const QString& date, const QString& dateformat, bool skipStripping = false);
   ~WebPriceQuoteSource() {}
+  bool isValid() { return !m_name.isEmpty(); }
 
   void write() const;
   void rename(const QString& name);
@@ -231,6 +232,7 @@ private:
 
   static const QStringList quoteSourcesNative();
   static const QStringList quoteSourcesFinanceQuote();
+  static const QStringList quoteSourcesSkrooge();
 
 private:
   /// \internal d-pointer class.

@@ -92,6 +92,7 @@
 #ifdef HAVE_KDEPIMLIBS
 #include <KHolidays/Holidays>
 #endif
+#include <knewstuff3/downloadmanager.h>
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -199,8 +200,9 @@ enum backupStateE {
   BACKUP_UNMOUNTING
 };
 
-class KMyMoneyApp::Private
+class KMyMoneyApp::Private : QObject
 {
+  Q_OBJECT
 public:
   Private(KMyMoneyApp *app) :
       q(app),
@@ -230,12 +232,23 @@ public:
 #ifdef HAVE_KDEPIMLIBS
       m_holidayRegion(0),
 #endif
-      m_applicationIsReady(true) {
+      m_applicationIsReady(true),
+      m_downloadManager(0) {
     // since the days of the week are from 1 to 7,
     // and a day of the week is used to index this bit array,
     // resize the array to 8 elements (element 0 is left unused)
     m_processingDays.resize(8);
 
+    m_downloadManager = new KNS3::DownloadManager("skrooge_unit.knsrc", this);
+
+    // to know when checking for updates is done
+    connect(m_downloadManager, SIGNAL(searchResult(KNS3::Entry::List)), this, SLOT(slotUpdatesFound(KNS3::Entry::List)));
+
+    // to know about finished installations
+    connect(m_downloadManager, SIGNAL(entryStatusChanged(KNS3::Entry)), this, SLOT(entryStatusChanged(KNS3::Entry)));
+
+    // start checking for updates
+    m_downloadManager->checkForUpdates();
   }
 
   void closeFile();
@@ -369,12 +382,27 @@ public:
   QMap<QDate, bool>     m_holidayMap;
   QStringList           m_consistencyCheckResult;
   bool                  m_applicationIsReady;
+  KNS3::DownloadManager *m_downloadManager;
 
   // methods
   void consistencyCheck(bool alwaysDisplayResults);
   void setCustomColors();
   void copyConsistencyCheckResults();
   void saveConsistencyCheckResults();
+
+public slots:
+  void slotUpdatesFound(const KNS3::Entry::List &updates)
+  {
+    foreach (const KNS3::Entry& entry, updates) {
+      qDebug() << entry.name();
+    }
+  }
+
+  // to know about finished installations
+  void entryStatusChanged(const KNS3::Entry &entry)
+  {
+     qDebug() << entry.summary();
+  }
 };
 
 KMyMoneyApp::KMyMoneyApp(QWidget* parent) :
@@ -7872,3 +7900,5 @@ void KMyMoneyApp::Private::closeFile()
 
   emit q->fileLoaded(m_fileName);
 }
+
+#include "kmymoney.moc"
