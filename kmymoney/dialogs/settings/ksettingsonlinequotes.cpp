@@ -96,7 +96,6 @@ KSettingsOnlineQuotes::KSettingsOnlineQuotes(QWidget *parent)
   connect(m_editPrice, SIGNAL(textChanged(QString)), this, SLOT(slotEntryChanged()));
   connect(m_skipStripping, SIGNAL(toggled(bool)), this, SLOT(slotEntryChanged()));
 
-  m_logWindow->setVisible(false);
   m_checkSymbol->setText("ORCL");
   m_checkSymbol2->setText("BTC GBP");
 }
