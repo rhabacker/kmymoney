@@ -789,6 +789,7 @@ void WebPriceQuoteSource::remove() const
 {
   KSharedConfigPtr kconfig = KGlobal::config();
   kconfig->deleteGroup(QString("Online-Quote-Source-%1").arg(m_name));
+  kconfig->sync();
 }
 
 //

@@ -204,7 +204,10 @@ void KSettingsOnlineQuotes::slotEntryChanged()
 
 void KSettingsOnlineQuotes::slotDeleteEntry()
 {
-  QListWidgetItem* item = m_quoteSourceList->findItems(m_currentItem.m_name, Qt::MatchExactly).at(0);
+  QList<QListWidgetItem*> items = m_quoteSourceList->findItems(m_currentItem.m_name, Qt::MatchExactly);
+  if (items.size() == 0)
+    return;
+  QListWidgetItem* item = items.at(0);
   if (!item)
     return;
 
@@ -217,8 +220,9 @@ void KSettingsOnlineQuotes::slotDeleteEntry()
   if (ret == KMessageBox::Cancel)
     return;
 
-  delete item;
+  // keep this order to avoid deleting the wrong current item
   m_currentItem.remove();
+  delete item;
   slotEntryChanged();
 }
 
