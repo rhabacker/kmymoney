@@ -127,6 +127,8 @@ else()
     # LibAlkimia 4.3.2 does not properly define LIBALKIMIA_LIBRARIES
     find_package(GMP REQUIRED)
     set(LIBALKIMIA_LIBRARIES ${GMP_LIBRARIES} ${LIBALKIMIA_LIBRARY} )
+  elseif(NOT "${LIBALKIMIA_LIBRARY}")
+    set(LIBALKIMIA_LIBRARIES ${GMP_LIBRARIES} alkimia)
   endif()
 endif()
 # make sure LIBALKIMIA_LIBRARIES is set
