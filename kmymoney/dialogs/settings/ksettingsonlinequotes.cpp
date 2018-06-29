@@ -229,6 +229,27 @@ void KSettingsOnlineQuotes::slotShowEntry()
 
 void KSettingsOnlineQuotes::slotUpdateEntry()
 {
+  WebPriceQuote::Errors errors;
+  QRegExp symbolRegexp(m_editSymbol->text());
+  if (!symbolRegexp.isValid()) {
+    slotLogError(i18n("invalid regular expression in symbol field"));
+    errors |= WebPriceQuote::Errors::Symbol;
+  }
+  QRegExp priceRegexp(m_editPrice->text());
+  if (!priceRegexp.isValid()) {
+    slotLogError(i18n("invalid regular expression in price field"));
+    errors |= WebPriceQuote::Errors::Price;
+  }
+  QRegExp dateRegexp(m_editDate->text());
+  if (!dateRegexp.isValid()) {
+    slotLogError(i18n("invalid regular expression in date field"));
+    errors |= WebPriceQuote::Errors::Date;
+  }
+  if (!errors.isEmpty()) {
+    setupIcons(errors);
+    return;
+  }
+  slotLogStatus(i18n("regular expression are valid"));
   m_currentItem.m_url = m_editURL->text();
   m_currentItem.m_sym = m_editSymbol->text();
   m_currentItem.m_date = m_editDate->text();

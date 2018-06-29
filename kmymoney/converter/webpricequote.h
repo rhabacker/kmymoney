@@ -161,6 +161,7 @@ public:
     inline Errors(const Errors &e) { m_type = e.m_type; }
     inline Errors &operator |=(Type t) { if (!m_type.contains(t)) m_type.append(t); return *this; }
     inline bool operator &(Type t) const { return m_type.contains(t); }
+    inline bool isEmpty() const { return m_type.size() == 0; }
 
   protected:
     QList<Type> m_type;
