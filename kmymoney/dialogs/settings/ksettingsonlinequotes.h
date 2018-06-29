@@ -61,6 +61,7 @@ protected slots:
   void slotNewEntry();
   void slotCheckEntry();
   void slotLogStatus(const QString &s);
+  void slotLogError(const QString &s);
   void slotLogQuote(const QString &id, const QString &symbol, const QString &date, double price);
   void slotEntryRenamed(QListWidgetItem* item);
   void slotStartRename(QListWidgetItem* item);

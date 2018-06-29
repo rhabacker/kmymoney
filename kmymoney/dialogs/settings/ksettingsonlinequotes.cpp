@@ -290,7 +290,7 @@ void KSettingsOnlineQuotes::slotCheckEntry()
   clearIcons();
 
   connect(&quote, SIGNAL(status(const QString&)), this, SLOT(slotLogStatus(const QString&)));
-  connect(&quote, SIGNAL(error(const QString&)), this, SLOT(slotLogStatus(const QString&)));
+  connect(&quote, SIGNAL(error(const QString&)), this, SLOT(slotLogError(const QString&)));
   connect(&quote, SIGNAL(failed(const QString&)), this, SLOT(slotLogStatus(const QString&)));
   connect(&quote, SIGNAL(quote(const QString&, const QString&, const QString&, double)), this, SLOT(slotLogQuote(const QString&, const QString&, const QString&, double)));
   if (m_currentItem.m_url.contains("%2"))
@@ -303,6 +303,13 @@ void KSettingsOnlineQuotes::slotCheckEntry()
 void KSettingsOnlineQuotes::slotLogStatus(const QString &s)
 {
   new QListWidgetItem(s, m_logWindow);
+  m_logWindow->scrollToBottom();
+}
+
+void KSettingsOnlineQuotes::slotLogError(const QString &s)
+{
+  QListWidgetItem *item = new QListWidgetItem(s, m_logWindow);
+  item->setForeground(Qt::red);
   m_logWindow->scrollToBottom();
 }
 
