@@ -143,7 +143,7 @@ void QueryTableTest::testQueryBasics()
 
     QList<ListTable::TableRow> rows = qtbl_1.rows();
 
-    QVERIFY(rows.count() == 12);
+    QCOMPARE(rows.count(), 12);
     QVERIFY(rows[0]["categorytype"] == "Expense");
     QVERIFY(rows[0]["category"] == "Parent");
     QVERIFY(rows[0]["postdate"] == "2004-02-01");
@@ -168,7 +168,7 @@ void QueryTableTest::testQueryBasics()
 
     rows = qtbl_2.rows();
 
-    QVERIFY(rows.count() == 12);
+    QCOMPARE(rows.count(), 12);
     QVERIFY(rows[0]["categorytype"] == "Expense");
     QVERIFY(rows[0]["topcategory"] == "Parent");
     QVERIFY(rows[0]["postdate"] == "2004-02-01");
@@ -197,7 +197,7 @@ void QueryTableTest::testQueryBasics()
     rows = qtbl_3.rows();
 
 #if 1
-    QVERIFY(rows.count() == 16);
+    QCOMPARE(rows.count(), 16);
     QVERIFY(rows[1]["account"] == "Checking Account");
     QVERIFY(rows[1]["category"] == "Solo");
     QVERIFY(rows[1]["postdate"] == "2004-01-01");
@@ -205,7 +205,7 @@ void QueryTableTest::testQueryBasics()
     QVERIFY(rows[14]["category"] == "Parent");
     QVERIFY(rows[14]["postdate"] == "2005-09-01");
 #else
-    QVERIFY(rows.count() == 12);
+    QCOMPARE(rows.count(), 12);
     QVERIFY(rows[0]["account"] == "Checking Account");
     QVERIFY(rows[0]["category"] == "Solo");
     QVERIFY(rows[0]["postdate"] == "2004-01-01");
@@ -230,7 +230,7 @@ void QueryTableTest::testQueryBasics()
 
     rows = qtbl_4.rows();
 
-    QVERIFY(rows.count() == 12);
+    QCOMPARE(rows.count(), 12);
     QVERIFY(rows[0]["payee"] == "Test Payee");
     QVERIFY(rows[0]["category"] == "Solo");
     QVERIFY(rows[0]["postdate"] == "2004-01-01");
@@ -256,7 +256,7 @@ void QueryTableTest::testQueryBasics()
 
     rows = qtbl_5.rows();
 
-    QVERIFY(rows.count() == 12);
+    QCOMPARE(rows.count(), 12);
     QVERIFY(rows[0]["payee"] == "Test Payee");
     QVERIFY(rows[0]["category"] == "Solo");
     QVERIFY(rows[0]["postdate"] == "2004-01-01");
@@ -284,7 +284,7 @@ void QueryTableTest::testQueryBasics()
 
     rows = qtbl_6.rows();
 
-    QVERIFY(rows.count() == 12);
+    QCOMPARE(rows.count(), 12);
     QVERIFY(rows[0]["payee"] == "Test Payee");
     QVERIFY(rows[0]["category"] == "Solo");
     QVERIFY(rows[0]["postdate"] == "2004-01-01");
@@ -411,7 +411,7 @@ void QueryTableTest::testAccountQuery()
 
     QList<ListTable::TableRow> rows = qtbl_1.rows();
 
-    QVERIFY(rows.count() == 2);
+    QCOMPARE(rows.count(), 2);
     QVERIFY(rows[0]["account"] == "Checking Account");
     QVERIFY(MyMoneyMoney(rows[0]["value"]) == moCheckingOpen);
     QVERIFY(rows[0]["equitytype"].isEmpty());
@@ -449,7 +449,7 @@ void QueryTableTest::testAccountQuery()
 
     rows = qtbl_2.rows();
 
-    QVERIFY(rows.count() == 2);
+    QCOMPARE(rows.count(), 2);
     QVERIFY(rows[0]["account"] == "Checking Account");
     QVERIFY(MyMoneyMoney(rows[0]["value"]) == (moCheckingOpen - moSolo*3));
     QVERIFY(rows[1]["account"] == "Credit Card");
@@ -469,7 +469,7 @@ void QueryTableTest::testAccountQuery()
 
     rows = qtbl_3.rows();
 
-    QVERIFY(rows.count() == 2);
+    QCOMPARE(rows.count(), 2);
     QVERIFY(rows[0]["account"] == "Checking Account");
     QVERIFY(MyMoneyMoney(rows[0]["value"]) == (moCheckingOpen - moSolo*3));
     QVERIFY(rows[1]["account"] == "Credit Card");
@@ -533,8 +533,8 @@ void QueryTableTest::testInvestment()
     writeTabletoHTML(invtran, "investment_transactions_test.html");
 
     QList<ListTable::TableRow> rows = invtran.rows();
-
-    QVERIFY(rows.count() == 17);
+    qDebug() << rows.count();
+    QCOMPARE(rows.count(), 17);
     QVERIFY(MyMoneyMoney(rows[1]["value"]) == MyMoneyMoney(100000.00));
     QVERIFY(MyMoneyMoney(rows[2]["value"]) == MyMoneyMoney(110000.00));
     QVERIFY(MyMoneyMoney(rows[3]["value"]) == MyMoneyMoney(-24000.00));
@@ -564,7 +564,7 @@ void QueryTableTest::testInvestment()
     QVERIFY(rows[7]["action"] == "Dividend");
     QVERIFY(rows[13]["action"] == "Yield");
 #else
-    QVERIFY(rows.count() == 9);
+    QCOMPARE(rows.count(), 9);
     QVERIFY(MyMoneyMoney(rows[0]["value"]) == MyMoneyMoney(100000.00));
     QVERIFY(MyMoneyMoney(rows[1]["value"]) == MyMoneyMoney(110000.00));
     QVERIFY(MyMoneyMoney(rows[2]["value"]) == MyMoneyMoney(-24000.00));
@@ -625,7 +625,7 @@ void QueryTableTest::testInvestment()
 
     rows = invhold.rows();
 
-    QVERIFY(rows.count() == 1);
+    QCOMPARE(rows.count(), 1);
     QVERIFY(MyMoneyMoney(rows[0]["return"]) == MyMoneyMoney("669/10000"));
     QVERIFY(MyMoneyMoney(rows[0]["buys"]) == MyMoneyMoney(210000.00));
     QVERIFY(MyMoneyMoney(rows[0]["sells"]) == MyMoneyMoney(-44000.00));
@@ -684,7 +684,7 @@ void QueryTableTest::testBalanceColumn()
 
     QList<ListTable::TableRow> rows = qtbl_3.rows();
 
-    QVERIFY(rows.count() == 16);
+    QCOMPARE(rows.count(), 16);
 
     //this is to make sure that the dates of closing and opening balances and the balance numbers are ok
     QString openingDate = KGlobal::locale()->formatDate(QDate(2004, 1, 1), KLocale::ShortDate);
@@ -748,7 +748,7 @@ void QueryTableTest::testBalanceColumnWithMultipleCurrencies()
 
     QList<ListTable::TableRow> rows = qtbl_3.rows();
 
-    QVERIFY(rows.count() == 19);
+    QCOMPARE(rows.count(), 19);
 
     //this is to make sure that the dates of closing and opening balances and the balance numbers are ok
     QString openingDateString = KGlobal::locale()->formatDate(openingDate, KLocale::ShortDate);
@@ -792,7 +792,7 @@ void QueryTableTest::testBalanceColumnWithMultipleCurrencies()
 
     rows = qtbl_4.rows();
 
-    QVERIFY(rows.count() == 19);
+    QCOMPARE(rows.count(), 19);
 
     // check the opening and closing balances
     QVERIFY(html.indexOf(openingDateString + "</td><td class=\"left\"></td><td class=\"left\">" + i18n("Opening Balance") + "</td><td class=\"left\"></td><td class=\"value\"></td><td>&nbsp;0.00</td></tr>") > 0);
@@ -841,7 +841,7 @@ void QueryTableTest::testTaxReport()
     QList<ListTable::TableRow> rows = qtbl_3.rows();
 
     QString html = qtbl_3.renderBody();
-    QVERIFY(rows.count() == 1);
+    QCOMPARE(rows.count(), 1);
   } catch (const MyMoneyException &e) {
     QFAIL(qPrintable(e.what()));
   }
