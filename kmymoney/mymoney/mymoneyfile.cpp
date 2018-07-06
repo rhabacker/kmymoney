@@ -1600,6 +1600,12 @@ const QList<MyMoneyTransaction> MyMoneyFile::transactionList(MyMoneyTransactionF
   return list;
 }
 
+void MyMoneyFile::transactionList(QList<QPair<MyMoneyTransaction, QList<MyMoneySplit> > >&list, MyMoneyTransactionFilter& filter) const
+{
+  d->checkStorage();
+  d->m_storage->transactionList(list, filter);
+}
+
 const QList<MyMoneyPayee> MyMoneyFile::payeeList() const
 {
   QList<MyMoneyPayee> list;
