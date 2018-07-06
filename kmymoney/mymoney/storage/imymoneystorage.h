@@ -496,6 +496,8 @@ public:
 
   virtual void transactionList(QList<QPair<MyMoneyTransaction, MyMoneySplit> >& list, MyMoneyTransactionFilter& filter) const = 0;
 
+  virtual void transactionList(QList<QPair<MyMoneyTransaction, QList<MyMoneySplit> > >& list, MyMoneyTransactionFilter& filter) const = 0;
+
   /**
     * Deletes an existing account from the file global account pool
     * This method only allows to remove accounts that are not

@@ -964,6 +964,20 @@ const QList<MyMoneyTransaction> MyMoneySeqAccessMgr::transactionList(MyMoneyTran
   return list;
 }
 
+void MyMoneySeqAccessMgr::transactionList(QList<QPair<MyMoneyTransaction, QList<MyMoneySplit> > >& list, MyMoneyTransactionFilter& filter) const
+{
+  list.clear();
+
+  QMap<QString, MyMoneyTransaction>::ConstIterator it_t;
+  QMap<QString, MyMoneyTransaction>::ConstIterator it_t_end = m_transactionList.end();
+
+  for (it_t = m_transactionList.begin(); it_t != it_t_end; ++it_t) {
+    if (filter.match(*it_t)) {
+      list.append(qMakePair(*it_t, filter.matchingSplits()));
+    }
+  }
+}
+
 const QList<onlineJob> MyMoneySeqAccessMgr::onlineJobList() const
 {
   return m_onlineJobList.values();

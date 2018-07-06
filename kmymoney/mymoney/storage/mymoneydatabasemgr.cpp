@@ -1066,6 +1066,28 @@ void MyMoneyDatabaseMgr::transactionList(QList<QPair<MyMoneyTransaction, MyMoney
   }
 }
 
+void MyMoneyDatabaseMgr::transactionList(QList<QPair<MyMoneyTransaction, QList<MyMoneySplit> > >& list, MyMoneyTransactionFilter& filter) const
+{
+  list.clear();
+  MyMoneyMap<QString, MyMoneyTransaction> transactionList;
+  try {
+    if (m_sql) {
+      if (! m_sql->isOpen())((QSqlDatabase*)(m_sql.data()))->open();
+      transactionList = m_sql->fetchTransactions(filter);
+    }
+  } catch (const MyMoneyException &) {
+    throw;
+  }
+
+  QMap<QString, MyMoneyTransaction>::ConstIterator it_t, txEnd = transactionList.end();
+
+  for (it_t = transactionList.begin(); it_t != txEnd; ++it_t) {
+    if (filter.match(*it_t)) {
+      list.append(qMakePair(*it_t, filter.matchingSplits()));
+    }
+  }
+}
+
 void MyMoneyDatabaseMgr::removeAccount(const MyMoneyAccount& account)
 {
   MyMoneyAccount parent;

@@ -231,7 +231,7 @@ void QueryTable::constructTransactionTable()
   includeInvestmentSubAccounts();
 
   MyMoneyReport report(m_config);
-  report.setReportAllSplits(false);
+  report.setReportAllSplits(true);
   report.setConsiderCategory(true);
 
   bool use_transfers = false;
@@ -268,19 +268,23 @@ void QueryTable::constructTransactionTable()
   QMap<QString, MyMoneyAccount> accts;
 
   //get all transactions for this report
-  QList<MyMoneyTransaction> transactions = file->transactionList(report);
-  for (QList<MyMoneyTransaction>::const_iterator it_transaction = transactions.constBegin(); it_transaction != transactions.constEnd(); ++it_transaction) {
+  QList<QPair<MyMoneyTransaction, QList<MyMoneySplit> > >transactions;
+  file->transactionList(transactions, report);
+  for (QList<QPair<MyMoneyTransaction, QList<MyMoneySplit> > >::const_iterator it_t = transactions.constBegin(); it_t != transactions.constEnd(); ++it_t) {
+    const MyMoneyTransaction &t = (*it_t).first;
+    // TODO fix MyMoneyTransactionFilter to support "investment only"
+    const QList<MyMoneySplit> &splits = m_config.isInvestmentsOnly() ? t.splits() : (*it_t).second;
 
     TableRow qA, qS;
     QDate pd;
     QList<QString> tagIdListCache;
 
-    qA["id"] = qS["id"] = (* it_transaction).id();
-    qA["entrydate"] = qS["entrydate"] = (* it_transaction).entryDate().toString(Qt::ISODate);
-    qA["postdate"] = qS["postdate"] = (* it_transaction).postDate().toString(Qt::ISODate);
-    qA["commodity"] = qS["commodity"] = (* it_transaction).commodity();
+    qA["id"] = qS["id"] = t.id();
+    qA["entrydate"] = qS["entrydate"] = t.entryDate().toString(Qt::ISODate);
+    qA["postdate"] = qS["postdate"] = t.postDate().toString(Qt::ISODate);
+    qA["commodity"] = qS["commodity"] = t.commodity();
 
-    pd = (* it_transaction).postDate();
+    pd = t.postDate();
     qA["monthsort"] = qS["monthsort"] = i18n("Month of %1", QDate(pd.year(), pd.month(), 1).toString(Qt::ISODate));
     qA["weeksort"] = qS["weeksort"] = i18n("Week of %1", pd.addDays(1 - pd.dayOfWeek()).toString(Qt::ISODate));
     qA["month"] = qS["month"] = i18n("Month of %1", toDateString(QDate(pd.year(), pd.month(), 1)));
@@ -288,9 +292,9 @@ void QueryTable::constructTransactionTable()
 
     qA["currency"] = qS["currency"] = "";
 
-    if ((* it_transaction).commodity() != file->baseCurrency().id()) {
+    if (t.commodity() != file->baseCurrency().id()) {
       if (!report.isConvertCurrency()) {
-        qA["currency"] = qS["currency"] = (*it_transaction).commodity();
+        qA["currency"] = qS["currency"] = t.commodity();
       }
     }
 
@@ -301,7 +305,6 @@ void QueryTable::constructTransactionTable()
     // to be the account (qA) that will have the sub-item "split" entries. we add
     // one transaction entry (qS) for each subsequent entry in the split.
 
-    const QList<MyMoneySplit>& splits = (*it_transaction).splits();
     QList<MyMoneySplit>::const_iterator myBegin, it_split;
 
     for (it_split = splits.begin(), myBegin = splits.end(); it_split != splits.end(); ++it_split) {
@@ -376,9 +379,9 @@ void QueryTable::constructTransactionTable()
 
       //convert to base currency
       if (m_config.isConvertCurrency()) {
-        xr = (splitAcc.deepCurrencyPrice((*it_transaction).postDate()) * splitAcc.baseCurrencyPrice((*it_transaction).postDate())).reduce();
+        xr = (splitAcc.deepCurrencyPrice(t.postDate()) * splitAcc.baseCurrencyPrice(t.postDate())).reduce();
       } else {
-        xr = (splitAcc.deepCurrencyPrice((*it_transaction).postDate())).reduce();
+        xr = (splitAcc.deepCurrencyPrice(t.postDate())).reduce();
       }
 
       if (splitAcc.isInvest()) {
@@ -539,7 +542,7 @@ void QueryTable::constructTransactionTable()
                 // if the currency of the split is different from the currency of the main split, then convert to the currency of the main split
                 MyMoneyMoney ieXr(xr);
                 if (!m_config.isConvertCurrency() && splitAcc.currency().id() != myBeginCurrency) {
-                  ieXr = (xr * splitAcc.foreignCurrencyPrice(myBeginCurrency, (*it_transaction).postDate())).reduce();
+                  ieXr = (xr * splitAcc.foreignCurrencyPrice(myBeginCurrency, t.postDate())).reduce();
                 }
                 qA["value"] = ((-(*it_split).shares()) * ieXr).convert(fraction).toString();
               }

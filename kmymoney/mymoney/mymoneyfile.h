@@ -608,6 +608,8 @@ public:
 
   void transactionList(QList<QPair<MyMoneyTransaction, MyMoneySplit> >& list, MyMoneyTransactionFilter& filter) const;
 
+  void transactionList(QList<QPair<MyMoneyTransaction, QList<MyMoneySplit> > >&list, MyMoneyTransactionFilter &filter) const;
+
   /**
     * This method is used to remove a transaction from the transaction
     * pool (journal).
