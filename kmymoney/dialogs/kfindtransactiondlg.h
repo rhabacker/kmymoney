@@ -176,6 +176,7 @@ protected:
   void setupPayeesPage();
   void setupTagsPage();
   void setupDetailsPage();
+  void setupFixesPage();
 
   void setupFilter();
 

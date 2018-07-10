@@ -72,6 +72,7 @@ void MyMoneyTransactionFilter::clear()
   m_matchingSplits.clear();
   m_fromDate = QDate();
   m_toDate = QDate();
+  m_fixes.clear();
 }
 
 void MyMoneyTransactionFilter::clearAccountFilter()

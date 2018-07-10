@@ -479,6 +479,7 @@ void MyMoneyReport::write(QDomElement& e, QDomDocument *doc, bool anonymous) con
     e.setAttribute("showrowtotals", m_showRowTotals);
   } else if (m_reportType == Report::QueryTable) {
     e.setAttribute("type", "querytable 1.14");
+    e.setAttribute("fixes", m_fixes.join(","));
 
     QStringList columns;
     unsigned qc = m_queryColumns;
@@ -796,6 +797,10 @@ bool MyMoneyReport::read(const QDomElement& e)
     i = ChartPalette::kText.indexOf(e.attribute("chartpalette", "application"));
     if (i >= 0)
       m_chartPalette = static_cast<ChartPalette::Type>(i);
+
+    if (m_reportType == Report::QueryTable) {
+      m_fixes = e.attribute("fixes").split(",");
+    }
 
     QString datelockstr = e.attribute("datelock", "userdefined");
     // Handle the pivot 1.2/query 1.1 case where the values were saved as

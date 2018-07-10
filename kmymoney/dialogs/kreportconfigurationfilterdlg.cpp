@@ -288,6 +288,9 @@ void KReportConfigurationFilterDlg::slotSearch()
     m_currentState.setChartByDefault(m_tabChart->findChild<QCheckBox*>("m_checkShowChart")->isChecked());
     m_currentState.setChartLineWidth(m_tabChart->findChild<QSpinBox*>("m_lineWidth")->value());
   }
+  m_currentState.fixes().removeAll("revertbugfix395327");
+  if (m_ui->m_revertBugFix395327->isChecked())
+    m_currentState.fixes().append("revertbugfix395327");
 
   // setup the date lock
   MyMoneyTransactionFilter::dateOptionE range = m_ui->m_dateRange->currentItem();
@@ -690,6 +693,9 @@ void KReportConfigurationFilterDlg::slotReset()
     m_ui->m_dateRange->setCurrentItem(MyMoneyTransactionFilter::allDates);
     slotDateRangeChanged(MyMoneyTransactionFilter::allDates);
   }
+
+  // fixes tab
+  m_ui->m_revertBugFix395327->setChecked(m_initialState.fixes().contains("revertbugfix395327"));
 
   slotRightSize();
 }
