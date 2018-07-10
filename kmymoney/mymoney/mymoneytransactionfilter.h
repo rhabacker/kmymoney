@@ -571,6 +571,8 @@ public:
     */
   void removeReference(const QString& id);
 
+  QStringList &fixes() { return m_fixes; }
+
 private:
   /**
     * This is a conversion tool from MyMoneySplit::reconcileFlagE
@@ -621,6 +623,7 @@ protected:
   QDate               m_fromDate, m_toDate;
   MyMoneyMoney        m_fromAmount, m_toAmount;
   QList<MyMoneySplit> m_matchingSplits;
+  QStringList         m_fixes;
 };
 
 /**

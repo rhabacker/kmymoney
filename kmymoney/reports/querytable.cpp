@@ -273,7 +273,7 @@ void QueryTable::constructTransactionTable()
   for (QList<QPair<MyMoneyTransaction, QList<MyMoneySplit> > >::const_iterator it_t = transactions.constBegin(); it_t != transactions.constEnd(); ++it_t) {
     const MyMoneyTransaction &t = (*it_t).first;
     // TODO fix MyMoneyTransactionFilter to support "investment only"
-    const QList<MyMoneySplit> &splits = m_config.isInvestmentsOnly() ? t.splits() : (*it_t).second;
+    const QList<MyMoneySplit> &splits = m_config.isInvestmentsOnly() || report.fixes().contains("revertbugfix395327") ? t.splits() : (*it_t).second;
 
     TableRow qA, qS;
     QDate pd;
