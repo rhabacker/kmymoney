@@ -151,6 +151,7 @@ KFindTransactionDlg::KFindTransactionDlg(QWidget *parent, bool withEquityAccount
   setupPayeesPage();
   setupTagsPage();
   setupDetailsPage();
+  setupFixesPage();
 
   // We don't need to add the default into the list (see ::slotShowHelp() why)
   // m_helpAnchor[m_ui->m_textTab] = QString("details.search");
@@ -628,6 +629,11 @@ void KFindTransactionDlg::setupDetailsPage()
   slotNrSelected();
 }
 
+void KFindTransactionDlg::setupFixesPage()
+{
+  m_ui->m_revertBugFix395327->setChecked(m_filter.fixes().contains("revertbugfix395327"));
+}
+
 void KFindTransactionDlg::slotNrSelected()
 {
   m_ui->m_nrEdit->setEnabled(true);
@@ -790,6 +796,9 @@ void KFindTransactionDlg::setupFilter()
       && (!m_ui->m_nrFromEdit->text().isEmpty() || !m_ui->m_nrToEdit->text().isEmpty())) {
     m_filter.setNumberFilter(m_ui->m_nrFromEdit->text(), m_ui->m_nrToEdit->text());
   }
+  m_filter.fixes().removeAll("revertbugfix395327");
+  if (m_ui->m_revertBugFix395327->isChecked())
+    m_filter.fixes().append("revertbugfix395327");
 }
 
 void KFindTransactionDlg::slotSearch()

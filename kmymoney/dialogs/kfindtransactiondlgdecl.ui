@@ -785,6 +785,37 @@
                   </item>
                 </layout>
               </widget>
+              <widget class="QWidget" name="m_FixesTab">
+                <attribute name="title">
+                  <string>Fixes</string>
+                </attribute>
+                <layout class="QVBoxLayout">
+                  <item>
+                    <widget class="QCheckBox" name="m_revertBugFix395327">
+                      <property name="text">
+                        <string>Revert fix for bug 395327</string>
+                      </property>
+                    </widget>
+                  </item>
+                  <item>
+                    <spacer name="Spacer30">
+                      <property name="sizeHint">
+                        <size>
+                          <width>0</width>
+                          <height>42</height>
+                        </size>
+                      </property>
+                      <property name="sizeType">
+                        <enum>QSizePolicy::Expanding</enum>
+                      </property>
+                      <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                      </property>
+                    </spacer>
+                  </item>
+
+                </layout>
+              </widget>
             </widget>
           </item>
           <item>
