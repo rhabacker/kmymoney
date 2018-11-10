@@ -965,10 +965,10 @@ void KMyMoneyApp::initActions()
   transaction_create_schedule->setIcon(KIcon("appointment-new"));
   connect(transaction_create_schedule, SIGNAL(triggered()), this, SLOT(slotTransactionCreateSchedule()));
 
-  KAction *transaction_assign_check_number = actionCollection()->addAction("transaction_assign_check_number");
-  transaction_assign_check_number->setText(i18n("Assign next check number"));
-  transaction_assign_check_number->setShortcut(KShortcut("Ctrl+Shift+N"));
-  connect(transaction_assign_check_number, SIGNAL(triggered()), this, SLOT(slotTransactionAssignNextCheckNumber()));
+  KAction *transaction_assign_next_check_number = actionCollection()->addAction("transaction_assign_next_check_number");
+  transaction_assign_next_check_number->setText(i18n("Assign next check number"));
+  transaction_assign_next_check_number->setShortcut(KShortcut("Ctrl+Shift+N"));
+  connect(transaction_assign_next_check_number, SIGNAL(triggered()), this, SLOT(slotTransactionAssignNextCheckNumber()));
 
   KAction *transaction_assign_statement_number = actionCollection()->addAction("transaction_assign_statement_number");
   transaction_assign_statement_number->setText(i18n("Assign last used statement number"));
@@ -978,9 +978,9 @@ void KMyMoneyApp::initActions()
   transaction_assign_next_statement_number->setText(i18n("Assign next statement number"));
   connect(transaction_assign_next_statement_number, SIGNAL(triggered()), this, SLOT(slotTransactionAssignNextStatementNumber()));
 
-  KAction *transaction_assign_statement_page_number = actionCollection()->addAction("transaction_assign_statement_page_number");
-  transaction_assign_statement_page_number->setText(i18n("Assign next statement page number"));
-  connect(transaction_assign_statement_page_number, SIGNAL(triggered()), this, SLOT(slotTransactionAssignNextStatementPageNumber()));
+  KAction *transaction_assign_next_statement_page_number = actionCollection()->addAction("transaction_assign_next_statement_page_number");
+  transaction_assign_next_statement_page_number->setText(i18n("Assign next statement page number"));
+  connect(transaction_assign_next_statement_page_number, SIGNAL(triggered()), this, SLOT(slotTransactionAssignNextStatementPageNumber()));
 
   KAction *transaction_combine = actionCollection()->addAction("transaction_combine");
   transaction_combine->setText(i18nc("Combine transactions", "Combine"));
@@ -5996,6 +5996,18 @@ void KMyMoneyApp::slotTransactionCreateSchedule()
   }
 }
 
+
+void KMyMoneyApp::slotTransactionAssignCheckNumber()
+{
+  if (d->m_transactionEditor->account().accountType() == MyMoneyAccount::Checkings   // checkings account
+    && KMyMoneyGlobalSettings::autoIncCheckNumber()           // and auto inc number turned on?
+    && d->m_transactionEditor->m_paymentMethod == MyMoneySchedule::STYPE_WRITECHEQUE) {// only for STYPE_WRITECHEQUE schedule transaction
+     slotTransactionAssignNextCheckNumber();
+  } else {
+    slotTransactionAssignStatementNumber();
+  }
+}
+
 void KMyMoneyApp::slotTransactionAssignNextCheckNumber()
 {
   if (d->m_transactionEditor)
@@ -6566,7 +6578,10 @@ void KMyMoneyApp::slotUpdateActions()
   action("transaction_mark_notreconciled")->setEnabled(false);
   action("transaction_goto_account")->setEnabled(false);
   action("transaction_goto_payee")->setEnabled(false);
-  action("transaction_assign_check_number")->setEnabled(false);
+  action("transaction_assign_next_check_number")->setEnabled(false);
+  action("transaction_assign_statement_number")->setEnabled(false);
+  action("transaction_assign_next_statement_number")->setEnabled(false);
+  action("transaction_assign_next_statement_page_number")->setEnabled(false);
   action("transaction_create_schedule")->setEnabled(false);
   action("transaction_combine")->setEnabled(false);
   action("transaction_select_all")->setEnabled(false);
@@ -6701,7 +6716,10 @@ void KMyMoneyApp::slotUpdateActions()
         }
       }
     } else {
-      action("transaction_assign_check_number")->setEnabled(d->m_transactionEditor->canAssignNumber());
+      action("transaction_assign_next_check_number")->setEnabled(d->m_transactionEditor->canAssignNumber());
+      action("transaction_assign_statement_number")->setEnabled(d->m_transactionEditor->canAssignNumber());
+      action("transaction_assign_next_statement_number")->setEnabled(d->m_transactionEditor->canAssignNumber());
+      action("transaction_assign_next_statement_page_number")->setEnabled(d->m_transactionEditor->canAssignNumber());
       action("transaction_new")->setEnabled(false);
       action("transaction_delete")->setEnabled(false);
       QString reason;
