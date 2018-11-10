@@ -443,7 +443,19 @@ protected slots:
 
   /**
     */
-  void slotTransactionAssignNumber();
+  void slotTransactionAssignNextCheckNumber();
+
+  /**
+    */
+  void slotTransactionAssignStatementNumber();
+
+  /**
+    */
+  void slotTransactionAssignNextStatementNumber();
+
+  /**
+    */
+  void slotTransactionAssignNextStatementPageNumber();
 
   /**
     */
