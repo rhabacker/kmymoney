@@ -76,6 +76,9 @@
 #include <KActivities/ResourceInstance>
 #endif
 
+#include <alkimia/alkonlinequotesprofilemanager.h>
+#include <alkimia/alkonlinequotesprofile.h>
+
 // ----------------------------------------------------------------------------
 // Project Includes
 
@@ -1113,6 +1116,8 @@ KMyMoneyApp::KMyMoneyApp(QWidget* parent) :
     KXmlGuiWindow(parent),
     d(new Private(this))
 {
+  AlkOnlineQuotesProfileManager::instance().addProfile(new AlkOnlineQuotesProfile("kmymoney", AlkOnlineQuotesProfile::Type::KMyMoney, "kmymoney-quotes.knsrc"));
+
 #ifdef KMM_DBUS
   new KmymoneyAdaptor(this);
   QDBusConnection::sessionBus().registerObject("/KMymoney", this);
