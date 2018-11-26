@@ -20,6 +20,8 @@
 
 // ----------------------------------------------------------------------------
 // QT Includes
+#include <QFile>
+#include <QtDebug>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -110,6 +112,14 @@ PivotGridRowSet::PivotGridRowSet(unsigned _numcolumns)
   insert(ePrice, PivotGridRow(_numcolumns));
 }
 
+bool PivotGridRowSet::saveToXml(QDomDocument &doc, QDomElement &el)
+{
+  foreach(ERowType type, keys()) {
+    (*this)[type].saveToXml(doc, el);
+  }
+  return true;
+}
+
 PivotGridRowSet PivotGrid::rowSet(QString id)
 {
 
@@ -130,6 +140,51 @@ PivotGridRowSet PivotGrid::rowSet(QString id)
     ++it_outergroup;
   }
   return PivotGridRowSet();
+}
+
+bool PivotGrid::saveToXml(QDomDocument &doc, QDomElement &parent)
+{
+  QDomElement el = doc.createElement("PivotGrid");
+  for(PivotGrid::iterator it_outergroup = begin(); it_outergroup != end(); it_outergroup++) {
+    QDomElement pog = doc.createElement("PivotOuterGroup");
+    for(PivotOuterGroup::iterator it_innergroup = (*it_outergroup).begin(); it_innergroup != (*it_outergroup).end(); it_innergroup++) {
+      QDomElement pig = doc.createElement("PivotInnerGroup");
+      for(PivotInnerGroup::iterator it_row = (*it_innergroup).begin(); it_row != (*it_innergroup).end(); it_row++) {
+        pig.setAttribute("account", it_row.key().id());
+        it_row.value().saveToXml(doc, pig);
+      }
+      pog.appendChild(pig);
+    }
+    el.appendChild(pog);
+  }
+  parent.appendChild(el);
+
+  return true;
+}
+
+bool PivotGrid::loadFromXml(QDomDocument &doc, QDomElement &parent)
+{
+  Q_UNUSED(doc);
+  Q_UNUSED(parent);
+  return false;
+}
+
+bool PivotInnerGroup::saveToXml(QDomDocument &doc, QDomElement &parent)
+{
+  Q_UNUSED(doc);
+  Q_UNUSED(parent);
+  return true;
+}
+
+bool PivotGridRow::saveToXml(QDomDocument &doc, QDomElement &parent)
+{
+  for(int i=0; i < size(); i++) {
+    const PivotCell &cell = at(i);
+    QDomElement el = doc.createElement("PivotCell");
+    el.setAttribute("value", cell.toDouble());
+    parent.appendChild(el);
+  }
+ return true;
 }
 
 } // namespace

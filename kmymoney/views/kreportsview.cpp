@@ -174,14 +174,17 @@ void KReportsView::KReportTab::saveAs(const QString& filename, bool includeCSS)
   QFile file(filename);
 
   if (file.open(QIODevice::WriteOnly)) {
-    if (QFileInfo(filename).suffix().toLower() == "csv") {
+    QString suffix = QFileInfo(filename).suffix().toLower();
+    if (suffix == "csv") {
       QTextStream(&file) << m_table->renderCSV();
-    } else {
+    } else if (suffix == "html") {
       QString table =
         m_table->renderHTML(qobject_cast<QWidget*>(this), m_encoding,
                             m_report.name(), includeCSS);
       QTextStream stream(&file);
       stream << table;
+    } else {
+      QTextStream(&file) << m_table->toXml();
     }
     file.close();
   }
@@ -291,6 +294,7 @@ public:
       filter = "*.csv";
       filtCsv = "*.csv|" + i18nc("CSV (Filefilter)", "CSV files");
       filtHtml = "*.html|" + i18nc("HTML (Filefilter)", "HTML files");
+      filtXml = "*.xml|" + i18nc("XML (Filefilter)", "XML files");
     }
 
     /**
@@ -322,6 +326,12 @@ public:
      * @see KFileDialog::KFileDialog
      */
     QString filtHtml;
+    /**
+     * XML filtername and description.
+     *
+     * @see KFileDialog::KFileDialog
+     */
+    QString filtXml;
   };
 
   FileSaveProperties* fSavProps;
@@ -725,7 +735,7 @@ void KReportsView::slotSaveView()
     // restore checkbox checked state
     d->fSavProps->includeCssCheckBox->setChecked(d->fSavProps->cbIsChecked);
 
-    QString filterList = d->fSavProps->filtCsv + '\n' + d->fSavProps->filtHtml;
+    QString filterList = d->fSavProps->filtCsv + '\n' + d->fSavProps->filtHtml  + '\n' + d->fSavProps->filtXml;
     QPointer<KFileDialog> dlg =
       new KFileDialog(KUrl("kfiledialog:///kmymoney-export"), filterList, this,
                       qobject_cast<QWidget*>(d->fSavProps->includeCssCheckBox));
@@ -741,9 +751,12 @@ void KReportsView::slotSaveView()
     if (d->fSavProps->filter == "*.csv") {
       combo->setCurrentFilter(d->fSavProps->filtCsv);
       d->fSavProps->includeCssCheckBox->setEnabled(false);
-    } else {
+    } else if (d->fSavProps->filter == "*.html") {
       combo->setCurrentFilter(d->fSavProps->filtHtml);
       d->fSavProps->includeCssCheckBox->setEnabled(true);
+    } else {
+      combo->setCurrentFilter(d->fSavProps->filtXml);
+      d->fSavProps->includeCssCheckBox->setEnabled(false);
     }
 
     if (dlg->exec() == QDialog::Accepted) {
