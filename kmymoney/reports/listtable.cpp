@@ -635,6 +635,144 @@ void ListTable::dump(const QString& file, const QString& context) const
   g.close();
 }
 
+bool ListTable::saveToXml(const QString &file)
+{
+  QFile out(file);
+  if (!out.open(QIODevice::WriteOnly))
+    return false;
+  QTextStream stream(&out);
+  stream << toXml();
+  return true;
+}
+
+bool ListTable::loadFromXml(const QString &file)
+{
+  QFile in(file);
+  if (!in.open(QIODevice::ReadOnly))
+    return false;
+
+  QDomDocument doc;
+  doc.setContent(in.readAll());
+  QDomElement docElem = doc.documentElement();
+  QDomNode n = docElem.firstChild();
+  m_rows.clear();
+  int line = 0;
+  while(!n.isNull()) {
+    QDomElement e = n.toElement(); // try to convert the node to an element.
+    if(!e.isNull()) {
+      line++;
+      ListTable::TableRow row;
+      QDomNamedNodeMap attributes = e.attributes();
+      for (int i = 0; i < attributes.count(); ++i) {
+        const QDomAttr& attr = attributes.item(i).toAttr();
+        //qDebug() << line << attr.name() <<  attr.value();
+        row[attr.name()] = attr.value();
+      }
+      m_rows.append(row);
+    }
+    n = n.nextSibling();
+  }
+  return true;
+}
+
+/**
+ * The class KDomElement is a replacement for QDomElement
+ * with the possibility to store attributes sorted.
+ *
+ * Sorted attributes are important for a textual comparison.
+ *
+ * @author Ralf Habacker <ralf.habacker@freenet.de>
+ */
+class KDomElement {
+public:
+  KDomElement(const QString &name = QString()) : m_tag(name) {}
+  void setAttribute(const QString &name, const QString &value)
+  {
+    m_attributes.append(QString("%1=\"%2\"").arg(name, value));
+  }
+
+  virtual ~KDomElement()
+  {
+  }
+
+  void appendChild(KDomElement &element)
+  {
+    m_childs.append(element);
+  }
+
+  virtual QString toString() const
+  {
+    if (m_childs.size() > 0) {
+      QString s = !m_tag.isEmpty() ? QString("<%1 %2>\n").arg(m_tag, m_attributes.join(" ")) : "";
+      foreach (const KDomElement &child, m_childs) {
+        s += child.toString();
+      }
+      s += !m_tag.isEmpty() ? QString("</%1>\n").arg(m_tag) : "";
+      return s;
+    } else
+      return !m_tag.isEmpty() ? QString("<%1 %2 />\n").arg(m_tag, m_attributes.join(" ")) : "";
+  }
+
+protected:
+  QString m_tag;
+  QStringList m_attributes;
+  QList<KDomElement> m_childs;
+};
+
+/**
+ * The class KDomDocument is a simple replacement for QDomDocument.
+ *
+ * @author Ralf Habacker <ralf.habacker@freenet.de>
+ */
+class KDomDocument : public KDomElement {
+public:
+  KDomDocument(const QString &name=QString())
+    : KDomElement(""),
+      m_type(name)
+  {
+  }
+
+  virtual ~KDomDocument()
+  {
+  }
+
+  KDomElement createElement(const QString &name)
+  {
+    return KDomElement(name);
+  }
+
+  QString toString() const
+  {
+    QString s = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+    if (!m_type.isEmpty())
+      s.append(QString("<!DOCTYPE %1>\n").arg(m_type));
+    s.append(KDomElement::toString());
+    return s;
+  }
+
+  QString m_type;
+};
+
+QString ListTable::toXml()
+{
+  KDomDocument doc;
+  KDomElement el = doc.createElement("ListTable");
+  QString name = report().name();
+  el.setAttribute("name", name);
+
+  foreach (ListTable::TableRow row, m_rows) {
+    KDomElement r = doc.createElement("TableRow");
+    QStringList keys = row.keys();
+    keys.sort();
+    foreach (const QString &key, keys) {
+      r.setAttribute(key, row[key]);
+    }
+    el.appendChild(r);
+  }
+  doc.appendChild(el);
+  return doc.toString();
+}
+
 void ListTable::includeInvestmentSubAccounts()
 {
   // if we're not in expert mode, we need to make sure
