@@ -466,6 +466,16 @@ public:
   virtual void transactionList(QList<QPair<MyMoneyTransaction, MyMoneySplit> >& list, MyMoneyTransactionFilter& filter) const;
 
   /**
+    * This method is the same as above, but the list contains transactions
+    * and a list of splits.
+    *
+    * @param list The set of transactions returned. The list passed in will
+    *             be cleared before filling with results.
+    * @param filter MyMoneyTransactionFilter object with the match criteria
+    */
+  virtual void transactionList(QList<QPair<MyMoneyTransaction, QList<MyMoneySplit> > >&list, MyMoneyTransactionFilter &filter) const;
+
+  /**
     * Deletes an existing account from the file global account pool
     * This method only allows to remove accounts that are not
     * referenced by any split. Use moveSplits() to move splits
