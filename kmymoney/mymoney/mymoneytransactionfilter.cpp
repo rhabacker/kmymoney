@@ -498,16 +498,12 @@ bool MyMoneyTransactionFilter::match(const MyMoneyTransaction& transaction)
     }
   }
 
-  if (m_reportAllSplits == false && matchingSplits.count() != 0) {
-    m_matchingSplits.append(transaction.splits()[0]);
-  } else {
-    foreach (const MyMoneySplit* s, matchingSplits) {
-      m_matchingSplits.append(*s);
-    }
+  foreach (const MyMoneySplit* s, matchingSplits) {
+    m_matchingSplits.append(*s);
   }
   // all filters passed, I guess we have a match
   // qDebug("  C: %d", m_matchingSplits.count());
-  return matchingSplits.count() != 0;
+  return m_matchingSplits.count() != 0;
 }
 
 int MyMoneyTransactionFilter::splitState(const MyMoneySplit& split) const
