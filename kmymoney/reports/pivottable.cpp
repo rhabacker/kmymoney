@@ -2291,4 +2291,30 @@ int PivotTable::currentDateColumn()
   return column;
 }
 
+bool PivotTable::loadFromXml(const QString &file)
+{
+  Q_UNUSED(file);
+  return false;
+}
+
+bool PivotTable::saveToXml(const QString &file)
+{
+  QFile out(file);
+  if (!out.open(QIODevice::WriteOnly))
+    return false;
+  QTextStream stream(&out);
+  stream << toXml();
+  return true;
+}
+
+QString PivotTable::toXml()
+{
+  QDomDocument doc;
+  QDomElement el = doc.createElement("PivotTable");
+  QString name = m_config_f.name();
+  el.setAttribute("name", name);
+  m_grid.saveToXml(doc, el);
+  doc.appendChild(el);
+  return doc.toString();
+}
 } // namespace

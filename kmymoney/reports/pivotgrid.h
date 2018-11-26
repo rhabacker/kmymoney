@@ -93,6 +93,7 @@ public:
     for (uint i = 0; i < _numcolumns; i++)
       append(PivotCell());
   }
+  bool saveToXml(QDomDocument &doc, QDomElement &parent);
   MyMoneyMoney m_total;
 };
 
@@ -100,12 +101,14 @@ class PivotGridRowSet: public QMap<ERowType, PivotGridRow>
 {
 public:
   PivotGridRowSet(unsigned _numcolumns = 0);
+  bool saveToXml(QDomDocument &doc, QDomElement &el);
 };
 
 class PivotInnerGroup: public QMap<ReportAccount, PivotGridRowSet>
 {
 public:
   PivotInnerGroup(unsigned _numcolumns = 0): m_total(_numcolumns) {}
+  bool saveToXml(QDomDocument &doc, QDomElement &parent);
 
   PivotGridRowSet m_total;
 };
@@ -146,6 +149,8 @@ public:
   PivotGridRowSet rowSet(QString id);
 
   PivotGridRowSet m_total;
+  bool saveToXml(QDomDocument &doc, QDomElement &parent);
+  bool loadFromXml(QDomDocument &doc, QDomElement &parent);
 };
 
 }

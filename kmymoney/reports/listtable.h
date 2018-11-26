@@ -58,6 +58,10 @@ public:
   QString renderCSV() const;
   void drawChart(KReportChartView&) const {}
   void dump(const QString& file, const QString& context = QString()) const;
+  bool saveToXml(const QString &file);
+  bool loadFromXml(const QString &file);
+  QString toXml();
+
   void init();
 
 public:
