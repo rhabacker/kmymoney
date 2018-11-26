@@ -143,6 +143,10 @@ public:
   virtual void drawChart(KReportChartView& view) const = 0;
   virtual void dump(const QString& file, const QString& context = QString()) const = 0;
 
+  virtual bool loadFromXml(const QString &file) = 0;
+  virtual bool saveToXml(const QString &file) = 0;
+  virtual QString toXml() = 0;
+
   /**
    * Creates the complete html document.
    *
