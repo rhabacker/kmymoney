@@ -521,6 +521,95 @@ void KReportChartView::drawPivotChart(const PivotGrid &grid, const MyMoneyReport
   //assign model to the diagram
   if (config.chartType() == MyMoneyReport::Chart::LeveyJennings) {
     KDChart::LeveyJenningsDiagram* diagram = qobject_cast<LeveyJenningsDiagram*>(planeDiagram);
+
+    m_model.clear();
+    m_model.setColumnCount(6);
+    m_model.setRowCount(14);
+
+    m_model.setHeaderData( 0, Qt::Horizontal, QObject::tr( "Lot" ) );
+    m_model.setHeaderData( 1, Qt::Horizontal, QObject::tr( "Value" ) );
+    m_model.setHeaderData( 2, Qt::Horizontal, QObject::tr( "OK" ) );
+    m_model.setHeaderData( 3, Qt::Horizontal, QObject::tr( "Date/Time" ) );
+    m_model.setHeaderData( 4, Qt::Horizontal, QObject::tr( "Mean Value" ) );
+    m_model.setHeaderData( 5, Qt::Horizontal, QObject::tr( "Standard Deviation" ) );
+
+    // Lot 1
+    m_model.setData( m_model.index( 0, 0 ), 1 );        // lot number
+    m_model.setData( m_model.index( 0, 1 ), 210 );      // value
+    m_model.setData( m_model.index( 0, 2 ), true );     // QC value ok/not ok
+    m_model.setData( m_model.index( 0, 3 ), QDateTime::fromString( "2007-07-06T09:00:00", Qt::ISODate ) );
+
+    m_model.setData( m_model.index( 1, 0 ), 1 );
+    m_model.setData( m_model.index( 1, 1 ), 9.5 );
+    m_model.setData( m_model.index( 1, 2 ), true );
+    m_model.setData( m_model.index( 1, 3 ), QDateTime::fromString( "2007-07-06T21:00:00", Qt::ISODate ) );
+    m_model.setData( m_model.index( 1, 4 ), 7.5 );
+    m_model.setData( m_model.index( 1, 5 ), 1.0 );
+
+    m_model.setData( m_model.index( 2, 0 ), 1 );
+    m_model.setData( m_model.index( 2, 1 ), 200 );
+    m_model.setData( m_model.index( 2, 2 ), true );
+    m_model.setData( m_model.index( 2, 3 ), QDateTime::fromString( "2007-07-07T09:00:00", Qt::ISODate ) );
+
+    // This values should be missing (lot is needed anyway)
+    m_model.setData( m_model.index( 3, 0 ), 1 );
+    m_model.setData( m_model.index( 3, 3 ), QDateTime::fromString( "2007-07-07T21:00:00", Qt::ISODate ) );
+
+    m_model.setData( m_model.index( 4, 0 ), 1 );
+    m_model.setData( m_model.index( 4, 1 ), 180 );
+    m_model.setData( m_model.index( 4, 2 ), true );
+    m_model.setData( m_model.index( 4, 3 ), QDateTime::fromString( "2007-07-08T09:00:00", Qt::ISODate ) );
+
+
+    // Lot 2
+    m_model.setData( m_model.index( 5, 0 ), 2 );
+    m_model.setData( m_model.index( 5, 1 ), 210 );
+    m_model.setData( m_model.index( 5, 2 ), true );
+    m_model.setData( m_model.index( 5, 3 ), QDateTime::fromString( "2007-07-08T21:00:00", Qt::ISODate ) );
+
+    m_model.setData( m_model.index( 6, 0 ), 2 );
+    m_model.setData( m_model.index( 6, 1 ), 195 );
+    m_model.setData( m_model.index( 6, 2 ), true );
+    m_model.setData( m_model.index( 6, 3 ), QDateTime::fromString( "2007-07-09T09:00:00", Qt::ISODate ) );
+
+    // this value is not OK
+    m_model.setData( m_model.index( 7, 0 ), 2 );
+    m_model.setData( m_model.index( 7, 1 ), 200 );
+    m_model.setData( m_model.index( 7, 2 ), false );
+    m_model.setData( m_model.index( 7, 3 ), QDateTime::fromString( "2007-07-09T21:00:00", Qt::ISODate ) );
+
+    m_model.setData( m_model.index( 8, 0 ), 2 );
+    m_model.setData( m_model.index( 8, 1 ), 210 );
+    m_model.setData( m_model.index( 8, 2 ), true );
+    m_model.setData( m_model.index( 8, 3 ), QDateTime::fromString( "2007-07-10T09:00:00", Qt::ISODate ) );
+
+    m_model.setData( m_model.index( 9, 0 ), 2 );
+    m_model.setData( m_model.index( 9, 1 ), 180 );
+    m_model.setData( m_model.index( 9, 2 ), true );
+    m_model.setData( m_model.index( 9, 3 ), QDateTime::fromString( "2007-07-10T21:00:00", Qt::ISODate ) );
+
+    // this values is completely out of bounds and therefore cut/truncated
+    m_model.setData( m_model.index( 10,0 ), 2 );
+    m_model.setData( m_model.index( 10,1 ), 290 );
+    m_model.setData( m_model.index( 10,2 ), true );
+    m_model.setData( m_model.index( 10,3 ), QDateTime::fromString( "2007-07-11T09:00:00", Qt::ISODate ) );
+
+    // this value is ok again
+    m_model.setData( m_model.index( 11,0 ), 2 );
+    m_model.setData( m_model.index( 11,1 ), 210 );
+    m_model.setData( m_model.index( 11,2 ), true );
+    m_model.setData( m_model.index( 11,3 ), QDateTime::fromString( "2007-07-11T21:00:00", Qt::ISODate ) );
+
+    m_model.setData( m_model.index( 12,0 ), 2 );
+    m_model.setData( m_model.index( 12,1 ), 205 );
+    m_model.setData( m_model.index( 12,2 ), true );
+    m_model.setData( m_model.index( 12,3 ), QDateTime::fromString( "2007-07-12T09:00:00", Qt::ISODate ) );
+
+    m_model.setData( m_model.index( 13,0 ), 2 );
+    m_model.setData( m_model.index( 13,1 ), 204 );
+    m_model.setData( m_model.index( 13,2 ), true );
+    m_model.setData( m_model.index( 13,3 ), QDateTime::fromString( "2007-07-12T21:00:00", Qt::ISODate ) );
+
     diagram->setModel(&m_model);
   } else
     planeDiagram->setModel(&m_model);
