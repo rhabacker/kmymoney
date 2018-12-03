@@ -104,7 +104,7 @@ public:
 
   class Chart {
   public:
-    enum Type { None = 0, Line, Bar, Pie, Ring, StackedBar, End };
+    enum Type { None = 0, Line, LeveyJennings, Bar, Pie, Ring, StackedBar, End };
     static const QStringList kText;
   };
 

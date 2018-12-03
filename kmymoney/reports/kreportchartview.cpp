@@ -40,10 +40,12 @@
 #include <KDChartHeaderFooter>
 #include <KDChartLegend>
 #include <KDChartLineDiagram>
+#include <KDChartLeveyJenningsDiagram>
 #include <KDChartBarDiagram>
 #include <KDChartPieDiagram>
 #include <KDChartRingDiagram>
 #include <KDChartCartesianAxis>
+#include <KDChartLeveyJenningsAxis>
 #include <KDChartFrameAttributes>
 #include "kmymoneyglobalsettings.h"
 #include <kbalanceaxis.h>
@@ -132,6 +134,23 @@ void KReportChartView::drawPivotChart(const PivotGrid &grid, const MyMoneyReport
         coordinatePlane()->replaceDiagram(diagram);
         break;
       }
+
+    case MyMoneyReport::Chart::LeveyJennings: {
+      KDChart::LeveyJenningsDiagram* diagram = new KDChart::LeveyJenningsDiagram;
+
+      if (config.isSkippingZero()) {
+        LineAttributes attributes = diagram->lineAttributes();
+        attributes.setMissingValuesPolicy(LineAttributes::MissingValuesAreBridged);
+        diagram->setLineAttributes(attributes);
+      }
+
+      KDChart::LeveyJenningsCoordinatePlane* plane = new KDChart::LeveyJenningsCoordinatePlane;
+      replaceCoordinatePlane(plane);
+      diagram->setModel(&m_model);
+      coordinatePlane()->replaceDiagram(diagram);
+      break;
+    }
+
     case MyMoneyReport::Chart::Bar: {
         KDChart::BarDiagram* diagram = new KDChart::BarDiagram;
         CartesianCoordinatePlane* cartesianPlane = new CartesianCoordinatePlane;
@@ -251,6 +270,61 @@ void KReportChartView::drawPivotChart(const PivotGrid &grid, const MyMoneyReport
       barDiagram->addAxis(xAxis);
       barDiagram->addAxis(yAxis);
     }
+  } else if (config.chartType() == MyMoneyReport::Chart::LeveyJennings) {
+    KDChart::LeveyJenningsDiagram* diagram = qobject_cast<LeveyJenningsDiagram*>(planeDiagram);
+
+//    KDChart::LeveyJenningsAxis* axis = new KDChart::LeveyJenningsAxis( diagram );
+//    axis->setPosition( KDChart::CartesianAxis::Left );
+//    diagram->addAxis( axis );
+
+    KDChart::LeveyJenningsAxis* axis2 = new KDChart::LeveyJenningsAxis( diagram );
+    axis2->setPosition( KDChart::CartesianAxis::Right );
+    axis2->setType( KDChart::LeveyJenningsGridAttributes::Calculated );
+    diagram->addAxis( axis2 );
+
+    //set x axis
+    CartesianAxis *xAxis = new CartesianAxis();
+    xAxis->setPosition(CartesianAxis::Bottom);
+    xAxis->setTitleText(i18n("Time"));
+    TextAttributes xAxisTitleTextAttr(xAxis->titleTextAttributes());
+    xAxisTitleTextAttr.setMinimalFontSize(KGlobalSettings::generalFont().pointSize());
+    xAxisTitleTextAttr.setPen(m_foregroundBrush.color());
+    xAxis->setTitleTextAttributes(xAxisTitleTextAttr);
+    TextAttributes xAxisTextAttr(xAxis->textAttributes());
+    xAxisTextAttr.setPen(m_foregroundBrush.color());
+    xAxisTextAttr.setAutoRotate(true);
+    xAxis->setTextAttributes(xAxisTextAttr);
+    RulerAttributes xAxisRulerAttr(xAxis->rulerAttributes());
+    xAxisRulerAttr.setTickMarkPen(m_foregroundBrush.color());
+    xAxisRulerAttr.setShowRulerLine(true);
+    xAxis->setRulerAttributes(xAxisRulerAttr);
+    diagram->addAxis(xAxis);
+
+    //set y axis
+    KBalanceAxis *yAxis = new KBalanceAxis();
+    yAxis->setPosition(CartesianAxis::Left);
+
+    // TODO
+    // if the chart shows prices and no balance
+    // the axis title should be 'Price'
+    if (config.isIncludingPrice()) {
+      yAxis->setTitleText(i18n("Price"));
+    } else {
+      yAxis->setTitleText(i18n("Balance"));
+    }
+
+    TextAttributes yAxisTitleTextAttr(yAxis->titleTextAttributes());
+    yAxisTitleTextAttr.setMinimalFontSize(KGlobalSettings::generalFont().pointSize());
+    yAxisTitleTextAttr.setPen(m_foregroundBrush.color());
+    yAxis->setTitleTextAttributes(yAxisTitleTextAttr);
+    TextAttributes yAxisTextAttr(yAxis->textAttributes());
+    yAxisTextAttr.setPen(m_foregroundBrush.color());
+    yAxis->setTextAttributes(yAxisTextAttr);
+    RulerAttributes yAxisRulerAttr(yAxis->rulerAttributes());
+    yAxisRulerAttr.setTickMarkPen(m_foregroundBrush.color());
+    yAxisRulerAttr.setShowRulerLine(true);
+    yAxis->setRulerAttributes(yAxisRulerAttr);
+    diagram->addAxis(yAxis);
   }
 
   switch (config.detailLevel()) {
@@ -445,7 +519,11 @@ void KReportChartView::drawPivotChart(const PivotGrid &grid, const MyMoneyReport
   }
 
   //assign model to the diagram
-  planeDiagram->setModel(&m_model);
+  if (config.chartType() == MyMoneyReport::Chart::LeveyJennings) {
+    KDChart::LeveyJenningsDiagram* diagram = qobject_cast<LeveyJenningsDiagram*>(planeDiagram);
+    diagram->setModel(&m_model);
+  } else
+    planeDiagram->setModel(&m_model);
 
   //set the legend basic attributes
   //this is done after adding the legend because the values are overridden when adding the legend to the chart

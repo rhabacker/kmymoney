@@ -80,6 +80,7 @@ kMyMoneyReportConfigTabChartDecl::kMyMoneyReportConfigTabChartDecl(QWidget *pare
   ui->setupUi(this);
 
   ui->m_comboType->addItem(i18nc("type of graphic chart", "Line"), MyMoneyReport::Chart::Line);
+  ui->m_comboType->addItem(i18nc("type of graphic chart", "LeveyJennings"), MyMoneyReport::Chart::LeveyJennings);
   ui->m_comboType->addItem(i18nc("type of graphic chart", "Bar"), MyMoneyReport::Chart::Bar);
   ui->m_comboType->addItem(i18nc("type of graphic chart", "Stacked Bar"), MyMoneyReport::Chart::StackedBar);
   ui->m_comboType->addItem(i18nc("type of graphic chart", "Pie"), MyMoneyReport::Chart::Pie);

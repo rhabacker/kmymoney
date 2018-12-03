@@ -237,7 +237,7 @@ void KReportConfigurationFilterDlg::slotSearch()
   }
 
   if (m_tabChart) {
-    MyMoneyReport::Chart::Type ct[5] = { MyMoneyReport::Chart::Line, MyMoneyReport::Chart::Bar, MyMoneyReport::Chart::StackedBar, MyMoneyReport::Chart::Pie, MyMoneyReport::Chart::Ring };
+    MyMoneyReport::Chart::Type ct[6] = { MyMoneyReport::Chart::Line, MyMoneyReport::Chart::LeveyJennings, MyMoneyReport::Chart::Bar, MyMoneyReport::Chart::StackedBar, MyMoneyReport::Chart::Pie, MyMoneyReport::Chart::Ring };
     m_currentState.setChartType(ct[m_tabChart->findChild<KMyMoneyGeneralCombo*>("m_comboType")->currentIndex()]);
 
     m_currentState.setChartGridLines(m_tabChart->findChild<QCheckBox*>("m_checkGridLines")->isChecked());
@@ -450,6 +450,7 @@ void KReportConfigurationFilterDlg::slotReset()
         combo->setCurrentItem(MyMoneyReport::Chart::Line);
         break;
       case MyMoneyReport::Chart::Line:
+      case MyMoneyReport::Chart::LeveyJennings:
       case MyMoneyReport::Chart::Bar:
       case MyMoneyReport::Chart::StackedBar:
       case MyMoneyReport::Chart::Pie:
