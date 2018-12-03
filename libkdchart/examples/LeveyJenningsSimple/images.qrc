@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/KDAB/kdchart/LeveyJennings">
+        <file>circle_blue_red.svg</file>
+        <file>circle_blue.svg</file>
+        <file>karo_black.svg</file>
+        <file>karo_blue.svg</file>
+        <file>karo_red.svg</file>
+    </qresource>
+</RCC>
