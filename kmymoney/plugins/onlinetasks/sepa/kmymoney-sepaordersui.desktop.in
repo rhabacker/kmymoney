@@ -4,7 +4,7 @@ ServiceTypes=KMyMoney/OnlineTaskUi
 
 X-KMyMoney-onlineTaskIds=org.kmymoney.creditTransfer.sepa
 
-X-KDE-Library=konlinetasks_sepa
+X-KDE-Library=konlinetasks_sepa@KMYMONEY_SUFFIX@
 X-KDE-PluginKeyword=sepaCreditTransferUi
 
 X-KDE-PluginInfo-Name=SEPA orders for online banking

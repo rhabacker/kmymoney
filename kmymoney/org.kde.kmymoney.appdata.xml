@@ -188,6 +188,6 @@
   <url type="help">https://docs.kde.org/stable/en/extragear-office/kmymoney/index.html</url>
   <project_group>KDE</project_group>
   <provides>
-    <binary>kmymoney</binary>
+    <binary>kmymoney@KMYMONEY_SUFFIX@</binary>
   </provides>
 </component>

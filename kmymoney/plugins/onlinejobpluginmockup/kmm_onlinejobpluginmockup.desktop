@@ -34,7 +34,7 @@ Comment[x-test]=xxIf mapped to an account, it pretends it could handle all onlin
 ServiceTypes=KMyMoneyPlugin
 Type=Service
 
-X-KDE-Library=kmm_onlinejobpluginmockup
+X-KDE-Library=kmm_onlinejobpluginmockup@KMYMONEY_SUFFIX@
 X-KDE-PluginInfo-Name=onlinejobpluginmockup
 
 X-KDE-PluginInfo-Author=Christian David

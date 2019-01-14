@@ -4,6 +4,15 @@ cmake_minimum_required(VERSION 2.8.9)
 # Setting the name of the main project
 project(KMyMoney)
 
+option(ENABLE_COINSTALL "Enable parallel installation support for kmymoney" OFF)
+if(ENABLE_COINSTALL)
+  set(KMYMONEY_SUFFIX "4")
+  set(CMAKE_DEBUG_POSTFIX ${KMYMONEY_SUFFIX})
+  set(CMAKE_RELEASE_POSTFIX ${KMYMONEY_SUFFIX})
+  set(CMAKE_RELWITHDEBINFO_POSTFIX ${KMYMONEY_SUFFIX})
+  set(CMAKE_EXECUTABLE_SUFFIX "${KMYMONEY_SUFFIX}${CMAKE_EXECUTABLE_SUFFIX}")
+endif()
+
 # Automoc all sources
 set(CMAKE_AUTOMOC TRUE)
 

@@ -83,7 +83,7 @@ set( kmymoney_common_LIBS
 set( kmymoney_SRCS main.cpp kmymoney.cpp )
 
 qt4_add_dbus_adaptor(kmymoney_SRCS org.kde.kmymoney.xml kmymoney.h KMyMoneyApp)
-kde4_add_app_icon( kmymoney_SRCS hi*-app-kmymoney.png )
+kde4_add_app_icon( kmymoney_SRCS hi*-app-kmymoney4.png )
 
 kde4_add_executable( kmymoney ${kmymoney_SRCS} )
 target_link_libraries( kmymoney ${kmymoney_common_LIBS} )
@@ -101,10 +101,12 @@ install(FILES kmymoneyui.rc tips
 install(FILES ${_HEADERS}
   DESTINATION ${INCLUDE_INSTALL_DIR}/kmymoney
   )
-install(FILES org.kde.kmymoney.desktop
+configure_file(org.kde.kmymoney.desktop ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kmymoney.desktop)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kmymoney.desktop
   DESTINATION ${XDG_APPS_INSTALL_DIR}
   )
-install(FILES org.kde.kmymoney.appdata.xml
+configure_file(org.kde.kmymoney.appdata.xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kmymoney.appdata.xml)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.kmymoney.appdata.xml
   DESTINATION ${SHARE_INSTALL_PREFIX}/metainfo/
   )
 

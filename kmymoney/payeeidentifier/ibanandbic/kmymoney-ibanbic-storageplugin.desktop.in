@@ -5,7 +5,7 @@ ServiceTypes=KMyMoney/sqlStoragePlugin
 X-KMyMoney-PluginIid=org.kmymoney.payeeIdentifier.ibanbic.sqlStoragePlugin
 
 Name=payeeidentifier_ibanbic_storageplugin
-X-KDE-Library=payeeidentifier_ibanbic_storageplugin
+X-KDE-Library=payeeidentifier_ibanbic_storageplugin@KMYMONEY_SUFFIX@
 
 X-KDE-PluginInfo-Author=Christian David
 X-KDE-PluginInfo-Email=christian-david@web.de

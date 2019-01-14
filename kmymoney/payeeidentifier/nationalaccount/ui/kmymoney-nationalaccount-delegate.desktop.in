@@ -4,7 +4,7 @@ ServiceTypes=KMyMoney/PayeeIdentifierDelegate
 
 X-KMyMoney-payeeIdentifierIds=org.kmymoney.payeeIdentifier.national
 
-X-KDE-Library=payeeidentifier_nationalAccount_ui
+X-KDE-Library=payeeidentifier_nationalAccount_ui@KMYMONEY_SUFFIX@
 X-KDE-PluginKeyword=delegate
 
 X-KDE-PluginInfo-Name=Support for national account numbers
