@@ -76,7 +76,7 @@ bicModel::bicModel(QObject* parent)
     QString database = service->property(QLatin1String("X-KMyMoney-Bankdata-Database")).toString();
 
     // Locate database
-    QString path = KGlobal::dirs()->locate("data", QLatin1String("kmymoney/ibanbicdata/") + database);
+    QString path = KGlobal::dirs()->locate("data", QLatin1String("ktoblzcheck/ibanbicdata/") + database);
     if (path.isEmpty()) {
       kWarning() << QString("Could not locate database file \"%1\" to receive BIC data.").arg(database);
     } else {
