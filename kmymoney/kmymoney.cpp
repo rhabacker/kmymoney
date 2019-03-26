@@ -581,6 +581,7 @@ void KMyMoneyApp::initActions()
   actionCollection()->addAction(KStandardAction::Close, this, SLOT(slotFileClose()));
   actionCollection()->addAction(KStandardAction::Quit, this, SLOT(slotFileQuit()));
   actionCollection()->addAction(KStandardAction::Print, this, SLOT(slotPrintView()));
+  actionCollection()->addAction(KStandardAction::PrintPreview, this, SLOT(slotPrintPreviewView()));
 
   KAction *open_database = actionCollection()->addAction("open_database");
   open_database->setText(i18n("Open database..."));
@@ -6362,6 +6363,11 @@ void KMyMoneyApp::slotShowOnlineJobContextMenu()
 void KMyMoneyApp::slotPrintView()
 {
   d->m_myMoneyView->slotPrintView();
+}
+
+void KMyMoneyApp::slotPrintPreviewView()
+{
+  d->m_myMoneyView->slotPrintPreviewView();
 }
 
 void KMyMoneyApp::updateCaption(bool skipActions)
