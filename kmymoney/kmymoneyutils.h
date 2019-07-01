@@ -366,7 +366,7 @@ public:
   /**
     * Return next bank statement number for account @a acc.
     */
-  static QString nextStatementNumber(const QString &num);
+  static QString nextStatementNumber(const QString &num, bool resetPage = true);
 
   /**
     * Return next bank statement page number for account @a acc.
