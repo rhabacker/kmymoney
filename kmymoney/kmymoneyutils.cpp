@@ -374,7 +374,7 @@ QString KMyMoneyUtils::nextCheckNumber(const QString &num)
   return number;
 }
 
-QString KMyMoneyUtils::nextStatementNumber(const QString &num)
+QString KMyMoneyUtils::nextStatementNumber(const QString &num, bool resetPage)
 {
   QString number;
   //                   1.1
@@ -389,12 +389,12 @@ QString KMyMoneyUtils::nextStatementNumber(const QString &num)
     QString arg1 = QString::number(exp.cap(1).toULong() + 1);
     QString arg2 = exp.cap(2);
     QString arg3 = exp.cap(3);
-    QString arg4 = exp.cap(4);
+    QString arg4 = resetPage ? "1" : exp.cap(4);
     number = QString("%1/%2%3%4").arg(arg1).arg(arg2).arg(arg3).arg(arg4);
   } else if (exp2.indexIn(num) != -1) {
       QString arg1 = QString::number(exp2.cap(1).toULong() + 1);
       QString arg2 = exp2.cap(2);
-      QString arg3 = exp2.cap(3);
+      QString arg3 = resetPage ? "1" : exp2.cap(3);
       number = QString("%1%2%3").arg(arg1).arg(arg2).arg(arg3);
   } else {
     number = "1.1";
