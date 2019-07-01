@@ -886,6 +886,20 @@ void KMyMoneyApp::initActions()
   transaction_new->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Insert));
   connect(transaction_new, SIGNAL(triggered()), this, SLOT(slotTransactionsNew()));
 
+  KAction *transaction_new_inc_page = actionCollection()->addAction("transaction_new_inc_page");
+  transaction_new_inc_page->setText(i18nc("New transaction button", "New with next statement page"));
+  transaction_new_inc_page->setIcon(KMyMoneyUtils::overlayIcon("view-financial-transfer", "list-add", Qt::TopRightCorner));
+  connect(transaction_new_inc_page, SIGNAL(triggered()), this, SLOT(slotTransactionsNewIncPage()));
+
+  KAction *transaction_new_inc_number = actionCollection()->addAction("transaction_new_inc_number");
+  transaction_new_inc_number->setText(i18nc("New transaction button", "New with next statement number"));
+  transaction_new_inc_number->setIcon(KMyMoneyUtils::overlayIcon("view-financial-transfer", "list-add", Qt::TopRightCorner));
+  connect(transaction_new_inc_number, SIGNAL(triggered()), this, SLOT(slotTransactionsNewIncNumber()));
+
+  KAction *transaction_new_same_number = actionCollection()->addAction("transaction_new_same_number");
+  transaction_new_same_number->setText(i18nc("New transaction button", "New with same statement number"));
+  transaction_new_same_number->setIcon(KMyMoneyUtils::overlayIcon("view-financial-transfer", "list-add", Qt::TopRightCorner));
+  connect(transaction_new_same_number, SIGNAL(triggered()), this, SLOT(slotTransactionsNewSameNumber()));
 
   // we use Return as the same shortcut for Edit and Enter. Therefore, we don't allow
   // to change them (The standard KDE dialog complains anyway if you want to assign
@@ -5723,6 +5737,27 @@ void KMyMoneyApp::slotTransactionsNew()
       }
     }
   }
+}
+
+void KMyMoneyApp::slotTransactionsNewIncPage()
+{
+  slotTransactionsNew();
+  if (d->m_transactionEditor)
+    d->m_transactionEditor->assignNextStatementPageNumber();
+}
+
+void KMyMoneyApp::slotTransactionsNewIncNumber()
+{
+  slotTransactionsNew();
+  if (d->m_transactionEditor)
+    d->m_transactionEditor->assignNextStatementNumber();
+}
+
+void KMyMoneyApp::slotTransactionsNewSameNumber()
+{
+  slotTransactionsNew();
+  if (d->m_transactionEditor)
+    d->m_transactionEditor->assignStatementNumber();
 }
 
 void KMyMoneyApp::slotTransactionsEdit()

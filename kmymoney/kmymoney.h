@@ -387,6 +387,18 @@ protected slots:
 
   /**
     */
+  void slotTransactionsNewIncPage();
+
+  /**
+    */
+  void slotTransactionsNewIncNumber();
+
+  /**
+    */
+  void slotTransactionsNewSameNumber();
+
+  /**
+    */
   void slotTransactionsEdit();
 
   /**
