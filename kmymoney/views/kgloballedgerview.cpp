@@ -278,9 +278,9 @@ KGlobalLedgerView::KGlobalLedgerView(QWidget *parent, const char *name)
   buttonLayout->addWidget(m_buttonbar);
 
   m_buttonbar->addAction(kmymoney->action("transaction_new"));
-  m_buttonbar->addAction(kmymoney->action("transaction_new_inc_page"));
   m_buttonbar->addAction(kmymoney->action("transaction_new_inc_number"));
   m_buttonbar->addAction(kmymoney->action("transaction_new_same_number"));
+  m_buttonbar->addAction(kmymoney->action("transaction_new_inc_page"));
   m_buttonbar->addAction(kmymoney->action("transaction_edit"));
   m_buttonbar->addAction(kmymoney->action("transaction_delete"));
   m_buttonbar->addAction(kmymoney->action("transaction_enter"));
