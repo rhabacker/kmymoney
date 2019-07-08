@@ -11,18 +11,20 @@
    </rect>
   </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
-    <layout class="QHBoxLayout">
-     <item>
-      <widget class="KPushButton" name="m_qbuttonNew">
-       <property name="text">
-        <string>New Scheduled transaction...</string>
-       </property>
-      </widget>
-     </item>
+    <layout class="QHBoxLayout" name="m_buttonBox">
      <item>
       <spacer name="spacer2">
        <property name="orientation">
@@ -65,7 +67,16 @@
        <string>List View</string>
       </attribute>
       <layout class="QVBoxLayout" name="m_listTabLayout">
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
