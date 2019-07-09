@@ -48,8 +48,6 @@ namespace KMyMoneyPlugin
 //---------------------------------------------------------------------
 static PluginLoader* s_instance = 0;
 
-typedef QMap<QString, Plugin*> PluginsMap;
-
 struct PluginLoader::Private {
   QObject*          m_parent;
   KPluginInfo::List m_pluginList;
@@ -142,6 +140,11 @@ PluginLoader* PluginLoader::instance()
 KPluginSelector* PluginLoader::pluginSelectorWidget()
 {
   return d->m_pluginSelector;
+}
+
+const PluginLoader::PluginsMap &PluginLoader::loadedPlugins()
+{
+  return d->m_loadedPlugins;
 }
 
 } // namespace

@@ -65,6 +65,8 @@
 
 #include <kdebug.h>
 #include <kapplication.h>
+#include <kcmoduleinfo.h>
+#include <kcmoduleproxy.h>
 #include <kshortcut.h>
 #include <ktoolbar.h>
 #include <kiconloader.h>
@@ -78,6 +80,7 @@
 #include <kactioncollection.h>
 #include <kactionmenu.h>
 #include <kglobal.h>
+#include <kservicetypetrader.h>
 #include <kstandarddirs.h>
 #include <kstatusbar.h>
 #include <ktip.h>
@@ -2606,6 +2609,24 @@ void KMyMoneyApp::showSettingsDialog(KMyMoneyUtils::SettingsPage id)
   d->m_settingPages[KMyMoneyUtils::SettingsPage::Colors] = dlg->addPage(colorsPage, i18n("Colors"), "preferences-desktop-color");
   d->m_settingPages[KMyMoneyUtils::SettingsPage::Fonts] = dlg->addPage(fontsPage, i18n("Fonts"), "preferences-desktop-font");
   d->m_settingPages[KMyMoneyUtils::SettingsPage::Plugins] = dlg->addPage(pluginsPage, i18n("Plugins"), "network-disconnect");
+
+  KService::List offers = KServiceTypeTrader::self()->query("KCModule", "'kmymoney' in Categories");
+  KPluginInfo::List pluginList = KPluginInfo::fromServices(offers);
+
+  foreach(const KPluginInfo &pluginData, pluginList) {
+    QFileInfo fi(pluginData.entryPath());
+    QString kcmModule = fi.baseName();
+    KService::Ptr service = KService::serviceByDesktopName(kcmModule);
+    if (service) {
+      KCModuleProxy *proxy = new KCModuleProxy(service, this);
+      proxy->setObjectName(kcmModule);
+      KPageWidgetItem *page = dlg->addPage(proxy, pluginData.name(), proxy->moduleInfo().icon(), QString(), false);
+      if (kcmModule == "kcm_kmm_icalendarexport")
+        d->m_settingPages[KMyMoneyUtils::SettingsPage::CalendarExport] = page;
+      else if (kcmModule == "kcm_kmm_printcheck")
+        d->m_settingPages[KMyMoneyUtils::SettingsPage::PrintCheck] = page;
+    }
+  }
 
   dlg->setHelp("details.settings", "kmymoney");
 

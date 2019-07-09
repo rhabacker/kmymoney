@@ -43,6 +43,8 @@ class KMM_PLUGIN_EXPORT PluginLoader : public QObject
 {
   Q_OBJECT
 public:
+  typedef QMap<QString, Plugin*> PluginsMap;
+
   PluginLoader(QObject* parent);
   virtual ~PluginLoader();
   static PluginLoader* instance();
@@ -50,6 +52,7 @@ public:
   void loadPlugins();
   Plugin* getPluginFromInfo(KPluginInfo*);
   KPluginSelector* pluginSelectorWidget();
+  const PluginsMap &loadedPlugins();
 
 private:
   void loadPlugin(KPluginInfo*);

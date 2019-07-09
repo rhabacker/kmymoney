@@ -134,6 +134,7 @@ public:
    */
   enum class SettingsPage {
     Undefined,
+    CalendarExport,
     Colors,
     Encryption,
     Fonts,
@@ -143,6 +144,7 @@ public:
     Home,
     OnlineQuotes,
     Plugins,
+    PrintCheck,
     Register,
     Reports,
     Schedules,
