@@ -457,6 +457,11 @@ protected:
     */
   virtual bool showPageHeader() const;
 
+  /**
+   * Overwritten vom QWidget
+   * @param e context menu event
+   */
+  virtual void contextMenuEvent(QContextMenuEvent *e);
 
 public slots:
   /**

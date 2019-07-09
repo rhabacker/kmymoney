@@ -366,6 +366,39 @@ bool KMyMoneyView::showPageHeader() const
   return false;
 }
 
+void KMyMoneyView::contextMenuEvent(QContextMenuEvent *e)
+{
+  Q_UNUSED(e);
+  QWidget *w = model()->data(model()->index(m_lastViewSelected, 0), KPageModel::WidgetRole).value<QWidget*>();
+  KMyMoneyUtils::SettingsPage id = KMyMoneyUtils::SettingsPage::Undefined;
+  if (dynamic_cast<KHomeView*>(w))
+    id = KMyMoneyUtils::SettingsPage::Home;
+  else if (dynamic_cast<KAccountsView*>(w))
+    ;
+  else if (dynamic_cast<KInstitutionsView*>(w))
+    ;
+  else if (dynamic_cast<KScheduledView*>(w))
+    id = KMyMoneyUtils::SettingsPage::Schedules;
+  else if (dynamic_cast<KCategoriesView*>(w))
+    ;
+  else if (dynamic_cast<KPayeesView*>(w))
+    ;
+  else if (dynamic_cast<KGlobalLedgerView*>(w))
+    ;
+  else if (dynamic_cast<KInvestmentView*>(w))
+    ;
+  else if (dynamic_cast<KReportsView*>(w))
+    id = KMyMoneyUtils::SettingsPage::Reports;
+  else if (dynamic_cast<KBudgetView*>(w))
+    ;
+  else if (dynamic_cast<KForecastView*>(w))
+    id = KMyMoneyUtils::SettingsPage::Forecast;
+  else if (dynamic_cast<KOnlineJobOutbox*>(w))
+    ;
+  if (id != KMyMoneyUtils::SettingsPage::Undefined)
+    kmymoney->showSettingsDialog(id);
+}
+
 void KMyMoneyView::showPage(KPageWidgetItem* pageItem)
 {
   // reset all selected items before showing the selected view
