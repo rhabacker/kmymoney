@@ -904,6 +904,12 @@ bool MyMoneyTransactionFilter::translateDateRange(dateOptionE id, QDate& start, 
       start = start.addYears(-1);
       end = start.addYears(1).addDays(-1);
       break;
+    case MyMoneyTransactionFilter::predefinedFiscalYear:
+      if (MyMoneyFile::instance()->storage()) {
+        start = QDate::fromString(MyMoneyFile::instance()->storage()->value("kmm-customYear"), "yyyy-MM-dd");
+        end = start.addYears(1).addDays(-1);
+      }
+      break;
     case MyMoneyTransactionFilter::today:
       start = QDate::currentDate();
       end =  QDate::currentDate();

@@ -46,6 +46,9 @@ class KMyMoneyFileInfoDlg : public KMyMoneyFileInfoDlgDecl
 public:
   KMyMoneyFileInfoDlg(QWidget *parent = 0);
   virtual ~KMyMoneyFileInfoDlg();
+
+private slots:
+  void slotAccepted();
 };
 
 #endif
