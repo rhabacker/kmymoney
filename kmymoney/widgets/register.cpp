@@ -1977,6 +1977,7 @@ void Register::addGroupMarkers()
   QDate yesterday, thisWeek, lastWeek;
   QDate thisMonth, lastMonth;
   QDate thisYear;
+  QDate predefinedYear;
   int weekStartOfs;
 
   switch (primarySortKey()) {
@@ -1995,6 +1996,13 @@ void Register::addGroupMarkers()
       thisWeek = today.addDays(-weekStartOfs);
       lastWeek = thisWeek.addDays(-7);
       thisYear.setYMD(today.year(), 1, 1);
+      {
+        QString customDateStr = MyMoneyFile::instance()->storage()->value("kmm-customYear");
+        if (!customDateStr.isEmpty())
+          predefinedYear = QDate::fromString(customDateStr, "yyyy-MM-dd");
+        else
+          predefinedYear = thisYear;
+      }
       if (KMyMoneyGlobalSettings::startDate().date() != QDate(1900, 1, 1))
         new KMyMoneyRegister::FancyDateGroupMarker(this, KMyMoneyGlobalSettings::startDate().date(), i18n("Prior transactions possibly filtered"));
 
@@ -2028,6 +2036,7 @@ void Register::addGroupMarkers()
           p->setErroneous(!MyMoneyFile::instance()->hasMatchingOnlineBalance(m_account));
         }
 
+        new KMyMoneyRegister::FancyDateGroupMarker(this, predefinedYear, i18n("Predefined year"));
         new KMyMoneyRegister::FancyDateGroupMarker(this, thisYear, i18n("This year"));
         new KMyMoneyRegister::FancyDateGroupMarker(this, lastMonth, i18n("Last month"));
         new KMyMoneyRegister::FancyDateGroupMarker(this, thisMonth, i18n("This month"));

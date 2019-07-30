@@ -111,6 +111,7 @@ public:
     nextQuarter,
     currentFiscalYear,
     lastFiscalYear,
+    predefinedFiscalYear,
     today,
     next18Months,
     // insert new constants above of this line
