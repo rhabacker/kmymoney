@@ -31,6 +31,7 @@
 
 #include <imymoneystorage.h>
 #include <mymoneyfile.h>
+#include <kmymoney.h>
 #include <kmymoneyutils.h>
 
 KMyMoneyFileInfoDlg::KMyMoneyFileInfoDlg(QWidget *parent)
@@ -81,6 +82,22 @@ KMyMoneyFileInfoDlg::KMyMoneyFileInfoDlg(QWidget *parent)
   for (it_p = list.constBegin(); it_p != list.constEnd(); ++it_p)
     pCount += (*it_p).count();
   m_priceCount->setText(QString("%1").arg(pCount));
+  QDate customYear = QDate::fromString(storage->value("kmm-customYear"), "yyyy-MM-dd");
+  if (!customYear.isValid())
+    customYear.setYMD(QDate::currentDate().year(), 1, 1);
+  m_customYear->setDate(customYear);
+
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(slotAccepted()));
+}
+
+void KMyMoneyFileInfoDlg::slotAccepted()
+{
+  IMyMoneyStorage* storage = MyMoneyFile::instance()->storage();
+  QDate customYear = QDate::fromString(storage->value("kmm-customYear"), "yyyy-MM-dd");
+  if (customYear != m_customYear->date()) {
+    storage->setValue("kmm-customYear", m_customYear->date().toString("yyyy-MM-dd"));
+    kmymoney->updateCaption(false);
+  }
 }
 
 KMyMoneyFileInfoDlg::~KMyMoneyFileInfoDlg()
