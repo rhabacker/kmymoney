@@ -48,7 +48,7 @@ const QStringList MyMoneyReport::ChartPalette::kText = QString("application,defa
 const QStringList kTypeText = QString("all,payments,deposits,transfers,none").split(',');
 const QStringList kStateText = QString("all,notreconciled,cleared,reconciled,frozen,none").split(',');
 const QStringList kValidityText = QString("any,valid,invalid").split(',');
-const QStringList kDateLockText = QString("alldates,untiltoday,currentmonth,currentyear,monthtodate,yeartodate,yeartomonth,lastmonth,lastyear,last7days,last30days,last3months,last6months,last12months,next7days,next30days,next3months,next6months,next12months,userdefined,last3tonext3months,last11Months,currentQuarter,lastQuarter,nextQuarter,currentFiscalYear,lastFiscalYear,today,next18months").split(',');
+const QStringList kDateLockText = QString("alldates,untiltoday,currentmonth,currentyear,monthtodate,yeartodate,yeartomonth,lastmonth,lastyear,last7days,last30days,last3months,last6months,last12months,next7days,next30days,next3months,next6months,next12months,userdefined,last3tonext3months,last11Months,currentQuarter,lastQuarter,nextQuarter,currentFiscalYear,lastFiscalYear,today,next18months,predefinedfiscalyear").split(',');
 const QStringList kAccountTypeText = QString("unknown,checkings,savings,cash,creditcard,loan,certificatedep,investment,moneymarket,asset,liability,currency,income,expense,assetloan,stock,equity,invalid").split(',');
 
 QString MyMoneyReport::Row::toString(Type type)
