@@ -1,0 +1,20 @@
+[Desktop Entry]
+Name=business
+Name[de]=Geschäftsunterstützung
+Name[en_GB]=Business
+Name[x-test]=xxbusinessxx
+Comment=Business support for KMyMoney
+Comment[de]=Geschäftsunterstützung zu KMyMoney
+Comment[en_GB]=Business support for KMyMoney
+Comment[x-test]=xxAdd CSV exporting to KMyMoneyxx
+ServiceTypes=KMyMoneyPlugin
+Type=Service
+Icon=document-export
+X-KDE-Library=kmm_business
+X-KDE-PluginInfo-Name=business
+X-KDE-PluginInfo-Author=Ralf Habacker
+X-KDE-PluginInfo-Email=ralf.habacker@freenet.de
+X-KDE-PluginInfo-Version=${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${VERSION_SUFFIX}
+X-KDE-PluginInfo-Website=http://kmymoney.org/plugins.html
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
