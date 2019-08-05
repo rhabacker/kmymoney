@@ -22,6 +22,7 @@
 
 #include <QDebug>
 #include <QStringList>
+#include <QPointer>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <QVariant>
@@ -38,7 +39,7 @@
  * It provides the type of the item (reportgroup or report)
  * and an operator for sorting.
  */
-class TocItem : public QTreeWidgetItem
+class TocItem
 {
 public:
 
@@ -55,14 +56,7 @@ public:
    * @param parent pointer to the parent QWidget
    * @param columns List of texts in columns
    */
-  TocItem(QTreeWidget* parent, QStringList columns);
-
-  /** Constructor.
-   *
-   * @param parent pointer to the parent QWidget
-   * @param columns List of texts in columns
-   */
-  TocItem(QTreeWidgetItem* parent, QStringList columns);
+  TocItem(TocItem* parent, QStringList columns);
 
   /** Indicates, whether the item represents a report or a reportgroup.
    *
@@ -71,36 +65,20 @@ public:
    */
   bool isReport();
 
-private:
+  TocItem* parent() { return m_parent; }
+  TocItem* child(int row) { return m_childs.at(row); }
+  QString column(int row) { return m_columns.at(row); }
+  QVariant data(int column) { return m_data.at(column); }
+  int row() { return m_parent ? m_parent->m_childs.indexOf(this) : 0; }
+  int columnCount() const { return m_data.count(); }
+  void appendChild(TocItem *child);
+  int childCount() const { return m_childs.count(); }
 
-  /** Operator used to sort TocItems.
-   * TOC has to be sorted in a quite special way:
-   * @li @c reportgroups  numerically by group-number
-   * @li @c reports       alphabetically by text of column 0
-   *
-   * Because the operator is defined @c const it is not possible,
-   * to use a property of a class derived from @c QTreeWidgetItem.
-   * So we use the @c QVariant data of @c QTreeWidgetItem in following way:
-   *
-   * QVariant contains a QStringList at position 0 with
-   * role @c Qt::UserRole.
-   * The first entry of this list is the item-type (report or
-   * reportgroup).  The second entry is the item-type-specific sort-key, for
-   * reports simply the text of column 0, for reportgroups the groupnumber as
-   * string with leading zeros.
-   *
-   * Examples:
-   * <pre>
-   * reportgroup:
-   *  list.at(0) = QString::number(TocItem::GROUP);
-   *  list.at(1) = "001"
-   *
-   * report:
-   *  list.at(0) = QString::number(TocItem::REPORT);
-   *  list.at(1) = "<the-name-of-the-report>"
-   * </pre>
-   */
-  bool operator<(const QTreeWidgetItem &other)const;
+protected:
+  TocItem* m_parent;
+  QList<TocItem*> m_childs;
+  QList<QVariant> m_data;
+  QStringList m_columns;
 };
 
 #endif

@@ -43,7 +43,7 @@ public:
    * @param groupNo group number
    * @param title group title in i18n-form
    */
-  TocItemGroup(QTreeWidget* parent, int groupNo, QString title);
+  TocItemGroup(TocItem* parent, int groupNo, QString title);
 };
 
 #endif

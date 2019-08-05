@@ -28,13 +28,13 @@
 // ----------------------------------------------------------------------------
 // Project Includes
 
-TocItemReport::TocItemReport(QTreeWidgetItem* parent, MyMoneyReport& report):
+TocItemReport::TocItemReport(TocItem* parent, MyMoneyReport& report):
     TocItem(parent, QStringList() << report.name() << report.comment())
 {
   QDate startDate,endDate;
   if (report.dateFilter(startDate, endDate)) {
-    setText(2, KGlobal::locale()->formatDate(startDate, KLocale::ShortDate));
-    setText(3, KGlobal::locale()->formatDate(endDate, KLocale::ShortDate));
+    m_columns << KGlobal::locale()->formatDate(startDate, KLocale::ShortDate);
+    m_columns <<  KGlobal::locale()->formatDate(endDate, KLocale::ShortDate);
   }
   m_report = report;
 
@@ -46,8 +46,8 @@ TocItemReport::TocItemReport(QTreeWidgetItem* parent, MyMoneyReport& report):
   QStringList key;
   key << tocTyp << id;
 
-  QVariant data(key);
-  this->setData(0, Qt::UserRole, data);
+//  QVariant data(key);
+//  this->setData(0, Qt::UserRole, data);
 }
 
 MyMoneyReport& TocItemReport::getReport()

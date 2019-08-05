@@ -68,6 +68,116 @@ using namespace reports;
 #define VIEW_HOME           "home"
 #define VIEW_REPORTS        "reports"
 
+
+#include <QAbstractItemModel>
+#include <QModelIndex>
+#include <QVariant>
+
+class ReportsModel : public QAbstractItemModel
+{
+    Q_OBJECT
+
+public:
+    ReportsModel(const QString &data, QObject *parent = 0)
+      : QAbstractItemModel(parent)
+    {
+        m_headers << i18n("Reports") << i18n("Comment") << i18n("Start date") << i18n("End date");
+    }
+
+    ~ReportsModel() {}
+
+    QVariant data(const QModelIndex &index, int role) const
+    {
+        if (!index.isValid())
+             return QVariant();
+
+         if (role != Qt::DisplayRole)
+             return QVariant();
+
+         TocItem *item = static_cast<TocItem*>(index.internalPointer());
+
+         return item->data(index.column());
+    }
+
+    Qt::ItemFlags flags(const QModelIndex &index) const
+    {
+        if (!index.isValid())
+            return 0;
+
+        return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    }
+
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
+    {
+        if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+            return m_headers.at(section);
+
+         return QVariant();
+    }
+
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const
+    {
+        if (!hasIndex(row, column, parent))
+            return QModelIndex();
+
+        TocItem *parentItem;
+
+        if (!parent.isValid())
+            parentItem = rootItem;
+        else
+            parentItem = static_cast<TocItem*>(parent.internalPointer());
+
+        TocItem *childItem = parentItem->child(row);
+        if (childItem)
+            return createIndex(row, column, childItem);
+        else
+            return QModelIndex();
+    }
+
+    QModelIndex parent(const QModelIndex &index) const
+    {
+        if (!index.isValid())
+            return QModelIndex();
+
+        TocItem *childItem = static_cast<TocItem*>(index.internalPointer());
+        TocItem *parentItem = dynamic_cast<TocItem*>(childItem->parent());
+
+        if (parentItem == rootItem)
+            return QModelIndex();
+
+        return createIndex(parentItem->row(), 0, parentItem);
+    }
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const
+    {
+        TocItem *parentItem;
+        if (parent.column() > 0)
+          return 0;
+
+        if (!parent.isValid())
+          parentItem = rootItem;
+        else
+          parentItem = static_cast<TocItem*>(parent.internalPointer());
+
+        return parentItem->childCount();
+    }
+
+    int columnCount(const QModelIndex &parent = QModelIndex()) const
+    {
+        if (parent.isValid())
+            return static_cast<TocItemGroup*>(parent.internalPointer())->columnCount();
+        else
+            return rootItem->columnCount();
+    }
+
+
+private:
+    void setupModelData(const QStringList &lines, TocItem *parent);
+    QStringList m_headers;
+
+    TocItemGroup *rootItem;
+};
+
 /**
   * KReportsView::KReportTab Implementation
   */
@@ -363,41 +473,41 @@ KReportsView::KReportsView(QWidget *parent, const char *name) :
   m_listTabLayout = new QVBoxLayout(m_listTab);
   m_listTabLayout->setSpacing(6);
 
-  m_tocTreeWidget = new QTreeWidget(m_listTab);
+  m_tocTreeView = new QTreeWidget(m_listTab);
 
   // report-group items have only 1 column (name of group),
   // report items have 2 columns (report name and comment)
-  m_tocTreeWidget->setColumnCount(4);
+  //m_tocTreeView->setColumnCount(4);
 
   // headers
   QStringList headers;
   headers << i18n("Reports") << i18n("Comment") << i18n("Start date") << i18n("End date");
-  m_tocTreeWidget->setHeaderLabels(headers);
+  //m_tocTreeView->setHeaderLabels(headers);
 
-  m_tocTreeWidget->setAlternatingRowColors(true);
-  m_tocTreeWidget->setSortingEnabled(true);
-  m_tocTreeWidget->sortByColumn(0, Qt::AscendingOrder);
+  m_tocTreeView->setAlternatingRowColors(true);
+  m_tocTreeView->setSortingEnabled(true);
+  m_tocTreeView->sortByColumn(0, Qt::AscendingOrder);
 
   // for report group items:
   // doubleclick toggles the expand-state,
   // so avoid any further action in case of doubleclick
   // (see slotItemDoubleClicked)
-  m_tocTreeWidget->setExpandsOnDoubleClick(false);
+  m_tocTreeView->setExpandsOnDoubleClick(false);
 
-  m_tocTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+  m_tocTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
 
-  m_tocTreeWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+  m_tocTreeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-  m_listTabLayout->addWidget(m_tocTreeWidget);
+  m_listTabLayout->addWidget(m_tocTreeView);
   m_reportTabWidget->addTab(m_listTab, i18n("Reports"));
 
   connect(m_reportTabWidget, SIGNAL(tabCloseRequested(int)),
           this, SLOT(slotClose(int)));
 
-  connect(m_tocTreeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
+  connect(m_tocTreeView, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
           this, SLOT(slotItemDoubleClicked(QTreeWidgetItem*,int)));
 
-  connect(m_tocTreeWidget, SIGNAL(customContextMenuRequested(QPoint)),
+  connect(m_tocTreeView, SIGNAL(customContextMenuRequested(QPoint)),
           this, SLOT(slotListContextMenu(QPoint)));
 
   connect(MyMoneyFile::instance(), SIGNAL(dataChanged()), this, SLOT(slotLoadView()));
@@ -415,7 +525,7 @@ void KReportsView::showEvent(QShowEvent * event)
   if (m_needReload) {
     loadView();
     if (KMyMoneyGlobalSettings::showReportsExpanded()) {
-      m_tocTreeWidget->expandAll();
+      m_tocTreeView->expandAll();
     }
     m_needReload = false;
   }
@@ -440,28 +550,28 @@ void KReportsView::slotLoadView()
 
 void KReportsView::loadView()
 {
-  // remember the id of the current selected item
-  QTreeWidgetItem* item = m_tocTreeWidget->currentItem();
-  QString selectedItem = (item) ? item->text(0) : QString();
+//  // remember the id of the current selected item
+//  QTreeWidgetItem* item = m_tocTreeView->currentItem();
+//  QString selectedItem = (item) ? item->text(0) : QString();
 
-  // save expand states of all top-level items
-  QMap<QString, bool> expandStates;
-  for (int i = 0; i < m_tocTreeWidget->topLevelItemCount(); i++) {
-    QTreeWidgetItem* item = m_tocTreeWidget->topLevelItem(i);
+//  // save expand states of all top-level items
+//  QMap<QString, bool> expandStates;
+//  for (int i = 0; i < m_tocTreeView->topLevelItemCount(); i++) {
+//    QTreeWidgetItem* item = m_tocTreeView->topLevelItem(i);
 
-    if (item) {
-      QString itemLabel = item->text(0);
+//    if (item) {
+//      QString itemLabel = item->text(0);
 
-      if (item->isExpanded()) {
-        expandStates.insert(itemLabel, true);
-      } else {
-        expandStates.insert(itemLabel, false);
-      }
-    }
-  }
+//      if (item->isExpanded()) {
+//        expandStates.insert(itemLabel, true);
+//      } else {
+//        expandStates.insert(itemLabel, false);
+//      }
+//    }
+//  }
 
-  // find the item visible on top
-  QTreeWidgetItem* visibleTopItem = m_tocTreeWidget->itemAt(0, 0);
+//  // find the item visible on top
+//  QTreeWidgetItem* visibleTopItem = m_tocTreeView->itemAt(0, 0);
 
   // text of column 0 identifies the item visible on top
   QString visibleTopItemText;
@@ -478,7 +588,7 @@ void KReportsView::loadView()
   //
   // Rebuild the list page
   //
-  m_tocTreeWidget->clear();
+  //m_tocTreeView->clear();
 
   // Default Reports
   QList<ReportGroup> defaultreports;
@@ -486,6 +596,7 @@ void KReportsView::loadView()
 
   QList<ReportGroup>::const_iterator it_group = defaultreports.constBegin();
 
+#if 0
   // the item to be set as current item
   QTreeWidgetItem* currentItem = 0L;
 
@@ -637,7 +748,6 @@ void KReportsView::loadView()
       }
     }
   }
-
   // adjust column widths,
   // but only the first time when the view is loaded,
   // maybe the user sets other column widths later,
@@ -685,8 +795,9 @@ void KReportsView::loadView()
   }
 
   setColumnsAlreadyAdjusted(true);
+#endif
 
-  m_tocTreeWidget->setUpdatesEnabled(true);
+  m_tocTreeView->setUpdatesEnabled(true);
 }
 
 void KReportsView::slotOpenUrl(const KUrl &url, const KParts::OpenUrlArguments&, const KParts::BrowserArguments&)
@@ -1145,7 +1256,7 @@ void KReportsView::addReportTab(const MyMoneyReport& report)
 
 void KReportsView::slotListContextMenu(const QPoint & p)
 {
-  QList<QTreeWidgetItem*> items = m_tocTreeWidget->selectedItems();
+  QList<QTreeWidgetItem*> items = m_tocTreeView->selectedItems();
 
   if (items.isEmpty())
     return;
@@ -1187,12 +1298,12 @@ void KReportsView::slotListContextMenu(const QPoint & p)
     }
   }
 
-  contextmenu->popup(m_tocTreeWidget->mapToGlobal(p));
+  contextmenu->popup(m_tocTreeView->mapToGlobal(p));
 }
 
 void KReportsView::slotOpenFromList()
 {
-  QList<QTreeWidgetItem*> items = m_tocTreeWidget->selectedItems();
+  QList<QTreeWidgetItem*> items = m_tocTreeView->selectedItems();
 
   if (items.isEmpty())
     return;
@@ -1206,7 +1317,7 @@ void KReportsView::slotOpenFromList()
 
 void KReportsView::slotPrintFromList()
 {
-  QList<QTreeWidgetItem*> items = m_tocTreeWidget->selectedItems();
+  QList<QTreeWidgetItem*> items = m_tocTreeView->selectedItems();
 
   if (items.isEmpty())
     return;
@@ -1222,7 +1333,7 @@ void KReportsView::slotPrintFromList()
 
 void KReportsView::slotConfigureFromList()
 {
-  TocItem* tocItem = dynamic_cast<TocItem*>(m_tocTreeWidget->currentItem());
+  TocItem* tocItem = dynamic_cast<TocItem*>(m_tocTreeView->currentItem());
 
   if (tocItem) {
     slotItemDoubleClicked(tocItem, 0);
@@ -1232,7 +1343,7 @@ void KReportsView::slotConfigureFromList()
 
 void KReportsView::slotNewFromList()
 {
-  TocItem* tocItem = dynamic_cast<TocItem*>(m_tocTreeWidget->currentItem());
+  TocItem* tocItem = dynamic_cast<TocItem*>(m_tocTreeView->currentItem());
 
   if (tocItem) {
     slotItemDoubleClicked(tocItem, 0);
@@ -1242,12 +1353,11 @@ void KReportsView::slotNewFromList()
 
 void KReportsView::slotDeleteFromList()
 {
-  TocItem* tocItem = dynamic_cast<TocItem*>(m_tocTreeWidget->currentItem());
+  TocItem* tocItem = dynamic_cast<TocItem*>(m_tocTreeView->currentItem());
 
   if (tocItem) {
-    TocItemReport* reportTocItem = dynamic_cast<TocItemReport*>(tocItem);
-
-    MyMoneyReport& report = reportTocItem->getReport();
+    QVariant variant;
+    MyMoneyReport& report = variant.value<MyMoneyReport&>(tocItem->da);
 
     // If this report does not have an ID, it's a default report and cannot be deleted
     if (! report.id().isEmpty() &&
@@ -1857,29 +1967,29 @@ void KReportsView::setColumnsAlreadyAdjusted(bool adjusted)
 
 void KReportsView::restoreTocExpandState(QMap<QString, bool>& expandStates)
 {
-  for (int i = 0; i < m_tocTreeWidget->topLevelItemCount(); i++) {
-    QTreeWidgetItem* item = m_tocTreeWidget->topLevelItem(i);
+//  for (int i = 0; i < m_tocTreeView->topLevelItemCount(); i++) {
+//    QTreeWidgetItem* item = m_tocTreeView->topLevelItem(i);
 
-    if (item) {
-      QString itemLabel = item->text(0);
+//    if (item) {
+//      QString itemLabel = item->text(0);
 
-      if (expandStates.contains(itemLabel)) {
-        item->setExpanded(expandStates[itemLabel]);
-      } else {
-        item->setExpanded(false);
-      }
-    }
-  }
+//      if (expandStates.contains(itemLabel)) {
+//        item->setExpanded(expandStates[itemLabel]);
+//      } else {
+//        item->setExpanded(false);
+//      }
+//    }
+//  }
 }
 
 void KReportsView::slotExpandCollapse()
 {
   if (sender() == m_expandButton) {
     KMyMoneyGlobalSettings::setShowReportsExpanded(true);
-    m_tocTreeWidget->expandAll();
+    m_tocTreeView->expandAll();
   } else {
       KMyMoneyGlobalSettings::setShowReportsExpanded(false);
-      m_tocTreeWidget->collapseAll();
+      m_tocTreeView->collapseAll();
   }
 }
 

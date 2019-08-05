@@ -26,7 +26,7 @@
 // ----------------------------------------------------------------------------
 // Project Includes
 
-TocItemGroup::TocItemGroup(QTreeWidget* parent, int groupNo, QString title):
+TocItemGroup::TocItemGroup(TocItem* parent, int groupNo, QString title):
     TocItem(parent, QStringList()
             << ((QString().setNum(groupNo)).append(". ").append(title)))
 {
@@ -38,11 +38,11 @@ TocItemGroup::TocItemGroup(QTreeWidget* parent, int groupNo, QString title):
   QStringList key;
   key << tocTyp << id;
 
-  //set bold font
-  QFont font = this->font(0);
-  font.setBold(true);
-  this->setFont(0, font);
+//  //set bold font
+//  QFont font = this->font(0);
+//  font.setBold(true);
+//  this->setFont(0, font);
 
-  QVariant data(key);
-  this->setData(0, Qt::UserRole, data);
+//  QVariant data(key);
+//  this->setData(0, Qt::UserRole, data);
 }

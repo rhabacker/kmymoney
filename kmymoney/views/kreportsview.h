@@ -170,7 +170,7 @@ private:
 
   QWidget* m_listTab;
   QVBoxLayout* m_listTabLayout;
-  QTreeWidget* m_tocTreeWidget;
+  QTreeView* m_tocTreeView;
   QMap<QString, TocItemGroup*> m_allTocItemGroups;
 
   bool m_columnsAlreadyAdjusted;
