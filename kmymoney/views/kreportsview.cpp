@@ -68,6 +68,98 @@ using namespace reports;
 #define VIEW_HOME           "home"
 #define VIEW_REPORTS        "reports"
 
+class KReportsViewModel : public QAbstractItemModel
+{
+public:
+    KReportsViewModel(QObject *parent = 0)
+      : QAbstractItemModel(parent)
+    {
+        m_reports["charts"] = KReportsView::ReportGroup("charts", i18n("Charts"));
+        m_reports["favorites"] = KReportsView::ReportGroup("favorites", i18n("Favorite Reports"));
+        m_reports["orphaned"] = KReportsView::ReportGroup("orphaned", i18n("Old Customized Reports"));
+        m_headers << i18n("Reports") << i18n("Comment") << i18n("Start date") << i18n("End date");
+    }
+
+    void addReports(QList<KReportsView::ReportGroup> &reports, bool customReports = false)
+    {
+        // If this report is in a known group, place it there
+        // KReportGroupListItem* groupnode = groupitems[(*it_report).group()];
+        // otherwise, place it in the orphanage
+        // ALSO place it into the Favorites list if it's a favorite
+
+        foreach(const KReportsView::ReportGroup &group, reports) {
+            QString groupName = group.name();
+            if (!m_reports.contains(groupName))
+                m_reports[groupName] = group;
+            else
+                m_reports[groupName].append(group);
+            foreach(const MyMoneyReport &report, group) {
+                if (customReports && !m_reports.contains(report.group()))
+                    m_reports["orphaned"].append(report);
+                else
+                    m_reports[report.group()].append(group);
+
+                if (report.isChartByDefault()) {
+                    m_reports["charts"].append(report);
+                }
+                if (report.isFavorite()) {
+                    m_reports["favorites"].append(report);
+                }
+            }
+        }
+    }
+
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const
+    {
+        if (!hasIndex(row, column, parent))
+             return QModelIndex();
+        return createIndex(row, column);
+    }
+
+    QModelIndex parent(const QModelIndex &child) const
+    {
+        if (!child.isValid())
+              return QModelIndex();
+
+       return QModelIndex();
+    }
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const
+    {
+        if (!parent.isValid())
+            return m_reports.size();
+        return 1;
+    }
+
+    int columnCount(const QModelIndex &parent = QModelIndex()) const
+    {
+        if (!parent.isValid())
+            return 2;
+        return 0;
+    }
+
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const
+    {
+        if (role != Qt::DisplayRole)
+            return QVariant();
+
+        if (index.row() > m_reports.size())
+            return QVariant();
+        if (index.column() == 0)
+            return m_reports[m_reports.keys()[index.row()]].title();
+        return QVariant();
+    }
+
+    QVariant headerData(int section, Qt::Orientation orientation,int role = Qt::DisplayRole) const
+    {
+        return QVariant(m_headers[section]);
+    }
+
+ private:
+     QMap<QString, KReportsView::ReportGroup> m_reports;
+     QStringList m_headers;
+};
+
 /**
   * KReportsView::KReportTab Implementation
   */
@@ -363,8 +455,10 @@ KReportsView::KReportsView(QWidget *parent, const char *name) :
   m_listTabLayout = new QVBoxLayout(m_listTab);
   m_listTabLayout->setSpacing(6);
 
-  m_tocTreeWidget = new QTreeWidget(m_listTab);
+  m_tocTreeWidget = new QTreeView(m_listTab);
+  m_tocTreeWidget->setHeaderHidden(false);
 
+#if 0
   // report-group items have only 1 column (name of group),
   // report items have 2 columns (report name and comment)
   m_tocTreeWidget->setColumnCount(4);
@@ -377,7 +471,6 @@ KReportsView::KReportsView(QWidget *parent, const char *name) :
   m_tocTreeWidget->setAlternatingRowColors(true);
   m_tocTreeWidget->setSortingEnabled(true);
   m_tocTreeWidget->sortByColumn(0, Qt::AscendingOrder);
-
   // for report group items:
   // doubleclick toggles the expand-state,
   // so avoid any further action in case of doubleclick
@@ -387,6 +480,7 @@ KReportsView::KReportsView(QWidget *parent, const char *name) :
   m_tocTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
   m_tocTreeWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+#endif
 
   m_listTabLayout->addWidget(m_tocTreeWidget);
   m_reportTabWidget->addTab(m_listTab, i18n("Reports"));
@@ -440,6 +534,20 @@ void KReportsView::slotLoadView()
 
 void KReportsView::loadView()
 {
+#if 1
+  // Default Reports
+  QList<ReportGroup> defaultreports;
+  defaultReports(defaultreports);
+
+  KReportsViewModel *model = new KReportsViewModel(this);
+  model->addReports(defaultreports);
+  ReportGroup customGroup("custom", i18n("Custom Reports"));
+  customGroup.append(MyMoneyFile::instance()->reportList());
+  QList<ReportGroup> customReports;
+  customReports.append(customGroup);
+  model->addReports(customReports, true);
+  m_tocTreeWidget->setModel(model);
+#else
   // remember the id of the current selected item
   QTreeWidgetItem* item = m_tocTreeWidget->currentItem();
   QString selectedItem = (item) ? item->text(0) : QString();
@@ -687,6 +795,7 @@ void KReportsView::loadView()
   setColumnsAlreadyAdjusted(true);
 
   m_tocTreeWidget->setUpdatesEnabled(true);
+#endif
 }
 
 void KReportsView::slotOpenUrl(const KUrl &url, const KParts::OpenUrlArguments&, const KParts::BrowserArguments&)
@@ -1145,126 +1254,126 @@ void KReportsView::addReportTab(const MyMoneyReport& report)
 
 void KReportsView::slotListContextMenu(const QPoint & p)
 {
-  QList<QTreeWidgetItem*> items = m_tocTreeWidget->selectedItems();
+//  QList<QTreeWidgetItem*> items = m_tocTreeWidget->selectedItems();
 
-  if (items.isEmpty())
-    return;
+//  if (items.isEmpty())
+//    return;
 
-  QList<TocItem*> tocItems;
-  foreach(QTreeWidgetItem *item, items) {
-    TocItem* tocItem = dynamic_cast<TocItem*>(item);
-    if (!tocItem || !tocItem->isReport())
-        continue;
-    tocItems.append(tocItem);
-  }
+//  QList<TocItem*> tocItems;
+//  foreach(QTreeWidgetItem *item, items) {
+//    TocItem* tocItem = dynamic_cast<TocItem*>(item);
+//    if (!tocItem || !tocItem->isReport())
+//        continue;
+//    tocItems.append(tocItem);
+//  }
 
-  if (tocItems.isEmpty())
-    return;
+//  if (tocItems.isEmpty())
+//    return;
 
-  KMenu* contextmenu = new KMenu(this);
+//  KMenu* contextmenu = new KMenu(this);
 
-  contextmenu->addAction(i18nc("To open a report", "&Open"),
-                         this, SLOT(slotOpenFromList()));
+//  contextmenu->addAction(i18nc("To open a report", "&Open"),
+//                         this, SLOT(slotOpenFromList()));
 
-  contextmenu->addAction(i18nc("To print a report", "&Print"),
-                         this, SLOT(slotPrintFromList()));
+//  contextmenu->addAction(i18nc("To print a report", "&Print"),
+//                         this, SLOT(slotPrintFromList()));
 
-  if (tocItems.size() == 1) {
-    TocItem* tocItem = dynamic_cast<TocItem*>(tocItems.at(0));
+//  if (tocItems.size() == 1) {
+//    TocItem* tocItem = dynamic_cast<TocItem*>(tocItems.at(0));
 
-    contextmenu->addAction(i18nc("Configure a report", "&Configure"),
-                           this, SLOT(slotConfigureFromList()));
+//    contextmenu->addAction(i18nc("Configure a report", "&Configure"),
+//                           this, SLOT(slotConfigureFromList()));
 
-    contextmenu->addAction(i18n("&New report"),
-                           this, SLOT(slotNewFromList()));
+//    contextmenu->addAction(i18n("&New report"),
+//                           this, SLOT(slotNewFromList()));
 
-    // Only add this option if it's a custom report. Default reports cannot be deleted
-    TocItemReport* reportTocItem = dynamic_cast<TocItemReport*>(tocItem);
-    MyMoneyReport& report = reportTocItem->getReport();
-    if (! report.id().isEmpty()) {
-      contextmenu->addAction(i18n("&Delete"),
-                             this, SLOT(slotDeleteFromList()));
-    }
-  }
+//    // Only add this option if it's a custom report. Default reports cannot be deleted
+//    TocItemReport* reportTocItem = dynamic_cast<TocItemReport*>(tocItem);
+//    MyMoneyReport& report = reportTocItem->getReport();
+//    if (! report.id().isEmpty()) {
+//      contextmenu->addAction(i18n("&Delete"),
+//                             this, SLOT(slotDeleteFromList()));
+//    }
+//  }
 
-  contextmenu->popup(m_tocTreeWidget->mapToGlobal(p));
+//  contextmenu->popup(m_tocTreeWidget->mapToGlobal(p));
 }
 
 void KReportsView::slotOpenFromList()
 {
-  QList<QTreeWidgetItem*> items = m_tocTreeWidget->selectedItems();
+//  QList<QTreeWidgetItem*> items = m_tocTreeWidget->selectedItems();
 
-  if (items.isEmpty())
-    return;
+//  if (items.isEmpty())
+//    return;
 
-  foreach(QTreeWidgetItem *item, items) {
-    TocItem* tocItem = dynamic_cast<TocItem*>(item);
-    if (tocItem && tocItem->isReport())
-      slotItemDoubleClicked(tocItem, 0);
-  }
+//  foreach(QTreeWidgetItem *item, items) {
+//    TocItem* tocItem = dynamic_cast<TocItem*>(item);
+//    if (tocItem && tocItem->isReport())
+//      slotItemDoubleClicked(tocItem, 0);
+//  }
 }
 
 void KReportsView::slotPrintFromList()
 {
-  QList<QTreeWidgetItem*> items = m_tocTreeWidget->selectedItems();
+//  QList<QTreeWidgetItem*> items = m_tocTreeWidget->selectedItems();
 
-  if (items.isEmpty())
-    return;
+//  if (items.isEmpty())
+//    return;
 
-  foreach(QTreeWidgetItem *item, items) {
-    TocItem* tocItem = dynamic_cast<TocItem*>(item);
-    if (tocItem && tocItem->isReport()) {
-      slotItemDoubleClicked(tocItem, 0);
-      slotPrintView();
-    }
-  }
+//  foreach(QTreeWidgetItem *item, items) {
+//    TocItem* tocItem = dynamic_cast<TocItem*>(item);
+//    if (tocItem && tocItem->isReport()) {
+//      slotItemDoubleClicked(tocItem, 0);
+//      slotPrintView();
+//    }
+//  }
 }
 
 void KReportsView::slotConfigureFromList()
 {
-  TocItem* tocItem = dynamic_cast<TocItem*>(m_tocTreeWidget->currentItem());
+//  TocItem* tocItem = dynamic_cast<TocItem*>(m_tocTreeWidget->currentItem());
 
-  if (tocItem) {
-    slotItemDoubleClicked(tocItem, 0);
-    slotConfigure();
-  }
+//  if (tocItem) {
+//    slotItemDoubleClicked(tocItem, 0);
+//    slotConfigure();
+//  }
 }
 
 void KReportsView::slotNewFromList()
 {
-  TocItem* tocItem = dynamic_cast<TocItem*>(m_tocTreeWidget->currentItem());
+//  TocItem* tocItem = dynamic_cast<TocItem*>(m_tocTreeWidget->currentItem());
 
-  if (tocItem) {
-    slotItemDoubleClicked(tocItem, 0);
-    slotDuplicate();
-  }
+//  if (tocItem) {
+//    slotItemDoubleClicked(tocItem, 0);
+//    slotDuplicate();
+//  }
 }
 
 void KReportsView::slotDeleteFromList()
 {
-  TocItem* tocItem = dynamic_cast<TocItem*>(m_tocTreeWidget->currentItem());
+//  TocItem* tocItem = dynamic_cast<TocItem*>(m_tocTreeWidget->currentItem());
 
-  if (tocItem) {
-    TocItemReport* reportTocItem = dynamic_cast<TocItemReport*>(tocItem);
+//  if (tocItem) {
+//    TocItemReport* reportTocItem = dynamic_cast<TocItemReport*>(tocItem);
 
-    MyMoneyReport& report = reportTocItem->getReport();
+//    MyMoneyReport& report = reportTocItem->getReport();
 
-    // If this report does not have an ID, it's a default report and cannot be deleted
-    if (! report.id().isEmpty() &&
-        KMessageBox::Continue == deleteReportDialog(report.name())) {
-      // check if report's tab is open; start from 1 because 0 is toc tab
-      for (int i = 1; i < m_reportTabWidget->count(); ++i) {
-        KReportTab* tab = dynamic_cast<KReportTab*>(m_reportTabWidget->widget(i));
-        if (tab->report().id() == report.id()) {
-          slotClose(i); // if open, close it, so no crash when switching to it
-          break;
-        }
-      }
-      MyMoneyFileTransaction ft;
-      MyMoneyFile::instance()->removeReport(report);
-      ft.commit();
-    }
-  }
+//    // If this report does not have an ID, it's a default report and cannot be deleted
+//    if (! report.id().isEmpty() &&
+//        KMessageBox::Continue == deleteReportDialog(report.name())) {
+//      // check if report's tab is open; start from 1 because 0 is toc tab
+//      for (int i = 1; i < m_reportTabWidget->count(); ++i) {
+//        KReportTab* tab = dynamic_cast<KReportTab*>(m_reportTabWidget->widget(i));
+//        if (tab->report().id() == report.id()) {
+//          slotClose(i); // if open, close it, so no crash when switching to it
+//          break;
+//        }
+//      }
+//      MyMoneyFileTransaction ft;
+//      MyMoneyFile::instance()->removeReport(report);
+//      ft.commit();
+//    }
+//  }
 }
 
 void KReportsView::defaultReports(QList<ReportGroup>& groups)
@@ -1857,19 +1966,19 @@ void KReportsView::setColumnsAlreadyAdjusted(bool adjusted)
 
 void KReportsView::restoreTocExpandState(QMap<QString, bool>& expandStates)
 {
-  for (int i = 0; i < m_tocTreeWidget->topLevelItemCount(); i++) {
-    QTreeWidgetItem* item = m_tocTreeWidget->topLevelItem(i);
+//  for (int i = 0; i < m_tocTreeWidget->topLevelItemCount(); i++) {
+//    QTreeWidgetItem* item = m_tocTreeWidget->topLevelItem(i);
 
-    if (item) {
-      QString itemLabel = item->text(0);
+//    if (item) {
+//      QString itemLabel = item->text(0);
 
-      if (expandStates.contains(itemLabel)) {
-        item->setExpanded(expandStates[itemLabel]);
-      } else {
-        item->setExpanded(false);
-      }
-    }
-  }
+//      if (expandStates.contains(itemLabel)) {
+//        item->setExpanded(expandStates[itemLabel]);
+//      } else {
+//        item->setExpanded(false);
+//      }
+//    }
+//  }
 }
 
 void KReportsView::slotExpandCollapse()
