@@ -114,49 +114,64 @@ public:
 
     bool hasChildren(const QModelIndex &parent = QModelIndex()) const
     {
-        if (!parent.isValid())
-            return m_reports.size() > 0;
-        return m_reports[m_reports.keys()[parent.row()]].size() > 0;
+        bool result;
+        if (!parent.isValid()) {
+            result = m_reports.size() > 0;
+            qDebug() << __FUNCTION__ << parent << ":" << result;
+        } else {
+            result = m_reports[m_keys[parent.row()]].size() > 0;
+            qDebug() << __FUNCTION__ << parent << ":" << result;
+        }
+        return result;
     }
 
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const
     {
-        if (!hasIndex(row, column, parent))
-             return QModelIndex();
-        return createIndex(row, column);
+        QModelIndex result;
+        if (hasIndex(row, column, parent))
+            result = createIndex(row, column, parent.row());
+        qDebug() << __FUNCTION__ << row << column << parent << ":" << result;
+        return result;
     }
 
     QModelIndex parent(const QModelIndex &child) const
     {
-        if (!child.isValid())
-              return QModelIndex();
-
-       return QModelIndex();
+        QModelIndex result;
+        if (child.isValid())
+            result = child.parent();
+        qDebug() << __FUNCTION__ << child << ":" << result;
+        return result;
     }
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const
     {
+        int result;
         if (!parent.isValid())
-            return m_reports.size();
-        return m_reports[m_reports.keys()[parent.row()]].size();
+            result = m_reports.size();
+        else
+            result = m_reports[m_keys[parent.row()]].size();
+        qDebug() << __FUNCTION__ << parent << result;
+        return result;
     }
 
     int columnCount(const QModelIndex &parent = QModelIndex()) const
     {
+        qDebug() << __FUNCTION__ << parent;
         if (!parent.isValid())
-            return 4;
-        return 0;
+            return 1;
+        return 4;
     }
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const
     {
+        qDebug() << __FUNCTION__ << index;
         if (role != Qt::DisplayRole)
             return QVariant();
 
         if (index.row() >= m_reports.size())
             return QVariant();
         if (index.column() == 0)
-            return m_reports[m_reports.keys()[index.row()]].title();
+            return m_reports[m_keys[index.row()]].title();
         return QVariant();
     }
 
