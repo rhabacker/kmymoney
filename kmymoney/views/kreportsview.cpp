@@ -68,6 +68,7 @@ using namespace reports;
 #define VIEW_HOME           "home"
 #define VIEW_REPORTS        "reports"
 
+// https://doc.qt.io/archives/4.6/model-view-creating-models.html
 class KReportsViewModel : public QAbstractItemModel
 {
 public:
@@ -109,6 +110,13 @@ public:
         }
     }
 
+    bool hasChildren(const QModelIndex &parent = QModelIndex()) const
+    {
+        if (!parent.isValid())
+            return m_reports.size() > 0;
+        return m_reports[m_reports.keys()[parent.row()]].size() > 0;
+    }
+
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const
     {
         if (!hasIndex(row, column, parent))
@@ -128,13 +136,13 @@ public:
     {
         if (!parent.isValid())
             return m_reports.size();
-        return 1;
+        return m_reports[m_reports.keys()[parent.row()]].size();
     }
 
     int columnCount(const QModelIndex &parent = QModelIndex()) const
     {
         if (!parent.isValid())
-            return 2;
+            return 4;
         return 0;
     }
 
@@ -143,7 +151,7 @@ public:
         if (role != Qt::DisplayRole)
             return QVariant();
 
-        if (index.row() > m_reports.size())
+        if (index.row() >= m_reports.size())
             return QVariant();
         if (index.column() == 0)
             return m_reports[m_reports.keys()[index.row()]].title();
@@ -152,6 +160,8 @@ public:
 
     QVariant headerData(int section, Qt::Orientation orientation,int role = Qt::DisplayRole) const
     {
+        if (role != Qt::DisplayRole)
+            return QVariant();
         return QVariant(m_headers[section]);
     }
 
@@ -456,7 +466,7 @@ KReportsView::KReportsView(QWidget *parent, const char *name) :
   m_listTabLayout->setSpacing(6);
 
   m_tocTreeWidget = new QTreeView(m_listTab);
-  m_tocTreeWidget->setHeaderHidden(false);
+  m_tocTreeWidget->header()->setVisible(true);
 
 #if 0
   // report-group items have only 1 column (name of group),
