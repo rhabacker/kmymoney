@@ -94,20 +94,22 @@ public:
                 m_reports[groupName] = group;
             else
                 m_reports[groupName].append(group);
+            if (!customReports)
+                continue;
             foreach(const MyMoneyReport &report, group) {
-                if (customReports && !m_reports.contains(report.group()))
-                    m_reports["orphaned"].append(report);
-                else
-                    m_reports[report.group()].append(group);
-
-                if (report.isChartByDefault()) {
+                if (report.isChartByDefault())
                     m_reports["charts"].append(report);
-                }
-                if (report.isFavorite()) {
+                if (report.isFavorite())
                     m_reports["favorites"].append(report);
-                }
+                if (report.group().isEmpty())
+                    continue;
+                if (!m_reports.contains(report.group()))
+                    m_reports["orphaned"].append(report);
+                else if (!m_reports[report.group()].contains(report))
+                    m_reports[report.group()].append(group);
             }
         }
+        m_keys = m_reports.keys();
     }
 
     bool hasChildren(const QModelIndex &parent = QModelIndex()) const
@@ -168,6 +170,7 @@ public:
  private:
      QMap<QString, KReportsView::ReportGroup> m_reports;
      QStringList m_headers;
+     QStringList m_keys;
 };
 
 /**
