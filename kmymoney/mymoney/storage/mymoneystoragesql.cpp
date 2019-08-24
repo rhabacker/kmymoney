@@ -4045,11 +4045,11 @@ const QMap<QString, MyMoneyTransaction> MyMoneyStorageSql::fetchTransactions(con
   bool txFilterActive = ((start != QDate()) || (end != QDate())); // and this for fields in the transaction table
 
   QString whereClause = "";
-  QString subClauseconnector = " where txType = 'N' and ";
+  QString subClauseconnector = " WHERE txType = 'N' AND ";
   // payees
   QStringList payees;
   if (filter.payees(payees)) {
-    QString itemConnector = "payeeId in (";
+    QString itemConnector = "payeeId IN (";
     QString payeesClause = "";
     foreach (const QString& it, payees) {
       payeesClause.append(QString("%1'%2'")
@@ -4058,7 +4058,7 @@ const QMap<QString, MyMoneyTransaction> MyMoneyStorageSql::fetchTransactions(con
     }
     if (!payeesClause.isEmpty()) {
       whereClause += subClauseconnector + payeesClause + ')';
-      subClauseconnector = " and ";
+      subClauseconnector = " AND ";
     }
     splitFilterActive = true;
   }
@@ -4075,7 +4075,7 @@ const QMap<QString, MyMoneyTransaction> MyMoneyStorageSql::fetchTransactions(con
     }
     if (!tagsClause.isEmpty()) {
       whereClause += subClauseconnector + tagsClause + ')';
-      subClauseconnector = " and ";
+      subClauseconnector = " AND ";
     }
     splitFilterActive = true;
   }
@@ -4092,7 +4092,7 @@ const QMap<QString, MyMoneyTransaction> MyMoneyStorageSql::fetchTransactions(con
     }
     if (!accountsClause.isEmpty()) {
       whereClause += subClauseconnector + accountsClause + ')';
-      subClauseconnector = " and (";
+      subClauseconnector = " AND (";
     }
   }
 
@@ -4109,7 +4109,7 @@ const QMap<QString, MyMoneyTransaction> MyMoneyStorageSql::fetchTransactions(con
     }
     if (!statesClause.isEmpty()) {
       whereClause += subClauseconnector + statesClause + ')';
-      subClauseconnector = " and (";
+      subClauseconnector = " AND (";
     }
   }
   // I've given up trying to work out the logic. we keep getting the wrong number of close brackets
