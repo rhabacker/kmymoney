@@ -4154,6 +4154,7 @@ const QMap<QString, MyMoneyTransaction> MyMoneyStorageSql::fetchTransactions(con
     inQuery = QString("(select distinct transactionId from kmmSplits %1)").arg(whereClause);
   } else {
     inQuery = QString("(select distinct id from kmmTransactions where %1)").arg(dateClause);
+    dateClause = "";
     txFilterActive = false; // kill off the date filter now
   }
 
