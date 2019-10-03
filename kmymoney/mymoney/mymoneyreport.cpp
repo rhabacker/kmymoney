@@ -27,6 +27,7 @@
 
 // ----------------------------------------------------------------------------
 // KDE Includes
+#include <KLocalizedString>
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -77,6 +78,35 @@ QString MyMoneyReport::Row::toString(Type type)
   case AccountReconcile   : return "AccountReconcile";
   case CashFlow           : return "CashFlow";
   default                  : return "undefined";
+  }
+}
+
+QString MyMoneyReport::Row::toI18nString(MyMoneyReport::Row::Type type)
+{
+  switch(type) {
+  case NoRows             : return i18n("No rows");
+  case AssetLiability     : return i18n("Assets & Liabilities");
+  case ExpenseIncome      : return i18n("Income & Expenses");
+  case Category           : return i18n("Category");
+  case TopCategory        : return i18n("Top category");
+  case Account            : return i18n("Account");
+  case Tag                : return i18n("Tag");
+  case Payee              : return i18n("Payee");
+  case Month              : return i18n("Month");
+  case Week               : return i18n("Week");
+  case TopAccount         : return i18n("Top account");
+  case AccountByTopAccount: return i18n("Account by top account");
+  case EquityType         : return i18n("Equity type");
+  case AccountType        : return i18n("Account type");
+  case Institution        : return i18n("Institution");
+  case Budget             : return i18n("Budget");
+  case BudgetActual       : return i18n("Actual budget");
+  case Schedule           : return i18n("Schedule");
+  case AccountInfo        : return i18n("Account info");
+  case AccountLoanInfo    : return i18n("Account loan info");
+  case AccountReconcile   : return i18n("Account reconciliation");
+  case CashFlow           : return i18n("Cash flow");
+  default                 : return i18n("undefined");
   }
 }
 
