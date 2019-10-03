@@ -64,6 +64,30 @@
 #include <ktoolinvocation.h>
 #include "ui_kfindtransactiondlgdecl.h"
 
+MyMoneyReport::Row::Type rowTypes[] = {
+    MyMoneyReport::Row::ExpenseIncome,
+    MyMoneyReport::Row::AssetLiability,
+    MyMoneyReport::Row::Category,
+    MyMoneyReport::Row::TopCategory,
+    MyMoneyReport::Row::Account,
+    MyMoneyReport::Row::Tag,
+    MyMoneyReport::Row::Payee,
+    MyMoneyReport::Row::Month,
+    MyMoneyReport::Row::Week,
+    MyMoneyReport::Row::TopAccount,
+    MyMoneyReport::Row::AccountByTopAccount,
+    MyMoneyReport::Row::EquityType,
+    MyMoneyReport::Row::AccountType,
+    MyMoneyReport::Row::Institution,
+    MyMoneyReport::Row::Budget,
+    MyMoneyReport::Row::BudgetActual,
+    MyMoneyReport::Row::Schedule,
+    MyMoneyReport::Row::AccountInfo,
+    MyMoneyReport::Row::AccountLoanInfo,
+    MyMoneyReport::Row::AccountReconcile,
+    MyMoneyReport::Row::CashFlow,
+};
+
 KReportConfigurationFilterDlg::KReportConfigurationFilterDlg(
   MyMoneyReport report, QWidget *parent)
     : KFindTransactionDlg(parent, report.rowType() == MyMoneyReport::Row::Account),
@@ -98,30 +122,38 @@ KReportConfigurationFilterDlg::KReportConfigurationFilterDlg(
   m_tab1->setObjectName("kMyMoneyReportConfigTab1");
   m_ui->m_criteriaTab->insertTab(0, m_tab1, i18n("Report"));
 
-  if (m_initialState.reportType() == MyMoneyReport::Report::PivotTable) {
-    m_tab2 = new kMyMoneyReportConfigTab2Decl(m_ui->m_criteriaTab);
-    m_tab2->setObjectName("kMyMoneyReportConfigTab2");
-    m_ui->m_criteriaTab->insertTab(1, m_tab2, i18n("Rows/Columns"));
+  m_tab2 = new kMyMoneyReportConfigTab2Decl(m_ui->m_criteriaTab);
+  m_tab2->setObjectName("kMyMoneyReportConfigTab2");
+  m_ui->m_criteriaTab->insertTab(1, m_tab2, i18n("Rows/Columns"));
 
-    MyMoneyReport::Row::Type rt[] = { MyMoneyReport::Row::ExpenseIncome, MyMoneyReport::Row::AssetLiability };
-    QStringList items;
-    for (unsigned int i = 0; i < sizeof(rt)/sizeof(MyMoneyReport::Row::Type); i++) {
-      const QString item = MyMoneyReport::Row::toI18nString(rt[i]);
-      items.append(item);
-    }
-    m_tab2->findChild<KComboBox*>("m_comboRows")->addItems(items);
+  QStringList items;
+  for (unsigned int i = 0; i < sizeof(rowTypes)/sizeof(MyMoneyReport::Row::Type); i++) {
+    const QString item = MyMoneyReport::Row::toI18nString(rowTypes[i]);
+    items.append(item);
+  }
+  m_tab2->findChild<KComboBox*>("m_comboRows")->addItems(items);
+
+  if (m_initialState.reportType() == MyMoneyReport::Report::PivotTable) {
+    m_tab2->findChild<KComboBox*>("m_comboRows")->setEnabled(true);
+    m_tab2->findChild<KComboBox*>("m_comboDetail")->setEnabled(true);
 
     connect(m_tab2->findChild<KComboBox*>("m_comboRows"), SIGNAL(activated(int)), this, SLOT(slotRowTypeChanged(int)));
-    connect(m_tab2->findChild<KComboBox*>("m_comboColumns"), SIGNAL(activated(int)), this, SLOT(slotColumnTypeChanged(int)));
     connect(m_tab2->findChild<KComboBox*>("m_comboRows"), SIGNAL(activated(int)), this, SLOT(slotUpdateColumnsCombo()));
+    connect(m_tab2->findChild<KComboBox*>("m_comboColumns"), SIGNAL(activated(int)), this, SLOT(slotColumnTypeChanged(int)));
     connect(m_tab2->findChild<KComboBox*>("m_comboColumns"), SIGNAL(activated(int)), this, SLOT(slotUpdateColumnsCombo()));
+
     //control the state of the includeTransfer check
     connect(m_ui->m_categoriesView, SIGNAL(stateChanged()), this, SLOT(slotUpdateCheckTransfers()));
-
     m_tabChart = new kMyMoneyReportConfigTabChartDecl(m_ui->m_criteriaTab);
     m_tabChart->setObjectName("kMyMoneyReportConfigTabChart");
     m_ui->m_criteriaTab->insertTab(2, m_tabChart, i18n("Chart"));
   } else if (m_initialState.reportType() == MyMoneyReport::Report::QueryTable) {
+    m_tab2->findChild<KComboBox*>("m_comboRows")->setEnabled(false);
+    m_tab2->findChild<KComboBox*>("m_comboColumns")->setEnabled(false);
+    m_tab2->findChild<KComboBox*>("m_comboDetail")->setEnabled(false);
+    m_tab2->findChild<QCheckBox*>("m_checkTransfers")->setEnabled(false);
+    m_tab2->findChild<QCheckBox*>("m_checkUnused")->setEnabled(false);
+    m_tab2->findChild<QCheckBox*>("m_checkScheduled")->setEnabled(false);
     // eInvestmentHoldings is a special-case report, and you cannot configure the
     // rows & columns of that report.
     if (m_initialState.rowType() < MyMoneyReport::Row::AccountByTopAccount) {
@@ -172,8 +204,7 @@ void KReportConfigurationFilterDlg::slotSearch()
 
     // modify the rowtype only if the widget is enabled
     if (m_tab2->findChild<KComboBox*>("m_comboRows")->isEnabled()) {
-      MyMoneyReport::Row::Type rt[2] = { MyMoneyReport::Row::ExpenseIncome, MyMoneyReport::Row::AssetLiability };
-      m_currentState.setRowType(rt[m_tab2->findChild<KComboBox*>("m_comboRows")->currentIndex()]);
+      m_currentState.setRowType(rowTypes[m_tab2->findChild<KComboBox*>("m_comboRows")->currentIndex()]);
     }
 
     m_currentState.setShowingRowTotals(false);
@@ -336,7 +367,7 @@ void KReportConfigurationFilterDlg::slotReset()
         combo->setCurrentItem(MyMoneyReport::Row::toI18nString(MyMoneyReport::Row::ExpenseIncome), false); // income / expense
         break;
       default:
-        combo->setCurrentItem(MyMoneyReport::Row::toI18nString(MyMoneyReport::Row::AssetLiability), false); // income / expense
+        combo->setCurrentItem(MyMoneyReport::Row::toI18nString(m_initialState.rowType()), false); // asset / liability
         break;
     }
     m_tab2->findChild<QCheckBox*>("m_checkTotalColumn")->setChecked(m_initialState.isShowingRowTotals());
