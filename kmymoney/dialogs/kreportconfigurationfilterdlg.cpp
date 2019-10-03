@@ -102,6 +102,15 @@ KReportConfigurationFilterDlg::KReportConfigurationFilterDlg(
     m_tab2 = new kMyMoneyReportConfigTab2Decl(m_ui->m_criteriaTab);
     m_tab2->setObjectName("kMyMoneyReportConfigTab2");
     m_ui->m_criteriaTab->insertTab(1, m_tab2, i18n("Rows/Columns"));
+
+    MyMoneyReport::Row::Type rt[] = { MyMoneyReport::Row::ExpenseIncome, MyMoneyReport::Row::AssetLiability };
+    QStringList items;
+    for (unsigned int i = 0; i < sizeof(rt)/sizeof(MyMoneyReport::Row::Type); i++) {
+      const QString item = MyMoneyReport::Row::toI18nString(rt[i]);
+      items.append(item);
+    }
+    m_tab2->findChild<KComboBox*>("m_comboRows")->addItems(items);
+
     connect(m_tab2->findChild<KComboBox*>("m_comboRows"), SIGNAL(activated(int)), this, SLOT(slotRowTypeChanged(int)));
     connect(m_tab2->findChild<KComboBox*>("m_comboColumns"), SIGNAL(activated(int)), this, SLOT(slotColumnTypeChanged(int)));
     connect(m_tab2->findChild<KComboBox*>("m_comboRows"), SIGNAL(activated(int)), this, SLOT(slotUpdateColumnsCombo()));
@@ -324,10 +333,10 @@ void KReportConfigurationFilterDlg::slotReset()
       case MyMoneyReport::Row::ExpenseIncome:
       case MyMoneyReport::Row::Budget:
       case MyMoneyReport::Row::BudgetActual:
-        combo->setCurrentItem(i18n("Income & Expenses"), false); // income / expense
+        combo->setCurrentItem(MyMoneyReport::Row::toI18nString(MyMoneyReport::Row::ExpenseIncome), false); // income / expense
         break;
       default:
-        combo->setCurrentItem(i18n("Assets & Liabilities"), false); // asset / liability
+        combo->setCurrentItem(MyMoneyReport::Row::toI18nString(MyMoneyReport::Row::AssetLiability), false); // income / expense
         break;
     }
     m_tab2->findChild<QCheckBox*>("m_checkTotalColumn")->setChecked(m_initialState.isShowingRowTotals());

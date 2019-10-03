@@ -66,6 +66,7 @@ public:
      * @return row type converted to string
      */
     static QString toString(Type type);
+    static QString toI18nString(Type type);
     static const QStringList kText;
    };
 

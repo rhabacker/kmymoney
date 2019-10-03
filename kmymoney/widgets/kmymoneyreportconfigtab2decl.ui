@@ -147,16 +147,6 @@
                   <property name="toolTip" stdset="0">
                     <string>&lt;p&gt;Choose what kind of accounts to display as the rows of this report.&lt;/p&gt;</string>
                   </property>
-                  <item>
-                    <property name="text">
-                      <string>Income &amp; Expenses</string>
-                    </property>
-                  </item>
-                  <item>
-                    <property name="text">
-                      <string>Assets &amp; Liabilities</string>
-                    </property>
-                  </item>
                 </widget>
               </item>
               <item row="2" column="0">
