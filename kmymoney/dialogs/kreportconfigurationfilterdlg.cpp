@@ -234,7 +234,9 @@ void KReportConfigurationFilterDlg::slotSearch()
     if (m_tab2->findChild<QSpinBox*>("m_movingAverageDays")->isEnabled()) {
       m_currentState.setMovingAverageDays(m_tab2->findChild<QSpinBox*>("m_movingAverageDays")->value());
     }
-  } else if (m_tab3) {
+  }
+
+  if (m_tab3) {
     MyMoneyReport::Row::Type rtq[8] = { MyMoneyReport::Row::Category, MyMoneyReport::Row::TopCategory, MyMoneyReport::Row::Tag, MyMoneyReport::Row::Payee, MyMoneyReport::Row::Account, MyMoneyReport::Row::TopAccount, MyMoneyReport::Row::Month, MyMoneyReport::Row::Week };
     m_currentState.setRowType(rtq[m_tab3->findChild<KComboBox*>("m_comboOrganizeBy")->currentIndex()]);
 
@@ -436,7 +438,9 @@ void KReportConfigurationFilterDlg::slotReset()
     m_tab2->findChild<QCheckBox*>("m_checkScheduled")->setChecked(m_initialState.isIncludingSchedules());
     m_tab2->findChild<QCheckBox*>("m_checkTransfers")->setChecked(m_initialState.isIncludingTransfers());
     m_tab2->findChild<QCheckBox*>("m_checkUnused")->setChecked(m_initialState.isIncludingUnusedAccounts());
-  } else if (m_tab3) {
+  }
+
+  if (m_tab3) {
     KComboBox *combo = m_tab3->findChild<KComboBox*>("m_comboOrganizeBy");
     switch (m_initialState.rowType()) {
       case MyMoneyReport::Row::NoRows:
