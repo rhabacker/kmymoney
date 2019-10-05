@@ -304,6 +304,8 @@ void QueryTable::constructTransactionTable()
 
     const QList<MyMoneySplit>& splits = (*it_transaction).splits();
     QList<MyMoneySplit>::const_iterator myBegin, it_split;
+    qA["tag"] = "";
+    QString delimiter = "";
 
     for (it_split = splits.begin(), myBegin = splits.end(); it_split != splits.end(); ++it_split) {
       ReportAccount splitAcc = (* it_split).accountId();
@@ -453,6 +455,17 @@ void QueryTable::constructTransactionTable()
                       ? i18n("[Empty Payee]")
                       : file->payee(payee).name().simplified();
 
+        if (tag_special_case) {
+          // handle tags
+          const QStringList tagIdList = (*it_split).tagIdList();
+          tagIdListCache += tagIdList;
+        } else {
+          const QStringList tagIdList = (*it_split).tagIdList();
+          for (int i = 0; i < tagIdList.size(); i++) {
+            qA["tag"] += delimiter + file->tag(tagIdList[i]).name().simplified();
+            delimiter = ", ";
+          }
+        }
         qA["reconciledate"] = (*it_split).reconcileDate().toString(Qt::ISODate);
         qA["reconcileflag"] = KMyMoneyUtils::reconcileStateToString((*it_split).reconcileFlag(), true);
         qA["number"] = (*it_split).number();
@@ -546,6 +559,16 @@ void QueryTable::constructTransactionTable()
               //convert to lowest fraction
               qA["split"] = ((-(*it_split).shares()) * xr).convert(fraction).toString();
               qA["rank"] = '1';
+              if (tag_special_case) {
+                const QStringList tagIdList = (*it_split).tagIdList();
+                tagIdListCache += tagIdList;
+              } else {
+                const QStringList tagIdList = (*it_split).tagIdList();
+                for (int i = 0; i < tagIdList.size(); i++) {
+                  qA["tag"] += delimiter + file->tag(tagIdList[i]).name().simplified();
+                  delimiter = ", ";
+                }
+              }
             } else {
               //this applies when the transaction has only 2 splits, or each split is going to be
               //shown separately, eg. transactions by category
@@ -564,6 +587,16 @@ void QueryTable::constructTransactionTable()
                 qA["value"] = ((-(*it_split).shares()) * ieXr).convert(fraction).toString();
               }
               qA["rank"] = '0';
+              if (tag_special_case) {
+                const QStringList tagIdList = (*it_split).tagIdList();
+                tagIdListCache += tagIdList;
+              } else {
+                const QStringList tagIdList = (*it_split).tagIdList();
+                for (int i = 0; i < tagIdList.size(); i++) {
+                  qA["tag"] += delimiter + file->tag(tagIdList[i]).name().simplified();
+                  delimiter = ", ";
+                }
+              }
             }
 
             qA ["memo"] = (*it_split).memo();
@@ -630,6 +663,17 @@ void QueryTable::constructTransactionTable()
                          ? a_memo
                          : (*it_split).memo();
 
+            //FIXME-ALEX When is used this? I can't find in which condition we arrive here... maybe this code is useless?
+            if (tag_special_case) {
+              const QStringList tagIdList = (*it_split).tagIdList();
+              tagIdListCache += tagIdList;
+            } else {
+              const QStringList tagIdList = (*it_split).tagIdList();
+              for (int i = 0; i < tagIdList.size(); i++) {
+                qA["tag"] += delimiter + file->tag(tagIdList[i]).name().simplified();
+                delimiter = '+';
+              }
+            }
             qS["payee"] = payee.isEmpty()
                           ? qA["payee"]
                           : file->payee(payee).name().simplified();
