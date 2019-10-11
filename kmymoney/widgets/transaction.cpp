@@ -798,7 +798,9 @@ StdTransaction::StdTransaction(Register *parent, const MyMoneyTransaction& trans
         break;
 
       case 0: // the empty transaction
+        break;
       case 1:
+        m_category = i18n("Marker");
         break;
 
       case 2:
