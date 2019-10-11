@@ -382,6 +382,24 @@ void QueryTable::constructTransactionTable()
         }
       }
 
+      if (include_me) {
+        // handle tags
+        const QStringList tagIdList = (*it_split).tagIdList();
+        foreach (const QString &tagId, tagIdList) {
+          if (!tagIdListCache.contains(tagId))
+            tagIdListCache << tagId;
+        }
+        if (tagIdListCache.size() > 0) {
+          qSort(tagIdListCache);
+          qA["tag"] = "";
+          QString delimiter = "";
+          foreach (const QString &tagId, tagIdListCache) {
+            qA["tag"] += delimiter + file->tag(tagId).name().simplified();
+            delimiter = ", ";
+          }
+        }
+      }
+
       //get fraction for account
       int fraction = splitAcc.currency().smallestAccountFraction();
 
