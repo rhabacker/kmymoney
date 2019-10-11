@@ -417,7 +417,6 @@ void QueryTable::constructTransactionTable()
 
       if (it_split == myBegin) {
 
-        include_me = m_config.includes(splitAcc);
         a_fullname = splitAcc.fullName();
         a_memo = (*it_split).memo();
 
@@ -573,7 +572,7 @@ void QueryTable::constructTransactionTable()
               qA ["categorytype"] = KMyMoneyUtils::accountTypeToString(splitAcc.accountGroup());
             }
 
-            if (use_transfers || (splitAcc.isIncomeExpense() && m_config.includes(splitAcc))) {
+            if (use_transfers || (splitAcc.isIncomeExpense() && include_me)) {
               //if it matches the text of the main split of the transaction or
               //it matches this particular split, include it
               //otherwise, skip it
@@ -590,7 +589,7 @@ void QueryTable::constructTransactionTable()
           }
         }
 
-        if (m_config.includes(splitAcc) && use_transfers) {
+        if (include_me && use_transfers) {
           if (! splitAcc.isIncomeExpense()) {
             //multiply by currency and convert to lowest fraction
             qS["value"] = ((*it_split).shares() * xr).convert(fraction).toString();
@@ -1138,6 +1137,7 @@ void QueryTable::constructSplitsTable()
     do {
       MyMoneyMoney xr;
       ReportAccount splitAcc = (* it_split).accountId();
+      include_me = m_config.includes(splitAcc);
 
       //get fraction for account
       int fraction = splitAcc.currency().smallestAccountFraction();
