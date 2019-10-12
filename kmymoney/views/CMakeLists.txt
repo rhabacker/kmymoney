@@ -54,6 +54,7 @@ target_link_libraries( views
   payeeidentifier_iban_bic
   payeeidentifier_nationalAccount
   kmm_mymoney # needed to load payeeIdentifier
+  alkimia
 )
 
 # we rely on some of the dialogs to be generated

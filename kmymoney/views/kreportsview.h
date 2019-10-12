@@ -60,6 +60,7 @@
 #include "tocitemreport.h"
 
 class MyMoneyReport;
+class MyMoneyHTMLPart;
 
 /**
   * Displays a page where reports can be placed.
@@ -84,7 +85,7 @@ public:
   class KReportTab: public QWidget
   {
   private:
-    KHTMLPart* m_part;
+    MyMoneyHTMLPart *m_part;
     reports::KReportChartView* m_chartView;
     kMyMoneyReportControl* m_control;
     QVBoxLayout* m_layout;
@@ -129,9 +130,7 @@ public:
     }
     void showEvent(QShowEvent * event);
     void loadTab();
-    KParts::BrowserExtension* browserExtenstion() const {
-      return m_part->browserExtension();
-    }
+    KParts::BrowserExtension* browserExtenstion() const;
   };
 
   /**

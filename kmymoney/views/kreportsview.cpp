@@ -68,6 +68,48 @@ using namespace reports;
 #define VIEW_HOME           "home"
 #define VIEW_REPORTS        "reports"
 
+#include <alkimia/alkwebpage.h>
+
+class MyMoneyHTMLPart {
+public:
+    MyMoneyHTMLPart(QWidget *parent) : m_webPage(parent)
+    {
+      m_webPage.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    }
+
+    void setFontScaleFactor(qreal value)
+    {
+      m_webPage.setTextSizeMultiplier(value / 100.0);
+    }
+
+    void print(QPrinter *printer)
+    {
+      m_webPage.print(printer);
+    }
+
+    QWidget *view()
+    {
+      return &m_webPage;
+    }
+
+    void begin() {}
+
+    void write(const QString &html)
+    {
+      m_webPage.setHtml(html);
+    }
+
+    void end() {}
+
+//    KParts::BrowserExtension* browserExtenstion() const
+//    {
+//        return nullptr;
+//    }
+
+protected:
+    AlkWebPage m_webPage;
+};
+
 /**
   * KReportsView::KReportTab Implementation
   */
@@ -78,7 +120,10 @@ class KReportsView::KReportTab::Private : public QObject
 public:
     KReportsView::KReportTab *q;
 
-    Private(KReportsView::KReportTab *parent) : q(parent) {}
+    Private(KReportsView::KReportTab *parent)
+      : q(parent)
+    {
+    }
 
 public slots:
     void slotPaintRequested(QPrinter *printer);
@@ -96,17 +141,13 @@ void KReportsView::KReportTab::Private::slotPaintRequested(QPrinter *printer)
     painter.drawText(0, h, KGlobal::locale()->formatDate(QDate::currentDate(), KLocale::ShortDate));
     QUrl file(kmymoney->filename());
     painter.drawText(0, printer->pageRect().height(), file.toLocalFile());
-  } else if (q->m_part && q->m_part->view())
-#if KDE_IS_VERSION(4, 14, 65)
-    q->m_part->view()->print(kmymoney->printer(), true);
-#else
-    q->m_part->view()->print();
-#endif
+  } else if (q->m_part)
+    q->m_part->print(printer);
 }
 
 KReportsView::KReportTab::KReportTab(KTabWidget* parent, const MyMoneyReport& report):
     QWidget(parent),
-    m_part(new KHTMLPart(this)),
+    m_part(new MyMoneyHTMLPart(this)),
     m_chartView(new KReportChartView(this)),
     m_control(new kMyMoneyReportControl(this)),
     m_layout(new QVBoxLayout(this)),
@@ -206,6 +247,13 @@ void KReportsView::KReportTab::loadTab()
     updateReport();
   }
 }
+
+KParts::BrowserExtension* KReportsView::KReportTab::browserExtenstion() const
+{
+  return nullptr;
+  //return m_part->browserExtension();
+}
+
 
 void KReportsView::KReportTab::showEvent(QShowEvent * event)
 {
@@ -1133,8 +1181,8 @@ void KReportsView::addReportTab(const MyMoneyReport& report)
   connect(tab->control()->buttonClose, SIGNAL(clicked()),
           this, SLOT(slotCloseCurrent()));
 
-  connect(tab->browserExtenstion(), SIGNAL(openUrlRequest(KUrl,KParts::OpenUrlArguments,KParts::BrowserArguments)),
-          this, SLOT(slotOpenUrl(KUrl,KParts::OpenUrlArguments,KParts::BrowserArguments)));
+//  connect(tab->browserExtenstion(), SIGNAL(openUrlRequest(KUrl,KParts::OpenUrlArguments,KParts::BrowserArguments)),
+//          this, SLOT(slotOpenUrl(KUrl,KParts::OpenUrlArguments,KParts::BrowserArguments)));
 
   // if this is a default report, then you can't delete it!
   if (report.id().isEmpty())
