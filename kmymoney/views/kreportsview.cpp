@@ -37,6 +37,8 @@
 #include <QPrintPreviewDialog>
 #include <QPrintDialog>
 #include <QPrinter>
+#include <QTextDocument>
+#include <QTextEdit>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -72,9 +74,36 @@ using namespace reports;
 
 class MyMoneyHTMLPart {
 public:
-    MyMoneyHTMLPart(QWidget *parent) : m_webPage(parent)
+    MyMoneyHTMLPart(QWidget *parent);
+    virtual ~MyMoneyHTMLPart();
+    virtual void setFontScaleFactor(qreal value) {}
+    virtual void print(QPrinter *printer) {}
+    virtual QWidget *view() { return nullptr; }
+    virtual void begin() {}
+
+    virtual void write(const QString &html) {}
+    virtual void end() {}
+//    KParts::BrowserExtension* browserExtenstion() const
+//    {
+//        return nullptr;
+//    }
+};
+
+MyMoneyHTMLPart::MyMoneyHTMLPart(QWidget *parent) {}
+MyMoneyHTMLPart::~MyMoneyHTMLPart() {}
+
+class MyMoneyWebPage : public MyMoneyHTMLPart {
+public:
+    MyMoneyWebPage(QWidget *parent)
+    : MyMoneyHTMLPart(parent)
+    , m_webPage(parent)
     {
       m_webPage.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+      m_webPage.setWebInspectorEnabled(true);
+    }
+
+    ~MyMoneyWebPage()
+    {
     }
 
     void setFontScaleFactor(qreal value)
@@ -108,6 +137,200 @@ public:
 
 protected:
     AlkWebPage m_webPage;
+};
+
+#if 0
+void printWithHeader(QPrinter *printer)
+{
+  QRect printer_rect(printer->pageRect());
+  QString company_header = QString("<p align=\"left\">%1</p>").arg(KGlobal::locale()->formatDate(QDate::currentDate(), KLocale::ShortDate));
+  QString company_footer = QString("<p align=\"center\">%1</p>").arg(kmymoney->filename());
+
+//      ///Setting up the header and calculating the header size
+//      QTextDocument *document_header = new QTextDocument;
+//      document_header->setPageSize(printer_rect.size());
+//      document_header->setHtml(company_header);
+//      document_header->setDocumentMargin(0.0);
+//      QSizeF header_size = document_header->size();
+
+//      ///Setting up the footer and calculating the footer size
+//      QTextDocument *document_footer = new QTextDocument;
+//      document_footer->setPageSize(printer_rect.size());
+//      document_footer->setHtml(company_footer);
+//      document_footer->setDocumentMargin(0.0);
+//      QSizeF footer_size = document_footer->size();
+
+//      ///Calculating the main document size for one page
+//      QSizeF center_size(printer_rect.width(), (printer->pageRect().height() - header_size.toSize().height() - footer_size.toSize().height()));
+
+  QSizeF center_size(printer_rect.size());
+  ///Setting up the center page
+  QTextDocument *main_doc = new QTextDocument;
+  main_doc->setHtml(m_webPage.toHtml());
+  main_doc->setPageSize(QSize(printer->paperRect().width(), printer->pageRect().height()));
+  //main_doc->setDocumentMargin(0.0);
+  main_doc->setDefaultFont(QFont("default", 9));
+
+  ///Setting up the rectangles for each section.
+//      QRect headerRect = QRect(QPoint(0,0), document_header->size().toSize());
+//      QRect footerRect = QRect(QPoint(0,0), document_footer->size().toSize());
+  QRect contentRect = QRect(QPoint(0,0), main_doc->size().toSize());    /// Main content rectangle.
+  QRect currentRect = QRect(QPoint(0,0), center_size.toSize());        /// Current main content rectangle.
+
+  QPainter painter(printer);
+
+  while (currentRect.intersects(contentRect))
+  {///Loop if the current content rectangle intersects with the main content rectangle.
+      ///Resetting the painter matrix co ordinate system.
+      painter.resetMatrix();
+      ///Applying negative translation of painter co-ordinate system by current main content rectangle top y coordinate.
+      painter.translate(0, -currentRect.y());
+      ///Applying positive translation of painter co-ordinate system by header hight.
+//          painter.translate(0, headerRect.height());
+      ///Drawing the center content for current page.
+      main_doc->drawContents(&painter, currentRect);
+      ///Resetting the painter matrix co ordinate system.
+      painter.resetMatrix();
+      ///Drawing the header on the top of the page
+//          document_header->drawContents(&painter, headerRect);
+      ///Applying positive translation of painter co-ordinate system to draw the footer
+//          painter.translate(0, headerRect.height());
+//          painter.translate(0, center_size.height());
+//          document_footer->drawContents(&painter, footerRect);
+
+      ///Translating the current rectangle to the area to be printed for the next page
+      currentRect.translate(0, currentRect.height());
+      ///Inserting a new page if there is till area left to be printed
+      if (currentRect.intersects(contentRect))
+      {
+          printer->newPage();
+      }
+  }
+}
+#endif
+
+static const int textMargins = 0; // in millimeters
+static const int borderMargins = 0; // in millimeters
+
+class MyMoneyWebDocument : public MyMoneyHTMLPart {
+public:
+    MyMoneyWebDocument(QWidget *parent)
+     : MyMoneyHTMLPart(parent)
+     , m_document(parent)
+    {
+      m_document.setReadOnly(true);
+      m_document.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+      m_document.document()->setPageSize(QSize(kmymoney->printer()->paperRect().width(), kmymoney->printer()->pageRect().height()));
+      m_document.document()->setDefaultFont(QFont("default", 9));
+       //m_document.setWebInspectorEnabled(true);
+    }
+
+    void setFontScaleFactor(qreal value)
+    {
+    }
+
+    void print(QPrinter *printer)
+    {
+      m_document.document()->setPageSize(QSize(printer->paperRect().width(), printer->pageRect().height()));
+      //m_document.print(printer);
+      printDocument(*printer, m_document.document(), 0);
+
+    }
+
+    static double mmToPixels(QPrinter& printer, int mm)
+    {
+        return mm * 0.039370147 * printer.resolution();
+    }
+
+    static void paintPage(QPrinter& printer, int pageNumber, int pageCount,
+                          QPainter* painter, QTextDocument* doc,
+                          const QRectF& textRect, qreal footerHeight)
+    {
+        //qDebug() << "Printing page" << pageNumber;
+        const QSizeF pageSize = printer.paperRect().size();
+        //qDebug() << "pageSize=" << pageSize;
+
+        const double bm = mmToPixels(printer, borderMargins);
+        const QRectF borderRect(bm, bm, pageSize.width() - 2 * bm, pageSize.height() - 2 * bm);
+        painter->drawRect(borderRect);
+
+        painter->save();
+        // textPageRect is the rectangle in the coordinate system of the QTextDocument, in pixels,
+        // and starting at (0,0) for the first page. Second page is at y=doc->pageSize().height().
+        const QRectF textPageRect(0, pageNumber * doc->pageSize().height(), doc->pageSize().width(), doc->pageSize().height());
+        // Clip the drawing so that the text of the other pages doesn't appear in the margins
+        painter->setClipRect(textRect);
+        // Translate so that 0,0 is now the page corner
+        painter->translate(0, -textPageRect.top());
+        // Translate so that 0,0 is the text rect corner
+        painter->translate(textRect.left(), textRect.top());
+        doc->drawContents(painter);
+        painter->restore();
+
+        // Footer: page number or "end"
+        QRectF footerRect = textRect;
+        footerRect.setTop(textRect.bottom());
+        footerRect.setHeight(footerHeight);
+        if (pageNumber == pageCount - 1)
+            painter->drawText(footerRect, Qt::AlignCenter, QObject::tr("Fin du Bordereau de livraison"));
+        else
+            painter->drawText(footerRect, Qt::AlignVCenter | Qt::AlignRight, i18n("Page %1/%2").arg(pageNumber+1).arg(pageCount));
+    }
+
+    void printDocument(QPrinter& printer, QTextDocument* doc, QWidget* parentWidget = nullptr)
+    {
+        QPainter painter( &printer );
+        QSizeF pageSize = printer.pageRect().size(); // page size in pixels
+        // Calculate the rectangle where to lay out the text
+        const double tm = mmToPixels(printer, textMargins);
+        const qreal footerHeight = painter.fontMetrics().height();
+        const QRectF textRect(tm, tm, pageSize.width() - 2 * tm, pageSize.height() - 2 * tm - footerHeight);
+        //qDebug() << "textRect=" << textRect;
+        doc->setPageSize(textRect.size());
+
+        const int pageCount = doc->pageCount();
+#if 0
+        QProgressDialog *dialog = nullptr;
+        if (parentWidget) {
+            dialog = new QProgressDialog( QObject::tr( "Printing" ), QObject::tr( "Cancel" ), 0, pageCount, parentWidget );
+            dialog->setWindowModality(Qt::ApplicationModal);
+        }
+#endif
+        bool firstPage = true;
+        for (int pageIndex = 0; pageIndex < pageCount; ++pageIndex) {
+//            dialog.setValue( pageIndex );
+//            if (dialog.wasCanceled())
+//                 break;
+
+            if (!firstPage)
+                printer.newPage();
+
+            paintPage( printer, pageIndex, pageCount, &painter, doc, textRect, footerHeight );
+            firstPage = false;
+        }
+    }
+
+    QWidget *view()
+    {
+      return &m_document;
+    }
+
+    void begin() {}
+
+    void write(const QString &html)
+    {
+      m_document.setHtml(html);
+    }
+
+    void end() {}
+
+//    KParts::BrowserExtension* browserExtenstion() const
+//    {
+//        return nullptr;
+//    }
+
+protected:
+    QTextEdit m_document;
 };
 
 /**
@@ -147,7 +370,7 @@ void KReportsView::KReportTab::Private::slotPaintRequested(QPrinter *printer)
 
 KReportsView::KReportTab::KReportTab(KTabWidget* parent, const MyMoneyReport& report):
     QWidget(parent),
-    m_part(new MyMoneyHTMLPart(this)),
+    m_part(new MyMoneyWebPage(this)),
     m_chartView(new KReportChartView(this)),
     m_control(new kMyMoneyReportControl(this)),
     m_layout(new QVBoxLayout(this)),
