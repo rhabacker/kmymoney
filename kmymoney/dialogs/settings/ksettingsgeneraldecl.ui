@@ -679,6 +679,32 @@ You can use &lt;b&gt;View/Show all accounts&lt;/b&gt; to temporarily show hidden
            <string/>
           </property>
          </widget>
+         <widget class="QCheckBox" name="m_aqbankingLogLevelDebug">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>50</y>
+            <width>221</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Set AqBanking log level to Debug</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="m_gwenhywfarLogLevelDebug">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>70</y>
+            <width>221</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Set Gwenhywfar log level to Debug</string>
+          </property>
+         </widget>
         </widget>
        </item>
       </layout>

@@ -51,6 +51,10 @@ protected slots:
 
 protected:
   void showEvent(QShowEvent* event);
+#ifdef ENABLE_KBANKING
+  void slotAqBankingLogLevelDebugToggled(bool checked);
+  void slotGwenhywfarLogLevelDebugToggled(bool checked);
+#endif
 };
 #endif
 

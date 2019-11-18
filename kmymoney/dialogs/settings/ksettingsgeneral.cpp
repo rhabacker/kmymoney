@@ -26,6 +26,10 @@
 // ----------------------------------------------------------------------------
 // KDE Includes
 
+#ifdef ENABLE_KBANKING
+#include <gwenhywfar/logger.h>
+#endif
+
 // ----------------------------------------------------------------------------
 // Project Includes
 
@@ -60,6 +64,16 @@ KSettingsGeneral::KSettingsGeneral(QWidget* parent) :
   } else {
     m_aqbankingLogPath->setVisible(false);
   }
+
+#ifdef ENABLE_KBANKING
+  if (f.exists()) {
+    connect(m_aqbankingLogLevelDebug, SIGNAL(toggled(bool)), this, SIGNAL(slotAqBankingLogLevelDebugToggled(bool)));
+    connect(m_gwenhywfarLogLevelDebug, SIGNAL(toggled(bool)), this, SIGNAL(slotGwenhywfarLogLevelDebugToggled(bool)));
+  } else {
+    m_aqbankingLogLevelDebug->setVisible(false);
+    m_gwenhywfarLogLevelDebug->setVisible(false);
+  }
+#endif
 }
 
 KSettingsGeneral::~KSettingsGeneral()
@@ -97,3 +111,15 @@ void KSettingsGeneral::showEvent(QShowEvent *event)
   KSettingsGeneralDecl::showEvent(event);
   slotUpdateLogTypes();
 }
+
+#ifdef ENABLE_KBANKING
+void KSettingsGeneral::slotAqBankingLogLevelDebugToggled(bool checked)
+{
+    // TODO
+}
+
+void KSettingsGeneral::slotGwenhywfarLogLevelDebugToggled(bool checked)
+{
+  GWEN_Logger_SetLevel(AQBANKING_LOGDOMAIN, checked ? GWEN_LoggerLevel_Debug : GWEN_LoggerLevel_Warning);
+}
+#endif
