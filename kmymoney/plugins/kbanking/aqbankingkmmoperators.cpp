@@ -18,11 +18,6 @@
 
 #include "aqbankingkmmoperators.h"
 
-#include <aqbanking/transactionlimits.h>
-#include <aqbanking/transaction.h>
-#include <aqbanking/account.h>
-#include <aqbanking/value.h>
-
 #include "payeeidentifier/payeeidentifiertyped.h"
 #include "payeeidentifier/nationalaccount/nationalaccount.h"
 #include "tasksettings/credittransfersettingsbase.h"

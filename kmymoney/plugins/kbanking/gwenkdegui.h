@@ -24,6 +24,7 @@
 #define GWENKDEGUI_H
 
 #include "gwen-gui-qt4/qt4_gui.hpp"
+#include "banking.hpp"
 
 /**
  * @brief Gwenhywfar Gui for KDE
@@ -44,7 +45,34 @@ public:
                           char *buffer,
                           int minLen,
                           int maxLen,
+#if AQB_IS_VERSION(5,99,0,0)
+                          GWEN_GUI_PASSWORD_METHOD methodId,
+                          GWEN_DB_NODE *methodParams,
+#endif
                           uint32_t guiid);
+
+#if AQB_IS_VERSION(5,99,0,0)
+  int getPasswordText(uint32_t flags,
+                      const char *token,
+                      const char *title,
+                      const char *text,
+                      char *buffer,
+                      int minLen,
+                      int maxLen,
+                      GWEN_GUI_PASSWORD_METHOD methodId,
+                      GWEN_DB_NODE *methodParams,
+                      uint32_t guiid);
+  int getPasswordHhd(uint32_t flags,
+                     const char *token,
+                     const char *title,
+                     const char *text,
+                     char *buffer,
+                     int minLen,
+                     int maxLen,
+                     GWEN_GUI_PASSWORD_METHOD methodId,
+                     GWEN_DB_NODE *methodParams,
+                     uint32_t guiid);
+#endif
 };
 
 #include <QObject>

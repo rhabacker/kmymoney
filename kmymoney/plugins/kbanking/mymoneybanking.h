@@ -26,22 +26,9 @@
 #include <config-kmymoney.h>
 #endif
 
-#include <aqbanking/version.h>
-#include <aqbanking/banking.h>
-#include <QSet>
 #include "banking.hpp"
 
-#ifndef AQB_MAKE_VERSION
-#define AQB_MAKE_VERSION(a,b,c,d) (((a)<<24) | ((b)<<16) | (c<<8) | (d))
-#endif
-
-#ifndef AQBANKING_VERSION
-#define AQBANKING_VERSION AQB_MAKE_VERSION(AQBANKING_VERSION_MAJOR,AQBANKING_VERSION_MINOR,AQBANKING_VERSION_PATCHLEVEL,AQBANKING_VERSION_BUILD)
-#endif
-
-#ifndef AQB_IS_VERSION
-#define AQB_IS_VERSION(a,b,c,d) (AQBANKING_VERSION >= AQB_MAKE_VERSION(a,b,c,d))
-#endif
+#include <QSet>
 
 // ----------------------------------------------------------------------------
 // QT Includes
@@ -240,7 +227,10 @@ protected:
   QString mappingId(const MyMoneyObject& object) const;
 
   bool importAccountInfo(AB_IMEXPORTER_ACCOUNTINFO *ai, uint32_t flags);
+
+#if !AQB_IS_VERSION(5,99,0,0)
   const AB_ACCOUNT_STATUS* _getAccountStatus(AB_IMEXPORTER_ACCOUNTINFO *ai);
+#endif
   void _xaToStatement(MyMoneyStatement &ks,
                       const MyMoneyAccount&,
                       const AB_TRANSACTION *t);
@@ -249,7 +239,11 @@ protected:
 private:
   KBankingPlugin* m_parent;
   QMap<QString, bool> m_hashMap;
+#if AQB_IS_VERSION(5,99,0,0)
+  AB_TRANSACTION_LIST2 *_jobQueue;
+#else
   AB_JOB_LIST2 *_jobQueue;
+#endif
   QSet<QString>   m_sepaKeywords;
 };
 

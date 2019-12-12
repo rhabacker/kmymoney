@@ -15,10 +15,9 @@
 #ifndef KBACCOUNTLIST_H
 #define KBACCOUNTLIST_H
 
+#include "banking.hpp"
 
 #include <QTreeWidget>
-
-#include <aqbanking/account.h>
 
 #include <list>
 

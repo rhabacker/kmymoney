@@ -43,7 +43,113 @@ gwenKdeGui::~gwenKdeGui()
 {
 
 }
+#if AQB_IS_VERSION(5,99,0,0)
+int gwenKdeGui::getPasswordText(uint32_t flags,
+                                const char *token,
+                                const char *title,
+                                const char *text,
+                                char *buffer,
+                                int minLen,
+                                int maxLen,
+                                GWEN_GUI_PASSWORD_METHOD methodId,
+                                GWEN_DB_NODE *methodParams,
+                                uint32_t guiid) {
+  return QT4_Gui::getPassword(flags, token, title, text, buffer, minLen, maxLen, methodId, methodParams, guiid);
+}
 
+int gwenKdeGui::getPasswordHhd(uint32_t /*flags*/,
+                               const char * /*token*/,
+                               const char * /*title*/,
+                               const char *text,
+                               char *buffer,
+                               int minLen,
+                               int maxLen,
+                               GWEN_GUI_PASSWORD_METHOD /*methodId*/,
+                               GWEN_DB_NODE *methodParams,
+                               uint32_t /*guiid*/) {
+  QString hhdCode;
+  QString infoText;
+  const char *sChallenge;
+
+  sChallenge=GWEN_DB_GetCharValue(methodParams, "challenge", 0, NULL);
+  if (! (sChallenge && *sChallenge)) {
+    DBG_ERROR(0, "Empty optical data");
+    return GWEN_ERROR_NO_DATA;
+  }
+
+  hhdCode = QString::fromUtf8(sChallenge);
+  infoText = QString::fromUtf8(text);
+
+  //! @todo: Memory leak?
+  QPointer<chipTanDialog> dialog = new chipTanDialog(getParentWidget());
+  dialog->setInfoText(infoText);
+  dialog->setHhdCode(hhdCode);
+  dialog->setTanLimits(minLen, maxLen);
+
+  const int rv = dialog->exec();
+
+  if (rv == chipTanDialog::Rejected)
+    return GWEN_ERROR_USER_ABORTED;
+  else if (rv == chipTanDialog::InternalError || dialog.isNull())
+    return GWEN_ERROR_INTERNAL;
+
+  QString tan = dialog->tan();
+  if (tan.length() >= minLen && tan.length() <= maxLen) {
+    strncpy(buffer, tan.toUtf8().constData() , tan.length());
+    buffer[tan.length()] = 0;
+    return 0;
+  }
+  qDebug("Received Tan with incorrect length by ui.");
+  return GWEN_ERROR_INTERNAL;
+}
+
+
+
+
+int gwenKdeGui::getPassword(uint32_t flags, const char* token, const char* title, const char* text, char* buffer,
+                            int minLen, int maxLen,
+                            GWEN_GUI_PASSWORD_METHOD methodId,
+                            GWEN_DB_NODE *methodParams,
+                            uint32_t guiid)
+{
+
+
+  switch( (methodId & GWEN_Gui_PasswordMethod_Mask)) {
+  case GWEN_Gui_PasswordMethod_Unknown:
+  case GWEN_Gui_PasswordMethod_Mask:
+    DBG_ERROR(0, "Invalid password method id %08x", methodId);
+    return GWEN_ERROR_INVALID;
+
+  case GWEN_Gui_PasswordMethod_Text:
+    return getPasswordText(flags,
+                           token,
+                           title,
+                           text,
+                           buffer,
+                           minLen,
+                           maxLen,
+                           methodId, methodParams,
+                           guiid);
+
+  case GWEN_Gui_PasswordMethod_OpticalHHD:
+    return getPasswordHhd(flags,
+	      token,
+	      title,
+	      text,
+	      buffer,
+	      minLen,
+	      maxLen,
+	      methodId, methodParams,
+	      guiid);
+
+    /* intentionally omit "default:" here to be informed when new password methods are added to
+     * gwen which have not been implemented. */
+  }
+
+  DBG_ERROR(0, "Unhandled password method id %08x", methodId);
+  return GWEN_ERROR_INVALID;
+}
+#else
 int gwenKdeGui::getPassword(uint32_t flags, const char* token, const char* title, const char* text, char* buffer, int minLen, int maxLen, uint32_t guiid)
 {
   if ((flags & GWEN_GUI_INPUT_FLAGS_OPTICAL) && text && *text) {
@@ -82,3 +188,4 @@ int gwenKdeGui::getPassword(uint32_t flags, const char* token, const char* title
 
   return QT4_Gui::getPassword(flags, token, title, text, buffer, minLen, maxLen, guiid);
 }
+#endif

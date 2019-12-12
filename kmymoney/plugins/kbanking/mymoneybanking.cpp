@@ -61,16 +61,6 @@
 // ----------------------------------------------------------------------------
 // Library Includes
 
-#include <aqbanking/imexporter.h>
-#include <aqbanking/jobsingletransfer.h>
-#include <aqbanking/jobsepatransfer.h>
-#include <aqbanking/jobgettransactions.h>
-#include <aqbanking/jobgetbalance.h>
-#include <aqbanking/job.h>
-#include <aqbanking/abgui.h>
-#include <aqbanking/dlg_setup.h>
-#include <aqbanking/dlg_importer.h>
-#include <aqbanking/transactionlimits.h>
 #include <gwenhywfar/logger.h>
 #include <gwenhywfar/debug.h>
 
@@ -171,6 +161,7 @@ KBankingPlugin::KBankingPlugin(QObject *parent, const QVariantList&) :
   connect(d->passwordCacheTimer, SIGNAL(timeout()), this, SLOT(slotClearPasswordCache()));
 
   if (m_kbanking) {
+#if !AQB_IS_VERSION(5,99,0,0)
     if (AB_Banking_HasConf4(m_kbanking->getCInterface())) {
       qDebug("KBankingPlugin: No AqB4 config found.");
       if (AB_Banking_HasConf3(m_kbanking->getCInterface())) {
@@ -184,7 +175,7 @@ KBankingPlugin::KBankingPlugin(QObject *parent, const QVariantList&) :
         AB_Banking_ImportConf3(m_kbanking->getCInterface());
       }
     }
-
+#endif
     //! @todo when is gwenKdeGui deleted?
     gwenKdeGui *gui = new gwenKdeGui();
     GWEN_Gui_SetGui(gui->getCInterface());
@@ -417,6 +408,146 @@ bool KBankingPlugin::updateAccount(const MyMoneyAccount& acc)
   return updateAccount(acc, false);
 }
 
+#if AQB_IS_VERSION(5,99,0,0)
+bool KBankingPlugin::updateAccount(const MyMoneyAccount& acc, bool moreAccounts)
+{
+  if (!m_kbanking)
+    return false;
+
+  bool rc = false;
+
+  if (!acc.id().isEmpty()) {
+    AB_TRANSACTION *job = 0;
+    int rv;
+
+    /* get AqBanking account */
+    AB_ACCOUNT_SPEC *ba = aqbAccount(acc);
+    // Update the connection between the KMyMoney account and the AqBanking equivalent.
+    // If the account is not found anymore ba == 0 and the connection is removed.
+    setupAccountReference(acc, ba);
+
+    if (!ba) {
+      KMessageBox::error(0,
+                         i18n("<qt>"
+                              "The given application account <b>%1</b> "
+                              "has not been mapped to an online "
+                              "account."
+                              "</qt>",
+                              acc.name()),
+                         i18n("Account Not Mapped"));
+    } else {
+      bool enqueJob = true;
+      if (acc.onlineBankingSettings().value("kbanking-txn-download") != "no") {
+        /* create getTransactions job */
+        if (AB_AccountSpec_GetTransactionLimitsForCommand(ba, AB_Transaction_CommandGetTransactions)) {
+          /* there are transaction limits for this job, so it is allowed */
+          job = AB_Transaction_new();
+          AB_Transaction_SetUniqueAccountId(job, AB_AccountSpec_GetUniqueId(ba));
+          AB_Transaction_SetCommand(job, AB_Transaction_CommandGetTransactions);
+        }
+
+        if (job) {
+          int days = 0 /* TODO in AqBanking AB_JobGetTransactions_GetMaxStoreDays(job)*/;
+          QDate qd;
+          if (days > 0) {
+            GWEN_DATE *dt;
+
+            dt=GWEN_Date_CurrentDate();
+            GWEN_Date_SubDays(dt, days);
+            qd = QDate(GWEN_Date_GetYear(dt), GWEN_Date_GetMonth(dt), GWEN_Date_GetDay(dt));
+            GWEN_Date_free(dt);
+          }
+
+          // get last statement request date from application account object
+          // and start from a few days before if the date is valid
+          QDate lastUpdate = QDate::fromString(acc.value("lastImportedTransactionDate"), Qt::ISODate);
+          if (lastUpdate.isValid())
+            lastUpdate = lastUpdate.addDays(-3);
+
+          int dateOption = acc.onlineBankingSettings().value("kbanking-statementDate").toInt();
+          switch (dateOption) {
+            case 0: // Ask user
+              break;
+            case 1: // No date
+              qd = QDate();
+              break;
+            case 2: // Last download
+              qd = lastUpdate;
+              break;
+            case 3: // First possible
+              // qd is already setup
+              break;
+          }
+
+          // the pick start date option dialog is needed in
+          // case the dateOption is 0 or the date option is > 1
+          // and the qd is invalid
+          if (dateOption == 0 || (dateOption > 1 && !qd.isValid())) {
+            QPointer<KBPickStartDate> psd = new KBPickStartDate(m_kbanking, qd, lastUpdate, acc.name(),
+                lastUpdate.isValid() ? 2 : 3, 0, true);
+            if (psd->exec() == QDialog::Accepted) {
+              qd = psd->date();
+            } else {
+              enqueJob = false;
+            }
+            delete psd;
+          }
+
+          if (enqueJob) {
+            if (qd.isValid()) {
+              GWEN_DATE *dt;
+
+              dt=GWEN_Date_fromGregorian(qd.year(), qd.month(), qd.day());
+              AB_Transaction_SetFirstDate(job, dt);
+              GWEN_Date_free(dt);
+            }
+
+            rv = m_kbanking->enqueueJob(job);
+            if (rv) {
+              DBG_ERROR(0, "Error %d", rv);
+              KMessageBox::error(0,
+                                i18n("<qt>"
+                                      "Could not enqueue the job.\n"
+                                      "</qt>"),
+                                i18n("Error"));
+            }
+          }
+          AB_Transaction_free(job);
+        }
+      }
+
+      if (enqueJob) {
+        /* create getBalance job */
+        if (AB_AccountSpec_GetTransactionLimitsForCommand(ba, AB_Transaction_CommandGetBalance)) {
+          /* there are transaction limits for this job, so it is allowed */
+          job = AB_Transaction_new();
+          AB_Transaction_SetUniqueAccountId(job, AB_AccountSpec_GetUniqueId(ba));
+          AB_Transaction_SetCommand(job, AB_Transaction_CommandGetBalance);
+          rv = m_kbanking->enqueueJob(job);
+          AB_Transaction_free(job);
+          if (rv) {
+            DBG_ERROR(0, "Error %d", rv);
+            KMessageBox::error(0,
+                               i18n("<qt>"
+                                    "Could not enqueue the job.\n"
+                                    "</qt>"),
+                               i18n("Error"));
+          } else {
+            rc = true;
+            emit queueChanged();
+          }
+        }
+      }
+    }
+  }
+
+  // make sure we have at least one job in the queue before sending it
+  if (!moreAccounts && m_kbanking->getEnqueuedJobs().size() > 0)
+    executeQueue();
+
+  return rc;
+}
+#else
 bool KBankingPlugin::updateAccount(const MyMoneyAccount& acc, bool moreAccounts)
 {
   if (!m_kbanking)
@@ -446,6 +577,14 @@ bool KBankingPlugin::updateAccount(const MyMoneyAccount& acc, bool moreAccounts)
     } else {
       bool enqueJob = true;
       if (acc.onlineBankingSettings().value("kbanking-txn-download") != "no") {
+#if AQB_IS_VERSION(5,99,0,0)
+        if (AB_AccountSpec_GetTransactionLimitsForCommand(ba, AB_Transaction_CommandGetTransactions)) {
+          /* there are transaction limits for this job, so it is allowed */
+          job = AB_Transaction_new();
+          AB_Transaction_SetUniqueAccountId(job, AB_AccountSpec_GetUniqueId(ba));
+          AB_Transaction_SetCommand(job, AB_Transaction_CommandGetTransactions);
+        }
+#else
         /* create getTransactions job */
         job = AB_JobGetTransactions_new(ba);
         rv = AB_Job_CheckAvailability(job);
@@ -460,6 +599,7 @@ bool KBankingPlugin::updateAccount(const MyMoneyAccount& acc, bool moreAccounts)
           AB_Job_free(job);
           job = 0;
         }
+#endif
 
         if (job) {
           int days = AB_JobGetTransactions_GetMaxStoreDays(job);
@@ -571,6 +711,7 @@ bool KBankingPlugin::updateAccount(const MyMoneyAccount& acc, bool moreAccounts)
 
   return rc;
 }
+#endif
 
 void KBankingPlugin::executeQueue()
 {
@@ -644,11 +785,16 @@ QStringList KBankingPlugin::availableJobs(QString accountId)
   // Check availableJobs
 
   // sepa transfer
+#if AQB_IS_VERSION(5,99,0,0)
+  if (AB_AccountSpec_GetTransactionLimitsForCommand(abAccount, AB_Transaction_CommandSepaTransfer)) {
+    list.append(sepaOnlineTransfer::name());
+  }
+#else
   AB_JOB* abJob = AB_JobSepaTransfer_new(abAccount);
   if (AB_Job_CheckAvailability(abJob) == 0)
     list.append(sepaOnlineTransfer::name());
   AB_Job_free(abJob);
-
+#endif
   d->jobList[accountId] = list;
   return list;
 }
@@ -679,10 +825,16 @@ IonlineTaskSettings::ptr KBankingPlugin::settings(QString accountId, QString tas
 
   if (sepaOnlineTransfer::name() == taskName) {
     // Get limits for sepaonlinetransfer
+#if AQB_IS_VERSION(5,99,0,0)
+    const AB_TRANSACTION_LIMITS *limits = AB_AccountSpec_GetTransactionLimitsForCommand(abAcc, AB_Transaction_CommandSepaTransfer);
+    if (limits == NULL)
+      return IonlineTaskSettings::ptr();
+#else
     QScopedPointer<AB_JOB, QScopedPointerAbJobDeleter> abJob(AB_JobSepaTransfer_new(abAcc));
     if (AB_Job_CheckAvailability(abJob.data()) != 0)
       return IonlineTaskSettings::ptr();
     const AB_TRANSACTION_LIMITS* limits = AB_Job_GetFieldLimits(abJob.data());
+#endif
     return AB_TransactionLimits_toSepaOnlineTaskSettings(limits).dynamicCast<IonlineTaskSettings>();
   }
   return IonlineTaskSettings::ptr();
@@ -705,12 +857,20 @@ bool KBankingPlugin::enqueTransaction(onlineJobTyped<sepaOnlineTransfer>& job)
   }
   //setupAccountReference(acc, ba); // needed?
 
+#if AQB_IS_VERSION(5,99,0,0)
+  if (AB_AccountSpec_GetTransactionLimitsForCommand(abAccount, AB_Transaction_CommandSepaTransfer)==NULL) {
+#else
   AB_JOB *abJob = AB_JobSepaTransfer_new(abAccount);
   int rv = AB_Job_CheckAvailability(abJob);
   if (rv) {
+#endif
     qDebug("AB_ERROR_OFFSET is %i", AB_ERROR_OFFSET);
     job.addJobMessage(onlineJobMessage(onlineJobMessage::error, "AqBanking",
+#if AQB_IS_VERSION(5,99,0,0)
+                                       QString("Sepa credit transfers for account \"%1\" are not available.").arg(MyMoneyFile::instance()->account(accId).name())
+#else
                                        QString("Sepa credit transfers for account \"%1\" are not available, error code %2.").arg(MyMoneyFile::instance()->account(accId).name(), rv)
+#endif
                                       )
                      );
     return false;
@@ -727,10 +887,14 @@ bool KBankingPlugin::enqueTransaction(onlineJobTyped<sepaOnlineTransfer>& job)
   AB_Transaction_SetLocalAccount(AbTransaction, abAccount);
 
   // Purpose
+#if AQB_IS_VERSION(5,99,0,0)
+  AB_Transaction_SetPurpose(AbTransaction, job.constTask()->purpose().toUtf8().constData());
+#else
   QStringList qPurpose = job.constTask()->purpose().split('\n');
   GWEN_STRINGLIST *purpose = GWEN_StringList_fromQStringList(qPurpose);
   AB_Transaction_SetPurpose(AbTransaction, purpose);
   GWEN_StringList_free(purpose);
+#endif
 
   // Reference
   // AqBanking duplicates the string. This should be safe.
@@ -741,12 +905,17 @@ bool KBankingPlugin::enqueTransaction(onlineJobTyped<sepaOnlineTransfer>& job)
   AB_Transaction_SetValue(AbTransaction, AB_Value_fromMyMoneyMoney(job.constTask()->value()));
 
   /** @todo LOW remove Debug info */
+#if AQB_IS_VERSION(5,99,0,0)
+  AB_Transaction_SetStringIdForApplication(AbTransaction, m_kbanking->mappingId(job).toUtf8().constData());
+  qDebug() << "Enqueue: " << m_kbanking->enqueueJob(AbTransaction);
+  AB_Transaction_free(AbTransaction);
+#else
   qDebug() << "SetTransaction: " << AB_Job_SetTransaction(abJob, AbTransaction);
 
   GWEN_DB_NODE *gwenNode = AB_Job_GetAppData(abJob);
   GWEN_DB_SetCharValue(gwenNode, GWEN_DB_FLAGS_DEFAULT, "kmmOnlineJobId", m_kbanking->mappingId(job).toLatin1().constData());
-
   qDebug() << "Enqueue: " << m_kbanking->enqueueJob(abJob);
+#endif
 
   //delete localAcc;
   return true;
@@ -815,12 +984,14 @@ int KMyMoneyBanking::init()
   if (rv < 0)
     return rv;
 
+#if !AQB_IS_VERSION(5,99,0,0)
   rv = onlineInit();
   if (rv) {
     fprintf(stderr, "Error on online init (%d).\n", rv);
     AB_Banking::fini();
     return rv;
   }
+#endif
 
   _jobQueue = AB_Job_List2_new();
   return 0;
@@ -833,11 +1004,13 @@ int KMyMoneyBanking::fini()
     _jobQueue = 0;
   }
 
+#if !AQB_IS_VERSION(5,99,0,0)
   const int rv = onlineFini();
   if (rv) {
     AB_Banking::fini();
     return rv;
   }
+#endif
   return AB_Banking::fini();
 }
 
@@ -856,14 +1029,23 @@ int KMyMoneyBanking::executeQueue(AB_IMEXPORTER_CONTEXT *ctx)
     AB_JOB* abJob = AB_Job_List2Iterator_Data(jobIter);
 
     while (abJob) {
+#if AQB_IS_VERSION(5,99,0,0)
+      const char *stringIdForApp = AB_Transaction_GetStringIdForApplication(abJob);
+
+      if (!(stringIdForApp && *stringIdForApp)) {
+#else
       GWEN_DB_NODE* gwenNode = AB_Job_GetAppData(abJob);
       if (gwenNode == 0) {
+#endif
         qWarning("Executed AB_Job without KMyMoney id");
         abJob = AB_Job_List2Iterator_Next(jobIter);
         break;
       }
+#if AQB_IS_VERSION(5,99,0,0)
+      QString jobIdent = QString::fromUtf8(stringIdForApp);
+#else
       QString jobIdent = QString::fromUtf8(GWEN_DB_GetCharValue(gwenNode, "kmmOnlineJobId", 0, ""));
-
+#endif
       onlineJob job = m_parent->m_onlineJobQueue.value(jobIdent);
       if (job.isNull()) {
         // It should not be possiblie that this will happen (only if AqBanking fails heavily).
@@ -1062,7 +1244,312 @@ bool KMyMoneyBanking::interactiveImport()
   return true;
 }
 
+#if AQB_IS_VERSION(5,99,0,0)
+void KMyMoneyBanking::_xaToStatement(MyMoneyStatement &ks,
+                                     const MyMoneyAccount& acc,
+                                     const AB_TRANSACTION *t)
+{
+  QString s;
+  QString memo;
+  const char *p;
+  const AB_VALUE *val;
+  const GWEN_DATE *dt;
+  const GWEN_DATE *startDate = 0;
+  MyMoneyStatement::Transaction kt;
+  unsigned long h;
 
+  kt.m_fees = MyMoneyMoney();
+
+  // bank's transaction id
+  p = AB_Transaction_GetFiId(t);
+  if (p)
+    kt.m_strBankID = QString("ID ") + QString::fromUtf8(p);
+
+  // payee
+  p = AB_Transaction_GetRemoteName(t);
+  if (p)
+    kt.m_strPayee = QString::fromUtf8(p);
+
+  // memo
+#if 1
+  p = AB_Transaction_GetPurpose(t);
+  if (p && *p) {
+    QString tmpMemo;
+
+    s=QString::fromUtf8(p).trimmed();
+    tmpMemo=QString::fromUtf8(p).trimmed();
+    tmpMemo.replace('\n', ' ');
+
+    memo=tmpMemo;
+  }
+
+  // in case we have some SEPA fields filled with information
+  // we add them to the memo field
+  p = AB_Transaction_GetEndToEndReference(t);
+  if (p) {
+    s += QString(", EREF: %1").arg(p);
+    if(memo.length())
+      memo.append('\n');
+    memo.append(QString("EREF: %1").arg(p));
+  }
+  p = AB_Transaction_GetCustomerReference(t);
+  if (p) {
+    s += QString(", CREF: %1").arg(p);
+    if(memo.length())
+      memo.append('\n');
+    memo.append(QString("CREF: %1").arg(p));
+  }
+  p = AB_Transaction_GetMandateId(t);
+  if (p) {
+    s += QString(", MREF: %1").arg(p);
+    if(memo.length())
+      memo.append('\n');
+    memo.append(QString("MREF: %1").arg(p));
+  }
+  p = AB_Transaction_GetCreditorSchemeId(t);
+  if (p) {
+    s += QString(", CRED: %1").arg(p);
+    if(memo.length())
+      memo.append('\n');
+    memo.append(QString("CRED: %1").arg(p));
+  }
+  p = AB_Transaction_GetOriginatorId(t);
+  if (p) {
+    s += QString(", DEBT: %1").arg(p);
+    if(memo.length())
+      memo.append('\n');
+    memo.append(QString("DEBT: %1").arg(p));
+  }
+
+#else
+  // The variable 's' contains the old method of extracting
+  // the memo which added a linefeed after each part received
+  // from AqBanking. The new variable 'memo' does not have
+  // this inserted linefeed. We keep the variable 's' to
+  // construct the hash-value to retrieve the reference
+  s.truncate(0);
+  sl = AB_Transaction_GetPurpose(t);
+  if (sl) {
+    GWEN_STRINGLISTENTRY *se;
+    bool insertLineSep = false;
+
+    se = GWEN_StringList_FirstEntry(sl);
+    while (se) {
+      p = GWEN_StringListEntry_Data(se);
+      assert(p);
+      if (insertLineSep)
+        s += '\n';
+      insertLineSep = true;
+      s += QString::fromUtf8(p).trimmed();
+      memo += QString::fromUtf8(p).trimmed();
+      se = GWEN_StringListEntry_Next(se);
+    } // while
+
+    // Sparda / Netbank hack: the software these banks use stores
+    // parts of the payee name in the beginning of the purpose field
+    // in case the payee name exceeds the 27 character limit. This is
+    // the case, when one of the strings listed in m_sepaKeywords is part
+    // of the purpose fields but does not start at the beginning. In this
+    // case, the part leading up to the keyword is to be treated as the
+    // tail of the payee. Also, a blank is inserted after the keyword.
+    QSet<QString>::const_iterator itk;
+    for (itk = m_sepaKeywords.constBegin(); itk != m_sepaKeywords.constEnd(); ++itk) {
+      int idx = s.indexOf(*itk);
+      if (idx >= 0) {
+        if (idx > 0) {
+          // re-add a possibly removed blank to name
+          if (kt.m_strPayee.length() < 27)
+            kt.m_strPayee += ' ';
+          kt.m_strPayee += s.left(idx);
+          s = s.mid(idx);
+        }
+        s = QString("%1 %2").arg(*itk).arg(s.mid((*itk).length()));
+
+        // now do the same for 'memo' except for updating the payee
+        idx = memo.indexOf(*itk);
+        if (idx >= 0) {
+          if (idx > 0) {
+            memo = memo.mid(idx);
+          }
+        }
+        memo = QString("%1 %2").arg(*itk).arg(memo.mid((*itk).length()));
+        break;
+      }
+    }
+
+    // in case we have some SEPA fields filled with information
+    // we add them to the memo field
+    p = AB_Transaction_GetEndToEndReference(t);
+    if (p) {
+      s += QString(", EREF: %1").arg(p);
+      if(memo.length())
+        memo.append('\n');
+      memo.append(QString("EREF: %1").arg(p));
+    }
+    p = AB_Transaction_GetCustomerReference(t);
+    if (p) {
+      s += QString(", CREF: %1").arg(p);
+      if(memo.length())
+        memo.append('\n');
+      memo.append(QString("CREF: %1").arg(p));
+    }
+    p = AB_Transaction_GetMandateId(t);
+    if (p) {
+      s += QString(", MREF: %1").arg(p);
+      if(memo.length())
+        memo.append('\n');
+      memo.append(QString("MREF: %1").arg(p));
+    }
+    p = AB_Transaction_GetCreditorSchemeId(t);
+    if (p) {
+      s += QString(", CRED: %1").arg(p);
+      if(memo.length())
+        memo.append('\n');
+      memo.append(QString("CRED: %1").arg(p));
+    }
+    p = AB_Transaction_GetOriginatorId(t);
+    if (p) {
+      s += QString(", DEBT: %1").arg(p);
+      if(memo.length())
+        memo.append('\n');
+      memo.append(QString("DEBT: %1").arg(p));
+    }
+  }
+#endif
+
+  const MyMoneyKeyValueContainer& kvp = acc.onlineBankingSettings();
+  // check if we need the version with or without linebreaks
+  if (kvp.value("kbanking-memo-removelinebreaks").compare(QLatin1String("no"))) {
+    kt.m_strMemo = memo;
+  } else {
+    kt.m_strMemo = s;
+  }
+
+  // calculate the hash code and start with the payee info
+  // and append the memo field
+  h = MyMoneyTransaction::hash(kt.m_strPayee.trimmed());
+  h = MyMoneyTransaction::hash(s, h);
+
+  // see, if we need to extract the payee from the memo field
+  QString rePayee = kvp.value("kbanking-payee-regexp");
+  if (!rePayee.isEmpty() && kt.m_strPayee.isEmpty()) {
+    QString reMemo = kvp.value("kbanking-memo-regexp");
+    QStringList exceptions = kvp.value("kbanking-payee-exceptions").split(';', QString::SkipEmptyParts);
+
+    bool needExtract = true;
+    QStringList::const_iterator it_s;
+    for (it_s = exceptions.constBegin(); needExtract && it_s != exceptions.constEnd(); ++it_s) {
+      QRegExp exp(*it_s, Qt::CaseInsensitive);
+      if (exp.indexIn(kt.m_strMemo) != -1) {
+        needExtract = false;
+      }
+    }
+    if (needExtract) {
+      QRegExp expPayee(rePayee, Qt::CaseInsensitive);
+      QRegExp expMemo(reMemo, Qt::CaseInsensitive);
+      if (expPayee.indexIn(kt.m_strMemo) != -1) {
+        kt.m_strPayee = expPayee.cap(1);
+        if (expMemo.indexIn(kt.m_strMemo) != -1) {
+          kt.m_strMemo = expMemo.cap(1);
+        }
+      }
+    }
+  }
+
+  kt.m_strPayee = kt.m_strPayee.trimmed();
+
+  // date
+  dt = AB_Transaction_GetDate(t);
+  if (!dt)
+    dt = AB_Transaction_GetValutaDate(t);
+  if (dt) {
+    if (!startDate)
+      startDate = dt;
+    /*else { dead code
+      if (GWEN_Time_Diff(ti, startTime) < 0)
+        startTime = ti;
+    }*/
+    kt.m_datePosted = QDate(GWEN_Date_GetYear(dt), GWEN_Date_GetMonth(dt), GWEN_Date_GetDay(dt));
+  } else {
+    DBG_WARN(0, "No date for transaction");
+  }
+
+  // value
+  val = AB_Transaction_GetValue(t);
+  if (val) {
+    if (ks.m_strCurrency.isEmpty()) {
+      p = AB_Value_GetCurrency(val);
+      if (p)
+        ks.m_strCurrency = p;
+    } else {
+      p = AB_Value_GetCurrency(val);
+      if (p)
+        s = p;
+      if (ks.m_strCurrency.toLower() != s.toLower()) {
+        // TODO: handle currency difference
+        DBG_ERROR(0, "Mixed currencies currently not allowed");
+      }
+    }
+
+    kt.m_amount = MyMoneyMoney(AB_Value_GetValueAsDouble(val));
+    // The initial implementation of this feature was based on
+    // a denominator of 100. Since the denominator might be
+    // different nowadays, we make sure to use 100 for the
+    // duplicate detection
+    QString tmpVal = kt.m_amount.formatMoney(100, false);
+    tmpVal.remove(QRegExp("[,\\.]"));
+    tmpVal += QLatin1String("/100");
+    h = MyMoneyTransaction::hash(tmpVal, h);
+  } else {
+    DBG_WARN(0, "No value for transaction");
+  }
+
+  if (startDate) {
+    QDate d(QDate(GWEN_Date_GetYear(startDate), GWEN_Date_GetMonth(startDate), GWEN_Date_GetDay(startDate)));
+
+    if (!ks.m_dateBegin.isValid())
+      ks.m_dateBegin = d;
+    else if (d < ks.m_dateBegin)
+      ks.m_dateBegin = d;
+
+    if (!ks.m_dateEnd.isValid())
+      ks.m_dateEnd = d;
+    else if (d > ks.m_dateEnd)
+      ks.m_dateEnd = d;
+  } else {
+    DBG_WARN(0, "No date in current transaction");
+  }
+
+  // add information about remote account to memo in case we have something
+  const char *remoteAcc = AB_Transaction_GetRemoteAccountNumber(t);
+  const char *remoteBankCode = AB_Transaction_GetRemoteBankCode(t);
+  if (remoteAcc && remoteBankCode) {
+    kt.m_strMemo += QString("\n%1/%2").arg(remoteBankCode, remoteAcc);
+  }
+
+  // make hash value unique in case we don't have one already
+  if (kt.m_strBankID.isEmpty()) {
+    QString hashBase;
+    hashBase.sprintf("%s-%07lx", qPrintable(kt.m_datePosted.toString(Qt::ISODate)), h);
+    int idx = 1;
+    QString hash;
+    for (;;) {
+      hash = QString("%1-%2").arg(hashBase).arg(idx);
+      QMap<QString, bool>::const_iterator it;
+      it = m_hashMap.constFind(hash);
+      if (it == m_hashMap.constEnd()) {
+        m_hashMap[hash] = true;
+        break;
+      }
+      ++idx;
+    }
+    kt.m_strBankID = QString("%1-%2").arg(acc.id()).arg(hash);
+  }
+
+  // store transaction
+  ks.m_listTransactions += kt;
+}
+#else
 const AB_ACCOUNT_STATUS* KMyMoneyBanking::_getAccountStatus(AB_IMEXPORTER_ACCOUNTINFO *ai)
 {
   const AB_ACCOUNT_STATUS *ast;
@@ -1368,8 +1855,7 @@ void KMyMoneyBanking::_xaToStatement(MyMoneyStatement &ks,
   // store transaction
   ks.m_listTransactions += kt;
 }
-
-
+#endif
 
 bool KMyMoneyBanking::importAccountInfo(AB_IMEXPORTER_ACCOUNTINFO *ai,
                                         uint32_t /*flags*/)
@@ -1422,6 +1908,29 @@ bool KMyMoneyBanking::importAccountInfo(AB_IMEXPORTER_ACCOUNTINFO *ai,
       ks.m_eType = MyMoneyStatement::etNone;
   }
 
+#if AQB_IS_VERSION(5,99,0,0)
+  const AB_BALANCE *bal = AB_Balance_List_GetLatestByType(AB_ImExporterAccountInfo_GetBalanceList(ai), AB_Balance_TypeBooked);
+  if (!bal)
+    bal = AB_Balance_List_GetLatestByType(AB_ImExporterAccountInfo_GetBalanceList(ai), AB_Balance_TypeNoted);
+  if (bal) {
+    const AB_VALUE* val = AB_Balance_GetValue(bal);
+    if (val) {
+      DBG_INFO(0, "Importing balance");
+      ks.m_closingBalance = AB_Value_toMyMoneyMoney(val);
+      p = AB_Value_GetCurrency(val);
+      if (p)
+        ks.m_strCurrency = p;
+    }
+    const GWEN_DATE* dt = AB_Balance_GetDate(bal);
+    if (dt) {
+      ks.m_dateEnd = QDate(GWEN_Date_GetYear(dt), GWEN_Date_GetMonth(dt) , GWEN_Date_GetDay(dt));
+    } else {
+      DBG_WARN(0, "No date for balance");
+    }
+  } else {
+    DBG_WARN(0, "No account balance");
+  }
+#else
   // account status
   const AB_ACCOUNT_STATUS* ast = _getAccountStatus(ai);
   if (ast) {
@@ -1454,15 +1963,23 @@ bool KMyMoneyBanking::importAccountInfo(AB_IMEXPORTER_ACCOUNTINFO *ai,
   } else {
     DBG_WARN(0, "No account status");
   }
-
+#endif
   // clear hash map
   m_hashMap.clear();
 
   // get all transactions
+#if AQB_IS_VERSION(5,99,0,0)
+   const AB_TRANSACTION* t = AB_ImExporterAccountInfo_GetFirstTransaction(ai, AB_Transaction_TypeStatement, 0);
+#else
   const AB_TRANSACTION* t = AB_ImExporterAccountInfo_GetFirstTransaction(ai);
+#endif
   while (t) {
     _xaToStatement(ks, kacc, t);
+#if AQB_IS_VERSION(5,99,0,0)
+    t = AB_Transaction_List_FindNextByType(t, AB_Transaction_TypeStatement, 0);
+#else
     t = AB_ImExporterAccountInfo_GetNextTransaction(ai);
+#endif
   }
 
   // import them

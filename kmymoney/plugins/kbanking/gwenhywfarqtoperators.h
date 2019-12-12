@@ -35,12 +35,12 @@ class QStringList;
 /**
  * @brief Create GWEN_STRINGLIST from QStringList
  */
-GWEN_STRINGLIST* GWEN_StringList_fromQStringList(const QStringList& input);
+//GWEN_STRINGLIST* GWEN_StringList_fromQStringList(const QStringList& input);
 
 /**
  * @brief Create GWEN_STRINGLIST from QString
  */
-GWEN_STRINGLIST* GWEN_StringList_fromQString(const QString& input);
+//GWEN_STRINGLIST* GWEN_StringList_fromQString(const QString& input);
 
 /** @} */ // end of gwenhywfarqtoperators
 

@@ -30,7 +30,8 @@
 #include "onlinetasks/interfaces/tasks/ionlinetasksettings.h"
 #include "onlinetasks/sepa/tasks/sepaonlinetransfer.h"
 
-class AB_ACCOUNT;
+#include "mymoneybanking.h"
+
 class AB_TRANSACTION_LIMITS;
 class AB_TRANSACTION;
 class AB_VALUE;

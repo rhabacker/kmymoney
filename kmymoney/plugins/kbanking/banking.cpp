@@ -22,13 +22,16 @@
 
 
 #include "banking.hpp"
+
+#if !AQB_IS_VERSION(5,99,0,0)
 #include <aqbanking/banking_be.h>
 #include <aqbanking/banking_cfg.h>
-#include <assert.h>
+#endif
 
 #include <gwenhywfar/inherit.h>
 #include <gwenhywfar/debug.h>
 
+#include <assert.h>
 
 
 AB_Banking::AB_Banking(const char *appname, const char *fname)
@@ -67,7 +70,7 @@ int AB_Banking::fini()
 }
 
 
-
+#if !AQB_IS_VERSION(5,99,0,0)
 int AB_Banking::onlineInit()
 {
   return AB_Banking_OnlineInit(_banking);
@@ -79,7 +82,7 @@ int AB_Banking::onlineFini()
 {
   return AB_Banking_OnlineFini(_banking);
 }
-
+#endif
 
 
 const char *AB_Banking::getAppName()
@@ -88,7 +91,40 @@ const char *AB_Banking::getAppName()
 }
 
 
+#if AQB_IS_VERSION(5,99,0,0)
+std::list<AB_ACCOUNT_SPEC*> AB_Banking::getAccounts()
+{
+  std::list<AB_ACCOUNT_SPEC*> accountSpecList;
+  AB_ACCOUNT_SPEC_LIST *abAccountSpecList=NULL;
+  int rv;
 
+  rv=AB_Banking_GetAccountSpecList(_banking, &abAccountSpecList);
+  if (rv>=0) {
+    AB_ACCOUNT_SPEC *as;
+
+    while( (as=AB_AccountSpec_List_First(abAccountSpecList)) ) {
+      AB_AccountSpec_List_Del(as);
+      accountSpecList.push_back(as);
+      as=AB_AccountSpec_List_Next(as);
+    }
+  }
+  AB_AccountSpec_List_free(abAccountSpecList);
+  return accountSpecList;
+}
+
+AB_ACCOUNT_SPEC *AB_Banking::getAccount(uint32_t uniqueId)
+{
+  int rv;
+  AB_ACCOUNT_SPEC *as=NULL;
+
+  rv=AB_Banking_GetAccountSpecByUniqueId(_banking, uniqueId, &as);
+  if (rv<0) {
+    DBG_ERROR(0, "Account spec not found (%d)", rv);
+    return NULL;
+  }
+  return as;
+}
+#else
 std::list<AB_ACCOUNT*> AB_Banking::getAccounts()
 {
   AB_ACCOUNT_LIST2 *ll;
@@ -145,8 +181,7 @@ std::list<AB_USER*> AB_Banking::getUsers()
   }
   return rl;
 }
-
-
+#endif
 
 int AB_Banking::getUserDataDir(GWEN_BUFFER *buf) const
 {
@@ -155,11 +190,12 @@ int AB_Banking::getUserDataDir(GWEN_BUFFER *buf) const
 
 
 
+#if !AQB_IS_VERSION(5,99,0,0)
 int AB_Banking::getAppUserDataDir(GWEN_BUFFER *buf) const
 {
   return AB_Banking_GetAppUserDataDir(_banking, buf);
 }
-
+#endif
 
 
 AB_BANKING *AB_Banking::getCInterface()
@@ -168,6 +204,41 @@ AB_BANKING *AB_Banking::getCInterface()
 }
 
 
+#if AQB_IS_VERSION(5,99,0,0)
+std::list<std::string> AB_Banking::getActiveProviders()
+{
+  std::list<std::string> stringList;
+  GWEN_PLUGIN_DESCRIPTION_LIST2 *pdl;
+
+  pdl=AB_Banking_GetProviderDescrs(_banking);
+  if (pdl) {
+    GWEN_PLUGIN_DESCRIPTION_LIST2_ITERATOR *it;
+
+    it=GWEN_PluginDescription_List2_First(pdl);
+    if (it) {
+      GWEN_PLUGIN_DESCRIPTION *pd;
+
+      pd=GWEN_PluginDescription_List2Iterator_Data(it);
+      while(pd) {
+        const char *s;
+
+        s=GWEN_PluginDescription_GetName(pd);
+        if (s && *s)
+          stringList.push_back(s);
+        pd=GWEN_PluginDescription_List2Iterator_Next(it);
+      }
+      GWEN_PluginDescription_List2Iterator_free(it);
+    }
+    GWEN_PluginDescription_List2_freeAll(pdl);
+  }
+
+  return stringList;
+ }
+#else
+AB_PROVIDER *AB_Banking::getProvider(const char *name)
+{
+  return AB_Banking_GetProvider(_banking, name);
+}
 
 std::list<std::string> AB_Banking::getActiveProviders()
 {
@@ -191,13 +262,7 @@ std::list<std::string> AB_Banking::getActiveProviders()
   }
   return l;
 }
-
-
-AB_PROVIDER *AB_Banking::getProvider(const char *name)
-{
-  return AB_Banking_GetProvider(_banking, name);
-}
-
+#endif
 
 
 bool AB_Banking::importContext(AB_IMEXPORTER_CONTEXT *ctx, uint32_t flags)
@@ -208,7 +273,11 @@ bool AB_Banking::importContext(AB_IMEXPORTER_CONTEXT *ctx, uint32_t flags)
   while (ai) {
     if (!importAccountInfo(ai, flags))
       return false;
+#if AQB_IS_VERSION(5,99,0,0)
+    ai = AB_ImExporterAccountInfo_List_Next(ai);
+#else
     ai = AB_ImExporterContext_GetNextAccountInfo(ctx);
+#endif
   }
 
   return true;
@@ -334,7 +403,12 @@ int AB_Banking::saveSharedSubConfig(const char *name,
   return 0;
 }
 
-
+#if AQB_IS_VERSION(5,99,0,0)
+void AB_Banking::setAccountAlias(AB_ACCOUNT_SPEC *a, const char *alias)
+{
+  AB_Banking_SetAccountSpecAlias(_banking, a, alias);
+}
+#else
 int AB_Banking::loadAppConfig(GWEN_DB_NODE **pDb)
 {
   return AB_Banking_LoadAppConfig(_banking, pDb);
@@ -469,7 +543,7 @@ void AB_Banking::setAccountAlias(AB_ACCOUNT *a, const char *alias)
 {
   AB_Banking_SetAccountAlias(_banking, a, alias);
 }
-
+#endif
 
 
 

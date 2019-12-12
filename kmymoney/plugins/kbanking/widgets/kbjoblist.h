@@ -22,9 +22,9 @@
 #ifndef AQHBCI_KBJOBLIST_H
 #define AQHBCI_KBJOBLIST_H
 
+#include "banking.hpp"
 
 #include <QTreeWidget>
-#include <aqbanking/job.h>
 
 #include <list>
 
