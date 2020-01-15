@@ -24,17 +24,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="KMyMoneyAccountTreeView" name="m_accountTree"/>
-   </item>
-   <item>
     <layout class="QHBoxLayout">
-     <item>
-      <widget class="KLineEdit" name="m_searchWidget">
-       <property name="showClearButton" stdset="0">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item>
       <widget class="QPushButton" name="m_collapseButton">
        <property name="toolTip">
@@ -55,7 +45,17 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="KLineEdit" name="m_searchWidget">
+       <property name="showClearButton" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
+   </item>
+   <item>
+    <widget class="KMyMoneyAccountTreeView" name="m_accountTree"/>
    </item>
    <item>
     <widget class="QLabel" name="m_hiddenCategories">
