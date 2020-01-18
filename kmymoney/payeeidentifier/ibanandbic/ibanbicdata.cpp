@@ -73,7 +73,7 @@ QString ibanBicData::iban2Bic(const QString& iban)
   const QString countryCode = iban.left(2);
 
   // Get services which support iban2bic and have a database entry
-  KService::List services = KServiceTypeTrader::self()->query("KMyMoney/IbanBicData",
+  KService::List services = KServiceTypeTrader::self()->query("KToblzCheck/IbanBicData",
                             QString("(\'%1' ~in [X-KMyMoney-CountryCodes] or '*' in [X-KMyMoney-CountryCodes]) and true == [X-KMyMoney-IBAN-2-BIC-supported] and exist [X-KMyMoney-Bankdata-Database]").arg(countryCode)
                                                              );
 
@@ -111,7 +111,7 @@ QString ibanBicData::bankNameByBic(QString bic)
   const QString countryCode = bic.mid(4, 2);
 
   // Get services which have a database entry
-  KService::List services = KServiceTypeTrader::self()->query("KMyMoney/IbanBicData",
+  KService::List services = KServiceTypeTrader::self()->query("KToblzCheck/IbanBicData",
                             QString("(\'%1' ~in [X-KMyMoney-CountryCodes] or '*' in [X-KMyMoney-CountryCodes]) and exist [X-KMyMoney-Bankdata-Database]").arg(countryCode)
                                                              );
 
@@ -156,7 +156,7 @@ QPair< QString, QString > ibanBicData::bankNameAndBic(const QString& iban)
   const QString countryCode = iban.left(2);
 
   // Get services which support iban2bic and have a database entry
-  KService::List services = KServiceTypeTrader::self()->query("KMyMoney/IbanBicData",
+  KService::List services = KServiceTypeTrader::self()->query("KToblzCheck/IbanBicData",
                             QString("(\'%1' ~in [X-KMyMoney-CountryCodes] or '*' in [X-KMyMoney-CountryCodes]) and true == [X-KMyMoney-IBAN-2-BIC-supported] and exist [X-KMyMoney-Bankdata-Database]").arg(countryCode)
                                                              );
 
@@ -192,7 +192,7 @@ ibanBicData::bicAllocationStatus ibanBicData::isBicAllocated(const QString& bic)
     return bicNotAllocated;
 
   // Get services which have a database entry
-  KService::List services = KServiceTypeTrader::self()->query("KMyMoney/IbanBicData",
+  KService::List services = KServiceTypeTrader::self()->query("KToblzCheck/IbanBicData",
                             QString("(\'%1' ~in [X-KMyMoney-CountryCodes] or '*' in [X-KMyMoney-CountryCodes]) and exist [X-KMyMoney-Bankdata-Database]").arg(countryCode)
                                                              );
 
@@ -224,7 +224,7 @@ ibanBicData::bicAllocationStatus ibanBicData::isBicAllocated(const QString& bic)
 
 QVariant ibanBicData::findPropertyByCountry(const QString& countryCode, const QString& property, const QVariant::Type type)
 {
-  const KService::List services = KServiceTypeTrader::self()->query("KMyMoney/IbanBicData",
+  const KService::List services = KServiceTypeTrader::self()->query("KToblzCheck/IbanBicData",
                                   QString("'%1' ~in [X-KMyMoney-CountryCodes] and exist [%2]").arg(countryCode).arg(property)
                                                                    );
   if (!services.isEmpty())
@@ -257,7 +257,7 @@ QSqlDatabase ibanBicData::createDatabaseConnection(const QString& database)
     return storedConnection;
 
   // Need to create new connection, locate database
-  QString path = KGlobal::dirs()->locate("data", QLatin1String("kmymoney/ibanbicdata/") + database);
+  QString path = KGlobal::dirs()->locate("data", QLatin1String("ktoblzcheck/ibanbicdata/") + database);
   if (path.isEmpty()) {
     kWarning() << QString("Could not locate database file \"%1\" to receive IBAN and BIC data.").arg(database);
     return QSqlDatabase();

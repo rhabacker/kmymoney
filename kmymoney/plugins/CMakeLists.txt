@@ -1,7 +1,5 @@
 add_subdirectory( onlinetasks )
 
-add_subdirectory( ibanbicdata )
-
 add_subdirectory( interfaces )
 
 add_subdirectory( csvimport )
