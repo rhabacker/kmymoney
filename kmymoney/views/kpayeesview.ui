@@ -40,7 +40,7 @@
         <layout class="QHBoxLayout">
          <item>
           <widget class="QPushButton" name="m_newButton">
-                       <property name="toolTip">
+           <property name="toolTip">
             <string>Creates a new payee</string>
            </property>
            <property name="whatsThis">
@@ -53,7 +53,7 @@
          </item>
          <item>
           <widget class="QPushButton" name="m_renameButton">
-                       <property name="toolTip">
+           <property name="toolTip">
             <string>Rename the current selected payee</string>
            </property>
            <property name="whatsThis">
@@ -66,7 +66,7 @@
          </item>
          <item>
           <widget class="QPushButton" name="m_deleteButton">
-                       <property name="toolTip">
+           <property name="toolTip">
             <string>Delete selected payee(s)</string>
            </property>
            <property name="whatsThis">
@@ -82,7 +82,7 @@
          </item>
          <item>
           <widget class="QPushButton" name="m_mergeButton">
-                       <property name="toolTip">
+           <property name="toolTip">
             <string>Merge multiple selected payees</string>
            </property>
            <property name="whatsThis">
@@ -284,17 +284,17 @@
          </widget>
         </item>
         <item row="3" column="2">
-                     <widget class="QPushButton" name="m_sendMail">
-             <property name="toolTip">
-              <string>Creates new e-mail to your payee.</string>
-             </property>
-             <property name="whatsThis">
-              <string>Use this to create new e-mail to your payee.</string>
-             </property>
-             <property name="text">
-              <string>Send</string>
-             </property>
-            </widget>
+         <widget class="QPushButton" name="m_sendMail">
+          <property name="toolTip">
+           <string>Creates new e-mail to your payee.</string>
+          </property>
+          <property name="whatsThis">
+           <string>Use this to create new e-mail to your payee.</string>
+          </property>
+          <property name="text">
+           <string>Send</string>
+          </property>
+         </widget>
         </item>
         <item row="2" column="1" colspan="2">
          <widget class="KLineEdit" name="telephoneEdit"/>
@@ -492,7 +492,7 @@
       </spacer>
      </item>
      <item>
-            <widget class="QPushButton" name="m_syncAddressbook">
+      <widget class="QPushButton" name="m_syncAddressbook">
        <property name="toolTip">
         <string>Fetches the payee's data from your addressbook.</string>
        </property>
@@ -512,7 +512,7 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-                <property name="toolTip">
+       <property name="toolTip">
         <string>Accepts the entered data and stores it</string>
        </property>
        <property name="whatsThis">

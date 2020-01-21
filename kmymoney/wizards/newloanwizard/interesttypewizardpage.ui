@@ -3,122 +3,122 @@
  <class>InterestTypeWizardPage</class>
  <widget class="QWizardPage" name="InterestTypeWizardPage">
   <attribute name="title">
-    <string>Type of interest</string>
+   <string>Type of interest</string>
   </attribute>
   <layout class="QVBoxLayout">
-    <property name="margin">
-      <number>11</number>
-    </property>
-    <property name="spacing">
-      <number>6</number>
-    </property>
-    <item>
-      <widget class="QLabel" name="TextLabel5_2">
-        <property name="text">
-          <string>
+   <property name="margin">
+    <number>11</number>
+   </property>
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="TextLabel5_2">
+     <property name="text">
+      <string>
 Is the interest of this loan fixed over a period of time or is it adapted from time to time? If the interest rate changes during the amortization phase of the loan you should choose the option 'variable interest rate'.</string>
-        </property>
-        <property name="alignment">
-          <set>Qt::AlignTop</set>
-        </property>
-        <property name="wordWrap">
-          <bool>true</bool>
-        </property>
-      </widget>
-    </item>
-    <item>
-      <spacer name="Spacer23">
-        <property name="sizeHint">
-          <size>
-            <width>0</width>
-            <height>53</height>
-          </size>
-        </property>
-        <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-        </property>
-        <property name="orientation">
-          <enum>Qt::Vertical</enum>
-        </property>
-      </spacer>
-    </item>
-    <item>
-      <layout class="QHBoxLayout">
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignTop</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="Spacer23">
+     <property name="sizeHint">
+      <size>
+       <width>0</width>
+       <height>53</height>
+      </size>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="frame_3">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <layout class="QVBoxLayout">
         <property name="margin">
-          <number>0</number>
+         <number>11</number>
         </property>
         <property name="spacing">
-          <number>6</number>
+         <number>6</number>
         </property>
         <item>
-          <widget class="QFrame" name="frame_3">
-            <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-            </property>
-            <layout class="QVBoxLayout">
-              <property name="margin">
-                <number>11</number>
-              </property>
-              <property name="spacing">
-                <number>6</number>
-              </property>
-              <item>
-                <widget class="QRadioButton" name="m_fixedInterestButton">
-                  <property name="text">
-                    <string>Fixed interest rate</string>
-                  </property>
-                  <attribute name="buttonGroup">
-                    <string>ButtonGroup2</string>
-                  </attribute>
-                </widget>
-              </item>
-              <item>
-                <widget class="QRadioButton" name="m_variableInterestButton">
-                  <property name="text">
-                    <string>Variable interest rate</string>
-                  </property>
-                  <attribute name="buttonGroup">
-                    <string>ButtonGroup2</string>
-                  </attribute>
-                </widget>
-              </item>
-            </layout>
-          </widget>
+         <widget class="QRadioButton" name="m_fixedInterestButton">
+          <property name="text">
+           <string>Fixed interest rate</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string>ButtonGroup2</string>
+          </attribute>
+         </widget>
         </item>
         <item>
-          <spacer name="Spacer14_2">
-            <property name="sizeHint">
-              <size>
-                <width>286</width>
-                <height>0</height>
-              </size>
-            </property>
-            <property name="sizeType">
-              <enum>QSizePolicy::Expanding</enum>
-            </property>
-            <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-            </property>
-          </spacer>
+         <widget class="QRadioButton" name="m_variableInterestButton">
+          <property name="text">
+           <string>Variable interest rate</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string>ButtonGroup2</string>
+          </attribute>
+         </widget>
         </item>
-      </layout>
-    </item>
-    <item>
-      <spacer name="Spacer24">
-        <property name="sizeHint">
-          <size>
-            <width>0</width>
-            <height>53</height>
-          </size>
-        </property>
-        <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-        </property>
-        <property name="orientation">
-          <enum>Qt::Vertical</enum>
-        </property>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <spacer name="Spacer14_2">
+       <property name="sizeHint">
+        <size>
+         <width>286</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
       </spacer>
-    </item>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="Spacer24">
+     <property name="sizeHint">
+      <size>
+       <width>0</width>
+       <height>53</height>
+      </size>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </spacer>
+   </item>
   </layout>
  </widget>
  <resources/>

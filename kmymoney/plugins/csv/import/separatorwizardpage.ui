@@ -168,7 +168,7 @@ This will reset any existing field choices.</string>
            </property>
            <item>
             <property name="text">
-             <string>quote (&quot;)</string>
+             <string>quote (")</string>
             </property>
            </item>
            <item>

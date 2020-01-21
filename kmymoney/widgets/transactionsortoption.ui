@@ -1,209 +1,209 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0" stdsetdef="1">
-  <author>Thomas Baumgart &lt;ipwizard@users.sourceforge.net&gt;</author>
-  <comment></comment>
-  <exportmacro></exportmacro>
-  <class>TransactionSortOption</class>
-  <widget class="QWidget" name="TransactionSortOption">
-    <property name="geometry">
-      <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>486</width>
-        <height>230</height>
-      </rect>
-    </property>
-    <layout class="QHBoxLayout">
-      <item>
-        <layout class="QVBoxLayout">
-          <item>
-            <widget class="QListWidget" name="m_availableList">
-              <column>
-                <property name="text">
-                  <string>Sort options</string>
-                </property>
-                <property name="clickable">
-                  <bool>true</bool>
-                </property>
-                <property name="resizable">
-                  <bool>true</bool>
-                </property>
-              </column>
-            </widget>
-          </item>
-        </layout>
-      </item>
-      <item>
-        <layout class="QVBoxLayout">
-          <item>
-            <spacer name="spacer3">
-              <property name="sizeHint">
-                <size>
-                  <width>20</width>
-                  <height>67</height>
-                </size>
-              </property>
-              <property name="sizeType">
-                <enum>QSizePolicy::Expanding</enum>
-              </property>
-              <property name="orientation">
-                <enum>Qt::Vertical</enum>
-              </property>
-            </spacer>
-          </item>
-          <item>
-            <widget class="QPushButton" name="m_addButton">
-              <property name="text">
-                <string/>
-              </property>
-            </widget>
-          </item>
-          <item>
-            <widget class="QPushButton" name="m_removeButton">
-              <property name="text">
-                <string/>
-              </property>
-            </widget>
-          </item>
-          <item>
-            <spacer name="spacer4">
-              <property name="sizeHint">
-                <size>
-                  <width>21</width>
-                  <height>67</height>
-                </size>
-              </property>
-              <property name="sizeType">
-                <enum>QSizePolicy::Expanding</enum>
-              </property>
-              <property name="orientation">
-                <enum>Qt::Vertical</enum>
-              </property>
-            </spacer>
-          </item>
-        </layout>
-      </item>
-      <item>
-        <layout class="QVBoxLayout">
-          <item>
-            <widget class="QListWidget" name="m_selectedList">
-              <column>
-                <property name="text">
-                  <string>Sort order</string>
-                </property>
-                <property name="clickable">
-                  <bool>true</bool>
-                </property>
-                <property name="resizable">
-                  <bool>true</bool>
-                </property>
-              </column>
-            </widget>
-          </item>
-        </layout>
-      </item>
-      <item>
-        <layout class="QVBoxLayout">
-          <item>
-            <spacer name="spacer5">
-              <property name="sizeHint">
-                <size>
-                  <width>20</width>
-                  <height>67</height>
-                </size>
-              </property>
-              <property name="sizeType">
-                <enum>QSizePolicy::Expanding</enum>
-              </property>
-              <property name="orientation">
-                <enum>Qt::Vertical</enum>
-              </property>
-            </spacer>
-          </item>
-          <item>
-            <widget class="QPushButton" name="m_upButton">
-              <property name="text">
-                <string/>
-              </property>
-            </widget>
-          </item>
-          <item>
-            <widget class="QPushButton" name="m_downButton">
-              <property name="text">
-                <string/>
-              </property>
-            </widget>
-          </item>
-          <item>
-            <spacer name="spacer6">
-              <property name="sizeHint">
-                <size>
-                  <width>20</width>
-                  <height>67</height>
-                </size>
-              </property>
-              <property name="sizeType">
-                <enum>QSizePolicy::Expanding</enum>
-              </property>
-              <property name="orientation">
-                <enum>Qt::Vertical</enum>
-              </property>
-            </spacer>
-          </item>
-        </layout>
-      </item>
+ <author>Thomas Baumgart &lt;ipwizard@users.sourceforge.net&gt;</author>
+ <comment/>
+ <exportmacro/>
+ <class>TransactionSortOption</class>
+ <widget class="QWidget" name="TransactionSortOption">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>486</width>
+    <height>230</height>
+   </rect>
+  </property>
+  <layout class="QHBoxLayout">
+   <item>
+    <layout class="QVBoxLayout">
+     <item>
+      <widget class="QListWidget" name="m_availableList">
+       <column>
+        <property name="text">
+         <string>Sort options</string>
+        </property>
+        <property name="clickable">
+         <bool>true</bool>
+        </property>
+        <property name="resizable">
+         <bool>true</bool>
+        </property>
+       </column>
+      </widget>
+     </item>
     </layout>
-  </widget>
-  <layoutdefault spacing="6" margin="11"/>
-  <customwidgets>
-    <customwidget>
-      <class>QListWidget</class>
-      <extends>QListWidget</extends>
-      <header location="global">klistwidget.h</header>
-    </customwidget>
-  </customwidgets>
-  <connections>
-    <connection>
-      <sender>m_addButton</sender>
-      <signal>clicked()</signal>
-      <receiver>TransactionSortOptionDecl</receiver>
-      <slot>slotAddItem()</slot>
-    </connection>
-    <connection>
-      <sender>m_availableList</sender>
-      <signal>itemSelectionChanged()</signal>
-      <receiver>TransactionSortOptionDecl</receiver>
-      <slot>slotAvailableSelected()</slot>
-    </connection>
-    <connection>
-      <sender>m_downButton</sender>
-      <signal>clicked()</signal>
-      <receiver>TransactionSortOptionDecl</receiver>
-      <slot>slotDownItem()</slot>
-    </connection>
-    <connection>
-      <sender>m_removeButton</sender>
-      <signal>clicked()</signal>
-      <receiver>TransactionSortOptionDecl</receiver>
-      <slot>slotRemoveItem()</slot>
-    </connection>
-    <connection>
-      <sender>m_selectedList</sender>
-      <signal>itemSelectionChanged()</signal>
-      <receiver>TransactionSortOptionDecl</receiver>
-      <slot>slotSelectedSelected()</slot>
-    </connection>
-    <connection>
-      <sender>m_upButton</sender>
-      <signal>clicked()</signal>
-      <receiver>TransactionSortOptionDecl</receiver>
-      <slot>slotUpItem()</slot>
-    </connection>
-    <connection>
-      <sender>m_selectedList</sender>
-      <signal>itemDoubleClicked(QListWidgetItem*)</signal>
-      <receiver>TransactionSortOptionDecl</receiver>
-      <slot>toggleDirection(QListWidgetItem*)</slot>
-    </connection>
-  </connections>
+   </item>
+   <item>
+    <layout class="QVBoxLayout">
+     <item>
+      <spacer name="spacer3">
+       <property name="sizeHint">
+        <size>
+         <width>20</width>
+         <height>67</height>
+        </size>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_addButton">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_removeButton">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="spacer4">
+       <property name="sizeHint">
+        <size>
+         <width>21</width>
+         <height>67</height>
+        </size>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout">
+     <item>
+      <widget class="QListWidget" name="m_selectedList">
+       <column>
+        <property name="text">
+         <string>Sort order</string>
+        </property>
+        <property name="clickable">
+         <bool>true</bool>
+        </property>
+        <property name="resizable">
+         <bool>true</bool>
+        </property>
+       </column>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout">
+     <item>
+      <spacer name="spacer5">
+       <property name="sizeHint">
+        <size>
+         <width>20</width>
+         <height>67</height>
+        </size>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_upButton">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_downButton">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="spacer6">
+       <property name="sizeHint">
+        <size>
+         <width>20</width>
+         <height>67</height>
+        </size>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QListWidget</class>
+   <extends>QListWidget</extends>
+   <header location="global">klistwidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <connections>
+  <connection>
+   <sender>m_addButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TransactionSortOptionDecl</receiver>
+   <slot>slotAddItem()</slot>
+  </connection>
+  <connection>
+   <sender>m_availableList</sender>
+   <signal>itemSelectionChanged()</signal>
+   <receiver>TransactionSortOptionDecl</receiver>
+   <slot>slotAvailableSelected()</slot>
+  </connection>
+  <connection>
+   <sender>m_downButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TransactionSortOptionDecl</receiver>
+   <slot>slotDownItem()</slot>
+  </connection>
+  <connection>
+   <sender>m_removeButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TransactionSortOptionDecl</receiver>
+   <slot>slotRemoveItem()</slot>
+  </connection>
+  <connection>
+   <sender>m_selectedList</sender>
+   <signal>itemSelectionChanged()</signal>
+   <receiver>TransactionSortOptionDecl</receiver>
+   <slot>slotSelectedSelected()</slot>
+  </connection>
+  <connection>
+   <sender>m_upButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TransactionSortOptionDecl</receiver>
+   <slot>slotUpItem()</slot>
+  </connection>
+  <connection>
+   <sender>m_selectedList</sender>
+   <signal>itemDoubleClicked(QListWidgetItem*)</signal>
+   <receiver>TransactionSortOptionDecl</receiver>
+   <slot>toggleDirection(QListWidgetItem*)</slot>
+  </connection>
+ </connections>
 </ui>

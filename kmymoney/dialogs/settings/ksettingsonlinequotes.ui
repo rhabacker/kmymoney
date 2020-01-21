@@ -33,7 +33,7 @@
    <item>
     <widget class="QGroupBox" name="groupParsing">
      <property name="whatsThis">
-      <string>&lt;i&gt;Enter regular expressions which can be used to parse the data returned from the URL entered above.  The symbol, price, and date must be found in the quote data to be usable. You may also try the KMyMoney user's mailinglist at &lt;a href=&quot;mailto:kmymoney@kde.org&quot;&gt;kmymoney@kde.org&lt;/a&gt; to find what settings work for other users in your country.&lt;/i&gt;</string>
+      <string>&lt;i&gt;Enter regular expressions which can be used to parse the data returned from the URL entered above.  The symbol, price, and date must be found in the quote data to be usable. You may also try the KMyMoney user's mailinglist at &lt;a href="mailto:kmymoney@kde.org"&gt;kmymoney@kde.org&lt;/a&gt; to find what settings work for other users in your country.&lt;/i&gt;</string>
      </property>
      <property name="title">
       <string>Details</string>
