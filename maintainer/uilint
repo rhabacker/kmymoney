@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# author Ralf Habacker <ralf.habacker@freenet.de>
+#
+# changes &quot; back to "
+
+for i in $(find -name *.ui); do
+    cp $i $i.tmp;
+    XMLLINT_INDENT=" " xmllint --nsclean --nonet --nocdata --noblanks --format $i.tmp > $i
+    rm $i.tmp
+done
+

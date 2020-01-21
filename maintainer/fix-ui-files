@@ -1,0 +1,70 @@
+ #!/bin/sh
+
+# author Ralf Habacker <ralf.habacker@freenet.de>
+
+for i in $(find -name *.ui -exec grep -H '<widget class="[^Q]' {} \; | sed 's,:.*$,,g' | sort | uniq); do
+    cp $i $i.tmp;
+    gawk '
+begin {
+    fixCustomWidgets=0
+    customwidgets = 0
+    customwidget = 0
+}
+
+#<ui version="4.0" stdsetdef="1">
+#  <author></author>
+#  <comment></comment>
+#  <exportmacro></exportmacro>
+#  <class>KNewLoanWizard</class>
+#  <widget class="QWizard" name="KNewLoanWizard">
+
+$1 == "<widget" && $2 ~ /class="QWizard"/ {
+    fixCustomWidgets = 1;
+}
+
+$1 == "<widget" && $2 ~ /class="[^Q]/ {
+    a=$2;
+    gsub(/class=/, "",  a);
+    gsub(/["]/, "",  a);
+    keywords[a] = 1;
+}
+
+fixCustomWidgets == 1 && $1 == "</customwidgets>" {
+    for (a in keywords) {
+        if (keywords[a] == 2)
+            continue;
+        print "  <customwidget>";
+        print "   <class>" a "</class>";
+        print "   <extends>QWizardPage</extends>";
+        print "   <header>" tolower(a) ".h</header>";
+        print "   <container>1</container>";
+        print "  </customwidget>";
+    }
+    customwidgets = 0;
+}
+
+$1 == "<customwidgets>" {
+    customwidgets = 1;
+}
+
+customwidget == 1 && $1 ~ /^<class>/ {
+    a = $1;
+    gsub(/<class>/, "",  a);
+    gsub(/<\/class>/, "",  a);
+    if (a in keywords) {
+        keywords[a] = 2;
+    }
+}
+
+customwidgets == 1 &&  $1 == "<customwidget>" {
+    customwidget = 1;
+}
+
+{
+    print $0
+}
+
+' $i.tmp > $i
+    rm $i.tmp
+done
+
