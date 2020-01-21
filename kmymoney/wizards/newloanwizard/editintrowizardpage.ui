@@ -2,31 +2,48 @@
 <ui version="4.0">
  <class>EditIntroWizardPage</class>
  <widget class="QWizardPage" name="EditIntroWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>568</width>
+    <height>167</height>
+   </rect>
+  </property>
+  <property name="title">
    <string/>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>6</number>
      </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
      <item>
       <spacer name="Spacer2_2">
-       <property name="sizeHint">
-        <size>
-         <width>98</width>
-         <height>0</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>98</width>
+         <height>0</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -36,6 +53,7 @@
         <font>
          <family>Helvetica</family>
          <pointsize>16</pointsize>
+         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
@@ -43,7 +61,7 @@
         <string>Edit Loan Account Wizard</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignTop|Qt::AlignHCenter</set>
+        <set>Qt::AlignHCenter|Qt::AlignTop</set>
        </property>
        <property name="wordWrap">
         <bool>false</bool>
@@ -52,17 +70,17 @@
      </item>
      <item>
       <spacer name="Spacer3_2">
-       <property name="sizeHint">
-        <size>
-         <width>119</width>
-         <height>0</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>119</width>
+         <height>0</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -86,17 +104,17 @@ Please make sure that you have the relevant information handy. You usually get t
    </item>
    <item>
     <spacer name="spacer79">
-     <property name="sizeHint">
-      <size>
-       <width>20</width>
-       <height>20</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -104,8 +122,4 @@ Please make sure that you have the relevant information handy. You usually get t
  </widget>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
 </ui>

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0" stdsetdef="1">
- <author/>
- <comment/>
- <exportmacro/>
+<ui version="4.0">
  <class>KAccountPage</class>
  <widget class="QWidget" name="KAccountPage">
   <property name="geometry">
@@ -43,19 +40,28 @@
       <enum>QFrame::Plain</enum>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
        <number>0</number>
       </property>
       <item row="5" column="1">
        <widget class="KLineEdit" name="m_institutionNameEdit">
-        <property name="whatsThis" stdset="0">
+        <property name="whatsThis">
          <string>The name of the institution that issued the account.</string>
         </property>
        </widget>
       </item>
       <item row="6" column="1">
        <widget class="KLineEdit" name="m_institutionNumberEdit">
-        <property name="whatsThis" stdset="0">
+        <property name="whatsThis">
          <string>Each institution has a routing number. Enter it here. If uncertain, leave the field blank. You can modify it later.</string>
         </property>
        </widget>
@@ -82,14 +88,14 @@
       </item>
       <item row="2" column="1">
        <widget class="KLineEdit" name="m_accountNumberEdit">
-        <property name="whatsThis" stdset="0">
+        <property name="whatsThis">
          <string>In general the institution that issued the account also issued a number for it. Enter it here. If uncertain, you can modify this entry later.</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="KLineEdit" name="m_accountNameEdit">
-        <property name="whatsThis" stdset="0">
+        <property name="whatsThis">
          <string>Enter a descriptive name that will be used by KMyMoney to identify your checking account.</string>
         </property>
        </widget>
@@ -107,25 +113,25 @@
       <item row="3" column="1">
        <layout class="QHBoxLayout">
         <item>
-         <widget class="KMyMoneyDateInput" name="m_openingDateEdit">
-          <property name="whatsThis" stdset="0">
+         <widget class="KMyMoneyDateInput" name="m_openingDateEdit" native="true">
+          <property name="whatsThis">
            <string>Enter the date from when on you plan to keep track of the transactions in that account. This is usually the date of the last statement. If uncertain, leave as is.</string>
           </property>
          </widget>
         </item>
         <item>
          <spacer name="spacer5">
-          <property name="sizeHint">
-           <size>
-            <width>81</width>
-            <height>20</height>
-           </size>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
            <enum>QSizePolicy::Expanding</enum>
           </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>81</width>
+            <height>20</height>
+           </size>
           </property>
          </spacer>
         </item>
@@ -174,34 +180,34 @@
          </widget>
         </item>
         <item>
-         <widget class="KMyMoneyEdit" name="m_openingBalanceEdit">
+         <widget class="KMyMoneyEdit" name="m_openingBalanceEdit" native="true">
+          <property name="whatsThis">
+           <string>Enter the opening balance of the account. This is usually the ending balance of the last statement. If uncertain, leave as is.</string>
+          </property>
           <property name="resetButtonVisibility" stdset="0">
            <bool>false</bool>
-          </property>
-          <property name="whatsThis" stdset="0">
-           <string>Enter the opening balance of the account. This is usually the ending balance of the last statement. If uncertain, leave as is.</string>
           </property>
          </widget>
         </item>
         <item>
          <spacer name="spacer6">
-          <property name="sizeHint">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
            <size>
             <width>200</width>
             <height>20</height>
            </size>
           </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
          </spacer>
         </item>
        </layout>
       </item>
-      <item row="0" column="0" rowspan="1" colspan="2">
+      <item row="0" column="0" colspan="2">
        <widget class="QLabel" name="qLabel1">
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
@@ -219,23 +225,40 @@
    </item>
    <item>
     <spacer name="spacer1">
-     <property name="sizeHint">
-      <size>
-       <width>20</width>
-       <height>16</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>16</height>
+      </size>
      </property>
     </spacer>
    </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KMyMoneyDateInput</class>
+   <extends>QWidget</extends>
+   <header>kmymoneydateinput.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KMyMoneyEdit</class>
+   <extends>QWidget</extends>
+   <header>kmymoneyedit.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>m_accountNameEdit</tabstop>
   <tabstop>m_accountNumberEdit</tabstop>
@@ -245,12 +268,23 @@
   <tabstop>m_institutionNumberEdit</tabstop>
   <tabstop>m_haveCheckingAccountButton</tabstop>
  </tabstops>
+ <resources/>
  <connections>
   <connection>
    <sender>m_haveCheckingAccountButton</sender>
    <signal>toggled(bool)</signal>
    <receiver>m_accountDataFrame</receiver>
    <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
  </connections>
 </ui>

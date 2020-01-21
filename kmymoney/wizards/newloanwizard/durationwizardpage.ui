@@ -2,9 +2,17 @@
 <ui version="4.0">
  <class>DurationWizardPage</class>
  <widget class="QWizardPage" name="DurationWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>571</width>
+    <height>317</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Duration</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
    <item>
     <widget class="QLabel" name="TextLabel15_2">
@@ -22,17 +30,17 @@ Please enter the term of this loan or leave the field empty to calculate it. The
    </item>
    <item>
     <spacer name="Spacer67_2">
-     <property name="sizeHint">
-      <size>
-       <width>16</width>
-       <height>54</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>16</width>
+       <height>54</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -65,7 +73,7 @@ Please enter the term of this loan or leave the field empty to calculate it. The
       </widget>
      </item>
      <item>
-      <widget class="KMyMoneyGeneralCombo" name="m_durationUnitEdit"/>
+      <widget class="KMyMoneyGeneralCombo" name="m_durationUnitEdit" native="true"/>
      </item>
     </layout>
    </item>
@@ -78,7 +86,16 @@ Please enter the term of this loan or leave the field empty to calculate it. The
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
        <number>11</number>
       </property>
       <property name="spacing">
@@ -90,7 +107,7 @@ Please enter the term of this loan or leave the field empty to calculate it. The
          <string>Loan amount:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -103,7 +120,7 @@ Please enter the term of this loan or leave the field empty to calculate it. The
          <string>Interest rate:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -116,7 +133,7 @@ Please enter the term of this loan or leave the field empty to calculate it. The
          <string>Term:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -129,7 +146,7 @@ Please enter the term of this loan or leave the field empty to calculate it. The
          <string>Principal + Interest:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -142,7 +159,7 @@ Please enter the term of this loan or leave the field empty to calculate it. The
          <string>Final amortization payment</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -153,6 +170,7 @@ Please enter the term of this loan or leave the field empty to calculate it. The
        <widget class="QLabel" name="m_loanAmount3">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -171,6 +189,7 @@ Please enter the term of this loan or leave the field empty to calculate it. The
        <widget class="QLabel" name="m_interestRate3">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -189,6 +208,7 @@ Please enter the term of this loan or leave the field empty to calculate it. The
        <widget class="QLabel" name="m_duration3">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -207,6 +227,7 @@ Please enter the term of this loan or leave the field empty to calculate it. The
        <widget class="QLabel" name="m_payment3">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -225,6 +246,7 @@ Please enter the term of this loan or leave the field empty to calculate it. The
        <widget class="QLabel" name="m_balloon3">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -244,8 +266,6 @@ Please enter the term of this loan or leave the field empty to calculate it. The
    </item>
   </layout>
  </widget>
- <resources/>
- <connections/>
  <customwidgets>
   <customwidget>
    <class>KMyMoneyGeneralCombo</class>
@@ -254,6 +274,6 @@ Please enter the term of this loan or leave the field empty to calculate it. The
    <container>1</container>
   </customwidget>
  </customwidgets>
- <tabstops>
- </tabstops>
+ <resources/>
+ <connections/>
 </ui>

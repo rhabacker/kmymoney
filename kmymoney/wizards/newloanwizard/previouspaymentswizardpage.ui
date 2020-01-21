@@ -2,15 +2,32 @@
 <ui version="4.0">
  <class>PreviousPaymentsWizardPage</class>
  <widget class="QWizardPage" name="PreviousPaymentsWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>468</width>
+    <height>302</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Payments?</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
-    <number>11</number>
-   </property>
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
+   <property name="bottomMargin">
+    <number>11</number>
    </property>
    <item>
     <widget class="QLabel" name="TextLabel6_2">
@@ -28,27 +45,36 @@ Were there any payments for this loan whether they are entered into KMyMoney or 
    </item>
    <item>
     <spacer name="Spacer28">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>0</width>
        <height>32</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
      </property>
      <item>
       <widget class="QFrame" name="frame_4">
@@ -56,11 +82,20 @@ Were there any payments for this loan whether they are entered into KMyMoney or 
         <enum>QFrame::NoFrame</enum>
        </property>
        <layout class="QVBoxLayout">
-        <property name="margin">
-         <number>11</number>
-        </property>
         <property name="spacing">
          <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>11</number>
+        </property>
+        <property name="topMargin">
+         <number>11</number>
+        </property>
+        <property name="rightMargin">
+         <number>11</number>
+        </property>
+        <property name="bottomMargin">
+         <number>11</number>
         </property>
         <item>
          <widget class="QRadioButton" name="m_noPreviousPaymentButton">
@@ -68,7 +103,7 @@ Were there any payments for this loan whether they are entered into KMyMoney or 
            <string>No, no payments were made yet.</string>
           </property>
           <attribute name="buttonGroup">
-           <string>ButtonGroup3</string>
+           <string notr="true">ButtonGroup3</string>
           </attribute>
          </widget>
         </item>
@@ -78,7 +113,7 @@ Were there any payments for this loan whether they are entered into KMyMoney or 
            <string>Yes, payments were made.</string>
           </property>
           <attribute name="buttonGroup">
-           <string>ButtonGroup3</string>
+           <string notr="true">ButtonGroup3</string>
           </attribute>
          </widget>
         </item>
@@ -87,17 +122,17 @@ Were there any payments for this loan whether they are entered into KMyMoney or 
      </item>
      <item>
       <spacer name="Spacer14_2_2">
-       <property name="sizeHint">
-        <size>
-         <width>202</width>
-         <height>0</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>202</width>
+         <height>0</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -105,17 +140,17 @@ Were there any payments for this loan whether they are entered into KMyMoney or 
    </item>
    <item>
     <spacer name="Spacer29">
-     <property name="sizeHint">
-      <size>
-       <width>0</width>
-       <height>32</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>32</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -134,17 +169,17 @@ Were there any payments for this loan whether they are entered into KMyMoney or 
    </item>
    <item>
     <spacer name="Spacer41">
-     <property name="sizeHint">
-      <size>
-       <width>0</width>
-       <height>32</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>32</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -152,10 +187,6 @@ Were there any payments for this loan whether they are entered into KMyMoney or 
  </widget>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
  <buttongroups>
   <buttongroup name="ButtonGroup3"/>
  </buttongroups>

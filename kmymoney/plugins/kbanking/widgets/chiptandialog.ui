@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>656</width>
-    <height>405</height>
+    <height>432</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,8 +28,7 @@
          </property>
          <property name="icon">
           <iconset theme="zoom-out">
-           <normaloff/>
-          </iconset>
+           <normaloff>.</normaloff>.</iconset>
          </property>
         </widget>
        </item>
@@ -43,8 +42,7 @@
          </property>
          <property name="icon">
           <iconset theme="zoom-in">
-           <normaloff/>
-          </iconset>
+           <normaloff>.</normaloff>.</iconset>
          </property>
         </widget>
        </item>
@@ -74,8 +72,7 @@
          </property>
          <property name="icon">
           <iconset theme="media-seek-backward">
-           <normaloff/>
-          </iconset>
+           <normaloff>.</normaloff>.</iconset>
          </property>
         </widget>
        </item>
@@ -86,8 +83,7 @@
          </property>
          <property name="icon">
           <iconset theme="media-seek-forward">
-           <normaloff/>
-          </iconset>
+           <normaloff>.</normaloff>.</iconset>
          </property>
         </widget>
        </item>
@@ -126,7 +122,7 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QQuickWidget" name="declarativeView" native="true">
+      <widget class="QQuickWidget" name="declarativeView">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
          <horstretch>0</horstretch>
@@ -189,7 +185,7 @@
   <customwidget>
    <class>QQuickWidget</class>
    <extends>QWidget</extends>
-   <header location="global">QQuickWidget</header>
+   <header>QtQuickWidgets/QQuickWidget</header>
   </customwidget>
  </customwidgets>
  <tabstops>

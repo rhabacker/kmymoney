@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0" stdsetdef="1">
- <author/>
- <comment/>
- <exportmacro/>
+<ui version="4.0">
  <class>KLoanPaymentPage</class>
  <widget class="QWidget" name="KLoanPaymentPage">
   <property name="geometry">
@@ -31,23 +28,23 @@
     <layout class="QHBoxLayout">
      <item>
       <spacer name="spacer10">
-       <property name="sizeHint">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
         <size>
          <width>63</width>
          <height>21</height>
         </size>
        </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
       </spacer>
      </item>
      <item>
       <layout class="QGridLayout">
-       <item row="0" column="0" rowspan="1" colspan="2">
+       <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="textLabel1">
          <property name="text">
           <string>Principal + Interest</string>
@@ -61,6 +58,7 @@
         <widget class="QLabel" name="m_basePayment">
          <property name="font">
           <font>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -68,7 +66,7 @@
           <string>xxx</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignVCenter|Qt::AlignRight</set>
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
          <property name="wordWrap">
           <bool>false</bool>
@@ -96,6 +94,7 @@
         <widget class="QLabel" name="m_additionalFees">
          <property name="font">
           <font>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -103,14 +102,14 @@
           <string>xxx</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignVCenter|Qt::AlignRight</set>
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
          <property name="wordWrap">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="2" column="0" rowspan="1" colspan="2">
+       <item row="2" column="0" colspan="2">
         <widget class="QLabel" name="textLabel5">
          <property name="text">
           <string>= periodical payments</string>
@@ -124,6 +123,7 @@
         <widget class="QLabel" name="m_totalPayment">
          <property name="font">
           <font>
+           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
@@ -131,7 +131,7 @@
           <string>xxx</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignVCenter|Qt::AlignRight</set>
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
          <property name="wordWrap">
           <bool>false</bool>
@@ -142,17 +142,17 @@
      </item>
      <item>
       <spacer name="spacer15">
-       <property name="sizeHint">
-        <size>
-         <width>62</width>
-         <height>21</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>62</width>
+         <height>21</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -160,21 +160,23 @@
    </item>
    <item>
     <spacer name="spacer12">
-     <property name="sizeHint">
-      <size>
-       <width>20</width>
-       <height>20</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
      </property>
     </spacer>
    </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
 </ui>

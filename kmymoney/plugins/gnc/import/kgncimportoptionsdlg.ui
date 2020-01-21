@@ -304,11 +304,11 @@
   </connection>
  </connections>
  <buttongroups>
+  <buttongroup name="buttonGroup3"/>
+  <buttongroup name="buttonGroup5"/>
+  <buttongroup name="buttonGroup4"/>
+  <buttongroup name="buttonInvestGroup"/>
   <buttongroup name="buttonGroup18"/>
   <buttongroup name="buttonGroup2"/>
-  <buttongroup name="buttonGroup3"/>
-  <buttongroup name="buttonGroup4"/>
-  <buttongroup name="buttonGroup5"/>
-  <buttongroup name="buttonInvestGroup"/>
  </buttongroups>
 </ui>

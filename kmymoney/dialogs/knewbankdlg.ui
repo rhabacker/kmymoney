@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>631</width>
-    <height>419</height>
+    <height>441</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -94,7 +94,7 @@
        <widget class="KLineEdit" name="bicEdit"/>
       </item>
       <item row="8" column="0" colspan="5">
-       <widget class="KMessageWidget" name="messageWidget" native="true"/>
+       <widget class="KMessageWidget" name="messageWidget"/>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="TextLabel4">
@@ -220,7 +220,7 @@
   </customwidget>
   <customwidget>
    <class>KMessageWidget</class>
-   <extends>QWidget</extends>
+   <extends>QFrame</extends>
    <header>kmessagewidget.h</header>
    <container>1</container>
   </customwidget>

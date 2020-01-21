@@ -2,21 +2,38 @@
 <ui version="4.0">
  <class>SummaryWizardPage</class>
  <widget class="QWizardPage" name="SummaryWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>286</width>
+    <height>388</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Summary</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
-    <number>11</number>
-   </property>
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
+   <property name="bottomMargin">
+    <number>11</number>
    </property>
    <item>
     <widget class="QLabel" name="TextLabel22_2_2">
      <property name="text">
       <string>
-This page summarizes the data you entered. If you need to modify anything, please use the "Back" button to go to respective page. Otherwise use the "Finish" button to create the account.</string>
+This page summarizes the data you entered. If you need to modify anything, please use the &quot;Back&quot; button to go to respective page. Otherwise use the &quot;Finish&quot; button to create the account.</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignTop</set>
@@ -28,35 +45,53 @@ This page summarizes the data you entered. If you need to modify anything, pleas
    </item>
    <item>
     <spacer name="Spacer69">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>0</width>
        <height>16</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>6</number>
      </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
      <item>
       <layout class="QVBoxLayout">
-       <property name="margin">
-        <number>0</number>
-       </property>
        <property name="spacing">
         <number>6</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
        </property>
        <item>
         <widget class="QGroupBox" name="GroupBox3">
@@ -64,15 +99,33 @@ This page summarizes the data you entered. If you need to modify anything, pleas
           <string comment="@title loan general information">General</string>
          </property>
          <layout class="QVBoxLayout">
-          <property name="margin">
+          <property name="spacing">
            <number>1</number>
           </property>
-          <property name="spacing">
+          <property name="leftMargin">
+           <number>1</number>
+          </property>
+          <property name="topMargin">
+           <number>1</number>
+          </property>
+          <property name="rightMargin">
+           <number>1</number>
+          </property>
+          <property name="bottomMargin">
            <number>1</number>
           </property>
           <item>
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
              <number>1</number>
             </property>
             <property name="spacing">
@@ -84,7 +137,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
                <string>Payee:</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignVCenter|Qt::AlignRight</set>
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <property name="wordWrap">
                <bool>false</bool>
@@ -95,6 +148,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <widget class="QLabel" name="m_summaryLoanType">
               <property name="font">
                <font>
+                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -113,6 +167,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <widget class="QLabel" name="m_summaryPayee">
               <property name="font">
                <font>
+                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -133,7 +188,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
                <string>First payment:</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignVCenter|Qt::AlignRight</set>
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <property name="wordWrap">
                <bool>false</bool>
@@ -144,6 +199,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <widget class="QLabel" name="m_summaryFirstPayment">
               <property name="font">
                <font>
+                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -164,7 +220,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
                <string>Amount is:</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignVCenter|Qt::AlignRight</set>
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <property name="wordWrap">
                <bool>false</bool>
@@ -182,15 +238,33 @@ This page summarizes the data you entered. If you need to modify anything, pleas
           <string>Loan calculation</string>
          </property>
          <layout class="QVBoxLayout">
-          <property name="margin">
+          <property name="spacing">
            <number>1</number>
           </property>
-          <property name="spacing">
+          <property name="leftMargin">
+           <number>1</number>
+          </property>
+          <property name="topMargin">
+           <number>1</number>
+          </property>
+          <property name="rightMargin">
+           <number>1</number>
+          </property>
+          <property name="bottomMargin">
            <number>1</number>
           </property>
           <item>
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
              <number>1</number>
             </property>
             <property name="spacing">
@@ -200,6 +274,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <widget class="QLabel" name="m_summaryTotalPeriodicPayment">
               <property name="font">
                <font>
+                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -218,6 +293,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <widget class="QLabel" name="m_summaryPaymentAccount">
               <property name="font">
                <font>
+                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -236,6 +312,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <widget class="QLabel" name="m_summaryAdditionalFees">
               <property name="font">
                <font>
+                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -256,20 +333,20 @@ This page summarizes the data you entered. If you need to modify anything, pleas
                <string>Periodic Payment:</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignVCenter|Qt::AlignRight</set>
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <property name="wordWrap">
                <bool>false</bool>
               </property>
              </widget>
             </item>
-            <item row="1" column="0" rowspan="2" colspan="1">
+            <item row="1" column="0" rowspan="2">
              <widget class="QLabel" name="TextLabel14">
               <property name="text">
                <string>Additional Fees:</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignVCenter|Qt::AlignRight</set>
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <property name="wordWrap">
                <bool>false</bool>
@@ -282,7 +359,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
                <string>Interest category:</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignVCenter|Qt::AlignRight</set>
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <property name="wordWrap">
                <bool>false</bool>
@@ -295,17 +372,18 @@ This page summarizes the data you entered. If you need to modify anything, pleas
                <string>Payment from:</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignVCenter|Qt::AlignRight</set>
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <property name="wordWrap">
                <bool>false</bool>
               </property>
              </widget>
             </item>
-            <item row="0" column="1" rowspan="2" colspan="1">
+            <item row="0" column="1" rowspan="2">
              <widget class="QLabel" name="m_summaryInterestCategory">
               <property name="font">
                <font>
+                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -324,6 +402,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <widget class="QLabel" name="m_summaryNextPayment">
               <property name="font">
                <font>
+                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -344,7 +423,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
                <string>Next due date:</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignVCenter|Qt::AlignRight</set>
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
               <property name="wordWrap">
                <bool>false</bool>
@@ -364,15 +443,33 @@ This page summarizes the data you entered. If you need to modify anything, pleas
         <string>Payment</string>
        </property>
        <layout class="QVBoxLayout">
-        <property name="margin">
+        <property name="spacing">
          <number>1</number>
         </property>
-        <property name="spacing">
+        <property name="leftMargin">
+         <number>1</number>
+        </property>
+        <property name="topMargin">
+         <number>1</number>
+        </property>
+        <property name="rightMargin">
+         <number>1</number>
+        </property>
+        <property name="bottomMargin">
          <number>1</number>
         </property>
         <item>
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>1</number>
+          </property>
+          <property name="topMargin">
+           <number>1</number>
+          </property>
+          <property name="rightMargin">
+           <number>1</number>
+          </property>
+          <property name="bottomMargin">
            <number>1</number>
           </property>
           <property name="spacing">
@@ -382,6 +479,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
            <widget class="QLabel" name="m_summaryInterestRate">
             <property name="font">
              <font>
+              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -402,7 +500,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <string>Term:</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignVCenter|Qt::AlignRight</set>
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="wordWrap">
              <bool>false</bool>
@@ -413,6 +511,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
            <widget class="QLabel" name="m_summaryPeriodicPayment">
             <property name="font">
              <font>
+              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -433,7 +532,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <string>Interest rate:</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignVCenter|Qt::AlignRight</set>
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="wordWrap">
              <bool>false</bool>
@@ -444,6 +543,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
            <widget class="QLabel" name="m_summaryPaymentFrequency">
             <property name="font">
              <font>
+              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -464,7 +564,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <string>Final Payment:</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignVCenter|Qt::AlignRight</set>
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="wordWrap">
              <bool>false</bool>
@@ -475,6 +575,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
            <widget class="QLabel" name="m_summaryTerm">
             <property name="font">
              <font>
+              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -495,7 +596,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <string>Interest is due:</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignVCenter|Qt::AlignRight</set>
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="wordWrap">
              <bool>false</bool>
@@ -506,6 +607,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
            <widget class="QLabel" name="m_summaryAmount">
             <property name="font">
              <font>
+              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -526,7 +628,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <string>Principal + Interest:</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignVCenter|Qt::AlignRight</set>
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="wordWrap">
              <bool>false</bool>
@@ -537,6 +639,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
            <widget class="QLabel" name="m_summaryBalloonPayment">
             <property name="font">
              <font>
+              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -557,7 +660,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <string>Loan amount:</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignVCenter|Qt::AlignRight</set>
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="wordWrap">
              <bool>false</bool>
@@ -570,7 +673,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
              <string>Payment frequency:</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignVCenter|Qt::AlignRight</set>
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="wordWrap">
              <bool>false</bool>
@@ -581,6 +684,7 @@ This page summarizes the data you entered. If you need to modify anything, pleas
            <widget class="QLabel" name="m_summaryInterestDue">
             <property name="font">
              <font>
+              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -604,17 +708,17 @@ This page summarizes the data you entered. If you need to modify anything, pleas
    </item>
    <item>
     <spacer name="Spacer70">
-     <property name="sizeHint">
-      <size>
-       <width>0</width>
-       <height>16</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>16</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -622,8 +726,4 @@ This page summarizes the data you entered. If you need to modify anything, pleas
  </widget>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
 </ui>

@@ -2,15 +2,32 @@
 <ui version="4.0">
  <class>NewPaymentsWizardPage</class>
  <widget class="QWizardPage" name="NewPaymentsWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>438</width>
+    <height>244</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Payments</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
-    <number>11</number>
-   </property>
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
+   <property name="bottomMargin">
+    <number>11</number>
    </property>
    <item>
     <widget class="QLabel" name="TextLabel19_2">
@@ -28,51 +45,69 @@ In the following steps, KMyMoney supports you in setting up categories and sched
    </item>
    <item>
     <spacer name="Spacer10_2_2">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>0</width>
        <height>14</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>6</number>
      </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
      <item>
       <spacer name="Spacer8_2_2">
-       <property name="sizeHint">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
         <size>
          <width>136</width>
          <height>0</height>
         </size>
        </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
       </spacer>
      </item>
      <item>
       <layout class="QVBoxLayout">
-       <property name="margin">
-        <number>0</number>
-       </property>
        <property name="spacing">
         <number>6</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
        </property>
        <item>
         <widget class="QLabel" name="TextLabel19_3">
@@ -120,17 +155,17 @@ In the following steps, KMyMoney supports you in setting up categories and sched
        </item>
        <item>
         <spacer name="Spacer7_2_2">
-         <property name="sizeHint">
-          <size>
-           <width>0</width>
-           <height>18</height>
-          </size>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>18</height>
+          </size>
          </property>
         </spacer>
        </item>
@@ -138,17 +173,17 @@ In the following steps, KMyMoney supports you in setting up categories and sched
      </item>
      <item>
       <spacer name="Spacer9_2_2">
-       <property name="sizeHint">
-        <size>
-         <width>135</width>
-         <height>0</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>135</width>
+         <height>0</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -156,17 +191,17 @@ In the following steps, KMyMoney supports you in setting up categories and sched
    </item>
    <item>
     <spacer name="Spacer51_2">
-     <property name="sizeHint">
-      <size>
-       <width>0</width>
-       <height>18</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>18</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -174,8 +209,4 @@ In the following steps, KMyMoney supports you in setting up categories and sched
  </widget>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
 </ui>

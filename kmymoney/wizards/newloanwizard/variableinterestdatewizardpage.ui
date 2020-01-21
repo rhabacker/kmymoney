@@ -2,9 +2,17 @@
 <ui version="4.0">
  <class>VariableInterestDateWizardPage</class>
  <widget class="QWizardPage" name="VariableInterestDateWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>271</width>
+    <height>332</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Date of next interest change</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
    <item>
     <widget class="QLabel" name="TextLabel8_2">
@@ -22,17 +30,17 @@ Select the date when the interest rate for this loan will be modified and the fr
    </item>
    <item>
     <spacer name="Spacer39">
-     <property name="sizeHint">
-      <size>
-       <width>16</width>
-       <height>99</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>16</width>
+       <height>99</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -61,7 +69,7 @@ Select the date when the interest rate for this loan will be modified and the fr
         </widget>
        </item>
        <item>
-        <widget class="KMyMoneyGeneralCombo" name="m_interestFrequencyUnitEdit">
+        <widget class="KMyMoneyGeneralCombo" name="m_interestFrequencyUnitEdit" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>1</horstretch>
@@ -73,7 +81,7 @@ Select the date when the interest rate for this loan will be modified and the fr
       </layout>
      </item>
      <item row="0" column="1">
-      <widget class="KMyMoneyDateInput" name="m_interestChangeDateEdit"/>
+      <widget class="KMyMoneyDateInput" name="m_interestChangeDateEdit" native="true"/>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="TextLabel2">
@@ -89,24 +97,22 @@ Select the date when the interest rate for this loan will be modified and the fr
    </item>
    <item>
     <spacer name="Spacer40">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>80</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
   </layout>
  </widget>
- <resources/>
- <connections/>
  <customwidgets>
   <customwidget>
    <class>KMyMoneyGeneralCombo</class>
@@ -114,7 +120,12 @@ Select the date when the interest rate for this loan will be modified and the fr
    <header>kmymoneygeneralcombo.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>KMyMoneyDateInput</class>
+   <extends>QWidget</extends>
+   <header>kmymoneydateinput.h</header>
+  </customwidget>
  </customwidgets>
- <tabstops>
- </tabstops>
+ <resources/>
+ <connections/>
 </ui>

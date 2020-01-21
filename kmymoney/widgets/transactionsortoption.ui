@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0" stdsetdef="1">
+<ui version="4.0">
  <author>Thomas Baumgart &lt;ipwizard@users.sourceforge.net&gt;</author>
- <comment/>
- <exportmacro/>
  <class>TransactionSortOption</class>
  <widget class="QWidget" name="TransactionSortOption">
   <property name="geometry">
@@ -17,19 +15,7 @@
    <item>
     <layout class="QVBoxLayout">
      <item>
-      <widget class="QListWidget" name="m_availableList">
-       <column>
-        <property name="text">
-         <string>Sort options</string>
-        </property>
-        <property name="clickable">
-         <bool>true</bool>
-        </property>
-        <property name="resizable">
-         <bool>true</bool>
-        </property>
-       </column>
-      </widget>
+      <widget class="QListWidget" name="m_availableList"/>
      </item>
     </layout>
    </item>
@@ -37,17 +23,17 @@
     <layout class="QVBoxLayout">
      <item>
       <spacer name="spacer3">
-       <property name="sizeHint">
-        <size>
-         <width>20</width>
-         <height>67</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>67</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -67,17 +53,17 @@
      </item>
      <item>
       <spacer name="spacer4">
-       <property name="sizeHint">
-        <size>
-         <width>21</width>
-         <height>67</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>21</width>
+         <height>67</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -86,19 +72,7 @@
    <item>
     <layout class="QVBoxLayout">
      <item>
-      <widget class="QListWidget" name="m_selectedList">
-       <column>
-        <property name="text">
-         <string>Sort order</string>
-        </property>
-        <property name="clickable">
-         <bool>true</bool>
-        </property>
-        <property name="resizable">
-         <bool>true</bool>
-        </property>
-       </column>
-      </widget>
+      <widget class="QListWidget" name="m_selectedList"/>
      </item>
     </layout>
    </item>
@@ -106,17 +80,17 @@
     <layout class="QVBoxLayout">
      <item>
       <spacer name="spacer5">
-       <property name="sizeHint">
-        <size>
-         <width>20</width>
-         <height>67</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>67</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -136,17 +110,17 @@
      </item>
      <item>
       <spacer name="spacer6">
-       <property name="sizeHint">
-        <size>
-         <width>20</width>
-         <height>67</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>67</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -155,55 +129,6 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>QListWidget</class>
-   <extends>QListWidget</extends>
-   <header location="global">klistwidget.h</header>
-  </customwidget>
- </customwidgets>
- <connections>
-  <connection>
-   <sender>m_addButton</sender>
-   <signal>clicked()</signal>
-   <receiver>TransactionSortOptionDecl</receiver>
-   <slot>slotAddItem()</slot>
-  </connection>
-  <connection>
-   <sender>m_availableList</sender>
-   <signal>itemSelectionChanged()</signal>
-   <receiver>TransactionSortOptionDecl</receiver>
-   <slot>slotAvailableSelected()</slot>
-  </connection>
-  <connection>
-   <sender>m_downButton</sender>
-   <signal>clicked()</signal>
-   <receiver>TransactionSortOptionDecl</receiver>
-   <slot>slotDownItem()</slot>
-  </connection>
-  <connection>
-   <sender>m_removeButton</sender>
-   <signal>clicked()</signal>
-   <receiver>TransactionSortOptionDecl</receiver>
-   <slot>slotRemoveItem()</slot>
-  </connection>
-  <connection>
-   <sender>m_selectedList</sender>
-   <signal>itemSelectionChanged()</signal>
-   <receiver>TransactionSortOptionDecl</receiver>
-   <slot>slotSelectedSelected()</slot>
-  </connection>
-  <connection>
-   <sender>m_upButton</sender>
-   <signal>clicked()</signal>
-   <receiver>TransactionSortOptionDecl</receiver>
-   <slot>slotUpItem()</slot>
-  </connection>
-  <connection>
-   <sender>m_selectedList</sender>
-   <signal>itemDoubleClicked(QListWidgetItem*)</signal>
-   <receiver>TransactionSortOptionDecl</receiver>
-   <slot>toggleDirection(QListWidgetItem*)</slot>
-  </connection>
- </connections>
+ <resources/>
+ <connections/>
 </ui>

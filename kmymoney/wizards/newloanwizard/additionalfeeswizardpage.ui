@@ -2,21 +2,38 @@
 <ui version="4.0">
  <class>AdditionalFeesWizardPage</class>
  <widget class="QWizardPage" name="AdditionalFeesWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>301</width>
+    <height>321</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Additional Fees</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
-    <number>11</number>
-   </property>
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
+   <property name="bottomMargin">
+    <number>11</number>
    </property>
    <item>
     <widget class="QLabel" name="TextLabel21_2">
      <property name="text">
       <string>
-If your regular payment contains any additional fees, click on the button "Additional fees" to enter them.</string>
+If your regular payment contains any additional fees, click on the button &quot;Additional fees&quot; to enter them.</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignTop</set>
@@ -28,17 +45,17 @@ If your regular payment contains any additional fees, click on the button "Addit
    </item>
    <item>
     <spacer name="Spacer58">
-     <property name="sizeHint">
-      <size>
-       <width>0</width>
-       <height>16</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>16</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -51,7 +68,16 @@ If your regular payment contains any additional fees, click on the button "Addit
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
        <number>11</number>
       </property>
       <property name="spacing">
@@ -63,7 +89,7 @@ If your regular payment contains any additional fees, click on the button "Addit
          <string>= periodical payment:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -74,6 +100,7 @@ If your regular payment contains any additional fees, click on the button "Addit
        <widget class="QLabel" name="m_periodicPayment">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -84,7 +111,7 @@ If your regular payment contains any additional fees, click on the button "Addit
          <enum>Qt::PlainText</enum>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -95,6 +122,7 @@ If your regular payment contains any additional fees, click on the button "Addit
        <widget class="QLabel" name="m_additionalCost">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -105,7 +133,7 @@ If your regular payment contains any additional fees, click on the button "Addit
          <enum>Qt::PlainText</enum>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -114,11 +142,20 @@ If your regular payment contains any additional fees, click on the button "Addit
       </item>
       <item row="1" column="1">
        <layout class="QHBoxLayout">
-        <property name="margin">
-         <number>0</number>
-        </property>
         <property name="spacing">
          <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
         </property>
         <item>
          <widget class="QLabel" name="TextLabel21_1_2">
@@ -126,7 +163,7 @@ If your regular payment contains any additional fees, click on the button "Addit
            <string>+</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignVCenter|Qt::AlignRight</set>
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="wordWrap">
            <bool>false</bool>
@@ -146,6 +183,7 @@ If your regular payment contains any additional fees, click on the button "Addit
        <widget class="QLabel" name="m_basePayment">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -156,7 +194,7 @@ If your regular payment contains any additional fees, click on the button "Addit
          <enum>Qt::PlainText</enum>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -169,7 +207,7 @@ If your regular payment contains any additional fees, click on the button "Addit
          <string>Principal + Interest:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -178,33 +216,33 @@ If your regular payment contains any additional fees, click on the button "Addit
       </item>
       <item row="1" column="0">
        <spacer name="spacer173_2">
-        <property name="sizeHint">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeType">
          <enum>QSizePolicy::Expanding</enum>
         </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
         </property>
        </spacer>
       </item>
       <item row="1" column="3">
        <spacer name="spacer173">
-        <property name="sizeHint">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeType">
          <enum>QSizePolicy::Expanding</enum>
         </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
         </property>
        </spacer>
       </item>
@@ -213,24 +251,24 @@ If your regular payment contains any additional fees, click on the button "Addit
    </item>
    <item>
     <spacer name="Spacer59">
-     <property name="sizeHint">
-      <size>
-       <width>0</width>
-       <height>16</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>16</height>
+      </size>
      </property>
     </spacer>
    </item>
    <item>
     <widget class="QLabel" name="TextLabel21_2_2">
      <property name="text">
-      <string>If no additional fees are included in your periodical payment or you have entered all such fees, then click on "Next".</string>
+      <string>If no additional fees are included in your periodical payment or you have entered all such fees, then click on &quot;Next&quot;.</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignTop</set>
@@ -242,17 +280,17 @@ If your regular payment contains any additional fees, click on the button "Addit
    </item>
    <item>
     <spacer name="Spacer60">
-     <property name="sizeHint">
-      <size>
-       <width>0</width>
-       <height>16</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>16</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -260,8 +298,4 @@ If your regular payment contains any additional fees, click on the button "Addit
  </widget>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
 </ui>

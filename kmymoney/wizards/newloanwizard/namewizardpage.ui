@@ -2,9 +2,17 @@
 <ui version="4.0">
  <class>NameWizardPage</class>
  <widget class="QWizardPage" name="NameWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>280</width>
+    <height>336</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Name of the loan</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
    <item>
     <widget class="QLabel" name="TextLabel4_2">
@@ -22,27 +30,36 @@ How do you want to call this loan? Examples for names are 'car loan', 'school lo
    </item>
    <item>
     <spacer name="Spacer15_2">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>16</width>
        <height>56</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
      </property>
      <item>
       <widget class="QLabel" name="TextLabel5">
@@ -55,23 +72,23 @@ How do you want to call this loan? Examples for names are 'car loan', 'school lo
       </widget>
      </item>
      <item>
-      <widget class="KMyMoneyLineEdit" name="m_nameEdit"/>
+      <widget class="KMyMoneyLineEdit" name="m_nameEdit" native="true"/>
      </item>
     </layout>
    </item>
    <item>
     <spacer name="Spacer19">
-     <property name="sizeHint">
-      <size>
-       <width>16</width>
-       <height>56</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>16</width>
+       <height>56</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -98,30 +115,28 @@ How do you want to call this loan? Examples for names are 'car loan', 'school lo
       </widget>
      </item>
      <item>
-      <widget class="KMyMoneyPayeeCombo" name="m_payeeEdit"/>
+      <widget class="KMyMoneyPayeeCombo" name="m_payeeEdit" native="true"/>
      </item>
     </layout>
    </item>
    <item>
     <spacer name="Spacer21">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>16</width>
        <height>56</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
   </layout>
  </widget>
- <resources/>
- <connections/>
  <customwidgets>
   <customwidget>
    <class>KMyMoneyPayeeCombo</class>
@@ -129,7 +144,12 @@ How do you want to call this loan? Examples for names are 'car loan', 'school lo
    <header>kmymoneypayeecombo.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>KMyMoneyLineEdit</class>
+   <extends>QWidget</extends>
+   <header>kmymoneylineedit.h</header>
+  </customwidget>
  </customwidgets>
- <tabstops>
- </tabstops>
+ <resources/>
+ <connections/>
 </ui>

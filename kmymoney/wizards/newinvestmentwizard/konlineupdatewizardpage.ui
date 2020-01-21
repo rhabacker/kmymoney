@@ -2,9 +2,17 @@
 <ui version="4.0">
  <class>KOnlineUpdateWizardPage</class>
  <widget class="QWizardPage" name="KOnlineUpdateWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>654</width>
+    <height>329</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Online Update</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
    <item>
     <widget class="QLabel" name="textLabel6">
@@ -21,10 +29,19 @@
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
+     <property name="spacing">
       <number>0</number>
      </property>
-     <property name="spacing">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
       <number>0</number>
      </property>
      <item>
@@ -92,7 +109,7 @@
           </widget>
          </item>
          <item>
-          <widget class="KMyMoneyEdit" name="m_onlineFactor"/>
+          <widget class="KMyMoneyEdit" name="m_onlineFactor" native="true"/>
          </item>
         </layout>
        </item>
@@ -100,17 +117,17 @@
      </item>
      <item>
       <spacer name="spacer29">
-       <property name="sizeHint">
-        <size>
-         <width>371</width>
-         <height>20</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>371</width>
+         <height>20</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -118,29 +135,32 @@
    </item>
    <item>
     <spacer name="spacer30">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>181</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
   </layout>
  </widget>
- <resources/>
- <connections/>
  <customwidgets>
   <customwidget>
    <class>KComboBox</class>
    <extends>QComboBox</extends>
-   <header location="global">kcombobox.h</header>
+   <header>kcombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KMyMoneyEdit</class>
+   <extends>QWidget</extends>
+   <header>kmymoneyedit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -148,4 +168,6 @@
   <tabstop>m_onlineSourceCombo</tabstop>
   <tabstop>m_onlineFactor</tabstop>
  </tabstops>
+ <resources/>
+ <connections/>
 </ui>

@@ -53,7 +53,7 @@
 
 Please make sure you have a disk inserted and that the drive is ready. Then choose the mount point from either the Choose button or by entering the path in the available box.
 
-Click OK to perform the backup. If your system does not use an automounter, make sure you mark the checkbox below to "mount this directory before backing up."</string>
+Click OK to perform the backup. If your system does not use an automounter, make sure you mark the checkbox below to &quot;mount this directory before backing up.&quot;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignTop</set>

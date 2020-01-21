@@ -2,15 +2,32 @@
 <ui version="4.0">
  <class>LoanAmountWizardPage</class>
  <widget class="QWizardPage" name="LoanAmountWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>217</width>
+    <height>226</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Loan amount</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
-    <number>11</number>
-   </property>
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
+   <property name="bottomMargin">
+    <number>11</number>
    </property>
    <item>
     <widget class="QLabel" name="m_balanceLabel">
@@ -27,27 +44,36 @@
    </item>
    <item>
     <spacer name="Spacer68">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>0</width>
        <height>15</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
      </property>
      <item>
       <widget class="QLabel" name="TextLabel16">
@@ -60,7 +86,7 @@
       </widget>
      </item>
      <item>
-      <widget class="KMyMoneyEdit" name="m_loanAmountEdit"/>
+      <widget class="KMyMoneyEdit" name="m_loanAmountEdit" native="true"/>
      </item>
     </layout>
    </item>
@@ -73,7 +99,16 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
        <number>11</number>
       </property>
       <property name="spacing">
@@ -85,7 +120,7 @@
          <string>Loan amount:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -98,7 +133,7 @@
          <string>Interest rate:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -111,7 +146,7 @@
          <string>Term:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -124,7 +159,7 @@
          <string>Principal + Interest:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -137,7 +172,7 @@
          <string>Final amortization payment</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -148,6 +183,7 @@
        <widget class="QLabel" name="m_loanAmount1">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -166,6 +202,7 @@
        <widget class="QLabel" name="m_interestRate1">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -184,6 +221,7 @@
        <widget class="QLabel" name="m_duration1">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -202,6 +240,7 @@
        <widget class="QLabel" name="m_payment1">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -220,6 +259,7 @@
        <widget class="QLabel" name="m_balloon1">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -239,10 +279,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KMyMoneyEdit</class>
+   <extends>QWidget</extends>
+   <header>kmymoneyedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
 </ui>

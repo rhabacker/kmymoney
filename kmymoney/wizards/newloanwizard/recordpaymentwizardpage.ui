@@ -2,15 +2,32 @@
 <ui version="4.0">
  <class>RecordPaymentWizardPage</class>
  <widget class="QWizardPage" name="RecordPaymentWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>545</width>
+    <height>283</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Recording payments?</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
-    <number>11</number>
-   </property>
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
+   <property name="bottomMargin">
+    <number>11</number>
    </property>
    <item>
     <widget class="QLabel" name="TextLabel7_2">
@@ -28,27 +45,36 @@ Do you want to record all payments of this loan with KMyMoney?</string>
    </item>
    <item>
     <spacer name="Spacer33">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>0</width>
        <height>69</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
      </property>
      <item>
       <widget class="QFrame" name="frame_5">
@@ -56,11 +82,20 @@ Do you want to record all payments of this loan with KMyMoney?</string>
         <enum>QFrame::NoFrame</enum>
        </property>
        <layout class="QVBoxLayout">
-        <property name="margin">
-         <number>11</number>
-        </property>
         <property name="spacing">
          <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>11</number>
+        </property>
+        <property name="topMargin">
+         <number>11</number>
+        </property>
+        <property name="rightMargin">
+         <number>11</number>
+        </property>
+        <property name="bottomMargin">
+         <number>11</number>
         </property>
         <item>
          <widget class="QRadioButton" name="m_allPaymentsButton">
@@ -68,7 +103,7 @@ Do you want to record all payments of this loan with KMyMoney?</string>
            <string>Yes, record all payments.</string>
           </property>
           <attribute name="buttonGroup">
-           <string>ButtonGroup4</string>
+           <string notr="true">ButtonGroup4</string>
           </attribute>
          </widget>
         </item>
@@ -78,7 +113,7 @@ Do you want to record all payments of this loan with KMyMoney?</string>
            <string>No, only record payments since the beginning of this year.</string>
           </property>
           <attribute name="buttonGroup">
-           <string>ButtonGroup4</string>
+           <string notr="true">ButtonGroup4</string>
           </attribute>
          </widget>
         </item>
@@ -87,17 +122,17 @@ Do you want to record all payments of this loan with KMyMoney?</string>
      </item>
      <item>
       <spacer name="Spacer14_2_2_2">
-       <property name="sizeHint">
-        <size>
-         <width>137</width>
-         <height>0</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>137</width>
+         <height>0</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -105,17 +140,17 @@ Do you want to record all payments of this loan with KMyMoney?</string>
    </item>
    <item>
     <spacer name="Spacer34">
-     <property name="sizeHint">
-      <size>
-       <width>0</width>
-       <height>69</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>69</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -123,10 +158,6 @@ Do you want to record all payments of this loan with KMyMoney?</string>
  </widget>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
  <buttongroups>
   <buttongroup name="ButtonGroup4"/>
  </buttongroups>

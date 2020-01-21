@@ -2,15 +2,32 @@
 <ui version="4.0">
  <class>PaymentFrequencyWizardPage</class>
  <widget class="QWizardPage" name="PaymentFrequencyWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>285</width>
+    <height>220</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Payment frequency</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
-    <number>11</number>
-   </property>
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
+   <property name="bottomMargin">
+    <number>11</number>
    </property>
    <item>
     <widget class="QLabel" name="TextLabel11_2">
@@ -28,41 +45,50 @@ How often will there be payments made to this loan?</string>
    </item>
    <item>
     <spacer name="Spacer54">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>0</width>
        <height>49</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>6</number>
      </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
      <item>
       <spacer name="Spacer57">
-       <property name="sizeHint">
-        <size>
-         <width>39</width>
-         <height>0</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>39</width>
+         <height>0</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -71,17 +97,17 @@ How often will there be payments made to this loan?</string>
      </item>
      <item>
       <spacer name="Spacer56">
-       <property name="sizeHint">
-        <size>
-         <width>56</width>
-         <height>0</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>56</width>
+         <height>0</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -89,36 +115,34 @@ How often will there be payments made to this loan?</string>
    </item>
    <item>
     <spacer name="Spacer55">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>0</width>
        <height>49</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
   </layout>
  </widget>
- <resources/>
- <connections/>
  <customwidgets>
-  <customwidget>
-   <class>KMyMoneyFrequencyCombo</class>
-   <extends>KComboBox</extends>
-   <header>kmymoneyfrequencycombo.h</header>
-  </customwidget>
   <customwidget>
    <class>KComboBox</class>
    <extends>QComboBox</extends>
    <header>kcombobox.h</header>
   </customwidget>
+  <customwidget>
+   <class>KMyMoneyFrequencyCombo</class>
+   <extends>KComboBox</extends>
+   <header>kmymoneyfrequencycombo.h</header>
+  </customwidget>
  </customwidgets>
- <tabstops>
- </tabstops>
+ <resources/>
+ <connections/>
 </ui>

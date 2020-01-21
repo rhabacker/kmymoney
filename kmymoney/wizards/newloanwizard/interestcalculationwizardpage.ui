@@ -2,15 +2,32 @@
 <ui version="4.0">
  <class>InterestCalculationWizardPage</class>
  <widget class="QWizardPage" name="InterestCalculationWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>549</width>
+    <height>283</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Interest calculation</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
-    <number>11</number>
-   </property>
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
+   <property name="bottomMargin">
+    <number>11</number>
    </property>
    <item>
     <widget class="QLabel" name="TextLabel12_2">
@@ -28,27 +45,36 @@ When does the actual interest rate get calculated?</string>
    </item>
    <item>
     <spacer name="Spacer61">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>0</width>
        <height>69</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
      </property>
      <item>
       <widget class="QFrame" name="frame_6">
@@ -56,11 +82,20 @@ When does the actual interest rate get calculated?</string>
         <enum>QFrame::NoFrame</enum>
        </property>
        <layout class="QVBoxLayout">
-        <property name="margin">
-         <number>11</number>
-        </property>
         <property name="spacing">
          <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>11</number>
+        </property>
+        <property name="topMargin">
+         <number>11</number>
+        </property>
+        <property name="rightMargin">
+         <number>11</number>
+        </property>
+        <property name="bottomMargin">
+         <number>11</number>
         </property>
         <item>
          <widget class="QRadioButton" name="m_interestOnReceptionButton">
@@ -68,7 +103,7 @@ When does the actual interest rate get calculated?</string>
            <string>When the payment is received.</string>
           </property>
           <attribute name="buttonGroup">
-           <string>ButtonGroup5</string>
+           <string notr="true">ButtonGroup5</string>
           </attribute>
          </widget>
         </item>
@@ -78,7 +113,7 @@ When does the actual interest rate get calculated?</string>
            <string>When the payment is due.</string>
           </property>
           <attribute name="buttonGroup">
-           <string>ButtonGroup5</string>
+           <string notr="true">ButtonGroup5</string>
           </attribute>
          </widget>
         </item>
@@ -87,17 +122,17 @@ When does the actual interest rate get calculated?</string>
      </item>
      <item>
       <spacer name="Spacer14_2_2_2_2">
-       <property name="sizeHint">
-        <size>
-         <width>296</width>
-         <height>0</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>296</width>
+         <height>0</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -105,17 +140,17 @@ When does the actual interest rate get calculated?</string>
    </item>
    <item>
     <spacer name="Spacer62">
-     <property name="sizeHint">
-      <size>
-       <width>0</width>
-       <height>69</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>69</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -123,10 +158,6 @@ When does the actual interest rate get calculated?</string>
  </widget>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
  <buttongroups>
   <buttongroup name="ButtonGroup5"/>
  </buttongroups>

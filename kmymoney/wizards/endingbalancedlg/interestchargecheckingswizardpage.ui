@@ -2,13 +2,21 @@
 <ui version="4.0">
  <class>InterestChargeCheckingsWizardPage</class>
  <widget class="QWizardPage" name="InterestChargeCheckingsWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>287</width>
+    <height>251</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Interest / Charges</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
    <item>
-    <widget class="QLabel" name="qLabel1" native="true">
-     <property name="text" stdset="0">
+    <widget class="QLabel" name="qLabel1">
+     <property name="text">
       <string>If necessary, enter information about interest or charges here. KMyMoney will create transactions and cleares them directly for you.</string>
      </property>
      <property name="wordWrap">
@@ -98,11 +106,20 @@
           <string>Interest</string>
          </property>
          <layout class="QVBoxLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>2</number>
+          </property>
+          <property name="topMargin">
+           <number>2</number>
+          </property>
+          <property name="rightMargin">
+           <number>2</number>
+          </property>
+          <property name="bottomMargin">
            <number>2</number>
           </property>
           <item>
-           <widget class="KMyMoneyCategory" name="m_interestCategoryEdit">
+           <widget class="KMyMoneyCategory" name="m_interestCategoryEdit" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -114,14 +131,14 @@
           <item>
            <layout class="QHBoxLayout">
             <item>
-             <widget class="KMyMoneyEdit" name="m_interestEdit">
+             <widget class="KMyMoneyEdit" name="m_interestEdit" native="true">
               <property name="resetButtonVisibility" stdset="0">
                <bool>false</bool>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="KMyMoneyDateInput" name="m_interestDateEdit"/>
+             <widget class="KMyMoneyDateInput" name="m_interestDateEdit" native="true"/>
             </item>
            </layout>
           </item>
@@ -134,11 +151,20 @@
           <string>Charges</string>
          </property>
          <layout class="QVBoxLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>2</number>
+          </property>
+          <property name="topMargin">
+           <number>2</number>
+          </property>
+          <property name="rightMargin">
+           <number>2</number>
+          </property>
+          <property name="bottomMargin">
            <number>2</number>
           </property>
           <item>
-           <widget class="KMyMoneyCategory" name="m_chargesCategoryEdit">
+           <widget class="KMyMoneyCategory" name="m_chargesCategoryEdit" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -150,14 +176,14 @@
           <item>
            <layout class="QHBoxLayout">
             <item>
-             <widget class="KMyMoneyEdit" name="m_chargesEdit">
+             <widget class="KMyMoneyEdit" name="m_chargesEdit" native="true">
               <property name="resetButtonVisibility" stdset="0">
                <bool>false</bool>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="KMyMoneyDateInput" name="m_chargesDateEdit"/>
+             <widget class="KMyMoneyDateInput" name="m_chargesDateEdit" native="true"/>
             </item>
            </layout>
           </item>
@@ -202,18 +228,34 @@
    </item>
   </layout>
  </widget>
- <resources/>
- <connections/>
  <customwidgets>
+  <customwidget>
+   <class>KComboBox</class>
+   <extends>QComboBox</extends>
+   <header>kcombobox.h</header>
+  </customwidget>
   <customwidget>
    <class>KMyMoneyPayeeCombo</class>
    <extends>KComboBox</extends>
    <header>kmymoneypayeecombo.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>KMyMoneyCategory</class>
+   <extends>QWidget</extends>
+   <header>kmymoneycategory.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KMyMoneyEdit</class>
+   <extends>QWidget</extends>
+   <header>kmymoneyedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KMyMoneyDateInput</class>
+   <extends>QWidget</extends>
+   <header>kmymoneydateinput.h</header>
+  </customwidget>
  </customwidgets>
- <tabstops>
- </tabstops>
- <buttongroups>
- </buttongroups>
+ <resources/>
+ <connections/>
 </ui>

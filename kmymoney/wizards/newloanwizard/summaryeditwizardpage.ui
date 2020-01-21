@@ -2,21 +2,38 @@
 <ui version="4.0">
  <class>SummaryEditWizardPage</class>
  <widget class="QWizardPage" name="SummaryEditWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>297</width>
+    <height>312</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Summary</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
-    <number>11</number>
-   </property>
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
+   <property name="bottomMargin">
+    <number>11</number>
    </property>
    <item>
     <widget class="QLabel" name="TextLabel10_4">
      <property name="text">
       <string>
-KMyMoney has calculated the loan as shown below. If you want to accept these values use the "Finish" button to update your account, otherwise use the "Back" button to modify your settings.</string>
+KMyMoney has calculated the loan as shown below. If you want to accept these values use the &quot;Finish&quot; button to update your account, otherwise use the &quot;Back&quot; button to modify your settings.</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignTop</set>
@@ -28,17 +45,17 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
    </item>
    <item>
     <spacer name="Spacer74_3">
-     <property name="sizeHint">
-      <size>
-       <width>0</width>
-       <height>23</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>23</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -51,7 +68,16 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
        <number>11</number>
       </property>
       <property name="spacing">
@@ -63,7 +89,7 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
          <string>Principal + Interest:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -76,7 +102,7 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
          <string>Additional Fees:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -89,7 +115,7 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
          <string>Total payment:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -102,7 +128,7 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
          <string>Interest rate:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -115,7 +141,7 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
          <string>Valid from:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -128,7 +154,7 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
          <string>Affected payments:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -139,6 +165,7 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
        <widget class="QLabel" name="m_payment7">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -157,6 +184,7 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
        <widget class="QLabel" name="m_additionalFees7">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -175,6 +203,7 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
        <widget class="QLabel" name="m_totalPayment7">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -193,6 +222,7 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
        <widget class="QLabel" name="m_interestRate7">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -211,6 +241,7 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
        <widget class="QLabel" name="m_startDateChanges">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -229,6 +260,7 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
        <widget class="QLabel" name="m_affectedPayments">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -250,8 +282,4 @@ KMyMoney has calculated the loan as shown below. If you want to accept these val
  </widget>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
 </ui>

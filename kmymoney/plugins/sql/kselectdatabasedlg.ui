@@ -208,7 +208,16 @@ As always, please make sure you have adequate backups of your data.</string>
      <item row="2" column="0" colspan="2">
       <widget class="QWidget" name="databaseFields" native="true">
        <layout class="QFormLayout" name="formLayout">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item row="0" column="0">
@@ -316,7 +325,7 @@ As always, please make sure you have adequate backups of your data.</string>
   </customwidget>
   <customwidget>
    <class>KUrlRequester</class>
-   <extends>QFrame</extends>
+   <extends>QWidget</extends>
    <header>kurlrequester.h</header>
    <container>1</container>
   </customwidget>

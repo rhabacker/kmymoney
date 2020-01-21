@@ -2,15 +2,32 @@
 <ui version="4.0">
  <class>InterestWizardPage</class>
  <widget class="QWizardPage" name="InterestWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>283</width>
+    <height>259</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Interest</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
-    <number>11</number>
-   </property>
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
+   <property name="bottomMargin">
+    <number>11</number>
    </property>
    <item>
     <widget class="QLabel" name="TextLabel14_2">
@@ -28,27 +45,36 @@ Please enter the interest rate or leave the field empty to calculate it.</string
    </item>
    <item>
     <spacer name="Spacer67">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>0</width>
        <height>16</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
      </property>
      <item>
       <widget class="QLabel" name="TextLabel1_4">
@@ -61,7 +87,7 @@ Please enter the interest rate or leave the field empty to calculate it.</string
       </widget>
      </item>
      <item>
-      <widget class="KMyMoneyEdit" name="m_interestRateEdit"/>
+      <widget class="KMyMoneyEdit" name="m_interestRateEdit" native="true"/>
      </item>
     </layout>
    </item>
@@ -74,7 +100,16 @@ Please enter the interest rate or leave the field empty to calculate it.</string
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
        <number>11</number>
       </property>
       <property name="spacing">
@@ -86,7 +121,7 @@ Please enter the interest rate or leave the field empty to calculate it.</string
          <string>Loan amount:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -99,7 +134,7 @@ Please enter the interest rate or leave the field empty to calculate it.</string
          <string>Interest rate:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -112,7 +147,7 @@ Please enter the interest rate or leave the field empty to calculate it.</string
          <string>Term:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -125,7 +160,7 @@ Please enter the interest rate or leave the field empty to calculate it.</string
          <string>Principal + Interest:</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -138,7 +173,7 @@ Please enter the interest rate or leave the field empty to calculate it.</string
          <string>Final amortization payment</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignVCenter|Qt::AlignRight</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -149,6 +184,7 @@ Please enter the interest rate or leave the field empty to calculate it.</string
        <widget class="QLabel" name="m_loanAmount2">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -167,6 +203,7 @@ Please enter the interest rate or leave the field empty to calculate it.</string
        <widget class="QLabel" name="m_interestRate2">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -185,6 +222,7 @@ Please enter the interest rate or leave the field empty to calculate it.</string
        <widget class="QLabel" name="m_duration2">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -203,6 +241,7 @@ Please enter the interest rate or leave the field empty to calculate it.</string
        <widget class="QLabel" name="m_payment2">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -221,6 +260,7 @@ Please enter the interest rate or leave the field empty to calculate it.</string
        <widget class="QLabel" name="m_balloon2">
         <property name="font">
          <font>
+          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -240,10 +280,13 @@ Please enter the interest rate or leave the field empty to calculate it.</string
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KMyMoneyEdit</class>
+   <extends>QWidget</extends>
+   <header>kmymoneyedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
 </ui>

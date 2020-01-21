@@ -50,8 +50,7 @@
      </property>
      <property name="icon">
       <iconset theme="mail-send">
-       <normaloff/>
-      </iconset>
+       <normaloff>.</normaloff>.</iconset>
      </property>
     </widget>
    </item>
@@ -65,8 +64,7 @@
      </property>
      <property name="icon">
       <iconset theme="edit-delete-shred">
-       <normaloff/>
-      </iconset>
+       <normaloff>.</normaloff>.</iconset>
      </property>
     </widget>
    </item>
@@ -80,8 +78,7 @@
      </property>
      <property name="icon">
       <iconset theme="document-edit">
-       <normaloff/>
-      </iconset>
+       <normaloff>.</normaloff>.</iconset>
      </property>
     </widget>
    </item>
@@ -95,15 +92,12 @@
      </property>
      <property name="icon">
       <iconset theme="document-new">
-       <normaloff/>
-      </iconset>
+       <normaloff>.</normaloff>.</iconset>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <customwidgets>
- </customwidgets>
  <tabstops>
   <tabstop>m_onlineJobView</tabstop>
   <tabstop>m_buttonSend</tabstop>

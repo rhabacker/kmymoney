@@ -2,15 +2,32 @@
 <ui version="4.0">
  <class>NewGeneralInfoWizardPage</class>
  <widget class="QWizardPage" name="NewGeneralInfoWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>442</width>
+    <height>276</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>General Information</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
-    <number>11</number>
-   </property>
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
+   <property name="bottomMargin">
+    <number>11</number>
    </property>
    <item>
     <widget class="QLabel" name="TextLabel2_2">
@@ -28,51 +45,69 @@ In the first step, KMyMoney will ask you some general information about the loan
    </item>
    <item>
     <spacer name="Spacer10">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>0</width>
        <height>32</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>6</number>
      </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
      <item>
       <spacer name="Spacer8">
-       <property name="sizeHint">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
         <size>
          <width>138</width>
          <height>0</height>
         </size>
        </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
       </spacer>
      </item>
      <item>
       <layout class="QVBoxLayout">
-       <property name="margin">
-        <number>0</number>
-       </property>
        <property name="spacing">
         <number>6</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
        </property>
        <item>
         <widget class="QLabel" name="TextLabel3">
@@ -105,17 +140,17 @@ In the first step, KMyMoney will ask you some general information about the loan
        </item>
        <item>
         <spacer name="Spacer7">
-         <property name="sizeHint">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeType">
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
          </property>
         </spacer>
        </item>
@@ -123,17 +158,17 @@ In the first step, KMyMoney will ask you some general information about the loan
      </item>
      <item>
       <spacer name="Spacer9">
-       <property name="sizeHint">
-        <size>
-         <width>137</width>
-         <height>0</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>137</width>
+         <height>0</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -141,17 +176,17 @@ In the first step, KMyMoney will ask you some general information about the loan
    </item>
    <item>
     <spacer name="Spacer44">
-     <property name="sizeHint">
-      <size>
-       <width>0</width>
-       <height>32</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>32</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -159,8 +194,4 @@ In the first step, KMyMoney will ask you some general information about the loan
  </widget>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
 </ui>

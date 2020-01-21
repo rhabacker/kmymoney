@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0" stdsetdef="1">
- <author/>
- <comment/>
- <exportmacro/>
+<ui version="4.0">
  <class>KGeneralPage</class>
  <widget class="QWidget" name="KGeneralPage">
   <property name="geometry">
@@ -188,17 +185,17 @@ This information will be seen and used only by you. The information is used to p
          </item>
          <item>
           <spacer name="spacer9">
-           <property name="sizeHint">
-            <size>
-             <width>61</width>
-             <height>20</height>
-            </size>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
            <property name="sizeType">
             <enum>QSizePolicy::Expanding</enum>
            </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>61</width>
+             <height>20</height>
+            </size>
            </property>
           </spacer>
          </item>
@@ -231,7 +228,9 @@ This information will be seen and used only by you. The information is used to p
   <customwidget>
    <class>KLineEdit</class>
    <extends>QLineEdit</extends>
-   <header location="global">klineedit.h</header>
+   <header>klineedit.h</header>
   </customwidget>
  </customwidgets>
+ <resources/>
+ <connections/>
 </ui>

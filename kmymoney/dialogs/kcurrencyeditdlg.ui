@@ -62,7 +62,8 @@
         <string>Remove</string>
        </property>
        <property name="icon">
-        <iconset theme="list-remove"><normaloff>.</normaloff>.</iconset>
+        <iconset theme="list-remove">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -72,7 +73,8 @@
         <string>Add</string>
        </property>
        <property name="icon">
-        <iconset theme="list-add"><normaloff>.</normaloff>.</iconset>
+        <iconset theme="list-add">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
@@ -89,7 +91,8 @@
         <string>Remove unused currencies</string>
        </property>
        <property name="icon">
-        <iconset theme="edit-clear"><normaloff>.</normaloff>.</iconset>
+        <iconset theme="edit-clear">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>

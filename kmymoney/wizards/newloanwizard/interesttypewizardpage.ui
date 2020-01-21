@@ -2,15 +2,32 @@
 <ui version="4.0">
  <class>InterestTypeWizardPage</class>
  <widget class="QWizardPage" name="InterestTypeWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>550</width>
+    <height>283</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Type of interest</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
-    <number>11</number>
-   </property>
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
+   <property name="bottomMargin">
+    <number>11</number>
    </property>
    <item>
     <widget class="QLabel" name="TextLabel5_2">
@@ -28,27 +45,36 @@ Is the interest of this loan fixed over a period of time or is it adapted from t
    </item>
    <item>
     <spacer name="Spacer23">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>0</width>
        <height>53</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
      </property>
      <item>
       <widget class="QFrame" name="frame_3">
@@ -56,11 +82,20 @@ Is the interest of this loan fixed over a period of time or is it adapted from t
         <enum>QFrame::NoFrame</enum>
        </property>
        <layout class="QVBoxLayout">
-        <property name="margin">
-         <number>11</number>
-        </property>
         <property name="spacing">
          <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>11</number>
+        </property>
+        <property name="topMargin">
+         <number>11</number>
+        </property>
+        <property name="rightMargin">
+         <number>11</number>
+        </property>
+        <property name="bottomMargin">
+         <number>11</number>
         </property>
         <item>
          <widget class="QRadioButton" name="m_fixedInterestButton">
@@ -68,7 +103,7 @@ Is the interest of this loan fixed over a period of time or is it adapted from t
            <string>Fixed interest rate</string>
           </property>
           <attribute name="buttonGroup">
-           <string>ButtonGroup2</string>
+           <string notr="true">ButtonGroup2</string>
           </attribute>
          </widget>
         </item>
@@ -78,7 +113,7 @@ Is the interest of this loan fixed over a period of time or is it adapted from t
            <string>Variable interest rate</string>
           </property>
           <attribute name="buttonGroup">
-           <string>ButtonGroup2</string>
+           <string notr="true">ButtonGroup2</string>
           </attribute>
          </widget>
         </item>
@@ -87,17 +122,17 @@ Is the interest of this loan fixed over a period of time or is it adapted from t
      </item>
      <item>
       <spacer name="Spacer14_2">
-       <property name="sizeHint">
-        <size>
-         <width>286</width>
-         <height>0</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>286</width>
+         <height>0</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -105,17 +140,17 @@ Is the interest of this loan fixed over a period of time or is it adapted from t
    </item>
    <item>
     <spacer name="Spacer24">
-     <property name="sizeHint">
-      <size>
-       <width>0</width>
-       <height>53</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>53</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -123,10 +158,6 @@ Is the interest of this loan fixed over a period of time or is it adapted from t
  </widget>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
  <buttongroups>
   <buttongroup name="ButtonGroup2"/>
  </buttongroups>

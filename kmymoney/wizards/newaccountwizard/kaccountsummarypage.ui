@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0" stdsetdef="1">
- <author/>
- <comment/>
- <exportmacro/>
+<ui version="4.0">
  <class>KAccountSummaryPage</class>
  <widget class="QWidget" name="KAccountSummaryPage">
   <property name="geometry">
@@ -30,9 +27,7 @@
    <item>
     <widget class="KTextEdit" name="m_dataList">
      <property name="sizePolicy">
-      <sizepolicy>
-       <hsizetype>7</hsizetype>
-       <vsizetype>3</vsizetype>
+      <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
        <horstretch>0</horstretch>
        <verstretch>2</verstretch>
       </sizepolicy>
@@ -49,7 +44,9 @@
   <customwidget>
    <class>KTextEdit</class>
    <extends>QTextEdit</extends>
-   <header location="global">ktextedit.h</header>
+   <header>ktextedit.h</header>
   </customwidget>
  </customwidgets>
+ <resources/>
+ <connections/>
 </ui>

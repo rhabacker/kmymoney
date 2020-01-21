@@ -2,15 +2,32 @@
 <ui version="4.0">
  <class>InterestEditWizardPage</class>
  <widget class="QWizardPage" name="InterestEditWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>565</width>
+    <height>246</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Interest Rate</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
-   <property name="margin">
-    <number>11</number>
-   </property>
    <property name="spacing">
     <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>11</number>
+   </property>
+   <property name="topMargin">
+    <number>11</number>
+   </property>
+   <property name="rightMargin">
+    <number>11</number>
+   </property>
+   <property name="bottomMargin">
+    <number>11</number>
    </property>
    <item>
     <widget class="QLabel" name="TextLabel5_4">
@@ -28,54 +45,72 @@ Please enter the interest rate or leave the field empty to calculate it.</string
    </item>
    <item>
     <spacer name="Spacer72">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>0</width>
        <height>29</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout">
-     <property name="margin">
-      <number>0</number>
-     </property>
      <property name="spacing">
       <number>6</number>
      </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
      <item>
       <spacer name="Spacer77">
-       <property name="sizeHint">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
         <size>
          <width>101</width>
          <height>0</height>
         </size>
        </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
       </spacer>
      </item>
      <item>
       <layout class="QGridLayout">
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <property name="spacing">
         <number>6</number>
        </property>
        <item row="0" column="1">
-        <widget class="KMyMoneyEdit" name="m_newInterestRateEdit"/>
+        <widget class="KMyMoneyEdit" name="m_newInterestRateEdit" native="true"/>
        </item>
        <item row="1" column="1">
         <widget class="QLabel" name="m_interestRateLabel">
@@ -111,17 +146,17 @@ Please enter the interest rate or leave the field empty to calculate it.</string
      </item>
      <item>
       <spacer name="Spacer78">
-       <property name="sizeHint">
-        <size>
-         <width>101</width>
-         <height>0</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>101</width>
+         <height>0</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -129,17 +164,17 @@ Please enter the interest rate or leave the field empty to calculate it.</string
    </item>
    <item>
     <spacer name="Spacer73">
-     <property name="sizeHint">
-      <size>
-       <width>0</width>
-       <height>29</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>29</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -160,10 +195,13 @@ If KMyMoney should calculate this value for you, then leave the field blank.</st
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KMyMoneyEdit</class>
+   <extends>QWidget</extends>
+   <header>kmymoneyedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
 </ui>

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0" stdsetdef="1">
- <author/>
- <comment/>
- <exportmacro/>
+<ui version="4.0">
  <class>KGeneralLoanInfoPage</class>
  <widget class="QWidget" name="KGeneralLoanInfoPage">
   <property name="geometry">
@@ -66,8 +63,8 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="KMyMoneyPayeeCombo" name="m_payee">
-         <property name="whatsThis" stdset="0">
+        <widget class="KMyMoneyPayeeCombo" name="m_payee" native="true">
+         <property name="whatsThis">
           <string>Enter the name of the person or bank you owe money or who owes you money.
 
 If the name does not exist within KMyMoney's database, you are asked if you want to create it.</string>
@@ -86,7 +83,7 @@ If the name does not exist within KMyMoney's database, you are asked if you want
        </item>
        <item row="2" column="1">
         <widget class="KComboBox" name="m_anyPayments">
-         <property name="whatsThis" stdset="0">
+         <property name="whatsThis">
           <string>Were there any payments for this loan whether they are entered into KMyMoney or not?
 
 Note: Payments made to obtain the loan (e.g. Disagio) are not considered as payments in this context.</string>
@@ -115,7 +112,7 @@ Note: Payments made to obtain the loan (e.g. Disagio) are not considered as paym
        </item>
        <item row="3" column="1">
         <widget class="KComboBox" name="m_recordings">
-         <property name="whatsThis" stdset="0">
+         <property name="whatsThis">
           <string>&lt;qt&gt;Select which transactions should be recorded.
 
 &lt;b&gt;All payments&lt;/b&gt; allows you to enter all payments made for this loan.
@@ -137,11 +134,11 @@ The option to &lt;b&gt;start from the beginning of the current year&lt;/b&gt; is
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="textLabel1_3">
+         <property name="whatsThis">
+          <string>Enter the ending balance found on the statement that is the last one before you want to start recording this loan in KMyMoney.</string>
+         </property>
          <property name="text">
           <string>Balance before start of recording</string>
-         </property>
-         <property name="whatsThis" stdset="0">
-          <string>Enter the ending balance found on the statement that is the last one before you want to start recording this loan in KMyMoney.</string>
          </property>
          <property name="wordWrap">
           <bool>false</bool>
@@ -149,8 +146,8 @@ The option to &lt;b&gt;start from the beginning of the current year&lt;/b&gt; is
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="KMyMoneyEdit" name="m_openingBalance">
-         <property name="whatsThis" stdset="0">
+        <widget class="KMyMoneyEdit" name="m_openingBalance" native="true">
+         <property name="whatsThis">
           <string>You have selected to record only payments from the beginning of this year. Since prior transactions will not be recorded, you need to supply the balance of the loan on January 1st of this year.</string>
          </property>
         </widget>
@@ -166,7 +163,7 @@ The option to &lt;b&gt;start from the beginning of the current year&lt;/b&gt; is
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="KMyMoneyFrequencyCombo" name="m_paymentFrequency">
+        <widget class="KMyMoneyFrequencyCombo" name="m_paymentFrequency" native="true">
          <property name="focusPolicy">
           <enum>Qt::TabFocus</enum>
          </property>
@@ -183,8 +180,8 @@ The option to &lt;b&gt;start from the beginning of the current year&lt;/b&gt; is
         </widget>
        </item>
        <item row="6" column="1">
-        <widget class="KMyMoneyFrequencyCombo" name="m_compoundFrequency">
-         <property name="whatsThis" stdset="0">
+        <widget class="KMyMoneyFrequencyCombo" name="m_compoundFrequency" native="true">
+         <property name="whatsThis">
           <string>Select the frequency with which the interest is compounded. If uncertain, select the same as the payment frequency. Consult your loan contract for details.</string>
          </property>
         </widget>
@@ -200,11 +197,11 @@ The option to &lt;b&gt;start from the beginning of the current year&lt;/b&gt; is
         </widget>
        </item>
        <item row="7" column="1">
-        <widget class="KMyMoneyDateInput" name="m_firstPaymentDate">
+        <widget class="KMyMoneyDateInput" name="m_firstPaymentDate" native="true">
          <property name="focusPolicy">
           <enum>Qt::StrongFocus</enum>
          </property>
-         <property name="whatsThis" stdset="0">
+         <property name="whatsThis">
           <string>Depending on the answer to &lt;b&gt;What do you want to record?&lt;/b&gt; this field means the following:&lt;p&gt;
 
 &lt;b&gt;All payments&lt;/b&gt;&lt;br&gt;
@@ -301,7 +298,7 @@ Enter the due date of the first payment in the current year</string>
         </widget>
        </item>
        <item row="10" column="1">
-        <widget class="KMyMoneyDateInput" name="m_interestChangeDateEdit">
+        <widget class="KMyMoneyDateInput" name="m_interestChangeDateEdit" native="true">
          <property name="focusPolicy">
           <enum>Qt::StrongFocus</enum>
          </property>
@@ -311,17 +308,17 @@ Enter the due date of the first payment in the current year</string>
      </item>
      <item>
       <spacer name="spacer1">
-       <property name="sizeHint">
-        <size>
-         <width>29</width>
-         <height>20</height>
-        </size>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
         <enum>QSizePolicy::Expanding</enum>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>29</width>
+         <height>20</height>
+        </size>
        </property>
       </spacer>
      </item>
@@ -329,17 +326,17 @@ Enter the due date of the first payment in the current year</string>
    </item>
    <item>
     <spacer name="spacer2">
-     <property name="sizeHint">
-      <size>
-       <width>20</width>
-       <height>16</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>16</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -350,12 +347,7 @@ Enter the due date of the first payment in the current year</string>
   <customwidget>
    <class>KComboBox</class>
    <extends>QComboBox</extends>
-   <header location="global">kcombobox.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>knuminput.h</header>
+   <header>kcombobox.h</header>
   </customwidget>
   <customwidget>
    <class>KMyMoneyPayeeCombo</class>
@@ -369,5 +361,17 @@ Enter the due date of the first payment in the current year</string>
    <header>kmymoneyfrequencycombo.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>KMyMoneyEdit</class>
+   <extends>QWidget</extends>
+   <header>kmymoneyedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KMyMoneyDateInput</class>
+   <extends>QWidget</extends>
+   <header>kmymoneydateinput.h</header>
+  </customwidget>
  </customwidgets>
+ <resources/>
+ <connections/>
 </ui>

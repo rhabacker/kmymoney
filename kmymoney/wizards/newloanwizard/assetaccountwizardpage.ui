@@ -2,9 +2,17 @@
 <ui version="4.0">
  <class>AssetAccountWizardPage</class>
  <widget class="QWizardPage" name="AssetAccountWizardPage">
-  <attribute name="title">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>571</width>
+    <height>243</height>
+   </rect>
+  </property>
+  <property name="title">
    <string>Asset Account</string>
-  </attribute>
+  </property>
   <layout class="QVBoxLayout">
    <item>
     <widget class="QLabel" name="TextLabel10_4_2">
@@ -22,17 +30,17 @@ If this loan is a 'consumer loan' (money to use however you want), you can use a
    </item>
    <item>
     <spacer name="spacer80">
-     <property name="sizeHint">
-      <size>
-       <width>20</width>
-       <height>21</height>
-      </size>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>21</height>
+      </size>
      </property>
     </spacer>
    </item>
@@ -46,36 +54,36 @@ If this loan is a 'consumer loan' (money to use however you want), you can use a
    <item>
     <layout class="QVBoxLayout">
      <item>
-      <widget class="KMyMoneyAccountSelector" name="m_assetAccountEdit"/>
+      <widget class="KMyMoneyAccountSelector" name="m_assetAccountEdit" native="true"/>
      </item>
      <item>
       <layout class="QHBoxLayout">
        <item>
         <spacer name="spacer244">
-         <property name="sizeHint">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
           <size>
            <width>466</width>
            <height>20</height>
           </size>
          </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
         </spacer>
        </item>
        <item>
         <widget class="QPushButton" name="m_createNewAssetButton">
+         <property name="toolTip">
+          <string>Press this to create a new asset account</string>
+         </property>
          <property name="text">
           <string/>
          </property>
          <property name="shortcut">
           <string/>
-         </property>
-         <property name="toolTip" stdset="0">
-          <string>Press this to create a new asset account</string>
          </property>
         </widget>
        </item>
@@ -96,32 +104,40 @@ If this loan is a 'consumer loan' (money to use however you want), you can use a
       </widget>
      </item>
      <item>
-      <widget class="KMyMoneyDateInput" name="m_paymentDate"/>
+      <widget class="KMyMoneyDateInput" name="m_paymentDate" native="true"/>
      </item>
     </layout>
    </item>
    <item>
     <spacer name="spacer328">
-     <property name="sizeHint">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>16</height>
       </size>
      </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
     </spacer>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KMyMoneyAccountSelector</class>
+   <extends>QWidget</extends>
+   <header>kmymoneyaccountselector.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KMyMoneyDateInput</class>
+   <extends>QWidget</extends>
+   <header>kmymoneydateinput.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
- <customwidgets>
- </customwidgets>
- <tabstops>
- </tabstops>
 </ui>
