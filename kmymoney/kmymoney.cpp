@@ -4071,10 +4071,10 @@ void KMyMoneyApp::slotAccountReconcileFinish()
       // that we don't show the online balance anymore, as it might be different
       d->m_reconciliationAccount.deletePair("lastImportedTransactionDate");
     }
-    d->m_reconciliationAccount.setLastReconciliationDate(d->m_endingBalanceDlg->statementDate());
+    d->m_reconciliationAccount.setLastReconciliationDate(QDateTime(d->m_endingBalanceDlg->statementDate()));
 
     // keep a record of this reconciliation
-    d->m_reconciliationAccount.addReconciliation(d->m_endingBalanceDlg->statementDate(), d->m_endingBalanceDlg->endingBalance());
+    d->m_reconciliationAccount.addReconciliation(QDateTime(d->m_endingBalanceDlg->statementDate()), d->m_endingBalanceDlg->endingBalance());
 
     d->m_reconciliationAccount.deletePair("lastReconciledBalance");
     d->m_reconciliationAccount.deletePair("statementBalance");

@@ -46,6 +46,11 @@ class MyMoneySplit;
 class MyMoneyObjectContainer;
 
 /**
+  * Map type for reconcilation history
+  */
+typedef QMap<QDateTime, MyMoneyMoney> ReconciliationHistoryMap;
+
+/**
   * A representation of an account.
   * This object represents any type of account, those held at an
   * institution as well as the accounts used for double entry
@@ -228,10 +233,10 @@ public:
 
   /**
     * This method returns the date of the last reconciliation of this account
-    * @return date of last reconciliation as const QDate value
+    * @return date of last reconciliation as const QDateTime value
     * @see setLastReconciliationDate
     */
-  const QDate& lastReconciliationDate() const {
+  const QDateTime& lastReconciliationDate() const {
     return m_lastReconciliationDate;
   }
 
@@ -353,10 +358,10 @@ public:
   /**
     * This method is used to set the date of the last reconciliation
     * of an account.
-    * @param date QDate of last reconciliation
+    * @param date QDatetime of last reconciliation
     * @see lastReconciliationDate
     */
-  void setLastReconciliationDate(const QDate& date);
+  void setLastReconciliationDate(const QDateTime& date);
 
   /**
     * This method is used to change the account type
@@ -595,14 +600,14 @@ public:
     *
     * @sa reconciliationHistory()
     */
-  bool addReconciliation(const QDate& date, const MyMoneyMoney& amount);
+  bool addReconciliation(const QDateTime& date, const MyMoneyMoney& amount);
 
   /**
     * @return QMap with the reconciliation history for the account
     *
     * @sa addReconciliation()
     */
-  const QMap<QDate, MyMoneyMoney>& reconciliationHistory();
+  const ReconciliationHistoryMap& reconciliationHistory();
 
   QDataStream &operator<<(const MyMoneyAccount &);
   QDataStream &operator>>(MyMoneyAccount &);
@@ -656,7 +661,7 @@ private:
     * This member variable keeps the date of the last
     * reconciliation of this account
     */
-  QDate m_lastReconciliationDate;
+  QDateTime m_lastReconciliationDate;
 
   /**
     * This member holds the ID's of all sub-ordinate accounts
@@ -694,7 +699,7 @@ private:
   /**
     * This member keeps the reconciliation history
     */
-  QMap<QDate, MyMoneyMoney> m_reconciliationHistory;
+  ReconciliationHistoryMap m_reconciliationHistory;
 };
 
 /**

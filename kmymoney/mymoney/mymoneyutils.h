@@ -111,6 +111,15 @@ private:
 KMM_MYMONEY_EXPORT QString dateToString(const QDate& date);
 
 /**
+ * This function returns a date in the form specified by Qt::ISODate.
+ * If the @p date is invalid an empty string will be returned.
+ *
+ * @param date const reference to date to be converted
+ * @return QString containing the converted date
+ */
+KMM_MYMONEY_EXPORT QString dateTimeToString(const QDateTime& date);
+
+/**
  * This function returns a date as QDate object as specified by
  * the parameter @p str. @p str must be in Qt::ISODate format.
  * If @p str is empty or contains an invalid date, QDate() is
@@ -120,6 +129,17 @@ KMM_MYMONEY_EXPORT QString dateToString(const QDate& date);
  * @return QDate object
  */
 KMM_MYMONEY_EXPORT QDate stringToDate(const QString& str);
+
+/**
+ * This function returns a date as QDateTime object as specified by
+ * the parameter @p str. @p str must be in Qt::ISODate format.
+ * If @p str is empty or contains an invalid date, QDateTime() is
+ * returned.
+ *
+ * @param str date in Qt::ISODate format
+ * @return QDateTime object
+ */
+KMM_MYMONEY_EXPORT QDateTime stringToDateTime(const QString& str);
 
 KMM_MYMONEY_EXPORT QString QStringEmpty(const QString&);
 

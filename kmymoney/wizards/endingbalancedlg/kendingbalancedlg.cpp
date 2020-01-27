@@ -80,8 +80,8 @@ KEndingBalanceDlg::KEndingBalanceDlg(const MyMoneyAccount& account, QWidget *par
     // if the last statement has been entered long enough ago (more than one month),
     // then take the last statement date and add one month and use that as statement
     // date.
-    QDate lastStatementDate = account.lastReconciliationDate();
-    if (lastStatementDate.addMonths(1) < QDate::currentDate()) {
+    QDateTime lastStatementDate = account.lastReconciliationDate();
+    if (lastStatementDate.addMonths(1) < QDateTime::currentDateTime()) {
       setField("statementDate", lastStatementDate.addMonths(1));
     }
 
@@ -120,7 +120,7 @@ KEndingBalanceDlg::KEndingBalanceDlg(const MyMoneyAccount& account, QWidget *par
   //FIXME: port
   m_statementInfoPageCheckings->m_lastStatementDate->setText(QString());
   if (account.lastReconciliationDate().isValid()) {
-    m_statementInfoPageCheckings->m_lastStatementDate->setText(i18n("Last reconciled statement: %1", KGlobal::locale()->formatDate(account.lastReconciliationDate())));
+    m_statementInfoPageCheckings->m_lastStatementDate->setText(i18n("Last reconciled statement: %1", KGlobal::locale()->formatDateTime(account.lastReconciliationDate())));
   }
 
   // connect the signals with the slots

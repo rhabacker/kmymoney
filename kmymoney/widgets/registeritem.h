@@ -122,6 +122,12 @@ public:
   virtual const QDate& sortEntryDate() const {
     return nullDate;
   }
+  virtual const QDateTime& sortPostDateTime() const {
+    return nullDateTime;
+  }
+  virtual const QDateTime& sortEntryDateTime() const {
+    return nullDateTime;
+  }
   virtual const QString& sortPayee() const {
     return nullString;
   }
@@ -299,6 +305,7 @@ protected:
 
 private:
   static QDate             nullDate;
+  static QDateTime         nullDateTime;
   static QString           nullString;
   static MyMoneyMoney      nullValue;
 };

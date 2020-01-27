@@ -158,6 +158,24 @@ QDate stringToDate(const QString& str)
   return QDate();
 }
 
+QString dateTimeToString(const QDateTime& date)
+{
+  if (!date.isNull() && date.isValid())
+    return date.toString(Qt::ISODate);
+
+  return QString();
+}
+
+QDateTime stringToDateTime(const QString& str)
+{
+  if (str.length()) {
+    QDateTime date = QDateTime::fromString(str, Qt::ISODate);
+    if (!date.isNull() && date.isValid())
+      return date;
+  }
+  return QDateTime();
+}
+
 QString QStringEmpty(const QString& val)
 {
   if (!val.isEmpty())

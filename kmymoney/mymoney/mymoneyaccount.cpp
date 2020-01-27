@@ -74,7 +74,7 @@ MyMoneyAccount::MyMoneyAccount(const QDomElement& node) :
 
   setParentAccountId(QStringEmpty(node.attribute("parentaccount")));
   setLastModified(stringToDate(QStringEmpty(node.attribute("lastmodified"))));
-  setLastReconciliationDate(stringToDate(QStringEmpty(node.attribute("lastreconciled"))));
+  setLastReconciliationDate(stringToDateTime(QStringEmpty(node.attribute("lastreconciled"))));
 
   if (!m_lastReconciliationDate.isValid()) {
     // for some reason, I was unable to access our own kvp at this point through
@@ -86,7 +86,7 @@ MyMoneyAccount::MyMoneyAccount(const QDomElement& node) :
     // to be ok for now. (ipwizard - 2008-08-14)
     QString txt = MyMoneyKeyValueContainer(node.elementsByTagName("KEYVALUEPAIRS").item(0).toElement()).value("lastStatementDate");
     if (!txt.isEmpty()) {
-      setLastReconciliationDate(QDate::fromString(txt, Qt::ISODate));
+      setLastReconciliationDate(QDateTime::fromString(txt, Qt::ISODate));
     }
   }
 
@@ -175,7 +175,7 @@ void MyMoneyAccount::setOpeningDate(const QDate& date)
   m_openingDate = date;
 }
 
-void MyMoneyAccount::setLastReconciliationDate(const QDate& date)
+void MyMoneyAccount::setLastReconciliationDate(const QDateTime& date)
 {
   // FIXME: for a limited time (maybe until we delivered 1.0) we
   // keep the last reconciliation date also in the KVP for backward
@@ -516,7 +516,7 @@ void MyMoneyAccount::writeXML(QDomDocument& document, QDomElement& parent) const
   writeBaseXML(document, el);
 
   el.setAttribute("parentaccount", parentAccountId());
-  el.setAttribute("lastreconciled", dateToString(lastReconciliationDate()));
+  el.setAttribute("lastreconciled", dateTimeToString(lastReconciliationDate()));
   el.setAttribute("lastmodified", dateToString(lastModified()));
   el.setAttribute("institution", institutionId());
   el.setAttribute("opened", dateToString(openingDate()));
@@ -783,11 +783,11 @@ QString MyMoneyAccount::accountTypeToString(const MyMoneyAccount::accountTypeE a
   return returnString;
 }
 
-bool MyMoneyAccount::addReconciliation(const QDate& date, const MyMoneyMoney& amount)
+bool MyMoneyAccount::addReconciliation(const QDateTime &date, const MyMoneyMoney& amount)
 {
   m_reconciliationHistory[date] = amount;
   QString history, sep;
-  QMap<QDate, MyMoneyMoney>::const_iterator it;
+  ReconciliationHistoryMap::const_iterator it;
   for (it = m_reconciliationHistory.constBegin();
        it != m_reconciliationHistory.constEnd();
        ++it) {
@@ -801,7 +801,7 @@ bool MyMoneyAccount::addReconciliation(const QDate& date, const MyMoneyMoney& am
   return true;
 }
 
-const QMap<QDate, MyMoneyMoney>& MyMoneyAccount::reconciliationHistory()
+const ReconciliationHistoryMap& MyMoneyAccount::reconciliationHistory()
 {
   // check if the internal history member is already loaded
   if (m_reconciliationHistory.count() == 0
@@ -809,7 +809,7 @@ const QMap<QDate, MyMoneyMoney>& MyMoneyAccount::reconciliationHistory()
     QStringList entries = value("reconciliationHistory").split(';');
     foreach (const QString& entry, entries) {
       QStringList parts = entry.split(':');
-      QDate date = QDate::fromString(parts[0], Qt::ISODate);
+      QDateTime date = QDateTime::fromString(parts[0], Qt::ISODate);
       MyMoneyMoney amount(parts[1]);
       if (parts.count() == 2 && date.isValid()) {
         m_reconciliationHistory[date] = amount;

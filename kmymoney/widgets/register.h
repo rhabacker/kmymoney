@@ -189,10 +189,42 @@ private:
   QDate                    m_date;
 };
 
+class FancyDateTimeGroupMarker : public GroupMarker
+{
+public:
+  FancyDateTimeGroupMarker(Register* parent, const QDateTime& date, const QString& txt);
+
+  virtual const QDateTime& sortPostDateTime() const {
+    return m_date;
+  }
+  virtual const QDateTime& sortEntryDateTime() const {
+    return m_date;
+  }
+  virtual const char* className() {
+    return "FancyDateGroupMarker";
+  }
+private:
+  QDateTime m_date;
+};
+
 class StatementGroupMarker : public FancyDateGroupMarker
 {
 public:
   StatementGroupMarker(Register* parent, CashFlowDirection dir, const QDate& date, const QString& txt);
+  CashFlowDirection sortType() const {
+    return m_dir;
+  }
+  virtual int sortSamePostDate() const {
+    return 3;
+  }
+private:
+  CashFlowDirection        m_dir;
+};
+
+class StatementDateTimeGroupMarker : public FancyDateTimeGroupMarker
+{
+public:
+  StatementDateTimeGroupMarker(Register* parent, CashFlowDirection dir, const QDateTime& date, const QString& txt);
   CashFlowDirection sortType() const {
     return m_dir;
   }

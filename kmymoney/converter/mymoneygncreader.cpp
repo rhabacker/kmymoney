@@ -1450,9 +1450,9 @@ void MyMoneyGncReader::convertAccount(const GncAccount* gac)
 
     acc.setDescription(gac->desc());
 
-    QDate currentDate = QDate::currentDate();
-    acc.setOpeningDate(currentDate);
-    acc.setLastModified(currentDate);
+    QDateTime currentDate = QDateTime::currentDateTime();
+    acc.setOpeningDate(currentDate.date());
+    acc.setLastModified(currentDate.date());
     acc.setLastReconciliationDate(currentDate);
     if (gac->commodity()->isCurrency()) {
       acc.setCurrencyId(gac->commodity()->id().toUtf8());
@@ -2379,10 +2379,10 @@ QString MyMoneyGncReader::createOrphanAccount(const QString& gncName)
   acc.setName("orphan_" + gncName);
   acc.setDescription(i18n("Orphan created from unknown GnuCash account"));
 
-  QDate today = QDate::currentDate();
+  QDateTime today = QDateTime::currentDateTime();
 
-  acc.setOpeningDate(today);
-  acc.setLastModified(today);
+  acc.setOpeningDate(today.date());
+  acc.setLastModified(today.date());
   acc.setLastReconciliationDate(today);
   acc.setCurrencyId(m_txCommodity);
   acc.setAccountType(MyMoneyAccount::Asset);

@@ -1660,7 +1660,7 @@ void MyMoneyStorageSql::writeAccountList(const QList<MyMoneyAccount>& accList, Q
     idList << a.id();
     institutionIdList << a.institutionId();
     parentIdList << a.parentAccountId();
-    if (a.lastReconciliationDate() == QDate())
+    if (a.lastReconciliationDate() == QDateTime())
       lastReconciledList << a.lastReconciliationDate();
     else
       lastReconciledList << a.lastReconciliationDate().toString(Qt::ISODate);
@@ -3685,7 +3685,7 @@ const QMap<QString, MyMoneyAccount> MyMoneyStorageSql::fetchAccounts(const QStri
     aid = GETSTRING(idCol);
     acc.setInstitutionId(GETSTRING(institutionIdCol));
     acc.setParentAccountId(GETSTRING(parentIdCol));
-    acc.setLastReconciliationDate(GETDATE(lastReconciledCol));
+    acc.setLastReconciliationDate(GETDATETIME(lastReconciledCol));
     acc.setLastModified(GETDATE(lastModifiedCol));
     acc.setOpeningDate(GETDATE(openingDateCol));
     acc.setNumber(GETSTRING(accountNumberCol));

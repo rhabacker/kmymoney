@@ -342,7 +342,20 @@ StatementGroupMarker::StatementGroupMarker(Register* parent, CashFlowDirection d
   m_showDate = true;
 }
 
+StatementDateTimeGroupMarker::StatementDateTimeGroupMarker(Register* parent, CashFlowDirection dir, const QDateTime& date, const QString& txt) :
+    FancyDateTimeGroupMarker(parent, date, txt),
+    m_dir(dir)
+{
+  m_showDate = true;
+}
+
 FancyDateGroupMarker::FancyDateGroupMarker(Register* parent, const QDate& date, const QString& txt) :
+    GroupMarker(parent, txt),
+    m_date(date)
+{
+}
+
+FancyDateTimeGroupMarker::FancyDateTimeGroupMarker(Register* parent, const QDateTime& date, const QString& txt) :
     GroupMarker(parent, txt),
     m_date(date)
 {
@@ -1986,7 +1999,7 @@ void Register::addGroupMarkers()
 
       if (KMyMoneyGlobalSettings::showFancyMarker()) {
         if (m_account.lastReconciliationDate().isValid())
-          new KMyMoneyRegister::StatementGroupMarker(this, KMyMoneyRegister::Deposit, m_account.lastReconciliationDate(), i18n("Last reconciliation"));
+          new KMyMoneyRegister::StatementDateTimeGroupMarker(this, KMyMoneyRegister::Deposit, m_account.lastReconciliationDate(), i18n("Last reconciliation"));
 
         if (!m_account.value("lastImportedTransactionDate").isEmpty()
             && !m_account.value("lastStatementBalance").isEmpty()) {
