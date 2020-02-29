@@ -750,6 +750,12 @@ TransactionSortField Register::primarySortKey() const
   return UnknownSort;
 }
 
+SortDirection Register::primarySortKeyDirection() const
+{
+  if (!m_sortOrder.isEmpty())
+    return static_cast<int>(m_sortOrder.first()) < 0 ? DescendingOrder : AscendingOrder;
+  return AscendingOrder;
+}
 
 void Register::clear()
 {
