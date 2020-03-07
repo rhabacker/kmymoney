@@ -28,6 +28,13 @@
     <widget class="TransactionSortOption" name="m_sortOption" native="true"/>
    </item>
    <item>
+    <widget class="QLabel" name="m_correctBalanceLabel">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout">
      <item>
       <widget class="KPushButton" name="m_helpButton">
