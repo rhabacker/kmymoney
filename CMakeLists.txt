@@ -111,6 +111,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 # check for Doxygen
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
+  find_program(QHELPGENERATOR_EXECUTABLE qhelpgenerator)
   set(APIDOC_DIR ${CMAKE_CURRENT_BINARY_DIR}/apidocs)
 
   make_directory(${APIDOC_DIR})
