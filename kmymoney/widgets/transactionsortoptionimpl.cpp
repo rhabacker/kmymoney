@@ -183,6 +183,21 @@ QString TransactionSortOption::settings() const
   return rc;
 }
 
+bool TransactionSortOption::supportsCorrectBalance()
+{
+  KMyMoneyRegister::TransactionSortFieldList sortOrders;
+  for(int i = 0; i < ui->m_selectedList->count(); i++) {
+    KMyMoneyRegister::TransactionSortField option = KMyMoneyRegister::textToSortOrder(ui->m_selectedList->item(0)->text());
+    if (option == KMyMoneyRegister::EntryOrderSort) {
+      sortOrders.append(KMyMoneyRegister::EntryDateSort);
+    }
+    sortOrders.append(option);
+  }
+  return sortOrders.size() == 2 &&
+         sortOrders.at(0) == KMyMoneyRegister::PostDateSort &&
+         sortOrders.at(1) == KMyMoneyRegister::NoSort;
+}
+
 void TransactionSortOption::slotFocusChanged(QWidget *o, QWidget *n)
 {
   Q_UNUSED(o);

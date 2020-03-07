@@ -86,6 +86,7 @@ void KSortOptionDlg::init()
   d->ui.m_cancelButton->setGuiItem(KStandardGuiItem::cancel());
   d->ui.m_okButton->setGuiItem(KStandardGuiItem::ok());
   d->ui.m_helpButton->setGuiItem(KStandardGuiItem::help());
+  connect(d->ui.m_sortOption, SIGNAL(settingsChanged(const QString&)), this, SLOT(slotSetCorrectBalanceState()));
 }
 
 void KSortOptionDlg::setSortOption(const QString& option, const QString& def)
@@ -97,6 +98,7 @@ void KSortOptionDlg::setSortOption(const QString& option, const QString& def)
     d->ui.m_sortOption->setSettings(option);
     d->ui.m_useDefault->setChecked(false);
   }
+  slotSetCorrectBalanceState();
 }
 
 QString KSortOptionDlg::sortOption() const
@@ -113,6 +115,13 @@ void KSortOptionDlg::hideDefaultButton()
   d->ui.m_useDefault->hide();
 }
 
+void KSortOptionDlg::slotSetCorrectBalanceState()
+{
+    if (d->ui.m_sortOption->supportsCorrectBalance())
+        d->ui.m_correctBalanceLabel->setText(i18n("Balance is displayed in ledger view"));
+    else
+        d->ui.m_correctBalanceLabel->setText(i18n("No balance display in ledger view"));
+}
 
 KFindTransactionDlg::KFindTransactionDlg(QWidget *parent, bool withEquityAccounts) :
     KDialog(parent),

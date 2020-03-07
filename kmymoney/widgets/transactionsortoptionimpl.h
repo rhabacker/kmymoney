@@ -42,6 +42,7 @@ public:
   TransactionSortOption(QWidget *parent);
   ~TransactionSortOption();
   QString settings() const;
+  bool supportsCorrectBalance();
 public slots:
   void setSettings(const QString& settings);
   void toggleDirection(QListWidgetItem * item);

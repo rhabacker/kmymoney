@@ -428,6 +428,8 @@ public:
   }
   TransactionSortField primarySortKey() const;
   SortDirection primarySortKeyDirection() const;
+  TransactionSortField sortKey(int i) const;
+  SortDirection sortKeyDirection(int i) const;
 
   void sortItems();
 
