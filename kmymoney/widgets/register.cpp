@@ -135,8 +135,8 @@ void ItemPtrVector::sort()
 
 bool ItemPtrVector::item_cmp(RegisterItem* i1, RegisterItem* i2)
 {
-  const QList<TransactionSortField>& sortOrder = i1->parent()->sortOrder();
-  QList<TransactionSortField>::const_iterator it;
+  const TransactionSortFieldList& sortOrder = i1->parent()->sortOrder();
+  TransactionSortFieldList::const_iterator it;
   int rc = 0;
   bool ok1, ok2;
   qulonglong n1, n2;
