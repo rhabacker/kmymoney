@@ -45,6 +45,7 @@ class QTreeWidgetItem;
   */
 class KSortOptionDlg : public KDialog
 {
+    Q_OBJECT
 public:
   KSortOptionDlg(QWidget *parent);
   ~KSortOptionDlg();
@@ -52,6 +53,9 @@ public:
   void setSortOption(const QString& option, const QString& def);
   QString sortOption() const;
   void hideDefaultButton();
+
+protected slots:
+  void slotSetCorrectBalanceState();
 
 private:
   struct Private;
