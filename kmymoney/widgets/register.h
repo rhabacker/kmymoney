@@ -69,6 +69,8 @@ typedef enum {
   MaxSortFields
 } TransactionSortField;
 
+typedef QList<TransactionSortField> TransactionSortFieldList;
+
 typedef enum {
   AscendingOrder = 0,   //< sort in ascending order
   DescendingOrder       //< sort in descending order
@@ -450,7 +452,7 @@ public:
   void setupRegister(const MyMoneyAccount& account, const QList<Column>& cols);
 
   void setSortOrder(const QString& order);
-  const QList<TransactionSortField>& sortOrder() const {
+  const KMyMoneyRegister::TransactionSortFieldList& sortOrder() const {
     return m_sortOrder;
   }
   TransactionSortField primarySortKey() const;
@@ -687,7 +689,7 @@ private:
   Qt::MouseButtons             m_mouseButton;
   Qt::KeyboardModifiers        m_modifiers;
   Column                       m_lastCol;
-  QList<TransactionSortField>  m_sortOrder;
+  TransactionSortFieldList     m_sortOrder;
   QRect                        m_lastRepaintRect;
   DetailsColumnType            m_detailsColumnType;
   QMap<int, int>               m_minimalColumnWidthCache;
