@@ -378,6 +378,8 @@ public:
   QStringList           m_consistencyCheckResult;
   bool                  m_applicationIsReady;
   QPrinter*             m_printer;
+  QPointer<KConfigDialog> m_settingsDialog;
+  QMap<KMyMoneyUtils::SettingsPage, QPointer<KPageWidgetItem>> m_settingPages;
 
   // methods
   void consistencyCheck(bool alwaysDisplayResults);
@@ -1171,6 +1173,9 @@ void KMyMoneyApp::initActions()
   onlineJob_log->setText(i18n("Show log"));
   connect(onlineJob_log, SIGNAL(triggered()), this, SLOT(slotOnlineJobLog()));
 
+  KAction* viewSettings = actionCollection()->addAction("view_settings");
+  viewSettings->setText(i18n("Show settings"));
+
   // ************************
   // Currently unused actions
   // ************************
@@ -1204,6 +1209,10 @@ void KMyMoneyApp::connectActionsAndViews()
   QAction *const onlineJob_edit = actionCollection()->action("onlinejob_edit");
   Q_CHECK_PTR(onlineJob_edit);
   connect(onlineJob_edit, SIGNAL(triggered()), outbox, SLOT(slotEditJob()));
+
+  QAction *const viewSettings = actionCollection()->action("view_settings");
+  Q_CHECK_PTR(viewSettings);
+  connect(viewSettings, SIGNAL(triggered()), this, SLOT(slotViewSettings()));
 }
 
 void KMyMoneyApp::dumpActions() const
@@ -2535,14 +2544,19 @@ bool KMyMoneyApp::okToWriteFile(const KUrl& url)
   return reallySaveFile;
 }
 
-void KMyMoneyApp::slotSettings()
+void KMyMoneyApp::showSettingsDialog(KMyMoneyUtils::SettingsPage id)
 {
   // if we already have an instance of the settings dialog, then use it
-  if (KConfigDialog::showDialog("KMyMoney-Settings"))
+  if (d->m_settingsDialog) {
+    if (id != KMyMoneyUtils::SettingsPage::Undefined)
+      d->m_settingsDialog->setCurrentPage(d->m_settingPages[id]);
+    d->m_settingsDialog->show();
     return;
+  }
 
   // otherwise, we have to create it
   KConfigDialog* dlg = new KConfigDialog(this, "KMyMoney-Settings", KMyMoneyGlobalSettings::self());
+  d->m_settingsDialog = dlg;
 
   // create the pages ...
   KSettingsGeneral* generalPage = new KSettingsGeneral();
@@ -2557,19 +2571,17 @@ void KMyMoneyApp::slotSettings()
   KSettingsPlugins* pluginsPage = new KSettingsPlugins();
   KSettingsReports* reportsPage = new KSettingsReports();
 
-  dlg->addPage(generalPage, i18nc("General settings", "General"), "system-run");
-  dlg->addPage(homePage, i18n("Home"), "go-home");
-  dlg->addPage(registerPage, i18nc("Ledger view settings", "Ledger"), "view-financial-list");
-
-  dlg->addPage(schedulesPage, i18n("Scheduled transactions"), "view-pim-calendar");
-
-  dlg->addPage(onlineQuotesPage, i18n("Online Quotes"), "preferences-system-network");
-  dlg->addPage(reportsPage, i18nc("Report settings", "Reports"), "office-chart-bar");
-  dlg->addPage(forecastPage, i18nc("Forecast settings", "Forecast"), "view-financial-forecast");
-  dlg->addPage(encryptionPage, i18n("Encryption"), "kgpg");
-  dlg->addPage(colorsPage, i18n("Colors"), "preferences-desktop-color");
-  dlg->addPage(fontsPage, i18n("Fonts"), "preferences-desktop-font");
-  dlg->addPage(pluginsPage, i18n("Plugins"), "network-disconnect");
+  d->m_settingPages[KMyMoneyUtils::SettingsPage::General] = dlg->addPage(generalPage, i18nc("General settings", "General"), "system-run");
+  d->m_settingPages[KMyMoneyUtils::SettingsPage::Home] = dlg->addPage(homePage, i18n("Home"), "go-home");
+  d->m_settingPages[KMyMoneyUtils::SettingsPage::Register] = dlg->addPage(registerPage, i18nc("Ledger view settings", "Ledger"), "view-financial-list");
+  d->m_settingPages[KMyMoneyUtils::SettingsPage::Schedules] = dlg->addPage(schedulesPage, i18n("Scheduled transactions"), "view-pim-calendar");
+  d->m_settingPages[KMyMoneyUtils::SettingsPage::OnlineQuotes] = dlg->addPage(onlineQuotesPage, i18n("Online Quotes"), "preferences-system-network");
+  d->m_settingPages[KMyMoneyUtils::SettingsPage::Reports] = dlg->addPage(reportsPage, i18nc("Report settings", "Reports"), "office-chart-bar");
+  d->m_settingPages[KMyMoneyUtils::SettingsPage::Forecast] = dlg->addPage(forecastPage, i18nc("Forecast settings", "Forecast"), "view-financial-forecast");
+  d->m_settingPages[KMyMoneyUtils::SettingsPage::Encryption] = dlg->addPage(encryptionPage, i18n("Encryption"), "kgpg");
+  d->m_settingPages[KMyMoneyUtils::SettingsPage::Colors] = dlg->addPage(colorsPage, i18n("Colors"), "preferences-desktop-color");
+  d->m_settingPages[KMyMoneyUtils::SettingsPage::Fonts] = dlg->addPage(fontsPage, i18n("Fonts"), "preferences-desktop-font");
+  d->m_settingPages[KMyMoneyUtils::SettingsPage::Plugins] = dlg->addPage(pluginsPage, i18n("Plugins"), "network-disconnect");
 
   dlg->setHelp("details.settings", "kmymoney");
 
@@ -2578,7 +2590,21 @@ void KMyMoneyApp::slotSettings()
   connect(dlg, SIGNAL(okClicked()), pluginsPage, SLOT(slotSavePlugins()));
   connect(dlg, SIGNAL(defaultClicked()), pluginsPage, SLOT(slotDefaultsPlugins()));
 
+  if (id != KMyMoneyUtils::SettingsPage::Undefined)
+    dlg->setCurrentPage(d->m_settingPages[id]);
   dlg->show();
+}
+
+void KMyMoneyApp::slotSettings()
+{
+  showSettingsDialog();
+}
+
+void KMyMoneyApp::slotViewSettings()
+{
+  KMyMoneyUtils::SettingsPage id = d->m_myMoneyView->viewToSettingsPageId();
+  if (id != KMyMoneyUtils::SettingsPage::Undefined)
+    showSettingsDialog(id);
 }
 
 void KMyMoneyApp::slotUpdateConfiguration()
@@ -6855,6 +6881,8 @@ void KMyMoneyApp::slotUpdateActions()
     MyMoneySecurity security = MyMoneyFile::instance()->security(d->m_selectedPrice.from());
     action("price_update")->setEnabled(security.isCurrency());
   }
+
+  action("view_settings")->setEnabled(d->m_myMoneyView->viewToSettingsPageId() != KMyMoneyUtils::SettingsPage::Undefined);
 }
 
 void KMyMoneyApp::slotResetSelections()
