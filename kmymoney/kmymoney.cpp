@@ -2597,7 +2597,8 @@ void KMyMoneyApp::showSettingsDialog(KMyMoneyUtils::SettingsPage id)
 
 void KMyMoneyApp::slotSettings()
 {
-  showSettingsDialog();
+  KMyMoneyUtils::SettingsPage id = d->m_myMoneyView->viewToSettingsPageId();
+  showSettingsDialog(id);
 }
 
 void KMyMoneyApp::slotViewSettings()
