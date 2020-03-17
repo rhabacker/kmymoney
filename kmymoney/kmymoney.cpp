@@ -810,6 +810,16 @@ void KMyMoneyApp::initActions()
   category_delete->setIcon(KMyMoneyUtils::overlayIcon("view-financial-categories", "edit-delete"));
   connect(category_delete, SIGNAL(triggered()), this, SLOT(slotAccountDelete()));
 
+  KAction *category_close = actionCollection()->addAction("category_close");
+  category_close->setText(i18n("Close category..."));
+  category_close->setIcon(KMyMoneyUtils::overlayIcon("view-bank-account", "dialog-close"));
+  connect(category_close, SIGNAL(triggered()), this, SLOT(slotAccountClose()));
+
+  KAction *category_reopen = actionCollection()->addAction("category_reopen");
+  category_reopen->setText(i18n("Reopen category..."));
+  category_reopen->setIcon(KMyMoneyUtils::overlayIcon("view-bank-account", "dialog-ok"));
+  connect(category_reopen, SIGNAL(triggered()), this, SLOT(slotAccountReopen()));
+
   // **************
   // The tools menu
   // **************
@@ -6564,6 +6574,8 @@ void KMyMoneyApp::slotUpdateActions()
   action("category_new")->setEnabled(fileOpen);
   action("category_edit")->setEnabled(false);
   action("category_delete")->setEnabled(false);
+  action("category_close")->setEnabled(false);
+  action("category_reopen")->setEnabled(false);
 
   action("institution_new")->setEnabled(fileOpen);
   action("institution_edit")->setEnabled(false);
@@ -6842,6 +6854,10 @@ void KMyMoneyApp::slotUpdateActions()
         case MyMoneyAccount::Income :
         case MyMoneyAccount::Expense :
           action("category_edit")->setEnabled(true);
+          if (d->m_selectedAccount.isClosed())
+            action("category_reopen")->setEnabled(true);
+          else
+            action("category_close")->setEnabled(true);
           // enable delete action, if category/account itself is not referenced
           // by any object except accounts, because we want to allow
           // deleting of sub-categories. Also, we allow transactions, schedules and budgets

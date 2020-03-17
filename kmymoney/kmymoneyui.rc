@@ -68,6 +68,8 @@
    <Action name="category_new" />
    <Action name="category_edit" />
    <Action name="category_delete" />
+   <Action name="category_close" />
+   <Action name="category_reopen" />
    <Action name="account_open" />
   </Menu>
   <Menu name="transaction" >
@@ -150,6 +152,8 @@
   <Action name="category_new" />
   <Action name="category_edit" />
   <Action name="category_delete" />
+  <Action name="category_close" />
+  <Action name="category_reopen" />
   <Action name="account_open" />
  </Menu>
  <Menu name="institution_context_menu">
