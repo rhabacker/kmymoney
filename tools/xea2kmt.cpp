@@ -299,6 +299,13 @@ public:
                         xml.writeEndElement();
                     }
                 }
+                if (account->slotList.contains("opening-balance")) {
+                    xml.writeStartElement("flag");
+                    xml.writeAttribute("name", "OpeningBalanceAccount");
+                    xml.writeAttribute("value", account->slotList["opening-balance"] == "1" ? "Yes" : "No");
+                    xml.writeEndElement();
+                }
+
             }
             index++;
             writeAccountsAsXml(xml, account->id, index);
