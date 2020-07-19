@@ -303,7 +303,10 @@ public:
     *
     * @return The item corresponding to the given account id, NULL if the account was not found.
     */
-  QStandardItem *itemFromAccountId(QStandardItem *parent, const QString &accountId) {
+  QStandardItem *itemFromAccountId(QStandardItem *parent, const QString &accountId)
+  {
+    if (!parent)
+      return nullptr;
     QStandardItemModel *model = parent->model();
     QModelIndexList list = model->match(model->index(0, 0, parent->index()), AccountsModel::AccountIdRole, QVariant(accountId), 1, Qt::MatchFlags(Qt::MatchExactly | Qt::MatchCaseSensitive));
     if (list.count() > 0) {
