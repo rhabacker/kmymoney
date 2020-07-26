@@ -282,11 +282,21 @@ KGlobalLedgerView::KGlobalLedgerView(QWidget *parent, const char *name)
   newButtonBar->addAction(kmymoney->action("transaction_new_inc_page"));
   newButtonBar->addAction(kmymoney->action("transaction_new_same_number"));
 
+  KToolBar *editButtonBar = new KToolBar(m_buttonFrame, 0, true);
+  // did not find a way to enable context menu from KToolbar, which seems to be fixed to a main window
+  editButtonBar->setToolButtonStyle(kmymoney->toolBar()->toolButtonStyle());
+  connect(kmymoney, SIGNAL(toolButtonStyleChanged(Qt::ToolButtonStyle)), editButtonBar, SLOT(setToolButtonStyle(Qt::ToolButtonStyle)));
+  buttonLayout->addWidget(editButtonBar);
+
+  editButtonBar->addAction(kmymoney->action("transaction_edit"));
+  editButtonBar->addAction(kmymoney->action("transaction_edit_inc_number"));
+  editButtonBar->addAction(kmymoney->action("transaction_edit_inc_page"));
+  editButtonBar->addAction(kmymoney->action("transaction_edit_same_number"));
+
   m_buttonbar = new KToolBar(m_buttonFrame, 0, true);
   m_buttonbar->setToolButtonStyle(kmymoney->toolBar()->toolButtonStyle());
   connect(kmymoney, SIGNAL(toolButtonStyleChanged(Qt::ToolButtonStyle)), m_buttonbar, SLOT(setToolButtonStyle(Qt::ToolButtonStyle)));
   buttonLayout->addWidget(m_buttonbar);
-  m_buttonbar->addAction(kmymoney->action("transaction_edit"));
   m_buttonbar->addAction(kmymoney->action("transaction_delete"));
   m_buttonbar->addAction(kmymoney->action("transaction_enter"));
   m_buttonbar->addAction(kmymoney->action("transaction_cancel"));
