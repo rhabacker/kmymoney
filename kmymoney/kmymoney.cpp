@@ -890,18 +890,21 @@ void KMyMoneyApp::initActions()
   transaction_new->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Insert));
   connect(transaction_new, SIGNAL(triggered()), this, SLOT(slotTransactionsNew()));
 
-  KAction *transaction_new_inc_page = actionCollection()->addAction("transaction_new_inc_page");
-  transaction_new_inc_page->setText(i18nc("New transaction button", "New with next statement page"));
-  transaction_new_inc_page->setIcon(KMyMoneyUtils::overlayIcon("view-financial-transfer", "list-add", Qt::TopRightCorner));
-  connect(transaction_new_inc_page, SIGNAL(triggered()), this, SLOT(slotTransactionsNewIncPage()));
-
   KAction *transaction_new_inc_number = actionCollection()->addAction("transaction_new_inc_number");
-  transaction_new_inc_number->setText(i18nc("New transaction button", "New with next statement number"));
-  transaction_new_inc_number->setIcon(KMyMoneyUtils::overlayIcon("view-financial-transfer", "list-add", Qt::TopRightCorner));
+  transaction_new_inc_number->setText(i18nc("New transaction button", "New - next statement"));
+  transaction_new_inc_number->setToolTip(i18nc("New transaction button", "New transaction with incremented statement number"));
+  transaction_new_inc_number->setIcon(KMyMoneyUtils::overlayIcon("view-financial-transfer", "go-next-view", Qt::TopRightCorner));
   connect(transaction_new_inc_number, SIGNAL(triggered()), this, SLOT(slotTransactionsNewIncNumber()));
 
+  KAction *transaction_new_inc_page = actionCollection()->addAction("transaction_new_inc_page");
+  transaction_new_inc_page->setText(i18nc("New transaction button", "New - next statement page"));
+  transaction_new_inc_page->setToolTip(i18nc("New transaction button", "New transaction with incremented statement page number"));
+  transaction_new_inc_page->setIcon(KMyMoneyUtils::overlayIcon("view-financial-transfer", "go-next-view-page", Qt::TopRightCorner));
+  connect(transaction_new_inc_page, SIGNAL(triggered()), this, SLOT(slotTransactionsNewIncPage()));
+
   KAction *transaction_new_same_number = actionCollection()->addAction("transaction_new_same_number");
-  transaction_new_same_number->setText(i18nc("New transaction button", "New with same statement number"));
+  transaction_new_same_number->setText(i18nc("New transaction button", "New - same statement page"));
+  transaction_new_same_number->setToolTip(i18nc("New transaction button", "New with same statement number"));
   transaction_new_same_number->setIcon(KMyMoneyUtils::overlayIcon("view-financial-transfer", "list-add", Qt::TopRightCorner));
   connect(transaction_new_same_number, SIGNAL(triggered()), this, SLOT(slotTransactionsNewSameNumber()));
 
