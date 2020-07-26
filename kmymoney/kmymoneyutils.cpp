@@ -360,13 +360,13 @@ QString KMyMoneyUtils::nextCheckNumber(const QString &num)
     QString arg2 = exp.cap(2);
     QString arg3 = QString::number(exp.cap(3).toULong() + 1);
     QString arg4 = exp.cap(4);
-    number = QString("%1%2%3%4").arg(arg1).arg(arg2).arg(arg3).arg(arg4);
+    number = QString("%1%2%3%4").arg(arg1, arg2, arg3, arg4);
 
     // if new number is longer than previous one and we identified
     // preceding 0s, then remove one of the preceding zeros
     if (arg2.length() > 0 && (number.length() != num.length())) {
       arg2 = arg2.mid(1);
-      number = QString("%1%2%3%4").arg(arg1).arg(arg2).arg(arg3).arg(arg4);
+      number = QString("%1%2%3%4").arg(arg1, arg2, arg3, arg4);
     }
   } else {
     number = '1';
@@ -390,12 +390,12 @@ QString KMyMoneyUtils::nextStatementNumber(const QString &num, bool resetPage)
     QString arg2 = exp.cap(2);
     QString arg3 = exp.cap(3);
     QString arg4 = resetPage ? "1" : exp.cap(4);
-    number = QString("%1/%2%3%4").arg(arg1).arg(arg2).arg(arg3).arg(arg4);
+    number = QString("%1/%2%3%4").arg(arg1, arg2, arg3, arg4);
   } else if (exp2.indexIn(num) != -1) {
       QString arg1 = QString::number(exp2.cap(1).toULong() + 1);
       QString arg2 = exp2.cap(2);
       QString arg3 = resetPage ? "1" : exp2.cap(3);
-      number = QString("%1%2%3").arg(arg1).arg(arg2).arg(arg3);
+      number = QString("%1%2%3").arg(arg1, arg2, arg3);
   } else {
     number = "1.1";
   }
@@ -418,12 +418,12 @@ QString KMyMoneyUtils::nextStatementPageNumber(const QString &num)
     QString arg2 = exp.cap(2);
     QString arg3 = exp.cap(3);
     QString arg4 = QString::number(exp.cap(4).toULong() + 1);
-    number = QString("%1/%2%3%4").arg(arg1).arg(arg2).arg(arg4);
+    number = QString("%1/%2%3%4").arg(arg1, arg2, arg4);
   } else if (exp2.indexIn(num) != -1) {
       QString arg1 = exp2.cap(1);
       QString arg2 = exp2.cap(2);
       QString arg3 = QString::number(exp2.cap(3).toULong() + 1);
-      number = QString("%1%2%3").arg(arg1).arg(arg2).arg(arg3);
+      number = QString("%1%2%3").arg(arg1, arg2, arg3);
   } else {
     number = "1.1";
   }
