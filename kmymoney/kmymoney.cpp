@@ -923,6 +923,24 @@ void KMyMoneyApp::initActions()
   transaction_edit->setShortcutConfigurable(false);
   connect(transaction_edit, SIGNAL(triggered()), this, SLOT(slotTransactionsEdit()));
 
+  KAction *transaction_edit_inc_number = actionCollection()->addAction("transaction_edit_inc_number");
+  transaction_edit_inc_number->setText(i18nc("Edit transaction button", "Edit - next statement"));
+  transaction_edit_inc_number->setToolTip(i18nc("Edit transaction button", "Edit transaction with incremented statement number"));
+  transaction_edit_inc_number->setIcon(KMyMoneyUtils::overlayIcon("document-edit", "go-next-view", Qt::TopRightCorner));
+  connect(transaction_edit_inc_number, SIGNAL(triggered()), this, SLOT(slotTransactionsEditIncNumber()));
+
+  KAction *transaction_edit_inc_page = actionCollection()->addAction("transaction_edit_inc_page");
+  transaction_edit_inc_page->setText(i18nc("Edit transaction button", "Edit - next statement page"));
+  transaction_edit_inc_page->setToolTip(i18nc("Edit transaction button", "Edit transaction with incremented statement page number"));
+  transaction_edit_inc_page->setIcon(KMyMoneyUtils::overlayIcon("document-edit", "go-next-view-page", Qt::TopRightCorner));
+  connect(transaction_edit_inc_page, SIGNAL(triggered()), this, SLOT(slotTransactionsEditIncPage()));
+
+  KAction *transaction_edit_same_number = actionCollection()->addAction("transaction_edit_same_number");
+  transaction_edit_same_number->setText(i18nc("Edit transaction button", "Edit - same statement page"));
+  transaction_edit_same_number->setToolTip(i18nc("Edit transaction button", "Edit with same statement number"));
+  transaction_edit_same_number->setIcon(KMyMoneyUtils::overlayIcon("document-edit", "list-add", Qt::TopRightCorner));
+  connect(transaction_edit_same_number, SIGNAL(triggered()), this, SLOT(slotTransactionsEditSameNumber()));
+
   KAction *transaction_enter = actionCollection()->addAction("transaction_enter");
   transaction_enter->setText(i18nc("Enter transaction", "Enter"));
   transaction_enter->setIcon(KIcon("dialog-ok"));
@@ -5785,6 +5803,27 @@ void KMyMoneyApp::slotTransactionsEdit()
     KMyMoneyMVCCombo::setSubstringSearchForChildren(d->m_myMoneyView, !KMyMoneySettings::stringMatchFromStart());
     slotUpdateActions();
   }
+}
+
+void KMyMoneyApp::slotTransactionsEditIncPage()
+{
+  slotTransactionsEdit();
+  if (d->m_transactionEditor)
+    d->m_transactionEditor->assignNextStatementPageNumber();
+}
+
+void KMyMoneyApp::slotTransactionsEditIncNumber()
+{
+  slotTransactionsEdit();
+  if (d->m_transactionEditor)
+    d->m_transactionEditor->assignNextStatementNumber();
+}
+
+void KMyMoneyApp::slotTransactionsEditSameNumber()
+{
+  slotTransactionsEdit();
+  if (d->m_transactionEditor)
+    d->m_transactionEditor->assignStatementNumber();
 }
 
 void KMyMoneyApp::deleteTransactionEditor()

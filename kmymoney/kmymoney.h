@@ -403,6 +403,18 @@ protected slots:
 
   /**
     */
+  void slotTransactionsEditIncPage();
+
+  /**
+    */
+  void slotTransactionsEditIncNumber();
+
+  /**
+    */
+  void slotTransactionsEditSameNumber();
+
+  /**
+    */
   void slotTransactionsEditSplits();
 
   /**
