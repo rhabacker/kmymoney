@@ -267,17 +267,17 @@ bool TransactionEditor::eventFilter(QObject* o, QEvent* e)
           break;
         case Qt::Key_Comma:
           if (k->modifiers() & Qt::KeypadModifier && o == haveWidget("number")) {
-              QString num = m_account.value("lastNumberUsed");
-              QString key = ".";
-              foreach(const QString &s, QStringList() << "." << "/" << "-") {
-                if (num.contains(s))
-                  key = s;
-              }
-              QKeyEvent evt(e->type(),
-                            Qt::Key_Period, 0, key,
-                            k->isAutoRepeat(), k->count());
-              QApplication::sendEvent(o, &evt);
-              rc = true;
+            QString num = m_account.value("lastNumberUsed");
+            QString key = ".";
+            foreach(const QString &s, QStringList() << "." << "/" << "-") {
+              if (num.contains(s))
+                key = s;
+            }
+            QKeyEvent evt(e->type(),
+                          Qt::Key_Period, 0, key,
+                          k->isAutoRepeat(), k->count());
+            QApplication::sendEvent(o, &evt);
+            rc = true;
           }
           break;
         case Qt::Key_Plus:
