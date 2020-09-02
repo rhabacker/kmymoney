@@ -388,9 +388,19 @@ public:
   static QString nextStatementNumber(const QString &num, bool resetPage = true);
 
   /**
+    * Return previous bank statement number for account @a acc.
+    */
+  static QString previousStatementNumber(const QString &num, bool resetPage = true);
+
+  /**
     * Return next bank statement page number for account @a acc.
     */
   static QString nextStatementPageNumber(const QString &num);
+
+  /**
+    * Return previous bank statement page number for account @a acc.
+    */
+  static QString previousStatementPageNumber(const QString &num);
 
   /**
     * Returns previous number if offset is -1 or

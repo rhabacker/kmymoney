@@ -280,6 +280,26 @@ bool TransactionEditor::eventFilter(QObject* o, QEvent* e)
               rc = true;
           }
           break;
+        case Qt::Key_Plus:
+          if (k->modifiers() & Qt::KeypadModifier && o == haveWidget("number")) {
+            kMyMoneyLineEdit* number = dynamic_cast<kMyMoneyLineEdit*>(haveWidget("number"));
+            QString num = k->modifiers() & Qt::ShiftModifier ?
+              KMyMoneyUtils::nextStatementNumber(lastNumberUsed()) :
+              KMyMoneyUtils::nextStatementPageNumber(lastNumberUsed());
+            number->setText(num);
+            rc = true;
+          }
+          break;
+        case Qt::Key_Minus:
+          if (k->modifiers() & Qt::KeypadModifier && o == haveWidget("number")) {
+            kMyMoneyLineEdit* number = dynamic_cast<kMyMoneyLineEdit*>(haveWidget("number"));
+            QString num = k->modifiers() & Qt::ShiftModifier ?
+              KMyMoneyUtils::previousStatementNumber(lastNumberUsed()) :
+              KMyMoneyUtils::previousStatementPageNumber(lastNumberUsed());
+            number->setText(num);
+            rc = true;
+          }
+          break;
       }
     }
   }
