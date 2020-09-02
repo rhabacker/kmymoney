@@ -111,6 +111,7 @@ public:
       return m_report;
     }
     void print();
+    void printToFile(const QString &fileName);
     void printPreview();
     void toggleChart();
     void copyToClipboard();
@@ -219,6 +220,7 @@ public slots:
   void slotLoadView();
   void slotPrintView();
   void slotPrintPreviewView();
+  void slotPrintReportsToFile();
   void slotCopyView();
   void slotSaveView();
   void slotConfigure();

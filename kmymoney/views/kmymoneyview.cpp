@@ -2367,6 +2367,11 @@ void KMyMoneyView::slotPrintView()
     m_homeView->slotPrintView();
 }
 
+void KMyMoneyView::slotPrintReportsToFile()
+{
+    m_reportsView->slotPrintReportsToFile();
+}
+
 void KMyMoneyView::slotPrintPreviewView()
 {
   if (m_reportsViewFrame == currentPage())

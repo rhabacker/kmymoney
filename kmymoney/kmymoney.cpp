@@ -594,6 +594,10 @@ void KMyMoneyApp::initActions()
   actionCollection()->addAction(KStandardAction::Print, this, SLOT(slotPrintView()));
   actionCollection()->addAction(KStandardAction::PrintPreview, this, SLOT(slotPrintPreviewView()));
 
+  KAction *print_all_reports = actionCollection()->addAction("print_all_reports");
+  print_all_reports->setText(i18n("Print all reports..."));
+  connect(print_all_reports, SIGNAL(triggered()), this, SLOT(slotPrintReportsToFile()));
+
   KAction *open_database = actionCollection()->addAction("open_database");
   open_database->setText(i18n("Open database..."));
   connect(open_database, SIGNAL(triggered()), this, SLOT(slotOpenDatabase()));
@@ -6639,6 +6643,11 @@ void KMyMoneyApp::slotShowOnlineJobContextMenu()
 void KMyMoneyApp::slotPrintView()
 {
   d->m_myMoneyView->slotPrintView();
+}
+
+void KMyMoneyApp::slotPrintReportsToFile()
+{
+  d->m_myMoneyView->slotPrintReportsToFile();
 }
 
 void KMyMoneyApp::slotPrintPreviewView()

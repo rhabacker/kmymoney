@@ -26,7 +26,9 @@
 // ----------------------------------------------------------------------------
 // QT Includes
 
+#include <QDir>
 #include <QFile>
+#include <QFileDialog>
 #include <QTimer>
 #include <QClipboard>
 #include <QList>
@@ -160,6 +162,14 @@ void KReportsView::KReportTab::print()
 #endif
 
   d->slotPaintRequested(kmymoney->printer());
+}
+
+void KReportsView::KReportTab::printToFile(const QString& fileName)
+{
+  QPrinter printer(QPrinter::HighResolution);
+  printer.setOutputFormat(QPrinter::PdfFormat);
+  printer.setOutputFileName(fileName);
+  d->slotPaintRequested(&printer);
 }
 
 void KReportsView::KReportTab::printPreview()
@@ -699,6 +709,23 @@ void KReportsView::loadView()
   setColumnsAlreadyAdjusted(true);
 
   m_tocTreeWidget->setUpdatesEnabled(true);
+}
+
+void KReportsView::slotPrintReportsToFile()
+{
+  QString rootDir = QFileDialog::getExistingDirectory(this, i18n("Directory for saving pdf reports"),
+                                                      QDir::homePath(),
+                                                      QFileDialog::ShowDirsOnly);
+  if (rootDir.isEmpty())
+    return;
+  for (int index = 0; index < m_reportTabWidget->count(); index++) {
+    KReportTab* tab = dynamic_cast<KReportTab*>(m_reportTabWidget->widget(index));
+    if (tab == nullptr)
+        continue;
+    const MyMoneyReport &report = tab->report();
+    QFileInfo fi(rootDir + QDir::separator() + report.name() + ".pdf");
+    tab->printToFile(fi.absoluteFilePath());
+  }
 }
 
 void KReportsView::slotOpenUrl(const KUrl &url, const KParts::OpenUrlArguments&, const KParts::BrowserArguments&)

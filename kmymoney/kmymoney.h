@@ -277,6 +277,11 @@ protected slots:
   void slotPrintView();
 
   /**
+    * Calls the print logic for the current view
+    */
+  void slotPrintReportsToFile();
+
+  /**
     * Calls the print preview logic for the current view
     */
   void slotPrintPreviewView();

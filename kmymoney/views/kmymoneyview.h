@@ -550,6 +550,8 @@ public slots:
     */
   void slotPrintView();
 
+  void slotPrintReportsToFile();
+
   /**
     * This slot opens the print preview for the current view.
     */
