@@ -300,6 +300,14 @@ bool TransactionEditor::eventFilter(QObject* o, QEvent* e)
             rc = true;
           }
           break;
+        case Qt::Key_Asterisk:
+          if (k->modifiers() & Qt::KeypadModifier && o == haveWidget("number")) {
+            kMyMoneyLineEdit* number = dynamic_cast<kMyMoneyLineEdit*>(haveWidget("number"));
+            QString num = lastNumberUsed();
+            number->setText(num);
+            rc = true;
+          }
+          break;
       }
     }
   }
