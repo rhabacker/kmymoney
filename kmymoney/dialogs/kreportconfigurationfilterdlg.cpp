@@ -59,6 +59,7 @@
 #include <kmymoneylineedit.h>
 #include <kmymoneyaccountselector.h>
 #include <kmymoneymvccombo.h>
+#include <kmymoneysettings.h>
 #include <mymoneyfile.h>
 #include <mymoneyreport.h>
 #include <ktoolinvocation.h>
@@ -90,7 +91,7 @@ MyMoneyReport::Row::Type rowTypes[] = {
 
 KReportConfigurationFilterDlg::KReportConfigurationFilterDlg(
   MyMoneyReport report, QWidget *parent)
-    : KFindTransactionDlg(parent, report.rowType() == MyMoneyReport::Row::Account),
+    : KFindTransactionDlg(parent, report.rowType() == MyMoneyReport::Row::Account || KMyMoneySettings::expertMode()),
     m_tab2(0),
     m_tab3(0),
     m_tabChart(0),
