@@ -1031,7 +1031,8 @@ void QueryTable::constructAccountTable()
     // Note, "Investment" accounts are never included in account rows because
     // they don't contain anything by themselves.  In reports, they are only
     // useful as a "topaccount" aggregator of stock accounts
-    if (account.isAssetLiability() && m_config.includes(account) && account.accountType() != MyMoneyAccount::Investment) {
+    if ((KMyMoneySettings::expertMode() && account.accountType() == MyMoneyAccount::Equity && m_config.includes(account)) ||
+        (account.isAssetLiability() && m_config.includes(account) && account.accountType() != MyMoneyAccount::Investment)) {
       TableRow qaccountrow;
 
       // help for sort and render functions
