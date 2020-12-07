@@ -130,9 +130,13 @@ public:
         newIndex = model->index(index.row(), index.column() + VAT, index.parent());
         if (!account.value("VatAccount").isEmpty()) {
           MyMoneyFile* file = MyMoneyFile::instance();
-          const MyMoneyAccount &vatAccount = file->account(account.value("VatAccount"));
+          QStringList names;
+          foreach (const QString &vatAcc, account.value("VatAccount").split(",")) {
+            const MyMoneyAccount &vatAccount = file->account(vatAcc);
+            names.append(vatAccount.name());
+          }
 
-          model->setData(newIndex, vatAccount.name(), Qt::DisplayRole);
+          model->setData(newIndex, names.join(","), Qt::DisplayRole);
           model->setData(newIndex, QVariant(Qt::AlignLeft | Qt::AlignVCenter), Qt::TextAlignmentRole);
 
           // VAT Rate

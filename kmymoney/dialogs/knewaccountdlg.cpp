@@ -461,16 +461,17 @@ KNewAccountDlg::KNewAccountDlg(const MyMoneyAccount& account, bool isEditing, bo
       m_vatRate->setValue(MyMoneyMoney(m_account.value("VatRate"))*MyMoneyMoney(100, 1));
     } else {
       if (!m_account.value("VatAccount").isEmpty()) {
-        QString accId = m_account.value("VatAccount").toLatin1();
-        try {
-          // make sure account exists
-          MyMoneyFile::instance()->account(accId);
-          m_vatAssignment->setChecked(true);
-          m_vatAccount->setSelected(accId);
-          m_grossAmount->setChecked(true);
-          if (m_account.value("VatAmount") == "Net")
-            m_netAmount->setChecked(true);
-        } catch (const MyMoneyException &) {
+        foreach(const QString &accId, m_account.value("VatAccount").split(",")) {
+          try {
+            // make sure account exists
+            MyMoneyFile::instance()->account(accId);
+            m_vatAssignment->setChecked(true);
+            m_vatAccount->setSelected(accId, true);
+            m_grossAmount->setChecked(true);
+            if (m_account.value("VatAmount") == "Net")
+              m_netAmount->setChecked(true);
+          } catch (const MyMoneyException &) {
+          }
         }
       }
     }
@@ -626,7 +627,7 @@ void KNewAccountDlg::okClicked()
     m_account.setValue("VatRate", (m_vatRate->value().abs() / MyMoneyMoney(100, 1)).toString());
   } else {
     if (m_vatAssignment->isChecked() && !m_vatAccount->selectedItems().isEmpty()) {
-      m_account.setValue("VatAccount", m_vatAccount->selectedItems().first());
+      m_account.setValue("VatAccount", m_vatAccount->selectedItems().join(","));
       if (m_netAmount->isChecked())
         m_account.setValue("VatAmount", "Net");
     }

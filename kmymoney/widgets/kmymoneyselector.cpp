@@ -65,7 +65,7 @@ KMyMoneySelector::KMyMoneySelector(QWidget *parent, Qt::WFlags flags) :
 
   // force init
   m_selMode = QTreeWidget::MultiSelection;
-  setSelectionMode(QTreeWidget::SingleSelection);
+  setSelectionMode(QTreeWidget::MultiSelection);
 
   connect(m_treeWidget, SIGNAL(itemPressed(QTreeWidgetItem*,int)), this, SLOT(slotItemPressed(QTreeWidgetItem*,int)));
   connect(m_treeWidget, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SIGNAL(stateChanged()));

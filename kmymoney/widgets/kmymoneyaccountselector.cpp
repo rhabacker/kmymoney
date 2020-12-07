@@ -307,7 +307,7 @@ int AccountSet::load(kMyMoneyAccountSelector* selector)
       item->setIcon(0, m_file->income().accountPixmap());
       list = m_file->income().accountList();
       if (selector->selectionMode() == QTreeWidget::MultiSelection) {
-        selector->m_incomeCategoriesButton->show();
+        //selector->m_incomeCategoriesButton->show();
       }
     }
 
@@ -318,7 +318,7 @@ int AccountSet::load(kMyMoneyAccountSelector* selector)
       item->setIcon(0, m_file->expense().accountPixmap());
       list = m_file->expense().accountList();
       if (selector->selectionMode() == QTreeWidget::MultiSelection) {
-        selector->m_expenseCategoriesButton->show();
+        //selector->m_expenseCategoriesButton->show();
       }
     }
 

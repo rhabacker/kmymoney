@@ -102,7 +102,8 @@ private slots:
   void testModifyOnlineJob();
   void testClearedBalance();
   void testAdjustedValues();
-  void testVatAssignment();
+  void testSingleVatAssignment();
+  void testMultipleVatAssignment();
 
 private slots:
   void objectAdded(MyMoneyFile::notificationObjectT type, const MyMoneyObject * const obj);
@@ -116,6 +117,7 @@ private:
   void testReparentEquity(QList<MyMoneyAccount::accountTypeE>& list, MyMoneyAccount& parent);
   void clearObjectLists();
   void AddOneAccount();
+  void saveXmlFile(const QString &filename);
 
 private:
   QStringList m_objectsAdded;

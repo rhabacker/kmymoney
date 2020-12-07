@@ -204,6 +204,15 @@ void MyMoneyTemplate::hierarchy(QMap<QString, QTreeWidgetItem*>& list)
   }
 }
 
+QString MyMoneyTemplate::mappedVatAccount(const QString& vatAccounts)
+{
+  QStringList mappedIds;
+  foreach (const QString &id, vatAccounts.split(",")) {
+    mappedIds.append(m_vatAccountMap[id]);
+  }
+  return mappedIds.join(",");
+}
+
 bool MyMoneyTemplate::importTemplate(void(*callback)(int, int, const QString&))
 {
   m_progressCallback = callback;
@@ -263,8 +272,7 @@ bool MyMoneyTemplate::importTemplate(void(*callback)(int, int, const QString&))
   foreach (MyMoneyAccount acc, accounts) {
     if (!acc.pairs().contains("UnresolvedVatAccount"))
       continue;
-    QString id = acc.value("UnresolvedVatAccount");
-    acc.setValue("VatAccount", m_vatAccountMap[id]);
+    acc.setValue("VatAccount", mappedVatAccount(acc.value("UnresolvedVatAccount")));
     acc.deletePair("UnresolvedVatAccount");
     MyMoneyFile::instance()->modifyAccount(acc);
   }
@@ -368,7 +376,8 @@ bool MyMoneyTemplate::exportTemplate(void(*callback)(int, int, const QString&))
   foreach (MyMoneyAccount acc, accountList) {
     if (!acc.pairs().contains("VatAccount"))
       continue;
-    m_vatAccountMap[acc.value("VatAccount")] = QString("%1").arg(i++, 3, 10, QLatin1Char('0'));
+    foreach (const QString &id, acc.value("VatAccount").split(","))
+      m_vatAccountMap[id] = QString("%1").arg(i++, 3, 10, QLatin1Char('0'));
   }
 
   m_doc = QDomDocument("KMYMONEY-TEMPLATE");
@@ -470,7 +479,7 @@ bool MyMoneyTemplate::addAccountStructure(QDomElement& parent, const MyMoneyAcco
   if (acc.pairs().contains("VatAccount")) {
     QDomElement flag = m_doc.createElement("flag");
     flag.setAttribute(QString("name"), "VatAccount");
-    flag.setAttribute(QString("value"), m_vatAccountMap[acc.value("VatAccount")]);
+    flag.setAttribute(QString("value"), mappedVatAccount(acc.value("VatAccount")));
     account.appendChild(flag);
   }
   if (acc.pairs().contains("OpeningBalanceAccount")) {

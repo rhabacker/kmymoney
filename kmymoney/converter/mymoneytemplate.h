@@ -87,6 +87,7 @@ protected:
     */
   void signalProgress(int current, int total, const QString& = "");
 
+  QString mappedVatAccount(const QString &vatAccounts);
 private:
   QDomDocument    m_doc;
   QDomNode        m_accounts;

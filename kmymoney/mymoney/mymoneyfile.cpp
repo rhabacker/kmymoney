@@ -2981,55 +2981,75 @@ void MyMoneyFile::removeOnlineJob(const QStringList onlineJobIds)
 
 bool MyMoneyFile::addVATSplit(MyMoneyTransaction& transaction, const MyMoneyAccount& account, const MyMoneyAccount& category, const MyMoneyMoney& amount)
 {
-  bool rc = false;
+  bool rc = true;
+  if (category.value("VatAccount").isEmpty())
+    return false;
 
   try {
     MyMoneySplit cat;  // category
-    MyMoneySplit tax;  // tax
-
-    if (category.value("VatAccount").isEmpty())
-      return false;
-    MyMoneyAccount vatAcc = this->account(category.value("VatAccount").toLatin1());
     const MyMoneySecurity& asec = security(account.currencyId());
     const MyMoneySecurity& csec = security(category.currencyId());
-    const MyMoneySecurity& vsec = security(vatAcc.currencyId());
-    if (asec.id() != csec.id() || asec.id() != vsec.id()) {
-      qDebug("Auto VAT assignment only works if all three accounts use the same currency.");
-      return false;
+    MyMoneyMoney vatRateSum;
+    foreach (const QString &acc, category.value("VatAccount").split(",")) {
+      const MyMoneyAccount vatAcc = this->account(acc.toLatin1());
+      vatRateSum += MyMoneyMoney(vatAcc.value("VatRate"));
+      const MyMoneySecurity& vsec = security(vatAcc.currencyId());
+      if (asec.id() != csec.id() || asec.id() != vsec.id()) {
+        qDebug("Auto VAT assignment only works if all accounts use the same currency.");
+        return false;
+      }
     }
 
-    MyMoneyMoney vatRate(vatAcc.value("VatRate"));
     MyMoneyMoney gv, nv;    // gross value, net value
     int fract = account.fraction();
 
-    if (!vatRate.isZero()) {
-
-      tax.setAccountId(vatAcc.id());
+    if (!vatRateSum.isZero()) {
 
       // qDebug("vat amount is '%s'", category.value("VatAmount").toLatin1());
       if (category.value("VatAmount").toLower() != QString("net")) {
         // split value is the gross value
         gv = amount;
-        nv = (gv / (MyMoneyMoney::ONE + vatRate)).convert(fract);
-        MyMoneySplit catSplit = transaction.splitByAccount(account.id(), false);
+        nv = (gv / (MyMoneyMoney::ONE + vatRateSum)).convert(fract);
+        MyMoneySplit catSplit = transaction.splitByAccount(category.id());
         catSplit.setShares(-nv);
         catSplit.setValue(catSplit.shares());
         transaction.modifySplit(catSplit);
 
+        foreach (const QString &acc, category.value("VatAccount").split(",")) {
+          const MyMoneyAccount vatAcc = this->account(acc.toLatin1());
+          MyMoneyMoney vatRate(vatAcc.value("VatRate"));
+          MyMoneyMoney rate = nv * vatRate;
+
+          MyMoneySplit tax;  // tax
+          tax.setAccountId(vatAcc.id());
+          tax.setValue(-rate.convert(fract));
+          tax.setShares(tax.value());
+          transaction.addSplit(tax);
+          rc = true;
+        }
+
       } else {
         // split value is the net value
         nv = amount;
-        gv = (nv * (MyMoneyMoney::ONE + vatRate)).convert(fract);
+        gv = (nv * (MyMoneyMoney::ONE + vatRateSum)).convert(fract);
         MyMoneySplit accSplit = transaction.splitByAccount(account.id());
         accSplit.setValue(gv.convert(fract));
         accSplit.setShares(accSplit.value());
         transaction.modifySplit(accSplit);
-      }
 
-      tax.setValue(-(gv - nv).convert(fract));
-      tax.setShares(tax.value());
-      transaction.addSplit(tax);
-      rc = true;
+        foreach (const QString &acc, category.value("VatAccount").split(",")) {
+          const MyMoneyAccount vatAcc = this->account(acc.toLatin1());
+          MyMoneyMoney vatRate(vatAcc.value("VatRate"));
+          MyMoneyMoney rate = nv * vatRate;
+
+          MyMoneySplit tax;  // tax
+          tax.setAccountId(vatAcc.id());
+          tax.setValue(-rate.convert(fract));
+          tax.setShares(tax.value());
+          transaction.addSplit(tax);
+          rc = true;
+        }
+      }
     }
   } catch (const MyMoneyException &) {
   }

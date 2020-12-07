@@ -29,6 +29,8 @@
 #include "payeeidentifier/ibanandbic/ibanbic.h"
 #include "payeeidentifier/payeeidentifierloader.h"
 
+#include "storage/mymoneystoragexml.h"
+
 QTEST_MAIN(MyMoneyFileTest)
 
 void MyMoneyFileTest::objectAdded(MyMoneyFile::notificationObjectT type, const MyMoneyObject * const obj)
@@ -2665,7 +2667,7 @@ void MyMoneyFileTest::testAdjustedValues()
   QCOMPARE(t2.splitSum(), MyMoneyMoney());
 }
 
-void MyMoneyFileTest::testVatAssignment()
+void MyMoneyFileTest::testSingleVatAssignment()
 {
   MyMoneyAccount acc;
   MyMoneyAccount vat;
@@ -2673,13 +2675,24 @@ void MyMoneyFileTest::testVatAssignment()
 
   testAddTransaction();
 
+  MyMoneyFileTransaction ft;
+
+  MyMoneySecurity base("EUR", "Euro", QChar(0x20ac));
+  try {
+    m->addCurrency(base);
+    m->setBaseCurrency(base);
+   ft.commit();
+  } catch (const MyMoneyException &) {
+    QFAIL("Unexpected exception!");
+  }
+
   vat.setName("VAT");
   vat.setCurrencyId("EUR");
   vat.setAccountType(MyMoneyAccount::Expense);
   // make it a VAT account
   vat.setValue(QLatin1String("VatRate"), QLatin1String("20/100"));
 
-  MyMoneyFileTransaction ft;
+  ft.restart();
   try {
     MyMoneyAccount parent = m->expense();
     m->addAccount(vat, parent);
@@ -2697,6 +2710,8 @@ void MyMoneyFileTest::testVatAssignment()
 
   // the categories are setup now for gross value entry
   MyMoneyTransaction tr;
+  tr.setCommodity("EUR");
+  tr.setPostDate(QDate(2020,1,1));
   MyMoneySplit sp;
   MyMoneyMoney amount(1707, 100);
 
@@ -2712,6 +2727,18 @@ void MyMoneyFileTest::testVatAssignment()
   tr.addSplit(sp);
 
   QCOMPARE(m->addVATSplit(tr, acc, expense, amount), true);
+
+  ft.restart();
+  try {
+    m->addTransaction(tr);
+    ft.commit();
+  } catch (const MyMoneyException &e) {
+    qDebug() << e.what();
+    QFAIL("Unexpected exception!");
+  }
+
+  saveXmlFile(QString("%1-default.xml").arg(__FUNCTION__));
+
   QCOMPARE(tr.splits().count(), 3);
   QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1707, 100).toString());
   QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1422, 100).toString());
@@ -2742,9 +2769,151 @@ void MyMoneyFileTest::testVatAssignment()
   tr.addSplit(sp);
 
   QCOMPARE(m->addVATSplit(tr, acc, expense, amount), true);
+
+  ft.restart();
+  try {
+    m->modifyTransaction(tr);
+    ft.commit();
+  } catch (const MyMoneyException &e) {
+    qDebug() << e.what();
+    QFAIL("Unexpected exception!");
+  }
+
+  saveXmlFile(QString("%1-net.xml").arg(__FUNCTION__));
   QCOMPARE(tr.splits().count(), 3);
   QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1706, 100).toString());
   QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1422, 100).toString());
   QCOMPARE(tr.splitByAccount(vat.id()).shares().toString(), MyMoneyMoney(-284, 100).toString());
+  QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
+}
+
+void MyMoneyFileTest::saveXmlFile(const QString &filename)
+{
+  QFile f(filename);
+  f.open(QIODevice::WriteOnly);
+  MyMoneyStorageXML xml;
+  IMyMoneyStorageFormat& interface = xml;
+  interface.writeFile(&f, dynamic_cast<IMyMoneySerialize*>(MyMoneyFile::instance()->storage()));
+  f.close();
+}
+
+void MyMoneyFileTest::testMultipleVatAssignment()
+{
+  MyMoneyAccount acc;
+  MyMoneyAccount vat1, vat2;
+  MyMoneyAccount expense;
+
+  testAddTransaction();
+
+  MyMoneyFileTransaction ft;
+
+  MyMoneySecurity base("EUR", "Euro", QChar(0x20ac));
+  try {
+    m->addCurrency(base);
+    m->setBaseCurrency(base);
+   ft.commit();
+  } catch (const MyMoneyException &) {
+  QFAIL("Unexpected exception!");
+  }
+
+  vat1.setName("VAT1");
+  vat1.setCurrencyId("EUR");
+  vat1.setAccountType(MyMoneyAccount::Expense);
+  // make it a VAT account
+  vat1.setValue(QLatin1String("VatRate"), QLatin1String("20/100"));
+
+  vat2.setName("VAT2");
+  vat2.setCurrencyId("EUR");
+  vat2.setAccountType(MyMoneyAccount::Expense);
+  // make it a VAT account
+  vat2.setValue(QLatin1String("VatRate"), QLatin1String("10/100"));
+
+  ft.restart();
+  try {
+    MyMoneyAccount parent = m->expense();
+    m->addAccount(vat1, parent);
+    m->addAccount(vat2, parent);
+    QVERIFY(!vat1.id().isEmpty());
+    QVERIFY(!vat2.id().isEmpty());
+    acc = m->account(QLatin1String("A000001"));
+    expense = m->account(QLatin1String("A000003"));
+    QCOMPARE(acc.name(), QLatin1String("Account1"));
+    QCOMPARE(expense.name(), QLatin1String("Expense1"));
+    QStringList vatIds;
+    vatIds << vat1.id() << vat2.id();
+    expense.setValue(QLatin1String("VatAccount"), vatIds.join(","));
+    expense.setValue(QLatin1String("VatAmount"), QLatin1String(""));
+    m->modifyAccount(expense);
+    ft.commit();
+  } catch (const MyMoneyException &) {
+    QFAIL("Unexpected exception!");
+  }
+
+  // the categories are setup now for gross value entry
+  MyMoneyTransaction tr;
+  tr.setCommodity("EUR");
+  tr.setPostDate(QDate(2020,1,1));
+  MyMoneySplit sp;
+  MyMoneyMoney amount(1707, 100);
+
+  // setup the transaction
+  sp.setShares(amount);
+  sp.setValue(amount);
+  sp.setAccountId(acc.id());
+  tr.addSplit(sp);
+  sp.clearId();
+  sp.setShares(-amount);
+  sp.setValue(-amount);
+  sp.setAccountId(expense.id());
+  tr.addSplit(sp);
+
+  QCOMPARE(m->addVATSplit(tr, acc, expense, amount), true);
+
+  ft.restart();
+  try {
+    m->addTransaction(tr);
+    ft.commit();
+  } catch (const MyMoneyException &e) {
+    qDebug() << e.what();
+    QFAIL("Unexpected exception!");
+  }
+
+  saveXmlFile(QString("%1.xml").arg(__FUNCTION__));
+  QCOMPARE(tr.splits().count(), 4);
+  QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1707, 100).toString());
+  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1267, 100).toString());
+  QCOMPARE(tr.splitByAccount(vat1.id()).shares().toString(), MyMoneyMoney(-285, 100).toString());
+  QCOMPARE(tr.splitByAccount(vat2.id()).shares().toString(), MyMoneyMoney(-31, 20).toString());
+  QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
+
+  tr.removeSplits();
+  ft.restart();
+  try {
+    expense.setValue(QLatin1String("VatAmount"), QLatin1String("net"));
+    m->modifyAccount(expense);
+    ft.commit();
+  } catch (const MyMoneyException &) {
+    QFAIL("Unexpected exception!");
+  }
+
+  // the categories are setup now for net value entry
+  amount = MyMoneyMoney(1422, 100);
+  sp.clearId();
+  sp.setShares(amount);
+  sp.setValue(amount);
+  sp.setAccountId(acc.id());
+  tr.addSplit(sp);
+  sp.clearId();
+  sp.setShares(-amount);
+  sp.setValue(-amount);
+  sp.setAccountId(expense.id());
+  tr.addSplit(sp);
+
+  QCOMPARE(m->addVATSplit(tr, acc, expense, amount), true);
+  QCOMPARE(tr.splits().count(), 4);
+  QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1706, 100).toString());
+  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1552, 100).toString());
+  QCOMPARE(tr.splitByAccount(vat1.id()).shares().toString(), MyMoneyMoney(-284, 100).toString());
+  QCOMPARE(tr.splitByAccount(vat2.id()).shares().toString(), MyMoneyMoney(-155, 100).toString());
   QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 }
