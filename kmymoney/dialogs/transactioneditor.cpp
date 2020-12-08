@@ -1810,36 +1810,18 @@ MyMoneyMoney StdTransactionEditor::removeVatSplit()
   if (m_splits.count() != 2)
     return amountFromWidget();
 
-  MyMoneySplit c; // category split
-  MyMoneySplit t; // tax split
-
-  bool netValue = false;
-  QList<MyMoneySplit>::const_iterator it_s;
-  for (it_s = m_splits.constBegin(); it_s != m_splits.constEnd(); ++it_s) {
-    MyMoneyAccount acc = MyMoneyFile::instance()->account((*it_s).accountId());
-    if (!acc.value("VatAccount").isEmpty()) {
-      netValue = (acc.value("VatAmount").toLower() == "net");
-      c = (*it_s);
-    } else if (!acc.value("VatRate").isEmpty()) {
-      t = (*it_s);
-    }
-  }
-
-  // bail out if not all splits are setup
-  if (c.id().isEmpty() || t.id().isEmpty())
-    return amountFromWidget();
-
+  MyMoneyFile* file = MyMoneyFile::instance();
   MyMoneyMoney amount;
-  // reduce the splits
-  if (netValue) {
-    amount = -c.shares();
-  } else {
-    amount = -(c.shares() + t.shares());
+  MyMoneyAccount category = file->account(m_transaction.splitByAccount(m_account.id(), false).accountId());
+  MyMoneyTransaction transaction;
+  if (createTransaction(transaction, m_transaction, m_split)) {
+    if (!file->removeVatSplit(transaction, m_account, category, amount))
+      return amountFromWidget();
+    m_transaction = transaction;
+    if (!m_transaction.splits().isEmpty())
+      m_split = m_transaction.splits().front();
+    // what is with m_splits
   }
-
-  // remove tax split from the list, ...
-  m_splits.clear();
-  m_splits.append(c);
 
   // ... make sure that the widget is updated ...
   // block the signals to avoid popping up the split editor dialog

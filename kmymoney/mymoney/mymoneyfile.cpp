@@ -3056,6 +3056,44 @@ bool MyMoneyFile::addVATSplit(MyMoneyTransaction& transaction, const MyMoneyAcco
   return rc;
 }
 
+bool MyMoneyFile::removeVatSplit(MyMoneyTransaction& transaction, const MyMoneyAccount& account, const MyMoneyAccount& category, MyMoneyMoney &amount)
+{
+  // we only deal with splits that have three splits
+  if (transaction.splits().count() != 2)
+    return false;
+
+  MyMoneySplit c; // category split
+  MyMoneySplit t; // tax split
+
+  bool netValue = false;
+  QList<MyMoneySplit>::const_iterator it_s;
+  for (it_s = transaction.splits().constBegin(); it_s != transaction.splits().constEnd(); ++it_s) {
+    MyMoneyAccount acc = MyMoneyFile::instance()->account((*it_s).accountId());
+    if (!acc.value("VatAccount").isEmpty()) {
+      netValue = (acc.value("VatAmount").toLower() == "net");
+      c = (*it_s);
+    } else if (!acc.value("VatRate").isEmpty()) {
+      t = (*it_s);
+    }
+  }
+
+  // bail out if not all splits are setup
+  if (c.id().isEmpty() || t.id().isEmpty())
+    return false;
+
+  // reduce the splits
+  if (netValue) {
+    amount = -c.shares();
+  } else {
+    amount = -(c.shares() + t.shares());
+  }
+
+  // remove tax split from the list, ...
+  transaction.splits().clear();
+  transaction.splits().append(c);
+  return true;
+}
+
 bool MyMoneyFile::isReferenced(const MyMoneyObject& obj, const MyMoneyFileBitArray& skipChecks) const
 {
   d->checkStorage();
