@@ -1815,7 +1815,7 @@ MyMoneyMoney StdTransactionEditor::removeVatSplit()
   MyMoneyAccount category = file->account(m_transaction.splitByAccount(m_account.id(), false).accountId());
   MyMoneyTransaction transaction;
   if (createTransaction(transaction, m_transaction, m_split)) {
-    if (!file->removeVatSplit(transaction, m_account, category, amount))
+    if (!file->removeVatSplit(transaction, amount))
       return amountFromWidget();
     m_transaction = transaction;
     if (!m_transaction.splits().isEmpty())

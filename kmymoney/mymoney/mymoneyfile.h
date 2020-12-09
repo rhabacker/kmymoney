@@ -1419,7 +1419,7 @@ public:
     * @return true if a VAT split has been added
     */
   bool addVATSplit(MyMoneyTransaction& transaction, const MyMoneyAccount& account, const MyMoneyAccount& category, const MyMoneyMoney& amount);
-  bool removeVatSplit(MyMoneyTransaction &transaction, const MyMoneyAccount &account, const MyMoneyAccount &category, MyMoneyMoney &amount);
+  bool removeVatSplit(MyMoneyTransaction &transaction, MyMoneyMoney &amount);
 
   /**
     * This method checks, if the given @p object is referenced

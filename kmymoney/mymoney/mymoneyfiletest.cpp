@@ -2709,6 +2709,10 @@ void MyMoneyFileTest::testSingleVatAssignment()
     QFAIL("Unexpected exception!");
   }
 
+  //
+  // test gross values
+  //
+
   // the categories are setup now for gross value entry
   MyMoneyTransaction tr;
   tr.setPostDate(QDate(2020,1,1));
@@ -2725,6 +2729,11 @@ void MyMoneyFileTest::testSingleVatAssignment()
   sp.setValue(-amount);
   sp.setAccountId(expense.id());
   tr.addSplit(sp);
+
+  // test removing not present vat split
+  MyMoneyMoney returnedAmount;
+  QCOMPARE(m->removeVatSplit(tr, returnedAmount), false);
+  QCOMPARE(MyMoneyMoney().toString(), returnedAmount.toString());
 
   QCOMPARE(m->addVATSplit(tr, acc, expense, amount), true);
 
@@ -2745,7 +2754,9 @@ void MyMoneyFileTest::testSingleVatAssignment()
   QCOMPARE(tr.splitByAccount(vat.id()).shares().toString(), MyMoneyMoney(-2845, 1000).toString());
   QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 
-  QCOMPARE(m->removeVatSplit(tr, acc, expense, amount), true);
+  // test removing vat split
+  QCOMPARE(m->removeVatSplit(tr, returnedAmount), true);
+  QCOMPARE(returnedAmount.toString(), amount.toString());
 
   ft.restart();
   try {
@@ -2762,6 +2773,9 @@ void MyMoneyFileTest::testSingleVatAssignment()
   QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1707, 100).toString());
   QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 
+  //
+  // test net values
+  //
   tr.removeSplits();
   ft.restart();
   try {
@@ -2797,13 +2811,16 @@ void MyMoneyFileTest::testSingleVatAssignment()
   }
 
   saveXmlFile(QString("%1-net-add.xml").arg(__FUNCTION__));
+
   QCOMPARE(tr.splits().count(), 3);
   QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1707, 100).toString());
   QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-14225, 1000).toString());
   QCOMPARE(tr.splitByAccount(vat.id()).shares().toString(), MyMoneyMoney(-2845, 1000).toString());
   QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 
-  QCOMPARE(m->removeVatSplit(tr, acc, expense, amount), true);
+  // test removing vat split
+  QCOMPARE(m->removeVatSplit(tr, returnedAmount), true);
+  QCOMPARE(returnedAmount.toString(), amount.toString());
 
   ft.restart();
   try {
@@ -2813,11 +2830,12 @@ void MyMoneyFileTest::testSingleVatAssignment()
     qDebug() << e.what();
     QFAIL("Unexpected exception!");
   }
+
   saveXmlFile(QString("%1-net-remove.xml").arg(__FUNCTION__));
 
   QCOMPARE(tr.splits().count(), 2);
-  QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1707, 100).toString());
-  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1707, 100).toString());
+  QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(14225, 1000).toString());
+  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-14225, 1000).toString());
   QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 }
 
@@ -2921,7 +2939,9 @@ void MyMoneyFileTest::testMultipleVatAssignment()
   QCOMPARE(tr.splitByAccount(vat2.id()).shares().toString(), MyMoneyMoney(-131, 100).toString());
   QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 
-  QCOMPARE(m->removeVatSplit(tr, acc, expense, amount), true);
+  MyMoneyMoney returnedAmount;
+  QCOMPARE(m->removeVatSplit(tr, returnedAmount), true);
+  QCOMPARE(returnedAmount.toString(), amount.toString());
 
   ft.restart();
   try {
@@ -2965,7 +2985,7 @@ void MyMoneyFileTest::testMultipleVatAssignment()
 
   ft.restart();
   try {
-    m->addTransaction(tr);
+    m->modifyTransaction(tr);
     ft.commit();
   } catch (const MyMoneyException &e) {
     qDebug() << e.what();
@@ -2981,7 +3001,9 @@ void MyMoneyFileTest::testMultipleVatAssignment()
   QCOMPARE(tr.splitByAccount(vat2.id()).shares().toString(), MyMoneyMoney(-131, 100).toString());
   QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 
-  QCOMPARE(m->removeVatSplit(tr, acc, expense, amount), true);
+  MyMoneyMoney result;
+  QCOMPARE(m->removeVatSplit(tr, returnedAmount), true);
+  QCOMPARE(returnedAmount.toString(), amount.toString());
 
   ft.restart();
   try {
@@ -2994,7 +3016,7 @@ void MyMoneyFileTest::testMultipleVatAssignment()
   saveXmlFile(QString("%1-net-remove.xml").arg(__FUNCTION__));
 
   QCOMPARE(tr.splits().count(), 2);
-  QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1707, 100).toString());
-  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1707, 100).toString());
+  QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1313, 100).toString());
+  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1313, 100).toString());
   QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 }

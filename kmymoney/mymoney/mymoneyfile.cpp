@@ -3056,13 +3056,14 @@ bool MyMoneyFile::addVATSplit(MyMoneyTransaction& transaction, const MyMoneyAcco
   return rc;
 }
 
-bool MyMoneyFile::removeVatSplit(MyMoneyTransaction& transaction, const MyMoneyAccount& account, const MyMoneyAccount& category, MyMoneyMoney &amount)
+bool MyMoneyFile::removeVatSplit(MyMoneyTransaction& transaction, MyMoneyMoney &amount)
 {
   // we only deal with splits that have three or more splits
   if (transaction.splits().count() < 3)
     return false;
 
   MyMoneySplit c; // category split
+  MyMoneySplit a; // account split
   QList<MyMoneySplit> taxSplits; // tax splits
   MyMoneyMoney tax;
 
@@ -3076,6 +3077,8 @@ bool MyMoneyFile::removeVatSplit(MyMoneyTransaction& transaction, const MyMoneyA
     } else if (!acc.value("VatRate").isEmpty()) {
       taxSplits.append((*it_s));
       tax += (*it_s).shares();
+    } else {
+      a = (*it_s);
     }
   }
 
@@ -3084,11 +3087,19 @@ bool MyMoneyFile::removeVatSplit(MyMoneyTransaction& transaction, const MyMoneyA
     return false;
 
   // reduce the splits
+  //qDebug() << netValue << a.shares().toString() << c.shares().toString() << tax.toString();
   if (netValue) {
-    amount = -c.shares();
+    a.setShares(a.shares() + tax);
+    a.setValue(a.shares());
+    transaction.modifySplit(a);
+    amount = a.shares();
   } else {
-    amount = -(c.shares() + tax);
+    c.setShares(c.shares() + tax);
+    c.setValue(c.shares());
+    transaction.modifySplit(c);
+    amount = -c.shares();
   }
+  // qDebug() << netValue << a.shares().toString() << c.shares().toString() << tax.toString();
 
   // remove tax splits from the list, ...
   foreach (const MyMoneySplit &s, taxSplits) {
