@@ -3058,12 +3058,13 @@ bool MyMoneyFile::addVATSplit(MyMoneyTransaction& transaction, const MyMoneyAcco
 
 bool MyMoneyFile::removeVatSplit(MyMoneyTransaction& transaction, const MyMoneyAccount& account, const MyMoneyAccount& category, MyMoneyMoney &amount)
 {
-  // we only deal with splits that have three splits
-  if (transaction.splits().count() != 2)
+  // we only deal with splits that have three or more splits
+  if (transaction.splits().count() < 3)
     return false;
 
   MyMoneySplit c; // category split
-  MyMoneySplit t; // tax split
+  QList<MyMoneySplit> taxSplits; // tax splits
+  MyMoneyMoney tax;
 
   bool netValue = false;
   QList<MyMoneySplit>::const_iterator it_s;
@@ -3073,24 +3074,26 @@ bool MyMoneyFile::removeVatSplit(MyMoneyTransaction& transaction, const MyMoneyA
       netValue = (acc.value("VatAmount").toLower() == "net");
       c = (*it_s);
     } else if (!acc.value("VatRate").isEmpty()) {
-      t = (*it_s);
+      taxSplits.append((*it_s));
+      tax += (*it_s).shares();
     }
   }
 
   // bail out if not all splits are setup
-  if (c.id().isEmpty() || t.id().isEmpty())
+  if (c.id().isEmpty() || taxSplits.size() == 0)
     return false;
 
   // reduce the splits
   if (netValue) {
     amount = -c.shares();
   } else {
-    amount = -(c.shares() + t.shares());
+    amount = -(c.shares() + tax);
   }
 
-  // remove tax split from the list, ...
-  transaction.splits().clear();
-  transaction.splits().append(c);
+  // remove tax splits from the list, ...
+  foreach (const MyMoneySplit &s, taxSplits) {
+    transaction.removeSplit(s);
+  }
   return true;
 }
 
