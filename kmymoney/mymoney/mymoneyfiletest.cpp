@@ -2669,12 +2669,6 @@ void MyMoneyFileTest::testAdjustedValues()
 
 void MyMoneyFileTest::testSingleVatAssignment()
 {
-  MyMoneyAccount acc;
-  MyMoneyAccount vat;
-  MyMoneyAccount expense;
-
-  testAddTransaction();
-
   MyMoneyFileTransaction ft;
 
   MyMoneySecurity base("EUR", "Euro", QChar(0x20ac));
@@ -2687,6 +2681,12 @@ void MyMoneyFileTest::testSingleVatAssignment()
   } catch (const MyMoneyException &) {
     QFAIL("Unexpected exception!");
   }
+
+  testAddTransaction();
+
+  MyMoneyAccount acc;
+  MyMoneyAccount vat;
+  MyMoneyAccount expense;
 
   vat.setName("VAT");
   vat.setAccountType(MyMoneyAccount::Expense);
