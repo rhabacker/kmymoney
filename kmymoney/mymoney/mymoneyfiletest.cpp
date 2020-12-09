@@ -2737,12 +2737,29 @@ void MyMoneyFileTest::testSingleVatAssignment()
     QFAIL("Unexpected exception!");
   }
 
-  saveXmlFile(QString("%1-default.xml").arg(__FUNCTION__));
+  saveXmlFile(QString("%1-default-add.xml").arg(__FUNCTION__));
 
   QCOMPARE(tr.splits().count(), 3);
   QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1707, 100).toString());
   QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-14225, 1000).toString());
   QCOMPARE(tr.splitByAccount(vat.id()).shares().toString(), MyMoneyMoney(-2845, 1000).toString());
+  QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
+
+  QCOMPARE(m->removeVatSplit(tr, acc, expense, amount), true);
+
+  ft.restart();
+  try {
+    m->modifyTransaction(tr);
+    ft.commit();
+  } catch (const MyMoneyException &e) {
+    qDebug() << e.what();
+    QFAIL("Unexpected exception!");
+  }
+  saveXmlFile(QString("%1-default-remove.xml").arg(__FUNCTION__));
+
+  QCOMPARE(tr.splits().count(), 2);
+  QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1707, 100).toString());
+  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1707, 100).toString());
   QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 
   tr.removeSplits();
