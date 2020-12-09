@@ -551,6 +551,9 @@ public:
     * Splits must reference valid accounts and valid payees. The payee
     * id can be empty.
     *
+    * The values in the splits of this transaction are rounded to the
+    * smallest account fraction of the currency underlying the transaction.
+    *
     * An exception will be thrown upon error conditions.
     *
     * @param transaction reference to the transaction
