@@ -2825,6 +2825,9 @@ void MyMoneyFileTest::testMultipleVatAssignment()
   MyMoneyFileTransaction ft;
 
   MyMoneySecurity base("EUR", "Euro", QChar(0x20ac));
+  // avoid rounding errors
+  base.setSmallestAccountFraction(1000);
+
   try {
     m->addCurrency(base);
     m->setBaseCurrency(base);
@@ -2834,13 +2837,11 @@ void MyMoneyFileTest::testMultipleVatAssignment()
   }
 
   vat1.setName("VAT1");
-  vat1.setCurrencyId("EUR");
   vat1.setAccountType(MyMoneyAccount::Expense);
   // make it a VAT account
   vat1.setValue(QLatin1String("VatRate"), QLatin1String("20/100"));
 
   vat2.setName("VAT2");
-  vat2.setCurrencyId("EUR");
   vat2.setAccountType(MyMoneyAccount::Expense);
   // make it a VAT account
   vat2.setValue(QLatin1String("VatRate"), QLatin1String("10/100"));
@@ -2868,7 +2869,6 @@ void MyMoneyFileTest::testMultipleVatAssignment()
 
   // the categories are setup now for gross value entry
   MyMoneyTransaction tr;
-  tr.setCommodity("EUR");
   tr.setPostDate(QDate(2020,1,1));
   MyMoneySplit sp;
   MyMoneyMoney amount(1707, 100);
@@ -2898,9 +2898,9 @@ void MyMoneyFileTest::testMultipleVatAssignment()
   saveXmlFile(QString("%1.xml").arg(__FUNCTION__));
   QCOMPARE(tr.splits().count(), 4);
   QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1707, 100).toString());
-  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1267, 100).toString());
-  QCOMPARE(tr.splitByAccount(vat1.id()).shares().toString(), MyMoneyMoney(-285, 100).toString());
-  QCOMPARE(tr.splitByAccount(vat2.id()).shares().toString(), MyMoneyMoney(-31, 20).toString());
+  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1313, 100).toString());
+  QCOMPARE(tr.splitByAccount(vat1.id()).shares().toString(), MyMoneyMoney(-263, 100).toString());
+  QCOMPARE(tr.splitByAccount(vat2.id()).shares().toString(), MyMoneyMoney(-131, 100).toString());
   QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 
   tr.removeSplits();
@@ -2914,7 +2914,7 @@ void MyMoneyFileTest::testMultipleVatAssignment()
   }
 
   // the categories are setup now for net value entry
-  amount = MyMoneyMoney(1422, 100);
+  amount = MyMoneyMoney(1313, 100);
   sp.clearId();
   sp.setShares(amount);
   sp.setValue(amount);
@@ -2928,9 +2928,9 @@ void MyMoneyFileTest::testMultipleVatAssignment()
 
   QCOMPARE(m->addVATSplit(tr, acc, expense, amount), true);
   QCOMPARE(tr.splits().count(), 4);
-  QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1706, 100).toString());
-  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1552, 100).toString());
-  QCOMPARE(tr.splitByAccount(vat1.id()).shares().toString(), MyMoneyMoney(-284, 100).toString());
-  QCOMPARE(tr.splitByAccount(vat2.id()).shares().toString(), MyMoneyMoney(-155, 100).toString());
+  QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1707, 100).toString());
+  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1313, 100).toString());
+  QCOMPARE(tr.splitByAccount(vat1.id()).shares().toString(), MyMoneyMoney(-263, 100).toString());
+  QCOMPARE(tr.splitByAccount(vat2.id()).shares().toString(), MyMoneyMoney(-131, 100).toString());
   QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 }
