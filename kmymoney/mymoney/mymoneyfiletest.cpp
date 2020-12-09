@@ -2678,6 +2678,8 @@ void MyMoneyFileTest::testSingleVatAssignment()
   MyMoneyFileTransaction ft;
 
   MyMoneySecurity base("EUR", "Euro", QChar(0x20ac));
+  // avoid rounding errors
+  base.setSmallestAccountFraction(1000);
   try {
     m->addCurrency(base);
     m->setBaseCurrency(base);
@@ -2687,7 +2689,6 @@ void MyMoneyFileTest::testSingleVatAssignment()
   }
 
   vat.setName("VAT");
-  vat.setCurrencyId("EUR");
   vat.setAccountType(MyMoneyAccount::Expense);
   // make it a VAT account
   vat.setValue(QLatin1String("VatRate"), QLatin1String("20/100"));
@@ -2710,7 +2711,6 @@ void MyMoneyFileTest::testSingleVatAssignment()
 
   // the categories are setup now for gross value entry
   MyMoneyTransaction tr;
-  tr.setCommodity("EUR");
   tr.setPostDate(QDate(2020,1,1));
   MyMoneySplit sp;
   MyMoneyMoney amount(1707, 100);
@@ -2741,8 +2741,8 @@ void MyMoneyFileTest::testSingleVatAssignment()
 
   QCOMPARE(tr.splits().count(), 3);
   QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1707, 100).toString());
-  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1422, 100).toString());
-  QCOMPARE(tr.splitByAccount(vat.id()).shares().toString(), MyMoneyMoney(-285, 100).toString());
+  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-14225, 1000).toString());
+  QCOMPARE(tr.splitByAccount(vat.id()).shares().toString(), MyMoneyMoney(-2845, 1000).toString());
   QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 
   tr.removeSplits();
@@ -2756,7 +2756,7 @@ void MyMoneyFileTest::testSingleVatAssignment()
   }
 
   // the categories are setup now for net value entry
-  amount = MyMoneyMoney(1422, 100);
+  amount = MyMoneyMoney(14225, 1000);
   sp.clearId();
   sp.setShares(amount);
   sp.setValue(amount);
@@ -2781,9 +2781,9 @@ void MyMoneyFileTest::testSingleVatAssignment()
 
   saveXmlFile(QString("%1-net.xml").arg(__FUNCTION__));
   QCOMPARE(tr.splits().count(), 3);
-  QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1706, 100).toString());
-  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1422, 100).toString());
-  QCOMPARE(tr.splitByAccount(vat.id()).shares().toString(), MyMoneyMoney(-284, 100).toString());
+  QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1707, 100).toString());
+  QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-14225, 1000).toString());
+  QCOMPARE(tr.splitByAccount(vat.id()).shares().toString(), MyMoneyMoney(-2845, 1000).toString());
   QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 }
 
