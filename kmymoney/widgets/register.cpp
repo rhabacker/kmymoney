@@ -1999,6 +1999,10 @@ void Register::addGroupMarkers()
       if (KMyMoneyGlobalSettings::showFancyMarker()) {
         if (m_account.lastReconciliationDate().isValid())
           new KMyMoneyRegister::StatementGroupMarker(this, KMyMoneyRegister::Deposit, m_account.lastReconciliationDate(), i18n("Last reconciliation"));
+        foreach(const QDate &date, m_account.reconciliationHistory().keys()) {
+          QString txt = i18n("Reconciled Balance: %1", m_account.reconciliationHistory()[date].formatMoney(m_account.fraction()));
+          new KMyMoneyRegister::StatementGroupMarker(this, KMyMoneyRegister::Deposit, date, txt);
+        }
 
         if (!m_account.value("lastImportedTransactionDate").isEmpty()
             && !m_account.value("lastStatementBalance").isEmpty()) {
