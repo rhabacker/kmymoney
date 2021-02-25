@@ -961,6 +961,11 @@ void KMyMoneyApp::initActions()
   transaction_duplicate->setIcon(KIcon("edit-copy"));
   connect(transaction_duplicate, SIGNAL(triggered()), this, SLOT(slotTransactionDuplicate()));
 
+  KAction *transaction_tag_balance = actionCollection()->addAction("transaction_tag_balance");
+  transaction_tag_balance->setText(i18nc("Tag balance of transaction", "Add a balance tag"));
+  transaction_tag_balance->setIcon(KIcon("edit-copy"));
+  connect(transaction_tag_balance, SIGNAL(triggered()), this, SLOT(slotTransactionTagBalance()));
+
   KAction *transaction_match = actionCollection()->addAction("transaction_match");
   transaction_match->setText(i18nc("Button text for match transaction", "Match"));
   transaction_match->setIcon(KMyMoneyUtils::overlayIcon("view-financial-transfer", "document-import"));
@@ -5617,6 +5622,50 @@ void KMyMoneyApp::slotTransactionDuplicate()
     // switch off the progress bar
     slotStatusProgressBar(-1, -1);
   }
+}
+
+void KMyMoneyApp::slotTransactionTagBalance()
+{
+  KMyMoneyRegister::SelectedTransactions list = d->m_selectedTransactions;
+  if (list.size() > 1) {
+    slotStatusMsg(i18n("Only one transaction supported"));
+    return;
+  }
+
+  const KMyMoneyRegister::SelectedTransaction &st = list.at(0);
+  MyMoneyFileTransaction ft;
+  MyMoneyFile* file = MyMoneyFile::instance();
+  MyMoneyAccount acc = file->account(st.split().accountId());
+
+  kMyMoneyDateInput *input = new kMyMoneyDateInput(this);
+  kMyMoneyEdit *amount = new kMyMoneyEdit(this);
+  KDialog *dialog = new KDialog(this);
+  dialog->setCaption(i18n("Add a balance tag"));
+  QFrame *frame = new QFrame;
+  QGridLayout *layout = new QGridLayout;
+  layout->addWidget(new QLabel(i18n("Date")), 0, 0);
+  layout->addWidget(input, 0, 1);
+  layout->addWidget(new QLabel(i18n("Balance")), 1, 0);
+  layout->addWidget(amount, 1, 1);
+  frame->setLayout(layout);
+  dialog->setMainWidget(frame);
+  input->setDate(st.transaction().postDate());
+  if (dialog->exec() != QDialog::Accepted) {
+    slotStatusMsg(i18n("Adding balance tag canceled"));
+    delete dialog;
+    return;
+  }
+
+  if (acc.reconciliationHistory().keys().contains(input->date())) {
+    slotStatusMsg(i18n("Balance tag is already present"));
+    delete dialog;
+    return;
+  }
+  acc.addReconciliation(input->date(), amount->value());
+  file->modifyAccount(acc);
+  ft.commit();
+  slotStatusMsg(i18n("Balance tag added"));
+  delete dialog;
 }
 
 void KMyMoneyApp::doDeleteTransactions()
