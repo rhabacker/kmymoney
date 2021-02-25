@@ -415,6 +415,10 @@ protected slots:
 
   /**
     */
+  void slotTransactionTagBalance();
+
+  /**
+    */
   void slotToggleReconciliationFlag();
 
   /**
