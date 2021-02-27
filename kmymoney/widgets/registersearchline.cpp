@@ -80,6 +80,7 @@ void RegisterSearchLine::init(Register *reg)
   d->combo->insertItem(RegisterFilter::NotMarked, i18n("Not marked"));
   d->combo->insertItem(RegisterFilter::NotReconciled, i18n("Not reconciled"));
   d->combo->insertItem(RegisterFilter::Cleared, i18nc("Reconciliation state 'Cleared'", "Cleared"));
+  d->combo->insertItem(RegisterFilter::Reconciled, i18n("Reconciled"));
   d->combo->insertItem(RegisterFilter::NotCleared, i18nc("Reconciliation state 'Not cleared'", "Not cleared"));
   d->combo->insertItem(RegisterFilter::Number, i18n("Has number"));
   d->combo->insertItem(RegisterFilter::NoNumber, i18n("Empty number"));

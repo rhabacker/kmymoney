@@ -651,6 +651,10 @@ bool Transaction::matches(const RegisterFilter& filter) const
         if (split().reconcileFlag() != MyMoneySplit::NotReconciled)
           return false;
         break;
+      case RegisterFilter::Reconciled:
+        if (split().reconcileFlag() != MyMoneySplit::Reconciled)
+          return false;
+      break;
       case RegisterFilter::NotReconciled:
         if (split().reconcileFlag() != MyMoneySplit::NotReconciled
             && split().reconcileFlag() != MyMoneySplit::Cleared)
