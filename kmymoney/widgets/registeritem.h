@@ -73,6 +73,7 @@ struct RegisterFilter {
     NotReconciled,
     Cleared,
     Scheduled,
+    Reconciled,
     NotCleared,
     Number,
     NoNumber,
