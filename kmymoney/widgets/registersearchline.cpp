@@ -46,13 +46,32 @@ public:
       reg(0),
       combo(0),
       queuedSearches(0),
-      status(RegisterFilter::Any) {}
+      status(RegisterFilter::Any)
+  {
+    initIcon(MyMoneySplit::reconcileFlagE::Cleared);
+    initIcon(MyMoneySplit::reconcileFlagE::Reconciled);
+  }
+
+  void initIcon(MyMoneySplit::reconcileFlagE flag)
+  {
+    QPixmap p(32, 32);
+    p.fill(Qt::transparent);
+    icons[flag] = p;
+    QPainter painter(&icons[flag]);
+    QFont font("Arial");
+    font.setPointSize(font.pointSize() * 2);
+    painter.setFont(font);
+    painter.setBrush(Qt::black);
+    QString txt = KMyMoneyUtils::reconcileStateToString(flag, false);
+    painter.drawText(QRectF(0, 0, 32, 32), Qt::AlignCenter, txt);
+  }
 
   Register* reg;
   KComboBox* combo;
   QString search;
   int queuedSearches;
   RegisterFilter::ItemState status;
+  QPixmap icons[MyMoneySplit::MaxReconcileState];
 };
 
 RegisterSearchLine::RegisterSearchLine(QWidget* parent, Register* reg) :
@@ -79,8 +98,8 @@ void RegisterSearchLine::init(Register *reg)
   d->combo->insertItem(RegisterFilter::Scheduled, SmallIcon("view-pim-calendar"), i18n("Scheduled"));
   d->combo->insertItem(RegisterFilter::NotMarked, i18n("Not marked"));
   d->combo->insertItem(RegisterFilter::NotReconciled, i18n("Not reconciled"));
-  d->combo->insertItem(RegisterFilter::Cleared, i18nc("Reconciliation state 'Cleared'", "Cleared"));
-  d->combo->insertItem(RegisterFilter::Reconciled, i18n("Reconciled"));
+  d->combo->insertItem(RegisterFilter::Cleared, d->icons[MyMoneySplit::Cleared], i18nc("Reconciliation state 'Cleared'", "Cleared"));
+  d->combo->insertItem(RegisterFilter::Reconciled, d->icons[MyMoneySplit::Reconciled], i18n("Reconciled"));
   d->combo->insertItem(RegisterFilter::NotCleared, i18nc("Reconciliation state 'Not cleared'", "Not cleared"));
   d->combo->insertItem(RegisterFilter::Number, i18n("Has number"));
   d->combo->insertItem(RegisterFilter::NoNumber, i18n("Empty number"));
