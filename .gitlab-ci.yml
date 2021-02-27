@@ -40,3 +40,19 @@ build_local_ubuntu_2110:
     - echo "Building."
     - cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug
     - ninja
+
+build_local_opensuse:
+  stage: build
+  when: manual
+  image: opensuse/leap
+  variables:
+    ci_in_docker: "yes"
+    ci_parallel: "2"
+    ci_sudo: "yes"
+    ci_distro: "opensuse"
+  before_script:
+    - ./tools/ci-install.sh
+  script:
+    - ./tools/ci-build.sh
+
+# vim:set sw=2 sts=2 et:
