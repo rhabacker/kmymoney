@@ -947,6 +947,11 @@ public slots:
   void slotHideReconciledTransactions();
 
   /**
+    * Toggles the show reconciled balances setting
+    */
+  void slotShowReconciledBalances();
+
+  /**
     * Toggles the hide unused categories setting
     */
   void slotHideUnusedCategories();
