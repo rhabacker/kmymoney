@@ -25,10 +25,12 @@
 
 // ----------------------------------------------------------------------------
 // KDE Includes
+#include <ktoggleaction.h>
 
 // ----------------------------------------------------------------------------
 // Project Includes
 
+#include <kmymoney.h>
 #include <kmymoneydateinput.h>
 
 KSettingsGeneral::KSettingsGeneral(QWidget* parent) :
@@ -44,6 +46,9 @@ KSettingsGeneral::KSettingsGeneral(QWidget* parent) :
   connect(m_startDateEdit, SIGNAL(dateChanged(QDate)), kcfg_StartDate, SLOT(setDate(QDate)));
 
   connect(choosePath, SIGNAL(pressed()), this, SLOT(slotChooseLogPath()));
+
+  connect(kcfg_HideReconciledTransactions, SIGNAL(toggled(bool)),
+          kmymoney->toggleAction("view_hide_reconciled_transactions"), SLOT(setChecked(bool)));
 
 #ifdef Q_OS_WIN
   QString aqBankingSubDir("/aqbanking");
