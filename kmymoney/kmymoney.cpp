@@ -669,6 +669,12 @@ void KMyMoneyApp::initActions()
   view_hide_reconciled_transactions->setShortcut(KShortcut("Ctrl+R"));
   connect(view_hide_reconciled_transactions, SIGNAL(triggered()), this, SLOT(slotHideReconciledTransactions()));
 
+  KToggleAction *view_show_reconciled_balances = actionCollection()->add<KToggleAction>("view_show_reconciled_balances");
+  view_show_reconciled_balances->setText(i18n("Show reconciled balances"));
+  view_show_reconciled_balances->setIcon(KMyMoneyUtils::overlayIcon("gnumeric-autosum", "merge"));
+  view_show_reconciled_balances->setShortcut(KShortcut("Ctrl+Shift+B"));
+  connect(view_show_reconciled_balances, SIGNAL(triggered()), this, SLOT(slotShowReconciledBalances()));
+
   KToggleAction *view_hide_unused_categories = actionCollection()->add<KToggleAction>("view_hide_unused_categories");
   view_hide_unused_categories->setText(i18n("Hide unused categories"));
   view_hide_unused_categories->setIcon(KMyMoneyUtils::overlayIcon("view-financial-categories", "view-close"));
@@ -1187,6 +1193,7 @@ void KMyMoneyApp::initActions()
   // Setup transaction detail switch
   toggleAction("view_show_transaction_detail")->setChecked(KMyMoneyGlobalSettings::showRegisterDetailed());
   toggleAction("view_hide_reconciled_transactions")->setChecked(KMyMoneyGlobalSettings::hideReconciledTransactions());
+  toggleAction("view_show_reconciled_balances")->setChecked(KMyMoneyGlobalSettings::showReconciledBalances());
   toggleAction("view_hide_unused_categories")->setChecked(KMyMoneyGlobalSettings::hideUnusedCategory());
   toggleAction("view_show_all_accounts")->setChecked(false);
 
@@ -1281,6 +1288,7 @@ void KMyMoneyApp::readOptions()
   KConfigGroup grp = d->m_config->group("General Options");
 
   toggleAction("view_hide_reconciled_transactions")->setChecked(KMyMoneyGlobalSettings::hideReconciledTransactions());
+  toggleAction("view_show_reconciled_balances")->setChecked(KMyMoneyGlobalSettings::showReconciledBalances());
   toggleAction("view_hide_unused_categories")->setChecked(KMyMoneyGlobalSettings::hideUnusedCategory());
 
   d->m_recentFiles->loadEntries(d->m_config->group("Recent Files"));
@@ -2038,6 +2046,12 @@ void KMyMoneyApp::slotFileQuit()
 void KMyMoneyApp::slotHideReconciledTransactions()
 {
   KMyMoneyGlobalSettings::setHideReconciledTransactions(toggleAction("view_hide_reconciled_transactions")->isChecked());
+  d->m_myMoneyView->slotRefreshViews();
+}
+
+void KMyMoneyApp::slotShowReconciledBalances()
+{
+  KMyMoneyGlobalSettings::setShowReconciledBalances(toggleAction("view_show_reconciled_balances")->isChecked());
   d->m_myMoneyView->slotRefreshViews();
 }
 
