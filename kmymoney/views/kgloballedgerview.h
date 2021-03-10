@@ -302,7 +302,8 @@ protected slots:
   void slotToggleTransactionMark(KMyMoneyRegister::Transaction* t);
 
   void slotKeepPostDate(const QDate&);
-
+  void slotEnterFilter();
+  void slotClearFilter();
   void slotAboutToSelectItem(KMyMoneyRegister::RegisterItem*, bool&);
 
   void slotUpdateSummaryLine(const KMyMoneyRegister::SelectedTransactions&);

@@ -989,6 +989,14 @@ void KMyMoneyApp::initActions()
   transaction_copy_splits->setText(i18n("Copy splits"));
   connect(transaction_copy_splits, SIGNAL(triggered()), this, SLOT(slotTransactionCopySplits()));
 
+  KToggleAction *register_enter_filter = actionCollection()->add<KToggleAction>("register_enter_filter");
+  register_enter_filter->setText(i18n("Enter transaction filter"));
+  register_enter_filter->setShortcut(KShortcut("Ctrl+I"));
+
+  KToggleAction *register_clear_filter = actionCollection()->add<KToggleAction>("register_clear_filter");
+  register_clear_filter->setText(i18n("Clear transaction filter"));
+  register_clear_filter->setShortcut(KShortcut("Ctrl+Shift+I"));
+
   //Investment
   KAction *investment_new = actionCollection()->addAction("investment_new");
   investment_new->setText(i18n("New investment..."));

@@ -315,6 +315,8 @@ KGlobalLedgerView::KGlobalLedgerView(QWidget *parent, const char *name)
   connect(d->m_mousePressFilter, SIGNAL(mousePressedOnExternalWidget(bool&)), this, SIGNAL(cancelOrEndEdit(bool&)));
 
   connect(m_form, SIGNAL(newTransaction(KMyMoneyRegister::Action)), this, SLOT(slotNewTransaction(KMyMoneyRegister::Action)));
+  connect(kmymoney->action("register_enter_filter"), SIGNAL(triggered()), this, SLOT(slotEnterFilter()));
+  connect(kmymoney->action("register_clear_filter"), SIGNAL(triggered()), this, SLOT(slotClearFilter()));
 
   // setup mouse press filter
   d->m_mousePressFilter->addWidget(m_formFrame);
@@ -328,6 +330,16 @@ KGlobalLedgerView::KGlobalLedgerView(QWidget *parent, const char *name)
 KGlobalLedgerView::~KGlobalLedgerView()
 {
   delete d;
+}
+
+void KGlobalLedgerView::slotEnterFilter()
+{
+    d->m_registerSearchLine->searchLine()->setFocus();
+}
+
+void KGlobalLedgerView::slotClearFilter()
+{
+    d->m_registerSearchLine->searchLine()->reset();
 }
 
 void KGlobalLedgerView::slotAboutToSelectItem(KMyMoneyRegister::RegisterItem* item, bool& okToSelect)
