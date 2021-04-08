@@ -81,6 +81,8 @@ void RegisterSearchLine::init(Register *reg)
   d->combo->insertItem(RegisterFilter::NotReconciled, i18n("Not reconciled"));
   d->combo->insertItem(RegisterFilter::Cleared, i18nc("Reconciliation state 'Cleared'", "Cleared"));
   d->combo->insertItem(RegisterFilter::NotCleared, i18nc("Reconciliation state 'Not cleared'", "Not cleared"));
+  d->combo->insertItem(RegisterFilter::Number, i18n("Has number"));
+  d->combo->insertItem(RegisterFilter::NoNumber, i18n("Empty number"));
   d->combo->setCurrentIndex(RegisterFilter::Any);
   connect(d->combo, SIGNAL(activated(int)), this, SLOT(slotStatusChanged(int)));
   connect(this, SIGNAL(clearButtonClicked()), this, SLOT(reset()));
