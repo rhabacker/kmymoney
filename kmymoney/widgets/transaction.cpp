@@ -664,6 +664,14 @@ bool Transaction::matches(const RegisterFilter& filter) const
         if (split().reconcileFlag() == MyMoneySplit::Cleared)
           return false;
       break;
+      case RegisterFilter::Number:
+        if (split().number().isEmpty())
+          return false;
+      break;
+      case RegisterFilter::NoNumber:
+        if (!split().number().isEmpty())
+          return false;
+      break;
       case RegisterFilter::Scheduled:
         if (!isScheduled())
           return false;
