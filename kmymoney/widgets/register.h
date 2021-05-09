@@ -189,6 +189,35 @@ private:
   QDate                    m_date;
 };
 
+class FancyTransactionGroupMarker : public GroupMarker
+{
+public:
+  FancyTransactionGroupMarker(Register* parent, const QString& transactionID, const QString& txt);
+
+  virtual const QString& id() const {
+    return m_transactionID;
+  }
+  virtual const QString& sortEntryOrder() const {
+    return m_transactionID;
+  }
+  virtual const QDate& sortPostDate() const {
+    return m_transaction.postDate();
+  }
+  virtual int sortSamePostDate() const {
+    return 3;
+  }
+  virtual const QDate& sortEntryDate() const {
+    return m_transaction.entryDate();
+  }
+
+  virtual const char* className() {
+    return "FancyTransactionGroupMarker";
+  }
+private:
+  QString m_transactionID;
+  const MyMoneyTransaction m_transaction;
+};
+
 class StatementGroupMarker : public FancyDateGroupMarker
 {
 public:

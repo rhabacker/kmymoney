@@ -45,6 +45,22 @@ class MyMoneyTransaction;
 class MyMoneySplit;
 class MyMoneyObjectContainer;
 
+class KMM_MYMONEY_EXPORT ReconciliationKey {
+public:
+    QDate _date;
+    QString _transactionID;
+    ReconciliationKey(const QDate &date) : _date(date) {}
+    ReconciliationKey(const QString &transactionID) : _transactionID(transactionID) {}
+    bool hasDate() const { return _date.isValid(); }
+    bool hasId() const { return !_transactionID.isEmpty(); }
+    const QDate &toDate() const { return _date; }
+    const QString toString() const { return hasDate() ? _date.toString(Qt::ISODate) : _transactionID; }
+    bool operator==(const ReconciliationKey &b) const { return hasDate() && b.hasDate() ? toDate() == b.toDate() : toString() == b .toString(); }
+    bool operator<(const ReconciliationKey &b) const { return hasDate() && b.hasDate() ? toDate() < b.toDate() : toString() < b.toString(); }
+};
+
+typedef QMap<ReconciliationKey, MyMoneyMoney> ReconciliationHistoryMap;
+
 /**
   * A representation of an account.
   * This object represents any type of account, those held at an
@@ -598,11 +614,28 @@ public:
   bool addReconciliation(const QDate& date, const MyMoneyMoney& amount);
 
   /**
+    * keeps a history record of a reconciliation for this account on @a transactionID
+    * with @a amount.
+    *
+    * @return @p true in case entry was added, @p false otherwise
+    *
+    * @sa reconciliationHistory()
+    */
+  bool addReconciliation(const QString& transactionID, const MyMoneyMoney& amount);
+
+  /**
     * @return QMap with the reconciliation history for the account
     *
     * @sa addReconciliation()
     */
-  const QMap<QDate, MyMoneyMoney>& reconciliationHistory();
+  const ReconciliationHistoryMap& reconciliationHistory();
+
+  /**
+    * save the reconciliation history to account
+    *
+    * @sa addReconciliation()
+    */
+  void saveReconciliationHistory();
 
   /**
     * @return @c true if account has an online mapping, @c false otherwise
@@ -699,7 +732,7 @@ private:
   /**
     * This member keeps the reconciliation history
     */
-  QMap<QDate, MyMoneyMoney> m_reconciliationHistory;
+  ReconciliationHistoryMap m_reconciliationHistory;
 };
 
 /**
