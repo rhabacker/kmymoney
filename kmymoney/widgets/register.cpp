@@ -348,6 +348,13 @@ FancyDateGroupMarker::FancyDateGroupMarker(Register* parent, const QDate& date, 
 {
 }
 
+FancyTransactionGroupMarker::FancyTransactionGroupMarker(Register* parent, const QString& transactionId, const QString& txt) :
+    GroupMarker(parent, txt),
+    m_transactionID(transactionId),
+    m_transaction(MyMoneyFile::instance()->transaction(transactionId))
+{
+}
+
 FiscalYearGroupMarker::FiscalYearGroupMarker(Register* parent, const QDate& date, const QString& txt) :
     FancyDateGroupMarker(parent, date, txt)
 {
@@ -1997,9 +2004,14 @@ void Register::addGroupMarkers()
         new KMyMoneyRegister::FancyDateGroupMarker(this, KMyMoneyGlobalSettings::startDate().date(), i18n("Prior transactions possibly filtered"));
 
       if (KMyMoneyGlobalSettings::showReconciledBalances()) {
-        foreach(const QDate &date, m_account.reconciliationHistory().keys()) {
-          QString txt = i18n("Reconciled Balance: %1", m_account.reconciliationHistory()[date].formatMoney(m_account.fraction()));
-          new KMyMoneyRegister::StatementGroupMarker(this, KMyMoneyRegister::Deposit, date, txt);
+        foreach(const ReconciliationKey &key, m_account.reconciliationHistory().keys()) {
+          if (key.hasDate()) {
+            QString txt = i18n("Reconciled Balance: %1", m_account.reconciliationHistory()[key].formatMoney(m_account.fraction()));
+            new KMyMoneyRegister::StatementGroupMarker(this, KMyMoneyRegister::Deposit, key.toDate(), txt);
+          } else {
+            QString txt = i18n("Reconciled Balance on transation %1: %2", key.toString(), m_account.reconciliationHistory()[key].formatMoney(m_account.fraction()));
+            new KMyMoneyRegister::FancyTransactionGroupMarker(this, key.toString(), txt);
+          }
         }
       }
 

@@ -788,23 +788,22 @@ bool MyMoneyAccount::addReconciliation(const QDate& date, const MyMoneyMoney& am
   // make sure, that history has been loaded
   reconciliationHistory();
 
-  m_reconciliationHistory[date] = amount;
-  QString history, sep;
-  QMap<QDate, MyMoneyMoney>::const_iterator it;
-  for (it = m_reconciliationHistory.constBegin();
-       it != m_reconciliationHistory.constEnd();
-       ++it) {
-
-    history += QString("%1%2:%3").arg(sep,
-                                      it.key().toString(Qt::ISODate),
-                                      (*it).toString());
-    sep = QLatin1Char(';');
-  }
-  setValue("reconciliationHistory", history);
+  m_reconciliationHistory[ReconciliationKey(date)] = amount;
+  saveReconciliationHistory();
   return true;
 }
 
-const QMap<QDate, MyMoneyMoney>& MyMoneyAccount::reconciliationHistory()
+bool MyMoneyAccount::addReconciliation(const QString& transactionID, const MyMoneyMoney& amount)
+{
+  // make sure, that history has been loaded
+  reconciliationHistory();
+
+  m_reconciliationHistory[transactionID] = amount;
+  saveReconciliationHistory();
+  return true;
+}
+
+const ReconciliationHistoryMap& MyMoneyAccount::reconciliationHistory()
 {
   // check if the internal history member is already loaded
   if (m_reconciliationHistory.count() == 0
@@ -816,11 +815,28 @@ const QMap<QDate, MyMoneyMoney>& MyMoneyAccount::reconciliationHistory()
       MyMoneyMoney amount(parts[1]);
       if (parts.count() == 2 && date.isValid()) {
         m_reconciliationHistory[date] = amount;
+      } else if (parts.count() == 2) {
+        m_reconciliationHistory[parts[0]] = amount;
       }
     }
   }
 
   return m_reconciliationHistory;
+}
+
+
+void MyMoneyAccount::saveReconciliationHistory()
+{
+  QString history, sep;
+  ReconciliationHistoryMap::const_iterator it;
+  for (it = m_reconciliationHistory.constBegin();
+       it != m_reconciliationHistory.constEnd();
+       ++it) {
+
+    history += QString("%1%2:%3").arg(sep, it.key().toString(), (*it).toString());
+    sep = QLatin1Char(';');
+  }
+  setValue("reconciliationHistory", history);
 }
 
 /**

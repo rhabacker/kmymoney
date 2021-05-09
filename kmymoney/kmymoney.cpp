@@ -5622,7 +5622,8 @@ void KMyMoneyApp::slotTransactionTagBalance()
     return;
   }
 
-  if (acc.reconciliationHistory().keys().contains(input->date())) {
+  ReconciliationKey key(input->date());
+  if (acc.reconciliationHistory().keys().contains(key)) {
     slotStatusMsg(i18n("Balance tag is already present"));
     delete dialog;
     return;
