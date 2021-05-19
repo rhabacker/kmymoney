@@ -38,6 +38,7 @@ void MyMoneyTransactionTest::testEmptyConstructor()
 {
   QVERIFY(m->id().isEmpty());
   QVERIFY(m->entryDate() == QDate());
+  QVERIFY(m->entryTime() == QTime());
   QVERIFY(m->memo().isEmpty());
   QVERIFY(m->splits().count() == 0);
 }
@@ -46,8 +47,10 @@ void MyMoneyTransactionTest::testSetFunctions()
 {
   m->setMemo("Memo");
   m->setPostDate(QDate(1, 2, 3));
+  m->setPostTime(QTime(10, 12, 13));
 
   QVERIFY(m->postDate() == QDate(1, 2, 3));
+  QVERIFY(m->postTime() == QTime(10, 12, 13));
   QVERIFY(m->memo() == "Memo");
 }
 
@@ -60,6 +63,7 @@ void MyMoneyTransactionTest::testConstructor()
   QVERIFY(a.entryDate() == QDate::currentDate());
   QVERIFY(a.memo() == "Memo");
   QVERIFY(a.postDate() == QDate(1, 2, 3));
+  QVERIFY(a.postTime() == QTime(10, 12, 13));
 }
 
 void MyMoneyTransactionTest::testCopyConstructor()
@@ -74,6 +78,7 @@ void MyMoneyTransactionTest::testCopyConstructor()
   QVERIFY(n.entryDate() == QDate::currentDate());
   QVERIFY(n.memo() == "Memo");
   QVERIFY(n.postDate() == QDate(1, 2, 3));
+  QVERIFY(n.postTime() == QTime(10, 12, 13));
   QVERIFY(n.value("Key") == "Value");
 }
 
@@ -89,8 +94,10 @@ void MyMoneyTransactionTest::testAssignmentConstructor()
 
   QVERIFY(n.id() == "ID");
   QVERIFY(n.entryDate() == QDate::currentDate());
+  QVERIFY(n.entryTime() == QTime::currentTime());
   QVERIFY(n.memo() == "Memo");
   QVERIFY(n.postDate() == QDate(1, 2, 3));
+  QVERIFY(n.postTime() == QTime(10, 12, 13));
   QVERIFY(n.value("Key") == "Value");
 }
 
@@ -440,9 +447,11 @@ void MyMoneyTransactionTest::testWriteXML()
   QCOMPARE(transaction.tagName(), QLatin1String("TRANSACTION"));
   QCOMPARE(transaction.attribute("id"), QLatin1String("T000000000000000001"));
   QCOMPARE(transaction.attribute("postdate"), QLatin1String("2001-12-28"));
+  QCOMPARE(transaction.attribute("posttime"), QString());
   QCOMPARE(transaction.attribute("commodity"), QLatin1String("EUR"));
   QCOMPARE(transaction.attribute("memo"), QLatin1String("Wohnung:Miete"));
   QCOMPARE(transaction.attribute("entrydate"), QLatin1String("2003-09-29"));
+  QCOMPARE(transaction.attribute("entrytime"), QString());
   QCOMPARE(transaction.childNodes().size(), 2);
 
   QVERIFY(transaction.childNodes().at(0).isElement());
@@ -481,6 +490,20 @@ void MyMoneyTransactionTest::testWriteXML()
   QCOMPARE(keyValuePair1.attribute("key"), QLatin1String("key"));
   QCOMPARE(keyValuePair1.attribute("value"), QLatin1String("value"));
   QCOMPARE(keyValuePair1.childNodes().size(), 0);
+
+  // verify time set
+  t.setPostTime(QTime(10, 2, 1));
+  t.setEntryTime(QTime(10, 1, 2));
+  {
+    QDomDocument doc("TEST");
+    QDomElement el = doc.createElement("TRANSACTION-CONTAINER");
+    doc.appendChild(el);
+    t.writeXML(doc, el);
+    QDomElement transactionContainer = doc.documentElement();
+    QDomElement transaction = transactionContainer.childNodes().at(0).toElement();
+    QCOMPARE(transaction.attribute("posttime"), QLatin1String("10:02:01"));
+    QCOMPARE(transaction.attribute("entrytime"), QLatin1String("10:01:02"));
+  }
 }
 
 void MyMoneyTransactionTest::testReadXML()
@@ -490,7 +513,7 @@ void MyMoneyTransactionTest::testReadXML()
   QString ref_ok = QString(
                      "<!DOCTYPE TEST>\n"
                      "<TRANSACTION-CONTAINER>\n"
-                     " <TRANSACTION postdate=\"2001-12-28\" memo=\"Wohnung:Miete\" id=\"T000000000000000001\" commodity=\"EUR\" entrydate=\"2003-09-29\" >\n"
+                     " <TRANSACTION postdate=\"2001-12-28\" posttime=\"10:02:01\" memo=\"Wohnung:Miete\" id=\"T000000000000000001\" commodity=\"EUR\" entrydate=\"2003-09-29\" entrytime=\"10:01:02\">\n"
                      "  <SPLITS>\n"
                      "   <SPLIT payee=\"P000001\" reconciledate=\"\" shares=\"96379/100\" action=\"Withdrawal\" bankid=\"SPID\" number=\"\" reconcileflag=\"2\" memo=\"\" value=\"96379/100\" account=\"A000076\" />\n"
                      "   <TAG id=\"G000001\"/>\n"
@@ -505,7 +528,7 @@ void MyMoneyTransactionTest::testReadXML()
   QString ref_false = QString(
                         "<!DOCTYPE TEST>\n"
                         "<TRANSACTION-CONTAINER>\n"
-                        " <TRANS-ACTION postdate=\"2001-12-28\" memo=\"Wohnung:Miete\" id=\"T000000000000000001\" commodity=\"EUR\" entrydate=\"2003-09-29\" >\n"
+                        " <TRANS-ACTION postdate=\"2001-12-28\" posttime=\"10:02:01\" memo=\"Wohnung:Miete\" id=\"T000000000000000001\" commodity=\"EUR\" entrydate=\"2003-09-29\" entrytime=\"10:01:02\">\n"
                         "  <SPLITS>\n"
                         "   <SPLIT payee=\"P000001\" reconciledate=\"\" shares=\"96379/100\" action=\"Withdrawal\" bankid=\"SPID\" number=\"\" reconcileflag=\"2\" memo=\"\" value=\"96379/100\" account=\"A000076\" />\n"
                         "  </SPLITS>\n"
@@ -535,6 +558,8 @@ void MyMoneyTransactionTest::testReadXML()
     t = MyMoneyTransaction(node);
     QVERIFY(t.m_postDate == QDate(2001, 12, 28));
     QVERIFY(t.m_entryDate == QDate(2003, 9, 29));
+    QVERIFY(t.m_postTime == QTime(10, 2, 1));
+    QVERIFY(t.m_entryTime == QTime(10, 1, 2));
     QVERIFY(t.id() == "T000000000000000001");
     QVERIFY(t.m_memo == "Wohnung:Miete");
     QVERIFY(t.m_commodity == "EUR");

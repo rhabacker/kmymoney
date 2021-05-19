@@ -39,8 +39,10 @@ MyMoneyTransaction::MyMoneyTransaction(const QString& id, const MyMoneyTransacti
 {
   *this = transaction;
   m_id = id;
-  if (m_entryDate == QDate())
+  if (m_entryDate == QDate()) {
     m_entryDate = QDate::currentDate();
+    m_entryTime = QTime::currentTime();
+  }
 
   QList<MyMoneySplit>::Iterator it;
   for (it = m_splits.begin(); it != m_splits.end(); ++it) {
@@ -58,6 +60,8 @@ MyMoneyTransaction::MyMoneyTransaction(const QDomElement& node, const bool force
 
   m_postDate = stringToDate(node.attribute("postdate"));
   m_entryDate = stringToDate(node.attribute("entrydate"));
+  m_postTime = stringToTime(node.attribute("posttime"));
+  m_entryTime= stringToTime(node.attribute("entrytime"));
   m_bankID = QStringEmpty(node.attribute("bankid"));
   m_memo = QStringEmpty(node.attribute("memo"));
   m_commodity = QStringEmpty(node.attribute("commodity"));
@@ -245,10 +249,22 @@ void MyMoneyTransaction::setPostDate(const QDate& date)
 {
   m_postDate = date;
 }
+
 void MyMoneyTransaction::setEntryDate(const QDate& date)
 {
   m_entryDate = date;
 }
+
+void MyMoneyTransaction::setPostTime(const QTime& time)
+{
+  m_postTime = time;
+}
+
+void MyMoneyTransaction::setEntryTime(const QTime& time)
+{
+  m_entryTime = time;
+}
+
 void MyMoneyTransaction::setMemo(const QString& memo)
 {
   m_memo = memo;
@@ -380,8 +396,10 @@ void MyMoneyTransaction::writeXML(QDomDocument& document, QDomElement& parent) c
   writeBaseXML(document, el);
 
   el.setAttribute("postdate", dateToString(m_postDate));
+  el.setAttribute("posttime", timeToString(m_postTime));
   el.setAttribute("memo", m_memo);
   el.setAttribute("entrydate", dateToString(m_entryDate));
+  el.setAttribute("entrytime", timeToString(m_entryTime));
   el.setAttribute("commodity", m_commodity);
 
   QDomElement splits = document.createElement("SPLITS");
