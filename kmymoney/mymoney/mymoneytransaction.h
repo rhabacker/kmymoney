@@ -76,6 +76,12 @@ public:
   const QTime& postTime() const {
     return m_postTime;
   };
+  const QDateTime postDateTime() const {
+    return QDateTime(m_postDate, m_postTime);
+  };
+  const QDateTime entryDateTime() const {
+    return QDateTime(m_entryDate, m_entryTime);
+  };
   const QString& memo() const {
     return m_memo;
   };
