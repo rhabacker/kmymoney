@@ -527,11 +527,23 @@ MyMoneyTransaction MyMoneyXmlContentHandler::readTransaction(const QDomElement &
 
     //  d->m_nextSplitID = 1;
 
-    transaction.setPostDate(QDate::fromString(node.attribute(attributeName(Attribute::Transaction::PostDate)), Qt::ISODate));
-    auto entryDate = QDate::fromString(node.attribute(attributeName(Attribute::Transaction::EntryDate)),Qt::ISODate);
-    if (!entryDate.isValid() && assignEntryDateIfEmpty)
-        entryDate = QDate::currentDate();
-    transaction.setEntryDate(entryDate);
+    auto postDateTime = QDateTime::fromString(node.attribute(attributeName(Attribute::Transaction::PostDate)), Qt::ISODate);
+    if (postDateTime.isValid())
+        transaction.setPostDateTime(postDateTime);
+    else
+        transaction.setPostDate(QDate::fromString(node.attribute(attributeName(Attribute::Transaction::PostDate)), Qt::ISODate));
+
+    auto entryDateTime = QDateTime::fromString(node.attribute(attributeName(Attribute::Transaction::EntryDate)),Qt::ISODate);
+    if (entryDateTime.isValid())
+        transaction.setEntryDateTime(entryDateTime);
+    else if (postDateTime.isValid() && assignEntryDateIfEmpty)
+        transaction.setEntryDateTime(QDateTime::currentDateTime());
+    else {
+        auto entryDate = QDate::fromString(node.attribute(attributeName(Attribute::Transaction::EntryDate)),Qt::ISODate);
+        if (!entryDate.isValid() && assignEntryDateIfEmpty)
+            entryDate = QDate::currentDate();
+        transaction.setEntryDate(entryDate);
+    }
     transaction.setBankID(node.attribute(attributeName(Attribute::Transaction::BankID)));
     transaction.setMemo(node.attribute(attributeName(Attribute::Transaction::Memo)));
     transaction.setCommodity(node.attribute(attributeName(Attribute::Transaction::Commodity)));
@@ -573,9 +585,15 @@ void MyMoneyXmlContentHandler::writeTransaction(const MyMoneyTransaction &transa
     auto el = document.createElement(nodeName(Node::Transaction));
 
     writeBaseXML(transaction.id(), document, el);
-    el.setAttribute(attributeName(Attribute::Transaction::PostDate), transaction.postDate().toString(Qt::ISODate));
+    if (!transaction.postDateTime().time().isNull())
+        el.setAttribute(attributeName(Attribute::Transaction::PostDate), transaction.postDateTime().toString(Qt::ISODate));
+    else
+        el.setAttribute(attributeName(Attribute::Transaction::PostDate), transaction.postDate().toString(Qt::ISODate));
     el.setAttribute(attributeName(Attribute::Transaction::Memo), transaction.memo());
-    el.setAttribute(attributeName(Attribute::Transaction::EntryDate), transaction.entryDate().toString(Qt::ISODate));
+    if (!transaction.entryDateTime().time().isNull())
+        el.setAttribute(attributeName(Attribute::Transaction::EntryDate), transaction.entryDateTime().toString(Qt::ISODate));
+    else
+        el.setAttribute(attributeName(Attribute::Transaction::EntryDate), transaction.entryDate().toString(Qt::ISODate));
     el.setAttribute(attributeName(Attribute::Transaction::Commodity), transaction.commodity());
 
     auto splitsElement = document.createElement(elementName(Element::Transaction::Splits));
@@ -728,6 +746,8 @@ MyMoneyAccount MyMoneyXmlContentHandler::readAccount(const QDomElement &node)
 
     acc.setDescription(node.attribute(attributeName(Attribute::Account::Description)));
 
+    acc.setHasDateWithTime(node.attribute(attributeName(Attribute::Account::DateWithTime)) == "Yes");
+
     // qDebug("Account %s has id of %s, type of %d, parent is %s.", acc.name().data(), id.data(), type, acc.parentAccountId().data());
 
     //  Process any Sub-Account information found inside the account entry.
@@ -787,6 +807,9 @@ void MyMoneyXmlContentHandler::writeAccount(const MyMoneyAccount &account, QDomD
     el.setAttribute(attributeName(Attribute::Account::Description), account.description());
     if (!account.currencyId().isEmpty())
         el.setAttribute(attributeName(Attribute::Account::Currency), account.currencyId());
+
+    if (account.hasDateWithTime())
+        el.setAttribute(attributeName(Attribute::Account::DateWithTime), "Yes");
 
     //Add in subaccount information, if this account has subaccounts.
     if (account.accountCount()) {

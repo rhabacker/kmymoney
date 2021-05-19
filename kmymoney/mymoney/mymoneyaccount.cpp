@@ -609,6 +609,18 @@ bool MyMoneyAccount::hasOnlineMapping() const
     return !d->m_onlineBankingSettings.value(QLatin1String("provider")).isEmpty();
 }
 
+bool MyMoneyAccount::hasDateWithTime() const
+{
+    Q_D(const MyMoneyAccount);
+    return d->m_hasDateWithTime;
+}
+
+void MyMoneyAccount::setHasDateWithTime(bool state)
+{
+    Q_D(MyMoneyAccount);
+    d->m_hasDateWithTime = state;
+}
+
 QString MyMoneyAccount::stdAccName(eMyMoney::Account::Standard stdAccID)
 {
     static const QHash<eMyMoney::Account::Standard, QString> stdAccNames {

@@ -31,11 +31,11 @@ namespace KMyMoney {
 /**
   * Provided to be able to catch the focusOut events before the contents gets changed
   */
-class OldDateEdit : public QDateEdit
+class OldDateEdit : public QDateTimeEdit
 {
     Q_OBJECT
 public:
-    explicit OldDateEdit(const QDate& date, QWidget* parent = nullptr);
+    explicit OldDateEdit(const QDateTime& dateTime, QWidget* parent = nullptr);
     void setInitialSection(Section section) {
         m_initialSection = section;
     }
@@ -85,6 +85,7 @@ public:
       * showing a date, a QDate() object is returned which has an invalid date.
       */
     QDate date() const;
+    QDateTime dateTime() const;
 
     /**
       * Set the date shown in the widget to @a date. If @a date is invalid,
@@ -94,6 +95,7 @@ public:
       * edit.
       */
     void setDate(QDate date);
+    void setDateTime(QDateTime date);
 
     void setMaximumDate(const QDate& max);
 
@@ -104,6 +106,7 @@ public:
       * @sa setDate, resetDate
       */
     void loadDate(const QDate& date);
+    void loadDateTime(const QDateTime &date);
 
     /**
       * Setup the widget with the date loaded using loadDate().
@@ -118,6 +121,7 @@ public:
 
 Q_SIGNALS:
     void dateChanged(const QDate& date);
+    void dateTimeChanged(const QDateTime& date);
 
 protected:
     /**
@@ -136,10 +140,11 @@ protected:
 
 protected Q_SLOTS:
     void slotDateChosen(QDate date);
+    void slotDateTimeChosen(QDateTime date);
     void toggleDatePicker();
 
 private Q_SLOTS:
-    void slotDateChosenRef(const QDate& date);
+    void slotDateTimeChosenRef(const QDateTime &date);
     void fixSize();
 
 private:

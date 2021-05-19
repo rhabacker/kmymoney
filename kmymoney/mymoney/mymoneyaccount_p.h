@@ -38,7 +38,8 @@ public:
 
     MyMoneyAccountPrivate() :
         m_accountType(Account::Type::Unknown),
-        m_fraction(-1)
+        m_fraction(-1),
+        m_hasDateWithTime(false)
     {
     }
 
@@ -130,6 +131,10 @@ public:
       */
     QMap<QDate, MyMoneyMoney> m_reconciliationHistory;
 
+    /**
+      * This member keep the state if dates have times
+      */
+    bool m_hasDateWithTime;
 };
 
 #endif

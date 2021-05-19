@@ -30,8 +30,8 @@ MyMoneyTransaction::MyMoneyTransaction() :
 {
     Q_D(MyMoneyTransaction);
     d->m_nextSplitID = 1;
-    d->m_entryDate = QDate();
-    d->m_postDate = QDate();
+    d->m_entryDate = QDateTime();
+    d->m_postDate = QDateTime();
 }
 
 MyMoneyTransaction::MyMoneyTransaction(const QString &id) :
@@ -39,8 +39,8 @@ MyMoneyTransaction::MyMoneyTransaction(const QString &id) :
 {
     Q_D(MyMoneyTransaction);
     d->m_nextSplitID = 1;
-    d->m_entryDate = QDate();
-    d->m_postDate = QDate();
+    d->m_entryDate = QDateTime();
+    d->m_postDate = QDateTime();
 }
 
 MyMoneyTransaction::MyMoneyTransaction(const MyMoneyTransaction& other) :
@@ -54,8 +54,8 @@ MyMoneyTransaction::MyMoneyTransaction(const QString& id, const MyMoneyTransacti
     MyMoneyKeyValueContainer(other)
 {
     Q_D(MyMoneyTransaction);
-    if (d->m_entryDate == QDate())
-        d->m_entryDate = QDate::currentDate();
+    if (d->m_entryDate == QDateTime())
+        d->m_entryDate = QDateTime::currentDateTime();
 
     foreach (auto split, d->m_splits)
         split.setTransactionId(id);
@@ -68,10 +68,22 @@ MyMoneyTransaction::~MyMoneyTransaction()
 QDate MyMoneyTransaction::entryDate() const
 {
     Q_D(const MyMoneyTransaction);
-    return d->m_entryDate;
+    return d->m_entryDate.date();
 }
 
 void MyMoneyTransaction::setEntryDate(const QDate& date)
+{
+    Q_D(MyMoneyTransaction);
+    d->m_entryDate = QDateTime(date);
+}
+
+QDateTime MyMoneyTransaction::entryDateTime() const
+{
+    Q_D(const MyMoneyTransaction);
+    return d->m_entryDate;
+}
+
+void MyMoneyTransaction::setEntryDateTime(const QDateTime &date)
 {
     Q_D(MyMoneyTransaction);
     d->m_entryDate = date;
@@ -80,10 +92,22 @@ void MyMoneyTransaction::setEntryDate(const QDate& date)
 QDate MyMoneyTransaction::postDate() const
 {
     Q_D(const MyMoneyTransaction);
-    return d->m_postDate;
+    return d->m_postDate.date();
 }
 
 void MyMoneyTransaction::setPostDate(const QDate& date)
+{
+    Q_D(MyMoneyTransaction);
+    d->m_postDate = QDateTime(date);
+}
+
+QDateTime MyMoneyTransaction::postDateTime() const
+{
+    Q_D(const MyMoneyTransaction);
+    return d->m_postDate;
+}
+
+void MyMoneyTransaction::setPostDateTime(const QDateTime &date)
 {
     Q_D(MyMoneyTransaction);
     d->m_postDate = date;

@@ -69,8 +69,14 @@ public:
     QDate entryDate() const;
     void setEntryDate(const QDate& date);
 
+    QDateTime entryDateTime() const;
+    void setEntryDateTime(const QDateTime& date);
+
     QDate postDate() const;
     void setPostDate(const QDate& date);
+
+    QDateTime postDateTime() const;
+    void setPostDateTime(const QDateTime& date);
 
     QString memo() const;
     void setMemo(const QString& memo);

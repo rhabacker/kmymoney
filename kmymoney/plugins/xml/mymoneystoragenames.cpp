@@ -256,6 +256,7 @@ QString attributeName(Attribute::Account attributeID)
         {Attribute::Account::OpeningBalance, QStringLiteral("openingbalance")},
         {Attribute::Account::IBAN,           QStringLiteral("iban")},
         {Attribute::Account::BIC,            QStringLiteral("bic")},
+        {Attribute::Account::DateWithTime,   QStringLiteral("DateWithTime")},
     };
     return attributeNames.value(attributeID);
 }

@@ -579,6 +579,17 @@ public:
       */
     bool hasOnlineMapping() const;
 
+    /**
+      * @return @c true if account has date with time of day enabled
+      */
+    bool hasDateWithTime() const;
+
+    /**
+      * set state if account support date with times
+      * @param state state to set
+      */
+    void setHasDateWithTime(bool state);
+
     static QString stdAccName(eMyMoney::Account::Standard stdAccID);
 
     QDataStream &operator<<(const MyMoneyAccount &);
