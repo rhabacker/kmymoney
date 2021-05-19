@@ -39,7 +39,7 @@ KUpdateStockPriceDlg::KUpdateStockPriceDlg(QWidget* parent) :
     kUpdateStockPriceDecl(parent)
 {
   setModal(true);
-  m_date->setDate(QDate::currentDate());
+  m_date->setDate(MyMoneyDate::currentDate());
   init();
 }
 

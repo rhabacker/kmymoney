@@ -84,7 +84,7 @@ KNewLoanWizard::KNewLoanWizard(QWidget *parent) :
   // should be recorded and none have been made so far.
 
   //FIXME: port
-  m_firstPaymentPage->m_firstDueDateEdit->loadDate(QDate(QDate::currentDate().year(), QDate::currentDate().month(), 30));
+  m_firstPaymentPage->m_firstDueDateEdit->loadDate(MyMoneyDate(MyMoneyDate::currentDate().year(), MyMoneyDate::currentDate().month(), 30));
 
   // FIXME: we currently only support interest calculation on reception
   m_pages.clearBit(Page_InterestCalculation);
@@ -623,8 +623,8 @@ MyMoneySchedule KNewLoanWizard::schedule() const
                         MyMoneySchedule::TYPE_LOANPAYMENT,
                         MyMoneySchedule::occurrenceE(field("paymentFrequencyUnitEdit").toInt()), 1,
                         MyMoneySchedule::STYPE_OTHER,
-                        QDate(),
-                        QDate(),
+                        MyMoneyDate(),
+                        MyMoneyDate(),
                         false,
                         false);
 
@@ -659,10 +659,10 @@ QString KNewLoanWizard::initialPaymentAccount() const
   return field("assetAccountEdit").toStringList().first();
 }
 
-QDate KNewLoanWizard::initialPaymentDate() const
+MyMoneyDate KNewLoanWizard::initialPaymentDate() const
 {
   if (field("dontCreatePayoutCheckBox").toBool()) {
-    return QDate();
+    return MyMoneyDate();
   }
   return field("paymentDate").toDate();
 }

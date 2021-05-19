@@ -154,7 +154,7 @@ public:
   reconcileFlagE reconcileFlag() const {
     return m_reconcileFlag;
   }
-  const QDate& reconcileDate() const {
+  const MyMoneyDate& reconcileDate() const {
     return m_reconcileDate;
   }
   const QString& payeeId() const {
@@ -207,7 +207,7 @@ public:
   void setAccountId(const QString& account);
   void setMemo(const QString& memo);
   void setReconcileFlag(const reconcileFlagE flag);
-  void setReconcileDate(const QDate& date);
+  void setReconcileDate(const MyMoneyDate &date);
   void setPayeeId(const QString& payee);
   void setTagIdList(const QList<QString>& tagList);
   void setAction(const QString& action);
@@ -326,7 +326,7 @@ private:
     * In case the reconciliation flag is set to Reconciled or Frozen
     * this member contains the date of the reconciliation.
     */
-  QDate         m_reconcileDate;
+  MyMoneyDate m_reconcileDate;
 
   /**
     * The m_action member is an arbitrary string, but is intended to

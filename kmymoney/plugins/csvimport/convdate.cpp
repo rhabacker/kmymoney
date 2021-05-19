@@ -30,31 +30,31 @@ ConvertDate::~ConvertDate()
 {
 }
 
-QDate ConvertDate::convertDate(const QString& txt)
+MyMoneyDate ConvertDate::convertDate(const QString& txt)
 {
   QString aYear;
   QString aMonth;
   QString aDay;
   QString aFormat;
   static QString dat;
-  QDate  aDate;
+  MyMoneyDate  aDate;
   QString dateFormatString = stringFormat();
 
   QRegExp rx("[\\. -]");  //                           replace date field separators '.' ' ' '-'
   QString buffer = txt.trimmed();
   buffer = buffer.replace(rx, QString('/'));   //     ....with '/'
   int count = buffer.count('/', Qt::CaseSensitive);
-  if (count == 0) {      //                              no separators so use QDate()
-    QDate result  = QDate::fromString(buffer, dateFormatString);
+  if (count == 0) {      //                              no separators so use MyMoneyDate()
+    MyMoneyDate result  = MyMoneyDate::fromString(buffer, dateFormatString);
     if (result.year() < 1950) {
-      result = QDate();
+      result = MyMoneyDate();
     }
     return result;
   }
 
   QStringList dateSplit = buffer.split('/');
   if (dateSplit.count() != 3) {      //                  not a valid date
-    return QDate();
+    return MyMoneyDate();
   }
   switch (m_dateFormatIndex) {
     case(0) :   //                                 %y %m %d
@@ -83,10 +83,10 @@ QDate ConvertDate::convertDate(const QString& txt)
       aYear = "19" + aYear;//                      take year to be 1950-1999
   } else if (aYear.length() == 4) {
     if ((aYear.toInt() < 1950) || (aYear.toInt() > 2050)) {      //  not a valid year
-      return QDate();
+      return MyMoneyDate();
     }
   } else {
-    return QDate();//                              2 or 4 digits for a valid year
+    return MyMoneyDate();//                              2 or 4 digits for a valid year
   }
   // only years 1950-2050 valid
   //                                               check day
@@ -94,7 +94,7 @@ QDate ConvertDate::convertDate(const QString& txt)
     aDay = '0' + aDay;//                           add a leading '0'
   if ((aDay < "0") || (aDay > "31")      //              check day value
       || (aDay.length()  < 1) || (aDay.length()  > 2)) {
-    return QDate();//                              not a valid day
+    return MyMoneyDate();//                              not a valid day
   }
 //                                                 check month
   if (aMonth.length() == 1) {
@@ -103,7 +103,7 @@ QDate ConvertDate::convertDate(const QString& txt)
   } else if (aMonth.length() == 2) {      //             assume numeric
     bool datefound = ((aMonth > "0") && (aMonth < "13"));
     if (!datefound) {
-      return QDate();//                            not a valid day
+      return MyMoneyDate();//                            not a valid day
     }
     aFormat = "MM";//                              aMonth is numeric
   }
@@ -130,7 +130,7 @@ QDate ConvertDate::convertDate(const QString& txt)
     default:
       qDebug("ConvertDate - date format unknown");
   }
-  aDate = QDate::fromString(dat, dateFormat);
+  aDate = MyMoneyDate::fromString(dat, dateFormat);
   return aDate;
 }
 

@@ -55,7 +55,7 @@ CsvWriter::~CsvWriter()
 void CsvWriter::write(const QString& filename,
                       const QString& accountId, const bool accountData,
                       const bool categoryData,
-                      const QDate& startDate, const QDate& endDate,
+                      const MyMoneyDate& startDate, const MyMoneyDate& endDate,
                       const QString& separator)
 {
   m_separator = separator;
@@ -90,7 +90,7 @@ void CsvWriter::write(const QString& filename,
   }
 }
 
-void CsvWriter::writeAccountEntry(QTextStream& stream, const QString& accountId, const QDate& startDate, const QDate& endDate)
+void CsvWriter::writeAccountEntry(QTextStream& stream, const QString& accountId, const MyMoneyDate& startDate, const MyMoneyDate& endDate)
 {
   MyMoneyFile* file = MyMoneyFile::instance();
   MyMoneyAccount account;
@@ -252,7 +252,7 @@ void CsvWriter::writeSplitEntry(QString &str, const MyMoneySplit& split, const i
   str += format(split.value(), 2, !lastEntry);
 }
 
-void CsvWriter::extractInvestmentEntries(const QString& accountId, const QDate& startDate, const QDate& endDate)
+void CsvWriter::extractInvestmentEntries(const QString& accountId, const MyMoneyDate& startDate, const MyMoneyDate& endDate)
 {
   MyMoneyFile* file = MyMoneyFile::instance();
   QList<QString> accList = file->account(accountId).accountList();

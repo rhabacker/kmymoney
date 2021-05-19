@@ -91,13 +91,13 @@ void QueryTableTest::init()
   acLiability = (MyMoneyFile::instance()->liability().id());
   acExpense = (MyMoneyFile::instance()->expense().id());
   acIncome = (MyMoneyFile::instance()->income().id());
-  acChecking = makeAccount(QString("Checking Account"), MyMoneyAccount::Checkings, moCheckingOpen, QDate(2004, 5, 15), acAsset);
-  acCredit = makeAccount(QString("Credit Card"), MyMoneyAccount::CreditCard, moCreditOpen, QDate(2004, 7, 15), acLiability);
-  acSolo = makeAccount(QString("Solo"), MyMoneyAccount::Expense, MyMoneyMoney(), QDate(2004, 1, 11), acExpense);
-  acParent = makeAccount(QString("Parent"), MyMoneyAccount::Expense, MyMoneyMoney(), QDate(2004, 1, 11), acExpense);
-  acChild = makeAccount(QString("Child"), MyMoneyAccount::Expense, MyMoneyMoney(), QDate(2004, 2, 11), acParent);
-  acForeign = makeAccount(QString("Foreign"), MyMoneyAccount::Expense, MyMoneyMoney(), QDate(2004, 1, 11), acExpense);
-  acTax = makeAccount(QString("Tax"), MyMoneyAccount::Expense, MyMoneyMoney(), QDate(2005, 1, 11), acExpense, "", true);
+  acChecking = makeAccount(QString("Checking Account"), MyMoneyAccount::Checkings, moCheckingOpen, MyMoneyDate(2004, 5, 15), acAsset);
+  acCredit = makeAccount(QString("Credit Card"), MyMoneyAccount::CreditCard, moCreditOpen, MyMoneyDate(2004, 7, 15), acLiability);
+  acSolo = makeAccount(QString("Solo"), MyMoneyAccount::Expense, MyMoneyMoney(), MyMoneyDate(2004, 1, 11), acExpense);
+  acParent = makeAccount(QString("Parent"), MyMoneyAccount::Expense, MyMoneyMoney(), MyMoneyDate(2004, 1, 11), acExpense);
+  acChild = makeAccount(QString("Child"), MyMoneyAccount::Expense, MyMoneyMoney(), MyMoneyDate(2004, 2, 11), acParent);
+  acForeign = makeAccount(QString("Foreign"), MyMoneyAccount::Expense, MyMoneyMoney(), MyMoneyDate(2004, 1, 11), acExpense);
+  acTax = makeAccount(QString("Tax"), MyMoneyAccount::Expense, MyMoneyMoney(), MyMoneyDate(2005, 1, 11), acExpense, "", true);
 
   MyMoneyInstitution i("Bank of the World", "", "", "", "", "", "");
   file->addInstitution(i);
@@ -114,20 +114,20 @@ void QueryTableTest::cleanup()
 void QueryTableTest::testQueryBasics()
 {
   try {
-    TransactionHelper t1q1(QDate(2004, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
-    TransactionHelper t2q1(QDate(2004, 2, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
-    TransactionHelper t3q1(QDate(2004, 3, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
-    TransactionHelper t4y1(QDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
+    TransactionHelper t1q1(MyMoneyDate(2004, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
+    TransactionHelper t2q1(MyMoneyDate(2004, 2, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
+    TransactionHelper t3q1(MyMoneyDate(2004, 3, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
+    TransactionHelper t4y1(MyMoneyDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
 
-    TransactionHelper t1q2(QDate(2004, 4, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
-    TransactionHelper t2q2(QDate(2004, 5, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
-    TransactionHelper t3q2(QDate(2004, 6, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
-    TransactionHelper t4q2(QDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
+    TransactionHelper t1q2(MyMoneyDate(2004, 4, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
+    TransactionHelper t2q2(MyMoneyDate(2004, 5, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
+    TransactionHelper t3q2(MyMoneyDate(2004, 6, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
+    TransactionHelper t4q2(MyMoneyDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
 
-    TransactionHelper t1y2(QDate(2005, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
-    TransactionHelper t2y2(QDate(2005, 5, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
-    TransactionHelper t3y2(QDate(2005, 9, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
-    TransactionHelper t4y2(QDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
+    TransactionHelper t1y2(MyMoneyDate(2005, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
+    TransactionHelper t2y2(MyMoneyDate(2005, 5, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
+    TransactionHelper t3y2(MyMoneyDate(2005, 9, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
+    TransactionHelper t4y2(MyMoneyDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
 
     unsigned cols;
 
@@ -268,9 +268,9 @@ void QueryTableTest::testQueryBasics()
     QVERIFY(rows[11]["postdate"] == "2005-09-01");
 
     html = qtbl_5.renderBody();
-    QVERIFY(searchHTML(html, i18nc("Total balance", "Total") + " Month of " + QueryTable::toDateString(QDate(2004,1,1))) == -moSolo);
-    QVERIFY(searchHTML(html, i18nc("Total balance", "Total") + " Month of " + QueryTable::toDateString(QDate(2004,11,1))) == -(moChild) * 3);
-    QVERIFY(searchHTML(html, i18nc("Total balance", "Total") + " Month of " + QueryTable::toDateString(QDate(2004,5,1))) == -moParent1 + moCheckingOpen);
+    QVERIFY(searchHTML(html, i18nc("Total balance", "Total") + " Month of " + QueryTable::toDateString(MyMoneyDate(2004,1,1))) == -moSolo);
+    QVERIFY(searchHTML(html, i18nc("Total balance", "Total") + " Month of " + QueryTable::toDateString(MyMoneyDate(2004,11,1))) == -(moChild) * 3);
+    QVERIFY(searchHTML(html, i18nc("Total balance", "Total") + " Month of " + QueryTable::toDateString(MyMoneyDate(2004,5,1))) == -moParent1 + moCheckingOpen);
     QVERIFY(searchHTML(html, i18nc("Grand total balance", "Grand Total")) == -(moParent1 + moParent2 + moSolo + moChild) * 3 + moCheckingOpen + moCreditOpen);
 
     filter.setRowType(MyMoneyReport::Row::Week);
@@ -293,9 +293,9 @@ void QueryTableTest::testQueryBasics()
     QVERIFY(rows[11]["postdate"] == "2005-09-01");
 
     html = qtbl_6.renderBody();
-    QVERIFY(searchHTML(html, i18nc("Total balance", "Total") + " Week of " + QueryTable::toDateString(QDate(2003, 12, 29))) == -moSolo);
-    QVERIFY(searchHTML(html, i18nc("Total balance", "Total") + " Week of " + QueryTable::toDateString(QDate(2004, 11, 1))) == -(moChild) * 3);
-    QVERIFY(searchHTML(html, i18nc("Total balance", "Total") + " Week of " + QueryTable::toDateString(QDate(2005, 8, 29))) == -moParent2);
+    QVERIFY(searchHTML(html, i18nc("Total balance", "Total") + " Week of " + QueryTable::toDateString(MyMoneyDate(2003, 12, 29))) == -moSolo);
+    QVERIFY(searchHTML(html, i18nc("Total balance", "Total") + " Week of " + QueryTable::toDateString(MyMoneyDate(2004, 11, 1))) == -(moChild) * 3);
+    QVERIFY(searchHTML(html, i18nc("Total balance", "Total") + " Week of " + QueryTable::toDateString(MyMoneyDate(2005, 8, 29))) == -moParent2);
     QVERIFY(searchHTML(html, i18nc("Grand total balance", "Grand Total")) == -(moParent1 + moParent2 + moSolo + moChild) * 3 + moCheckingOpen + moCreditOpen);
   } catch (const MyMoneyException &e) {
     QFAIL(qPrintable(e.what()));
@@ -329,52 +329,52 @@ void QueryTableTest::testCashFlowAnalysis()
 
   CashFlowList list;
 
-  list += CashFlowListItem(QDate(2004, 5, 3), MyMoneyMoney(1000.0));
-  list += CashFlowListItem(QDate(2004, 5, 20), MyMoneyMoney(59.0));
-  list += CashFlowListItem(QDate(2004, 6, 3), MyMoneyMoney(14.0));
-  list += CashFlowListItem(QDate(2004, 6, 24), MyMoneyMoney(92.0));
-  list += CashFlowListItem(QDate(2004, 7, 6), MyMoneyMoney(63.0));
-  list += CashFlowListItem(QDate(2004, 7, 25), MyMoneyMoney(15.0));
-  list += CashFlowListItem(QDate(2004, 8, 5), MyMoneyMoney(92.0));
-  list += CashFlowListItem(QDate(2004, 9, 2), MyMoneyMoney(18.0));
-  list += CashFlowListItem(QDate(2004, 9, 21), MyMoneyMoney(5.0));
-  list += CashFlowListItem(QDate(2004, 10, 16), MyMoneyMoney(-2037.0));
+  list += CashFlowListItem(MyMoneyDate(2004, 5, 3), MyMoneyMoney(1000.0));
+  list += CashFlowListItem(MyMoneyDate(2004, 5, 20), MyMoneyMoney(59.0));
+  list += CashFlowListItem(MyMoneyDate(2004, 6, 3), MyMoneyMoney(14.0));
+  list += CashFlowListItem(MyMoneyDate(2004, 6, 24), MyMoneyMoney(92.0));
+  list += CashFlowListItem(MyMoneyDate(2004, 7, 6), MyMoneyMoney(63.0));
+  list += CashFlowListItem(MyMoneyDate(2004, 7, 25), MyMoneyMoney(15.0));
+  list += CashFlowListItem(MyMoneyDate(2004, 8, 5), MyMoneyMoney(92.0));
+  list += CashFlowListItem(MyMoneyDate(2004, 9, 2), MyMoneyMoney(18.0));
+  list += CashFlowListItem(MyMoneyDate(2004, 9, 21), MyMoneyMoney(5.0));
+  list += CashFlowListItem(MyMoneyDate(2004, 10, 16), MyMoneyMoney(-2037.0));
 
   MyMoneyMoney XIRR(list.XIRR(), 1000);
   QVERIFY(XIRR == MyMoneyMoney(1676, 1000));
 
   list.pop_back();
-  list += CashFlowListItem(QDate(2004, 10, 16), MyMoneyMoney(-1358.0));
+  list += CashFlowListItem(MyMoneyDate(2004, 10, 16), MyMoneyMoney(-1358.0));
 
   XIRR = MyMoneyMoney(list.XIRR(), 1000);
   QVERIFY(XIRR.isZero());
 
   // two entries
   list.clear();
-  list += CashFlowListItem(QDate(2005, 9, 22), MyMoneyMoney(-3472.57));
-  list += CashFlowListItem(QDate(2009, 3, 18), MyMoneyMoney(6051.36));
+  list += CashFlowListItem(MyMoneyDate(2005, 9, 22), MyMoneyMoney(-3472.57));
+  list += CashFlowListItem(MyMoneyDate(2009, 3, 18), MyMoneyMoney(6051.36));
 
   XIRR = MyMoneyMoney(list.XIRR(), 1000);
   QCOMPARE(XIRR.toDouble(), MyMoneyMoney(173, 1000).toDouble());
 
   // check ignoring zero values
-  list += CashFlowListItem(QDate(1998, 11, 1), MyMoneyMoney(0.0));
-  list += CashFlowListItem(QDate(2017, 8, 11), MyMoneyMoney(0.0));
+  list += CashFlowListItem(MyMoneyDate(1998, 11, 1), MyMoneyMoney(0.0));
+  list += CashFlowListItem(MyMoneyDate(2017, 8, 11), MyMoneyMoney(0.0));
 
   XIRR = MyMoneyMoney(list.XIRR(), 1000);
   QCOMPARE(XIRR.toDouble(), MyMoneyMoney(173, 1000).toDouble());
 
   list.pop_back();
   // former implementation crashed
-  list += CashFlowListItem(QDate(2014, 8, 11), MyMoneyMoney(0.0));
+  list += CashFlowListItem(MyMoneyDate(2014, 8, 11), MyMoneyMoney(0.0));
 
   XIRR = MyMoneyMoney(list.XIRR(), 1000);
   QCOMPARE(XIRR.toDouble(), MyMoneyMoney(173, 1000).toDouble());
 
   // different ordering
   list.clear();
-  list += CashFlowListItem(QDate(2004, 3, 18), MyMoneyMoney(6051.36));
-  list += CashFlowListItem(QDate(2005, 9, 22), MyMoneyMoney(-3472.57));
+  list += CashFlowListItem(MyMoneyDate(2004, 3, 18), MyMoneyMoney(6051.36));
+  list += CashFlowListItem(MyMoneyDate(2005, 9, 22), MyMoneyMoney(-3472.57));
 
   XIRR = MyMoneyMoney(list.XIRR(), 1000);
   QCOMPARE(XIRR.toDouble(), MyMoneyMoney(-307, 1000).toDouble());
@@ -427,20 +427,20 @@ void QueryTableTest::testAccountQuery()
     // Adding in transactions
     //
 
-    TransactionHelper t1q1(QDate(2004, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
-    TransactionHelper t2q1(QDate(2004, 2, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
-    TransactionHelper t3q1(QDate(2004, 3, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
-    TransactionHelper t4y1(QDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
+    TransactionHelper t1q1(MyMoneyDate(2004, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
+    TransactionHelper t2q1(MyMoneyDate(2004, 2, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
+    TransactionHelper t3q1(MyMoneyDate(2004, 3, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
+    TransactionHelper t4y1(MyMoneyDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
 
-    TransactionHelper t1q2(QDate(2004, 4, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
-    TransactionHelper t2q2(QDate(2004, 5, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
-    TransactionHelper t3q2(QDate(2004, 6, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
-    TransactionHelper t4q2(QDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
+    TransactionHelper t1q2(MyMoneyDate(2004, 4, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
+    TransactionHelper t2q2(MyMoneyDate(2004, 5, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
+    TransactionHelper t3q2(MyMoneyDate(2004, 6, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
+    TransactionHelper t4q2(MyMoneyDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
 
-    TransactionHelper t1y2(QDate(2005, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
-    TransactionHelper t2y2(QDate(2005, 5, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
-    TransactionHelper t3y2(QDate(2005, 9, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
-    TransactionHelper t4y2(QDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
+    TransactionHelper t1y2(MyMoneyDate(2005, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
+    TransactionHelper t2y2(MyMoneyDate(2005, 5, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
+    TransactionHelper t3y2(MyMoneyDate(2005, 9, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
+    TransactionHelper t4y2(MyMoneyDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
 
     filter.setRowType(MyMoneyReport::Row::Institution);
     filter.setName("Accounts by Institution (With Transactions)");
@@ -492,25 +492,25 @@ void QueryTableTest::testInvestment()
     eqStock2 = makeEquity("Stock2", "STK2");
 
     // Accounts
-    acInvestment = makeAccount("Investment", MyMoneyAccount::Investment, moZero, QDate(2004, 1, 1), acAsset);
-    acStock1 = makeAccount("Stock 1", MyMoneyAccount::Stock, moZero, QDate(2004, 1, 1), acInvestment, eqStock1);
-    acStock2 = makeAccount("Stock 2", MyMoneyAccount::Stock, moZero, QDate(2004, 1, 1), acInvestment, eqStock2);
-    acDividends = makeAccount("Dividends", MyMoneyAccount::Income, moZero, QDate(2004, 1, 1), acIncome);
-    acInterest = makeAccount("Interest", MyMoneyAccount::Income, moZero, QDate(2004, 1, 1), acIncome);
+    acInvestment = makeAccount("Investment", MyMoneyAccount::Investment, moZero, MyMoneyDate(2004, 1, 1), acAsset);
+    acStock1 = makeAccount("Stock 1", MyMoneyAccount::Stock, moZero, MyMoneyDate(2004, 1, 1), acInvestment, eqStock1);
+    acStock2 = makeAccount("Stock 2", MyMoneyAccount::Stock, moZero, MyMoneyDate(2004, 1, 1), acInvestment, eqStock2);
+    acDividends = makeAccount("Dividends", MyMoneyAccount::Income, moZero, MyMoneyDate(2004, 1, 1), acIncome);
+    acInterest = makeAccount("Interest", MyMoneyAccount::Income, moZero, MyMoneyDate(2004, 1, 1), acIncome);
 
     // Transactions
     //                         Date             Action                                               Shares                Price   Stock     Asset       Income
-    InvTransactionHelper s1b1(QDate(2004, 2, 1), MyMoneySplit::ActionBuyShares,        MyMoneyMoney(1000.00), MyMoneyMoney(100.00), acStock1, acChecking, QString());
-    InvTransactionHelper s1b2(QDate(2004, 3, 1), MyMoneySplit::ActionBuyShares,        MyMoneyMoney(1000.00), MyMoneyMoney(110.00), acStock1, acChecking, QString());
-    InvTransactionHelper s1s1(QDate(2004, 4, 1), MyMoneySplit::ActionBuyShares,        MyMoneyMoney(-200.00), MyMoneyMoney(120.00), acStock1, acChecking, QString());
-    InvTransactionHelper s1s2(QDate(2004, 5, 1), MyMoneySplit::ActionBuyShares,        MyMoneyMoney(-200.00), MyMoneyMoney(100.00), acStock1, acChecking, QString());
-    InvTransactionHelper s1r1(QDate(2004, 6, 1), MyMoneySplit::ActionReinvestDividend, MyMoneyMoney(50.00), MyMoneyMoney(100.00), acStock1, QString(), acDividends);
-    InvTransactionHelper s1r2(QDate(2004, 7, 1), MyMoneySplit::ActionReinvestDividend, MyMoneyMoney(50.00), MyMoneyMoney(80.00), acStock1, QString(), acDividends);
-    InvTransactionHelper s1c1(QDate(2004, 8, 1), MyMoneySplit::ActionDividend,         MyMoneyMoney(10.00), MyMoneyMoney(100.00), acStock1, acChecking, acDividends);
-    InvTransactionHelper s1c2(QDate(2004, 9, 1), MyMoneySplit::ActionDividend,         MyMoneyMoney(10.00), MyMoneyMoney(120.00), acStock1, acChecking, acDividends);
-    InvTransactionHelper s1y1(QDate(2004, 9, 15), MyMoneySplit::ActionYield,           MyMoneyMoney(10.00), MyMoneyMoney(110.00), acStock1, acChecking, acInterest);
+    InvTransactionHelper s1b1(MyMoneyDate(2004, 2, 1), MyMoneySplit::ActionBuyShares,        MyMoneyMoney(1000.00), MyMoneyMoney(100.00), acStock1, acChecking, QString());
+    InvTransactionHelper s1b2(MyMoneyDate(2004, 3, 1), MyMoneySplit::ActionBuyShares,        MyMoneyMoney(1000.00), MyMoneyMoney(110.00), acStock1, acChecking, QString());
+    InvTransactionHelper s1s1(MyMoneyDate(2004, 4, 1), MyMoneySplit::ActionBuyShares,        MyMoneyMoney(-200.00), MyMoneyMoney(120.00), acStock1, acChecking, QString());
+    InvTransactionHelper s1s2(MyMoneyDate(2004, 5, 1), MyMoneySplit::ActionBuyShares,        MyMoneyMoney(-200.00), MyMoneyMoney(100.00), acStock1, acChecking, QString());
+    InvTransactionHelper s1r1(MyMoneyDate(2004, 6, 1), MyMoneySplit::ActionReinvestDividend, MyMoneyMoney(50.00), MyMoneyMoney(100.00), acStock1, QString(), acDividends);
+    InvTransactionHelper s1r2(MyMoneyDate(2004, 7, 1), MyMoneySplit::ActionReinvestDividend, MyMoneyMoney(50.00), MyMoneyMoney(80.00), acStock1, QString(), acDividends);
+    InvTransactionHelper s1c1(MyMoneyDate(2004, 8, 1), MyMoneySplit::ActionDividend,         MyMoneyMoney(10.00), MyMoneyMoney(100.00), acStock1, acChecking, acDividends);
+    InvTransactionHelper s1c2(MyMoneyDate(2004, 9, 1), MyMoneySplit::ActionDividend,         MyMoneyMoney(10.00), MyMoneyMoney(120.00), acStock1, acChecking, acDividends);
+    InvTransactionHelper s1y1(MyMoneyDate(2004, 9, 15), MyMoneySplit::ActionYield,           MyMoneyMoney(10.00), MyMoneyMoney(110.00), acStock1, acChecking, acInterest);
 
-    makeEquityPrice(eqStock1, QDate(2004, 10, 1), MyMoneyMoney(100.00));
+    makeEquityPrice(eqStock1, MyMoneyDate(2004, 10, 1), MyMoneyMoney(100.00));
 
     //
     // Investment Transactions Report
@@ -524,7 +524,7 @@ void QueryTableTest::testInvestment()
       i18n("Investment Transactions"),
       i18n("Test Report")
     );
-    invtran_r.setDateFilter(QDate(2004, 1, 1), QDate(2004, 12, 31));
+    invtran_r.setDateFilter(MyMoneyDate(2004, 1, 1), MyMoneyDate(2004, 12, 31));
     invtran_r.setInvestmentsOnly(true);
     XMLandback(invtran_r);
     QueryTable invtran(invtran_r);
@@ -616,7 +616,7 @@ void QueryTableTest::testInvestment()
       i18n("Investment Performance by Account"),
       i18n("Test Report")
     );
-    invhold_r.setDateFilter(QDate(2004, 1, 1), QDate(2004, 10, 1));
+    invhold_r.setDateFilter(MyMoneyDate(2004, 1, 1), MyMoneyDate(2004, 10, 1));
     invhold_r.setInvestmentsOnly(true);
     XMLandback(invhold_r);
     QueryTable invhold(invhold_r);
@@ -652,20 +652,20 @@ void QueryTableTest::testInvestment()
 void QueryTableTest::testBalanceColumn()
 {
   try {
-    TransactionHelper t1q1(QDate(2004, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
-    TransactionHelper t2q1(QDate(2004, 2, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
-    TransactionHelper t3q1(QDate(2004, 3, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
-    TransactionHelper t4y1(QDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
+    TransactionHelper t1q1(MyMoneyDate(2004, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
+    TransactionHelper t2q1(MyMoneyDate(2004, 2, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
+    TransactionHelper t3q1(MyMoneyDate(2004, 3, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
+    TransactionHelper t4y1(MyMoneyDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
 
-    TransactionHelper t1q2(QDate(2004, 4, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
-    TransactionHelper t2q2(QDate(2004, 5, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
-    TransactionHelper t3q2(QDate(2004, 6, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
-    TransactionHelper t4q2(QDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
+    TransactionHelper t1q2(MyMoneyDate(2004, 4, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
+    TransactionHelper t2q2(MyMoneyDate(2004, 5, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
+    TransactionHelper t3q2(MyMoneyDate(2004, 6, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
+    TransactionHelper t4q2(MyMoneyDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
 
-    TransactionHelper t1y2(QDate(2005, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
-    TransactionHelper t2y2(QDate(2005, 5, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
-    TransactionHelper t3y2(QDate(2005, 9, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
-    TransactionHelper t4y2(QDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
+    TransactionHelper t1y2(MyMoneyDate(2005, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
+    TransactionHelper t2y2(MyMoneyDate(2005, 5, 1), MyMoneySplit::ActionWithdrawal, moParent1, acCredit, acParent);
+    TransactionHelper t3y2(MyMoneyDate(2005, 9, 1), MyMoneySplit::ActionWithdrawal, moParent2, acCredit, acParent);
+    TransactionHelper t4y2(MyMoneyDate(2004, 11, 7), MyMoneySplit::ActionWithdrawal, moChild, acCredit, acChild);
 
     unsigned cols;
 
@@ -687,8 +687,8 @@ void QueryTableTest::testBalanceColumn()
     QVERIFY(rows.count() == 16);
 
     //this is to make sure that the dates of closing and opening balances and the balance numbers are ok
-    QString openingDate = KGlobal::locale()->formatDate(QDate(2004, 1, 1), KLocale::ShortDate);
-    QString closingDate = KGlobal::locale()->formatDate(QDate(2005, 9, 1), KLocale::ShortDate);
+    QString openingDate = MyMoneyLocale::formatDate(MyMoneyDate(2004, 1, 1), KLocale::ShortDate);
+    QString closingDate = MyMoneyLocale::formatDate(MyMoneyDate(2005, 9, 1), KLocale::ShortDate);
     QVERIFY(html.indexOf(openingDate + "</td><td class=\"left\"></td><td class=\"left\">" + i18n("Opening Balance")) > 0);
     QVERIFY(html.indexOf(closingDate + "</td><td class=\"left\"></td><td class=\"left\">" + i18n("Closing Balance") + "</td><td class=\"left\"></td><td class=\"value\"></td><td>&nbsp;-702.36</td></tr>") > 0);
     QVERIFY(html.indexOf(closingDate + "</td><td class=\"left\"></td><td class=\"left\">" + i18n("Closing Balance") + "</td><td class=\"left\"></td><td class=\"value\"></td><td>&nbsp;-705.69</td></tr>") > 0);
@@ -710,15 +710,15 @@ void QueryTableTest::testBalanceColumnWithMultipleCurrencies()
     MyMoneyMoney moTransaction(100, 1);
     MyMoneyMoney moJpyTransaction(100, 1);
 
-    QString acJpyChecking = makeAccount(QString("Japanese Checking"), MyMoneyAccount::Checkings, moJpyOpening, QDate(2003, 11, 15), acAsset, "JPY");
+    QString acJpyChecking = makeAccount(QString("Japanese Checking"), MyMoneyAccount::Checkings, moJpyOpening, MyMoneyDate(2003, 11, 15), acAsset, "JPY");
 
-    makePrice("JPY", QDate(2004, 1, 1), MyMoneyMoney(moJpyPrice));
-    makePrice("JPY", QDate(2004, 5, 1), MyMoneyMoney(moJpyPrice2));
-    makePrice("JPY", QDate(2004, 6, 30), MyMoneyMoney(moJpyPrice3));
+    makePrice("JPY", MyMoneyDate(2004, 1, 1), MyMoneyMoney(moJpyPrice));
+    makePrice("JPY", MyMoneyDate(2004, 5, 1), MyMoneyMoney(moJpyPrice2));
+    makePrice("JPY", MyMoneyDate(2004, 6, 30), MyMoneyMoney(moJpyPrice3));
 
-    QDate openingDate(2004, 2, 20);
-    QDate intermediateDate(2004, 5, 20);
-    QDate closingDate(2004, 7, 20);
+    MyMoneyDate openingDate(2004, 2, 20);
+    MyMoneyDate intermediateDate(2004, 5, 20);
+    MyMoneyDate closingDate(2004, 7, 20);
 
     TransactionHelper t1(openingDate,      MyMoneySplit::ActionTransfer,   MyMoneyMoney(moJpyTransaction), acJpyChecking, acChecking, "JPY");
     TransactionHelper t4(openingDate,      MyMoneySplit::ActionDeposit,    MyMoneyMoney(moTransaction),    acCredit,      acChecking);
@@ -751,9 +751,9 @@ void QueryTableTest::testBalanceColumnWithMultipleCurrencies()
     QVERIFY(rows.count() == 19);
 
     //this is to make sure that the dates of closing and opening balances and the balance numbers are ok
-    QString openingDateString = KGlobal::locale()->formatDate(openingDate, KLocale::ShortDate);
-    QString intermediateDateString = KGlobal::locale()->formatDate(intermediateDate, KLocale::ShortDate);
-    QString closingDateString = KGlobal::locale()->formatDate(closingDate, KLocale::ShortDate);
+    QString openingDateString = MyMoneyLocale::formatDate(openingDate, KLocale::ShortDate);
+    QString intermediateDateString = MyMoneyLocale::formatDate(intermediateDate, KLocale::ShortDate);
+    QString closingDateString = MyMoneyLocale::formatDate(closingDate, KLocale::ShortDate);
     // check the opening and closing balances
     QVERIFY(html.indexOf(openingDateString + "</td><td class=\"left\"></td><td class=\"left\">" + i18n("Opening Balance") + "</td><td class=\"left\"></td><td class=\"value\"></td><td>&nbsp;0.00</td></tr>") > 0);
     QVERIFY(html.indexOf(closingDateString + "</td><td class=\"left\"></td><td class=\"left\">" + i18n("Closing Balance") + "</td><td class=\"left\"></td><td class=\"value\"></td><td>&nbsp;304.00</td></tr>") > 0);
@@ -821,8 +821,8 @@ void QueryTableTest::testBalanceColumnWithMultipleCurrencies()
 void QueryTableTest::testTaxReport()
 {
   try {
-    TransactionHelper t1q1(QDate(2004, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
-    TransactionHelper t2q1(QDate(2004, 2, 1), MyMoneySplit::ActionWithdrawal, moParent1, acChecking, acTax);
+    TransactionHelper t1q1(MyMoneyDate(2004, 1, 1), MyMoneySplit::ActionWithdrawal, moSolo, acChecking, acSolo);
+    TransactionHelper t2q1(MyMoneyDate(2004, 2, 1), MyMoneySplit::ActionWithdrawal, moParent1, acChecking, acTax);
 
     unsigned cols;
     MyMoneyReport filter;

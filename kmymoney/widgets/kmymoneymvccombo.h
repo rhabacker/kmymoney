@@ -405,18 +405,18 @@ public:
   /**
    * This function returns the actual start date for the given
    * period definition given by @p id. For user defined periods
-   * the returned value is QDate()
+   * the returned value is MyMoneyDate()
    */
-  static QDate start(MyMoneyTransactionFilter::dateOptionE id);
+  static MyMoneyDate start(MyMoneyTransactionFilter::dateOptionE id);
 
   /**
    * This function returns the actual end date for the given
    * period definition given by @p id. For user defined periods
-   * the returned value is QDate()
+   * the returned value is MyMoneyDate()
    */
-  static QDate end(MyMoneyTransactionFilter::dateOptionE id);
+  static MyMoneyDate end(MyMoneyTransactionFilter::dateOptionE id);
 
-  // static void dates(QDate& start, QDate& end, MyMoneyTransactionFilter::dateOptionE id);
+  // static void dates(MyMoneyDate& start, MyMoneyDate& end, MyMoneyTransactionFilter::dateOptionE id);
 };
 
 /**

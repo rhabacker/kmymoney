@@ -34,10 +34,10 @@ ScheduleWizardPage::ScheduleWizardPage(QWidget *parent)
 {
   // Register the fields with the QWizard and connect the
   // appropriate signals to update the "Next" button correctly
-  registerField("nextDueDateEdit", m_nextDueDateEdit, "date", SIGNAL(dateChanged(QDate)));
+  registerField("nextDueDateEdit", m_nextDueDateEdit, "date", SIGNAL(dateChanged(MyMoneyDate)));
   registerField("paymentAccountEdit", m_paymentAccountEdit, "selectedItems");
 
-  connect(m_nextDueDateEdit, SIGNAL(dateChanged(QDate)), this, SIGNAL(completeChanged()));
+  connect(m_nextDueDateEdit, SIGNAL(dateChanged(MyMoneyDate)), this, SIGNAL(completeChanged()));
   connect(m_paymentAccountEdit,  SIGNAL(stateChanged()), this, SIGNAL(completeChanged()));
 
   m_paymentAccountEdit->removeButtons();
@@ -60,7 +60,7 @@ void ScheduleWizardPage::initializePage()
     setField("nextDueDateEdit", field("firstDueDateEdit").toDate());
     m_nextDueDateEdit->setEnabled(false);
   } else {
-    QDate nextPayment(QDate::currentDate().year(), 1, field("firstDueDateEdit").toDate().day());
+    MyMoneyDate nextPayment(MyMoneyDate::currentDate().year(), 1, field("firstDueDateEdit").toDate().day());
     setField("nextDueDateEdit", nextPayment);
   }
   if (field("nextDueDateEdit").toDate() < field("firstDueDateEdit").toDate()) {

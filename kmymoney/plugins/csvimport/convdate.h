@@ -20,7 +20,7 @@ email                : agander93@gmail.com
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
-#include <QtCore/QDate>
+#include <QtCore/MyMoneyDate>
 
 class ConvertDate: public QObject
 {
@@ -31,10 +31,10 @@ public:
   ~ConvertDate();
 
   /**
-  * This method is used to convert a QString date into QDate() format.
-  * If the  date is invalid, QDate() is returned.
+  * This method is used to convert a QString date into MyMoneyDate() format.
+  * If the  date is invalid, MyMoneyDate() is returned.
   */
-  QDate convertDate(const QString& txt);
+  MyMoneyDate convertDate(const QString& txt);
 
   /**
   * This method converts the selected date setting into

@@ -52,7 +52,7 @@ MyMoneyQifWriter::~MyMoneyQifWriter()
 void MyMoneyQifWriter::write(const QString& filename, const QString& profile,
                              const QString& accountId, const bool accountData,
                              const bool categoryData,
-                             const QDate& startDate, const QDate& endDate)
+                             const MyMoneyDate& startDate, const MyMoneyDate& endDate)
 {
   m_qifProfile.loadProfile("Profile-" + profile);
 
@@ -85,7 +85,7 @@ void MyMoneyQifWriter::write(const QString& filename, const QString& profile,
   }
 }
 
-void MyMoneyQifWriter::writeAccountEntry(QTextStream& s, const QString& accountId, const QDate& startDate, const QDate& endDate)
+void MyMoneyQifWriter::writeAccountEntry(QTextStream& s, const QString& accountId, const MyMoneyDate& startDate, const MyMoneyDate& endDate)
 {
   MyMoneyFile* file = MyMoneyFile::instance();
   MyMoneyAccount account;
@@ -261,7 +261,7 @@ void MyMoneyQifWriter::writeSplitEntry(QTextStream& s, const MyMoneySplit& split
   s << "$" << m_qifProfile.value('$', -split.value()) << endl;
 }
 
-void MyMoneyQifWriter::extractInvestmentEntries(QTextStream &s, const QString& accountId, const QDate& startDate, const QDate& endDate)
+void MyMoneyQifWriter::extractInvestmentEntries(QTextStream &s, const QString& accountId, const MyMoneyDate& startDate, const MyMoneyDate& endDate)
 {
   MyMoneyFile* file = MyMoneyFile::instance();
   QList<QString> accList = file->account(accountId).accountList();

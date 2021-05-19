@@ -174,19 +174,19 @@ protected:
 class FancyDateGroupMarker : public GroupMarker
 {
 public:
-  FancyDateGroupMarker(Register* parent, const QDate& date, const QString& txt);
+  FancyDateGroupMarker(Register* parent, const MyMoneyDate& date, const QString& txt);
 
-  virtual const QDate& sortPostDate() const {
+  virtual const MyMoneyDate& sortPostDate() const {
     return m_date;
   }
-  virtual const QDate& sortEntryDate() const {
+  virtual const MyMoneyDate& sortEntryDate() const {
     return m_date;
   }
   virtual const char* className() {
     return "FancyDateGroupMarker";
   }
 private:
-  QDate                    m_date;
+  MyMoneyDate m_date;
 };
 
 class FancyTransactionGroupMarker : public GroupMarker
@@ -200,13 +200,13 @@ public:
   virtual const QString& sortEntryOrder() const {
     return m_transactionID;
   }
-  virtual const QDate& sortPostDate() const {
+  virtual const MyMoneyDate& sortPostDate() const {
     return m_transaction.postDate();
   }
   virtual int sortSamePostDate() const {
     return 3;
   }
-  virtual const QDate& sortEntryDate() const {
+  virtual const MyMoneyDate& sortEntryDate() const {
     return m_transaction.entryDate();
   }
 
@@ -221,7 +221,7 @@ private:
 class StatementGroupMarker : public FancyDateGroupMarker
 {
 public:
-  StatementGroupMarker(Register* parent, CashFlowDirection dir, const QDate& date, const QString& txt);
+  StatementGroupMarker(Register* parent, CashFlowDirection dir, const MyMoneyDate &date, const QString& txt);
   CashFlowDirection sortType() const {
     return m_dir;
   }
@@ -235,7 +235,7 @@ private:
 class SimpleDateGroupMarker : public FancyDateGroupMarker
 {
 public:
-  SimpleDateGroupMarker(Register* parent, const QDate& date, const QString& txt);
+  SimpleDateGroupMarker(Register* parent, const MyMoneyDate &date, const QString& txt);
   void paintRegisterCell(QPainter *painter, QStyleOptionViewItemV4 &option, const QModelIndex &index);
   int rowHeightHint() const;
   virtual const char* className() {
@@ -257,7 +257,7 @@ private:
 class FiscalYearGroupMarker : public FancyDateGroupMarker
 {
 public:
-  FiscalYearGroupMarker(Register* parent, const QDate& date, const QString& txt);
+  FiscalYearGroupMarker(Register* parent, const MyMoneyDate &date, const QString& txt);
   virtual const char* className() {
     return "FiscalYearGroupMarker";
   }

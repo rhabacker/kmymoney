@@ -58,6 +58,8 @@
 // ----------------------------------------------------------------------------
 // KDE Includes
 
+#include "mymoneyutils.h"
+
 // ----------------------------------------------------------------------------
 // Project Includes
 
@@ -96,7 +98,7 @@ public:
    * The constructor.
    */
   explicit kMyMoneyDateTbl(QWidget *parent = 0,
-                           QDate date = QDate::currentDate());
+                           MyMoneyDate date = MyMoneyDate::currentDate());
   /**
    * Set the font size of the date table.
    */
@@ -104,8 +106,8 @@ public:
   /**
    * Select and display this date.
    */
-  virtual bool setDate(const QDate&);
-  virtual const QDate& getDate() const;
+  virtual bool setDate(const MyMoneyDate&);
+  virtual const MyMoneyDate& getDate() const;
 
   virtual void setType(calendarType type);
   virtual calendarType type() const {
@@ -116,7 +118,7 @@ signals:
   /**
    * The selected date changed.
    */
-  void dateChanged(QDate);
+  void dateChanged(MyMoneyDate);
   /**
    * A date has been selected by clicking on the table.
    */
@@ -125,7 +127,7 @@ signals:
   /**
     * A date is being howerd over with the mouse.
     **/
-  void hoverDate(QDate);
+  void hoverDate(MyMoneyDate);
 
 protected:
   /**
@@ -141,7 +143,7 @@ protected:
   virtual void focusInEvent(QFocusEvent *e);
   virtual void focusOutEvent(QFocusEvent *e);
 
-  virtual void drawCellContents(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index, const QDate& theDate) = 0;
+  virtual void drawCellContents(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index, const MyMoneyDate& theDate) = 0;
 
   virtual void mouseMoveEvent(QMouseEvent* e);
 
@@ -152,7 +154,7 @@ protected:
   /**
    * The currently selected date.
    */
-  QDate date;
+  MyMoneyDate date;
   /**
    * The day of the first day in the month [1..7].
    */
@@ -174,7 +176,7 @@ protected:
   int m_rowCount;
 
   ///
-  QDate m_drawDateOrig;
+  MyMoneyDate m_drawDateOrig;
 
   KMyMoneyDateTbDelegate *m_itemDelegate;
   friend class KMyMoneyDateTbDelegate;

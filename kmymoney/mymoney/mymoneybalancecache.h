@@ -20,7 +20,6 @@
 
 // ----------------------------------------------------------------------------
 // QT Includes
-#include <QDate>
 #include <QHash>
 #include <QMap>
 #include <QString>
@@ -32,10 +31,11 @@
 // Project Includes
 
 #include "mymoneymoney.h"
+#include "mymoneyutils.h"
 
 /**
- * This class associates a @ref MyMoneyMoney object with a QDate. It is
- * essentially a std::pair. The object is invalid if the QDate is invalid
+ * This class associates a @ref MyMoneyMoney object with a MyMoneyDate. It is
+ * essentially a std::pair. The object is invalid if the MyMoneyDate is invalid
  * and the balance is @ref MyMoneyMoney::minValue. A call to isValid
  * should be used in most cases before using an object.
  */
@@ -50,7 +50,7 @@ public:
    * end of the day
    * @param date the date for the object
    */
-  MyMoneyBalanceCacheItem(const MyMoneyMoney& balance, const QDate& date);
+  MyMoneyBalanceCacheItem(const MyMoneyMoney& balance, const MyMoneyDate& date);
 
   /**
    * Accessor function for the balance as a MyMoneyMoney object.
@@ -60,11 +60,11 @@ public:
   const MyMoneyMoney& balance() const;
 
   /**
-   * Accessor function for the date as a QDate object.
+   * Accessor function for the date as a MyMoneyDate object.
    *
    * @return the date in the object
    */
-  const QDate& date() const;
+  const MyMoneyDate &date() const;
 
   /**
    * Check the validity of the object
@@ -75,7 +75,7 @@ public:
 
 private:
   MyMoneyMoney m_balance;
-  QDate m_date;
+  MyMoneyDate m_date;
 };
 
 /**
@@ -102,7 +102,7 @@ public:
    * Remove all balances on or after the date associated with an account
    * from the cache
    */
-  void clear(const QString& accountId, const QDate& date);
+  void clear(const QString& accountId, const MyMoneyDate& date);
 
   /**
    * @return true if there are no balances in the cache, otherwise false
@@ -129,7 +129,7 @@ public:
    *
    * @return the balance of the account at the end of the date given
    */
-  MyMoneyBalanceCacheItem balance(const QString& accountId, const QDate& date) const;
+  MyMoneyBalanceCacheItem balance(const QString& accountId, const MyMoneyDate &date) const;
 
   /**
    * This function retrieves the balance from the cache having a date less
@@ -142,7 +142,7 @@ public:
    * @return the balance of the account at the end the nearest day on or
    * before the date provided
    */
-  MyMoneyBalanceCacheItem mostRecentBalance(const QString& accountId, const QDate& date) const;
+  MyMoneyBalanceCacheItem mostRecentBalance(const QString& accountId, const MyMoneyDate& date) const;
 
   /**
    * This function inserts the balance into the cache for the account on
@@ -153,10 +153,10 @@ public:
    * @param date the date of the balance
    * @param balance the balance of the account at the end the day
    */
-  void insert(const QString& accountId, const QDate& date, const MyMoneyMoney& balance);
+  void insert(const QString& accountId, const MyMoneyDate& date, const MyMoneyMoney& balance);
 
 private:
-  typedef QHash<QString, QMap<QDate, MyMoneyMoney> > BalanceCacheType;
+  typedef QHash<QString, QMap<MyMoneyDate, MyMoneyMoney> > BalanceCacheType;
   BalanceCacheType m_cache;
 };
 

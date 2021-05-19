@@ -119,8 +119,8 @@ KScheduledView::KScheduledView(QWidget *parent) :
   connect(m_scheduleTree, SIGNAL(itemCollapsed(QTreeWidgetItem*)),
           this, SLOT(slotListViewCollapsed(QTreeWidgetItem*)));
 
-  connect(m_calendar, SIGNAL(enterClicked(MyMoneySchedule,QDate)), this, SLOT(slotBriefEnterClicked(MyMoneySchedule,QDate)));
-  connect(m_calendar, SIGNAL(skipClicked(MyMoneySchedule,QDate)), this, SLOT(slotBriefSkipClicked(MyMoneySchedule,QDate)));
+  connect(m_calendar, SIGNAL(enterClicked(MyMoneySchedule,MyMoneyDate)), this, SLOT(slotBriefEnterClicked(MyMoneySchedule,MyMoneyDate)));
+  connect(m_calendar, SIGNAL(skipClicked(MyMoneySchedule,MyMoneyDate)), this, SLOT(slotBriefSkipClicked(MyMoneySchedule,MyMoneyDate)));
 
   connect(MyMoneyFile::instance(), SIGNAL(dataChanged()), this, SLOT(slotReloadView()));
 }
@@ -404,12 +404,12 @@ QTreeWidgetItem* KScheduledView::addScheduleItem(QTreeWidgetItem* parent, MyMone
     item->setData(3, KScheduleTreeItem::OrderRole, QVariant::fromValue(amount));
 
     // Do the real next payment like ms-money etc
-    QDate nextDueDate;
+    MyMoneyDate nextDueDate;
     if (schedule.isFinished()) {
       item->setText(4, i18nc("Finished schedule", "Finished"));
     } else {
       nextDueDate = schedule.adjustedNextDueDate();
-      item->setText(4, KGlobal::locale()->formatDate(schedule.adjustedNextDueDate(), KLocale::ShortDate));
+      item->setText(4, MyMoneyLocale::formatDate(schedule.adjustedNextDueDate(), KLocale::ShortDate));
     }
     item->setData(4, KScheduleTreeItem::OrderRole, QVariant(nextDueDate));
     item->setText(5, i18nc("Frequency of schedule", schedule.occurrenceToString().toLatin1()));
@@ -595,7 +595,7 @@ void KScheduledView::slotSelectSchedule(const QString& schedule)
   refresh(true, schedule);
 }
 
-void KScheduledView::slotBriefEnterClicked(const MyMoneySchedule& schedule, const QDate& date)
+void KScheduledView::slotBriefEnterClicked(const MyMoneySchedule& schedule, const MyMoneyDate& date)
 {
   Q_UNUSED(date);
 
@@ -603,7 +603,7 @@ void KScheduledView::slotBriefEnterClicked(const MyMoneySchedule& schedule, cons
   emit enterSchedule();
 }
 
-void KScheduledView::slotBriefSkipClicked(const MyMoneySchedule& schedule, const QDate& date)
+void KScheduledView::slotBriefSkipClicked(const MyMoneySchedule& schedule, const MyMoneyDate& date)
 {
   Q_UNUSED(date);
 

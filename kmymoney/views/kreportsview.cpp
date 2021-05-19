@@ -93,7 +93,7 @@ void KReportsView::KReportTab::Private::slotPaintRequested(QPrinter *printer)
     QFont font = painter.font();
     font.setPointSizeF(font.pointSizeF() * 0.8);
     painter.setFont(font);
-    painter.drawText(0, h, KGlobal::locale()->formatDate(QDate::currentDate(), KLocale::ShortDate));
+    painter.drawText(0, h, MyMoneyLocale::formatDate(MyMoneyDate::currentDate(), KLocale::ShortDate));
     QUrl file(kmymoney->filename());
     painter.drawText(0, printer->pageRect().height(), file.toLocalFile());
   } else if (q->m_part && q->m_part->view())
@@ -1695,7 +1695,7 @@ void KReportsView::defaultReports(QList<ReportGroup>& groups)
     list.back().setShowingRowTotals(true);
     list.back().setBudget("Any", true);
     // in case we're in January, we show the last year
-    if (QDate::currentDate().month() == 1) {
+    if (MyMoneyDate::currentDate().month() == 1) {
       list.back().setDateFilter(MyMoneyTransactionFilter::lastYear);
     }
 

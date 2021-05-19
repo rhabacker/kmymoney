@@ -20,7 +20,7 @@ email                : agander93@gmail.com
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
-#include <QtCore/QDate>
+#include <QtCore/MyMoneyDate>
 #include <QtCore/QStringList>
 #include <QObject>
 

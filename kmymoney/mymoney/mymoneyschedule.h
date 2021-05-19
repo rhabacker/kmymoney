@@ -105,10 +105,10 @@ public:
     * Please note that the optional fields are not set and the transaction
     * MUST be set before it can be used.
     *
-    * @a startDate is not used anymore and internally set to QDate()
+    * @a startDate is not used anymore and internally set to MyMoneyDate()
     */
   MyMoneySchedule(const QString& name, typeE type, occurrenceE occurrence, int occurrenceMultiplier,
-                  paymentTypeE paymentType, const QDate& startDate, const QDate& endDate, bool fixed, bool autoEnter);
+                  paymentTypeE paymentType, const MyMoneyDate &startDate, const MyMoneyDate &endDate, bool fixed, bool autoEnter);
 
   explicit MyMoneySchedule(const QDomElement& node);
 
@@ -161,9 +161,9 @@ public:
     * execution is returned. Otherwise, the next due date is
     * returned.
     *
-    * @return reference to QDate containing the start date.
+    * @return reference to MyMoneyDate containing the start date.
     */
-  const QDate& startDate() const;
+  const MyMoneyDate &startDate() const;
 
   /**
     * Simple get method that returns the schedule paymentType.
@@ -207,14 +207,14 @@ public:
     * @param endDate Date to count transactions to.
     * @return int The number of transactions remaining for the instance.
     */
-  int transactionsRemainingUntil(const QDate& endDate) const;
+  int transactionsRemainingUntil(const MyMoneyDate& endDate) const;
 
   /**
     * Simple get method that returns the schedule end date.
     *
-    * @return QDate The end date for the instance.
+    * @return MyMoneyDate The end date for the instance.
     */
-  const QDate& endDate() const {
+  const MyMoneyDate& endDate() const {
     return m_endDate;
   }
 
@@ -249,45 +249,45 @@ public:
 
   /**
     * Simple method that returns the schedules last payment. If the
-    * schedule has never been executed, QDate() will be returned.
+    * schedule has never been executed, MyMoneyDate() will be returned.
     *
-    * @return QDate The last payment for the schedule.
+    * @return MyMoneyDate The last payment for the schedule.
     */
-  const QDate& lastPayment() const {
+  const MyMoneyDate& lastPayment() const {
     return m_lastPayment;
   }
 
   /**
     * Simple method that returns the next due date for the schedule.
     *
-    * @return reference to QDate containing the next due date.
+    * @return reference to MyMoneyDate containing the next due date.
     *
     * @note The date returned can represent a value that is past
     *       a possible end of the schedule. Make sure to consider
     *       the return value of isFinished() when using the value returned.
     */
-  const QDate& nextDueDate() const;
+  const MyMoneyDate &nextDueDate() const;
 
   /**
     * This method returns the next due date adjusted
     * according to the rules specified by the schedule's weekend option.
     *
-    * @return QDate containing the adjusted next due date. If the
+    * @return MyMoneyDate containing the adjusted next due date. If the
     *         schedule is finished (@sa isFinished()) then the method
-    *         returns an invalid QDate.
+    *         returns an invalid MyMoneyDate.
     *
     * @sa weekendOption()
     * @sa adjustedDate()
     */
-  QDate adjustedNextDueDate() const;
+  MyMoneyDate adjustedNextDueDate() const;
 
   /**
     * This method adjusts returns the date adjusted according to the
     * rules specified by the schedule's weekend option.
     *
-    * @return QDate containing the adjusted date.
+    * @return MyMoneyDate containing the adjusted date.
     */
-  QDate adjustedDate(QDate date, weekendOptionE option) const;
+  MyMoneyDate adjustedDate(MyMoneyDate date, weekendOptionE option) const;
 
   /**
 
@@ -339,7 +339,7 @@ public:
     * @param date The new start date.
     * @return none
     */
-  void setStartDate(const QDate& date);
+  void setStartDate(const MyMoneyDate &date);
 
   /**
     * Simple method that sets the payment type for the schedule.
@@ -373,7 +373,7 @@ public:
     * @param date The new end date.
     * @return none
     */
-  void setEndDate(const QDate& date);
+  void setEndDate(const MyMoneyDate &date);
 
   /**
     * Simple method to set whether the schedule should be performed at
@@ -400,7 +400,7 @@ public:
     * @param date The next payment date.
     * @return none
     */
-  void setNextDueDate(const QDate& date);
+  void setNextDueDate(const MyMoneyDate& date);
 
   /**
     * Simple set method to set the schedule's last payment. If
@@ -412,7 +412,7 @@ public:
     * @param date The last payment date.
     * @return none
     */
-  void setLastPayment(const QDate& date);
+  void setLastPayment(const MyMoneyDate &date);
 
   /**
     * Set the weekendOption that determines how the schedule check code
@@ -457,12 +457,12 @@ public:
     * @param refDate The reference date from which the next payment
     *                date will be calculated (defaults to current date)
     *
-    * @return QDate The adjusted date the next payment is due. This date is
+    * @return MyMoneyDate The adjusted date the next payment is due. This date is
     *               always past @a refDate.  In case of an error or if there
-    *               are no more payments then an empty/invalid QDate() will
+    *               are no more payments then an empty/invalid MyMoneyDate() will
     *               be returned.
     */
-  QDate adjustedNextPayment(const QDate& refDate = QDate::currentDate()) const;
+  MyMoneyDate adjustedNextPayment(const MyMoneyDate &refDate = MyMoneyDate::currentDate()) const;
 
   /**
     * Calculates the date of the next payment.
@@ -470,12 +470,12 @@ public:
     * @param refDate The reference date from which the next payment
     *                date will be calculated (defaults to current date)
     *
-    * @return QDate The date the next payment is due. This date is
+    * @return MyMoneyDate The date the next payment is due. This date is
     *         always past @a refDate.  In case of an error or
-    *         if there are no more payments then an empty/invalid QDate()
+    *         if there are no more payments then an empty/invalid MyMoneyDate()
     *         will be returned.
     */
-  QDate nextPayment(const QDate& refDate = QDate::currentDate()) const;
+  MyMoneyDate nextPayment(const MyMoneyDate& refDate = MyMoneyDate::currentDate()) const;
 
   /**
     * Calculates the date of the next payment and adjusts if asked.
@@ -485,12 +485,12 @@ public:
     * @param refDate The reference date from which the next payment
     *                date will be calculated (defaults to current date)
     *
-    * @return QDate The date the next payment is due. This date is
+    * @return MyMoneyDate The date the next payment is due. This date is
     *         always past @a refDate.  In case of an error or
-    *         if there is no more payments then an empty/invalid QDate()
+    *         if there is no more payments then an empty/invalid MyMoneyDate()
     *         will be returned.
     */
-  QDate nextPaymentDate(const bool& adjust, const QDate& refDate = QDate::currentDate()) const;
+  MyMoneyDate nextPaymentDate(const bool& adjust, const MyMoneyDate &refDate = MyMoneyDate::currentDate()) const;
 
   /**
     * Calculates the dates of the payment over a certain period of time.
@@ -499,9 +499,9 @@ public:
     *
     * @param startDate The start date for the range calculations
     * @param endDate The end date for the range calculations.
-    * @return QList<QDate> The dates on which the payments are due.
+    * @return QList<MyMoneyDate> The dates on which the payments are due.
     */
-  QList<QDate> paymentDates(const QDate& startDate, const QDate& endDate) const;
+  QList<MyMoneyDate> paymentDates(const MyMoneyDate& startDate, const MyMoneyDate& endDate) const;
 
   /**
     * Returns the instances name
@@ -531,13 +531,13 @@ public:
   MyMoneyAccount transferAccount() const {
     return account(2);
   };
-  QDate dateAfter(int transactions) const;
+  MyMoneyDate dateAfter(int transactions) const;
 
   bool isOverdue() const;
   bool isFinished() const;
-  bool hasRecordedPayment(const QDate&) const;
-  void recordPayment(const QDate&);
-  QList<QDate> recordedPayments() const {
+  bool hasRecordedPayment(const MyMoneyDate &) const;
+  void recordPayment(const MyMoneyDate&);
+  QList<MyMoneyDate> recordedPayments() const {
     return m_recordedPayments;
   }
 
@@ -702,9 +702,9 @@ private:
     * in m_startDate. It is internally used when calculating
     * the payment dates over several periods.
     *
-    * @param date reference to QDate object to be checked and adjusted
+    * @param date reference to MyMoneyDate object to be checked and adjusted
     */
-  void fixDate(QDate& date) const;
+  void fixDate(MyMoneyDate& date) const;
 
   /**
     * Simple method that sets the transaction for the schedule.
@@ -738,9 +738,9 @@ private:
     * @param date The date
     * @param mult The number of half months to add.  Default is 1.
     *
-    * @return QDate date with mult half months added
+    * @return MyMoneyDate date with mult half months added
     */
-  QDate addHalfMonths(QDate date, int mult = 1) const;
+  MyMoneyDate addHalfMonths(MyMoneyDate date, int mult = 1) const;
 
   /**
     * Checks if a given date should be considered a processing day
@@ -749,7 +749,7 @@ private:
     * setup using setProcessingCalendar it returns @c true on Mon..Fri
     * and @c false on Sat..Sun.
     */
-  bool isProcessingDate(const QDate& date) const;
+  bool isProcessingDate(const MyMoneyDate& date) const;
 
 private:
   /// Its occurrence
@@ -762,7 +762,7 @@ private:
   typeE m_type;
 
   /// The date the schedule commences
-  QDate m_startDate;
+  MyMoneyDate m_startDate;
 
   /// The payment type
   paymentTypeE m_paymentType;
@@ -774,7 +774,7 @@ private:
   MyMoneyTransaction m_transaction;
 
   /// The last transaction date if the schedule does end at a fixed date
-  QDate m_endDate;
+  MyMoneyDate m_endDate;
 
   /// the last day in month flag
   bool m_lastDayInMonth;
@@ -783,13 +783,13 @@ private:
   bool m_autoEnter;
 
   /// Internal date used for calculations
-  QDate m_lastPayment;
+  MyMoneyDate m_lastPayment;
 
   /// The name
   QString m_name;
 
   /// The recorded payments
-  QList<QDate> m_recordedPayments;
+  QList<MyMoneyDate> m_recordedPayments;
 
   /// The weekend option
   weekendOptionE m_weekendOption;

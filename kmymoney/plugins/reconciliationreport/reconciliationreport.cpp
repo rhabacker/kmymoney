@@ -51,7 +51,7 @@ KMMReconciliationReportPlugin::KMMReconciliationReportPlugin(QObject *parent, co
 
 }
 
-void KMMReconciliationReportPlugin::slotGenerateReconciliationReport(const MyMoneyAccount& account, const QDate& date, const MyMoneyMoney& startingBalance, const MyMoneyMoney& endingBalance, const QList<QPair<MyMoneyTransaction, MyMoneySplit> >& transactionList)
+void KMMReconciliationReportPlugin::slotGenerateReconciliationReport(const MyMoneyAccount& account, const MyMoneyDate& date, const MyMoneyMoney& startingBalance, const MyMoneyMoney& endingBalance, const QList<QPair<MyMoneyTransaction, MyMoneySplit> >& transactionList)
 {
   MyMoneyFile* file = MyMoneyFile::instance();
   MyMoneySecurity currency = file->currency(account.currencyId());
@@ -113,7 +113,7 @@ void KMMReconciliationReportPlugin::slotGenerateReconciliationReport(const MyMon
   QString reportName = i18n("Reconciliation report of account %1", account.name());
   QString report = QString("<h2 class=\"report\">%1</h2>\n").arg(reportName);
   report += QString("<div class=\"subtitle\">");
-  report += QString("%1").arg(KGlobal::locale()->formatDate(date, KLocale::ShortDate));
+  report += QString("%1").arg(MyMoneyLocale::formatDate(date, KLocale::ShortDate));
   report += QString("</div>\n");
   report += QString("<div class=\"gap\">&nbsp;</div>\n");
   report += QString("<div class=\"subtitle\">");
@@ -179,7 +179,7 @@ void KMMReconciliationReportPlugin::slotGenerateReconciliationReport(const MyMon
   report += "</td></tr>";
   // row 8
   report += "<tr class=\"row-even\"><td class=\"left\">";
-  report += i18n("Register balance as of %1", KGlobal::locale()->formatDate(date, KLocale::ShortDate));
+  report += i18n("Register balance as of %1", MyMoneyLocale::formatDate(date, KLocale::ShortDate));
   report += "</td><td>";
   report += MyMoneyUtils::formatMoney(MyMoneyFile::instance()->balance(account.id(), date), currency);
   report += "</td></tr>";
@@ -189,7 +189,7 @@ void KMMReconciliationReportPlugin::slotGenerateReconciliationReport(const MyMon
   MyMoneyTransactionFilter filter(account.id());
   filter.addState(MyMoneyTransactionFilter::cleared);
   filter.addState(MyMoneyTransactionFilter::notReconciled);
-  filter.setDateFilter(date.addDays(1), QDate());
+  filter.setDateFilter(date.addDays(1), MyMoneyDate());
   filter.setConsiderCategory(false);
   filter.setReportAllSplits(true);
   file->transactionList(afterTransactionList, filter);
@@ -212,16 +212,16 @@ void KMMReconciliationReportPlugin::slotGenerateReconciliationReport(const MyMon
 
   // row 9
   report += "<tr class=\"row-odd\"><td class=\"left\">";
-  report += i18np("%1 payment after %2", "%1 payments after %2", afterPayments, KGlobal::locale()->formatDate(date, KLocale::ShortDate));
+  report += i18np("%1 payment after %2", "%1 payments after %2", afterPayments, MyMoneyLocale::formatDate(date, KLocale::ShortDate));
   report += "</td><td>";
   report += MyMoneyUtils::formatMoney(afterPaymentAmount, currency);
   report += "</td></tr>";
   // row 10
   report += "<tr class=\"row-even\"><td class=\"left\">";
   if (account.accountType() == MyMoneyAccount::CreditCard)
-    report += i18np("%1 charge after %2", "%1 charges after %2", afterDeposits, KGlobal::locale()->formatDate(date, KLocale::ShortDate));
+    report += i18np("%1 charge after %2", "%1 charges after %2", afterDeposits, MyMoneyLocale::formatDate(date, KLocale::ShortDate));
   else
-    report += i18np("%1 deposit after %2", "%1 deposits after %2", afterDeposits, KGlobal::locale()->formatDate(date, KLocale::ShortDate));
+    report += i18np("%1 deposit after %2", "%1 deposits after %2", afterDeposits, MyMoneyLocale::formatDate(date, KLocale::ShortDate));
   report += "</td><td>";
   report += MyMoneyUtils::formatMoney(afterDepositAmount, currency);
   report += "</td></tr>";
@@ -263,7 +263,7 @@ void KMMReconciliationReportPlugin::slotGenerateReconciliationReport(const MyMon
       }
 
       detailsReport += QString("<tr class=\"%1\"><td>").arg((index++ % 2 == 1) ? "row-odd" : "row-even");
-      detailsReport += QString("%1").arg(KGlobal::locale()->formatDate((*it).first.entryDate(), KLocale::ShortDate));
+      detailsReport += QString("%1").arg(MyMoneyLocale::formatDate((*it).first.entryDate(), KLocale::ShortDate));
       detailsReport += "</td><td>";
       detailsReport += QString("%1").arg((*it).second.number());
       detailsReport += "</td><td>";
@@ -300,7 +300,7 @@ void KMMReconciliationReportPlugin::slotGenerateReconciliationReport(const MyMon
       }
 
       detailsReport += QString("<tr class=\"%1\"><td>").arg((index++ % 2 == 1) ? "row-odd" : "row-even");
-      detailsReport += QString("%1").arg(KGlobal::locale()->formatDate((*it).first.entryDate(), KLocale::ShortDate));
+      detailsReport += QString("%1").arg(MyMoneyLocale::formatDate((*it).first.entryDate(), KLocale::ShortDate));
       detailsReport += "</td><td>";
       detailsReport += QString("%1").arg((*it).second.number());
       detailsReport += "</td><td>";
@@ -333,13 +333,13 @@ void KMMReconciliationReportPlugin::slotGenerateReconciliationReport(const MyMon
 void KMMReconciliationReportPlugin::slotPlug(KPluginInfo* info)
 {
   if (info->pluginName() == objectName()) {
-    connect(viewInterface(), SIGNAL(accountReconciled(MyMoneyAccount,QDate,MyMoneyMoney,MyMoneyMoney,QList<QPair<MyMoneyTransaction,MyMoneySplit> >)), this, SLOT(slotGenerateReconciliationReport(MyMoneyAccount,QDate,MyMoneyMoney,MyMoneyMoney,QList<QPair<MyMoneyTransaction,MyMoneySplit> >)));
+    connect(viewInterface(), SIGNAL(accountReconciled(MyMoneyAccount,MyMoneyDate,MyMoneyMoney,MyMoneyMoney,QList<QPair<MyMoneyTransaction,MyMoneySplit> >)), this, SLOT(slotGenerateReconciliationReport(MyMoneyAccount,MyMoneyDate,MyMoneyMoney,MyMoneyMoney,QList<QPair<MyMoneyTransaction,MyMoneySplit> >)));
   }
 }
 
 void KMMReconciliationReportPlugin::slotUnplug(KPluginInfo* info)
 {
   if (info->pluginName() == objectName()) {
-    disconnect(viewInterface(), SIGNAL(accountReconciled(MyMoneyAccount,QDate,MyMoneyMoney,MyMoneyMoney,QList<QPair<MyMoneyTransaction,MyMoneySplit> >)), this, SLOT(slotGenerateReconciliationReport(MyMoneyAccount,QDate,MyMoneyMoney,MyMoneyMoney,QList<QPair<MyMoneyTransaction,MyMoneySplit> >)));
+    disconnect(viewInterface(), SIGNAL(accountReconciled(MyMoneyAccount,MyMoneyDate,MyMoneyMoney,MyMoneyMoney,QList<QPair<MyMoneyTransaction,MyMoneySplit> >)), this, SLOT(slotGenerateReconciliationReport(MyMoneyAccount,MyMoneyDate,MyMoneyMoney,MyMoneyMoney,QList<QPair<MyMoneyTransaction,MyMoneySplit> >)));
   }
 }

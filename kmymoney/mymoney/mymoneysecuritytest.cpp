@@ -55,7 +55,7 @@ void MyMoneySecurityTest::testCopyConstructor()
 
 void MyMoneySecurityTest::testNonemptyConstructor()
 {
-  QDate date(2004, 4, 1);
+  MyMoneyDate date(2004, 4, 1);
   MyMoneyMoney val("1234/100");
 
   m->setName("name");

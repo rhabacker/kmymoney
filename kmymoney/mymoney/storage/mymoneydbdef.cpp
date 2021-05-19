@@ -20,7 +20,6 @@
 
 // ----------------------------------------------------------------------------
 // QT Includes
-#include <QDate>
 #include <QtDebug>
 
 // ----------------------------------------------------------------------------
@@ -30,6 +29,7 @@
 // Project Includes
 #include "mymoneydbdriver.h"
 #include "mymoneyfile.h"
+#include "mymoneyutils.h"
 
 //***************** THE CURRENT VERSION OF THE DATABASE LAYOUT ****************
 unsigned int MyMoneyDbDef::m_currentVersion = 11;
@@ -499,11 +499,11 @@ const QString MyMoneyDbDef::generateSQL(const KSharedPtr<MyMoneyDbDriver>& drive
                  (MyMoneyFile::instance()->storage()->currentFixVersion());
     if ((*fit)->name() == "created")
       replace = QLatin1Char('\'')
-                + QDate::currentDate().toString(Qt::ISODate)
+                + MyMoneyDate::currentDate().toString(Qt::ISODate)
                 + QLatin1Char('\'');
     if ((*fit)->name() == "lastModified")
       replace = QLatin1Char('\'')
-                + QDate::currentDate().toString(Qt::ISODate)
+                + MyMoneyDate::currentDate().toString(Qt::ISODate)
                 + QLatin1Char('\'');
     if ((*fit)->name() == "updateInProgress")
       replace = enclose("N");

@@ -21,7 +21,7 @@
 // ----------------------------------------------------------------------------
 // QT Includes
 
-class QDate;
+class MyMoneyDate;
 
 // ----------------------------------------------------------------------------
 // KDE Headers
@@ -45,7 +45,7 @@ public:
     * returns if a given day is used by an institution to process
     * transactions or not
     */
-  virtual bool isProcessingDate(const QDate& date) const = 0;
+  virtual bool isProcessingDate(const MyMoneyDate& date) const = 0;
 };
 
 #endif

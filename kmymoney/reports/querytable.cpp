@@ -218,7 +218,7 @@ void QueryTable::init()
  * @param date date to create the string from
  * @return string with formatted date
  */
-QString QueryTable::toDateString(const QDate &date)
+QString QueryTable::toDateString(const MyMoneyDate &date)
 {
     return date.toString(Qt::DefaultLocaleLongDate);
 }
@@ -273,7 +273,7 @@ void QueryTable::constructTransactionTable()
   for (QList<MyMoneyTransaction>::const_iterator it_transaction = transactions.constBegin(); it_transaction != transactions.constEnd(); ++it_transaction) {
 
     TableRow qA, qS;
-    QDate pd;
+    MyMoneyDate pd;
     QList<QString> tagIdListCache;
 
     qA["id"] = qS["id"] = (* it_transaction).id();
@@ -282,9 +282,9 @@ void QueryTable::constructTransactionTable()
     qA["commodity"] = qS["commodity"] = (* it_transaction).commodity();
 
     pd = (* it_transaction).postDate();
-    qA["monthsort"] = qS["monthsort"] = i18n("Month of %1", QDate(pd.year(), pd.month(), 1).toString(Qt::ISODate));
+    qA["monthsort"] = qS["monthsort"] = i18n("Month of %1", MyMoneyDate(pd.year(), pd.month(), 1).toString(Qt::ISODate));
     qA["weeksort"] = qS["weeksort"] = i18n("Week of %1", pd.addDays(1 - pd.dayOfWeek()).toString(Qt::ISODate));
-    qA["month"] = qS["month"] = i18n("Month of %1", toDateString(QDate(pd.year(), pd.month(), 1)));
+    qA["month"] = qS["month"] = i18n("Month of %1", toDateString(MyMoneyDate(pd.year(), pd.month(), 1)));
     qA["week"] = qS["week"] = i18n("Week of %1", toDateString(pd.addDays(1 - pd.dayOfWeek())));
 
     qA["currency"] = qS["currency"] = "";
@@ -673,7 +673,7 @@ void QueryTable::constructTransactionTable()
       return;
   }
 
-  QDate startDate, endDate;
+  MyMoneyDate startDate, endDate;
 
   report.validDateRange(startDate, endDate);
   QString strStartDate = startDate.toString(Qt::ISODate);
@@ -770,8 +770,8 @@ void QueryTable::constructPerformanceRow(const ReportAccount& account, TableRow&
   //    Account, Value on <Opening>, Buys, Sells, Income, Value on <Closing>, Return%
 
   MyMoneyReport report = m_config;
-  QDate startingDate;
-  QDate endingDate;
+  MyMoneyDate startingDate;
+  MyMoneyDate endingDate;
   MyMoneyMoney price;
   report.validDateRange(startingDate, endingDate);
   startingDate = startingDate.addDays(-1);
@@ -788,7 +788,7 @@ void QueryTable::constructPerformanceRow(const ReportAccount& account, TableRow&
       && account.deepCurrencyPrice(startingDate) == MyMoneyMoney::ONE) {
     MyMoneyTransactionFilter filter;
     //get the transactions for the time before the report
-    filter.setDateFilter(QDate(), startingDate);
+    filter.setDateFilter(MyMoneyDate(), startingDate);
     filter.addAccount(account.id());
     filter.setReportAllSplits(true);
 
@@ -1050,7 +1050,7 @@ void QueryTable::constructSplitsTable()
   for (QList<MyMoneyTransaction>::const_iterator it_transaction = transactions.constBegin(); it_transaction != transactions.constEnd(); ++it_transaction) {
 
     TableRow qA, qS;
-    QDate pd;
+    MyMoneyDate pd;
 
     qA["id"] = qS["id"] = (* it_transaction).id();
     qA["entrydate"] = qS["entrydate"] = (* it_transaction).entryDate().toString(Qt::ISODate);
@@ -1058,7 +1058,7 @@ void QueryTable::constructSplitsTable()
     qA["commodity"] = qS["commodity"] = (* it_transaction).commodity();
 
     pd = (* it_transaction).postDate();
-    qA["month"] = qS["month"] = i18n("Month of %1", QDate(pd.year(), pd.month(), 1).toString(Qt::ISODate));
+    qA["month"] = qS["month"] = i18n("Month of %1", MyMoneyDate(pd.year(), pd.month(), 1).toString(Qt::ISODate));
     qA["week"] = qS["week"] = i18n("Week of %1", pd.addDays(1 - pd.dayOfWeek()).toString(Qt::ISODate));
 
     qA["currency"] = qS["currency"] = "";
@@ -1300,7 +1300,7 @@ void QueryTable::constructSplitsTable()
       return;
   }
 
-  QDate startDate, endDate;
+  MyMoneyDate startDate, endDate;
 
   report.validDateRange(startDate, endDate);
   QString strStartDate = startDate.toString(Qt::ISODate);

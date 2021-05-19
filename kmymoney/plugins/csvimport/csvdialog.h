@@ -77,7 +77,7 @@ public:
 
   struct qifData {
     QString number;
-    QDate   date;
+    MyMoneyDate   date;
     QString payee;
     QString amount;
     QString memo;

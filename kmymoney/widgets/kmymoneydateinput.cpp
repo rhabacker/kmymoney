@@ -17,6 +17,7 @@
 
 #include "kmymoneydateinput.h"
 #include "kmymoneysettings.h"
+#include "kmymoneyutils.h"
 
 // ----------------------------------------------------------------------------
 // QT Includes
@@ -55,7 +56,7 @@
 namespace
 {
 const int DATE_POPUP_TIMEOUT = 1500;
-const QDate INVALID_DATE = QDate(1800, 1, 1);
+const MyMoneyDate INVALID_DATE = MyMoneyDate(1800, 1, 1);
 }
 
 void KMyMoney::OldDateEdit::keyPressEvent(QKeyEvent* k)
@@ -65,7 +66,7 @@ void KMyMoney::OldDateEdit::keyPressEvent(QKeyEvent* k)
     // or the whole text is selected and a digit character was entered
     // (the same meaning as clearing the date) - in this case set the date
     // to the current date and let the editor do the actual work
-    setDate(QDate::currentDate());
+    setDateTime(MyMoneyDate::currentDate());
     setSelectedSection(m_initialSection); // start as when focused in if the date was cleared
   }
   QDateEdit::keyPressEvent(k);
@@ -85,7 +86,7 @@ bool KMyMoney::OldDateEdit::event(QEvent* e)
 
   kMyMoneyDateInput* p = dynamic_cast<kMyMoneyDateInput*>(parentWidget());
   if (e->type() == QEvent::FocusOut && p) {
-    QDate d = p->date();
+    MyMoneyDate d = p->date();
     rc = QDateEdit::event(e);
     if (d.isValid())
       d = p->date();
@@ -105,8 +106,8 @@ bool KMyMoney::OldDateEdit::focusNextPrevChild(bool next)
 struct kMyMoneyDateInput::Private {
   KMyMoney::OldDateEdit *m_dateEdit;
   KDatePicker *m_datePicker;
-  QDate m_date;
-  QDate m_prevDate;
+  MyMoneyDate m_date;
+  MyMoneyDate m_prevDate;
   Qt::AlignmentFlag m_qtalignment;
   KVBox *m_dateFrame;
   KPushButton *m_dateButton;
@@ -117,7 +118,7 @@ kMyMoneyDateInput::kMyMoneyDateInput(QWidget *parent, Qt::AlignmentFlag flags)
     : KHBox(parent), d(new Private)
 {
   d->m_qtalignment = flags;
-  d->m_date = QDate::currentDate();
+  d->m_date = MyMoneyDate::currentDate();
 
   d->m_dateEdit = new KMyMoney::OldDateEdit(d->m_date, this);
   setFocusProxy(d->m_dateEdit);
@@ -130,7 +131,7 @@ kMyMoneyDateInput::kMyMoneyDateInput(QWidget *parent, Qt::AlignmentFlag flags)
   d->m_datePopup = new KPassivePopup(d->m_dateEdit);
   d->m_datePopup->setObjectName("datePopup");
   d->m_datePopup->setTimeout(DATE_POPUP_TIMEOUT);
-  d->m_datePopup->setView(new QLabel(KGlobal::locale()->formatDate(d->m_date), d->m_datePopup));
+  d->m_datePopup->setView(new QLabel(MyMoneyLocale::formatDate(d->m_date), d->m_datePopup));
 
   d->m_dateFrame = new KVBox(this);
   d->m_dateFrame->setWindowFlags(Qt::Popup);
@@ -198,10 +199,10 @@ kMyMoneyDateInput::kMyMoneyDateInput(QWidget *parent, Qt::AlignmentFlag flags)
   setStretchFactor(d->m_dateEdit, 3);
 
   connect(d->m_dateButton, SIGNAL(clicked()), SLOT(toggleDatePicker()));
-  connect(d->m_dateEdit, SIGNAL(dateChanged(QDate)), this, SLOT(slotDateChosenRef(QDate)));
-  connect(d->m_datePicker, SIGNAL(dateSelected(QDate)), this, SLOT(slotDateChosen(QDate)));
-  connect(d->m_datePicker, SIGNAL(dateEntered(QDate)), this, SLOT(slotDateChosen(QDate)));
-  connect(d->m_datePicker, SIGNAL(dateSelected(QDate)), d->m_dateFrame, SLOT(hide()));
+  connect(d->m_dateEdit, SIGNAL(dateChanged(MyMoneyDate)), this, SLOT(slotDateChosenRef(MyMoneyDate)));
+  connect(d->m_datePicker, SIGNAL(dateSelected(MyMoneyDate)), this, SLOT(slotDateChosen(MyMoneyDate)));
+  connect(d->m_datePicker, SIGNAL(dateEntered(MyMoneyDate)), this, SLOT(slotDateChosen(MyMoneyDate)));
+  connect(d->m_datePicker, SIGNAL(dateSelected(MyMoneyDate)), d->m_dateFrame, SLOT(hide()));
 }
 
 void kMyMoneyDateInput::markAsBadDate(bool bad, const QColor& color)
@@ -275,7 +276,7 @@ void kMyMoneyDateInput::toggleDatePicker()
     if (d->m_date.isValid() && d->m_date != INVALID_DATE) {
       d->m_datePicker->setDate(d->m_date);
     } else {
-      d->m_datePicker->setDate(QDate::currentDate());
+      d->m_datePicker->setDateTime(MyMoneyDate::currentDate());
     }
     d->m_dateFrame->show();
   }
@@ -305,7 +306,7 @@ void kMyMoneyDateInput::keyPressEvent(QKeyEvent * k)
 
     default:
       if (today.contains(QKeySequence(k->key())) || k->key() == Qt::Key_T) {
-        slotDateChosen(QDate::currentDate());
+        slotDateChosen(MyMoneyDate::currentDate());
         k->accept();
       }
       break;
@@ -340,7 +341,7 @@ bool kMyMoneyDateInput::eventFilter(QObject *, QEvent *e)
   return false; // Don't filter the event
 }
 
-void kMyMoneyDateInput::slotDateChosenRef(const QDate& date)
+void kMyMoneyDateInput::slotDateChosenRef(const MyMoneyDate &date)
 {
   if (date.isValid()) {
     emit dateChanged(date);
@@ -348,7 +349,7 @@ void kMyMoneyDateInput::slotDateChosenRef(const QDate& date)
 
 #ifndef Q_OS_MAC
     QLabel *lbl = static_cast<QLabel*>(d->m_datePopup->view());
-    lbl->setText(KGlobal::locale()->formatDate(date));
+    lbl->setText(MyMoneyLocale::formatDate(date));
     lbl->adjustSize();
     if (d->m_datePopup->isVisible() || hasFocus())
       d->m_datePopup->show(mapToGlobal(QPoint(0, height()))); // Repaint
@@ -356,7 +357,7 @@ void kMyMoneyDateInput::slotDateChosenRef(const QDate& date)
   }
 }
 
-void kMyMoneyDateInput::slotDateChosen(QDate date)
+void kMyMoneyDateInput::slotDateChosen(MyMoneyDate date)
 {
   if (date.isValid()) {
     // the next line implies a call to slotDateChosenRef() above
@@ -366,20 +367,20 @@ void kMyMoneyDateInput::slotDateChosen(QDate date)
   }
 }
 
-QDate kMyMoneyDateInput::date() const
+MyMoneyDate kMyMoneyDateInput::date() const
 {
-  QDate rc = d->m_dateEdit->date();
+  MyMoneyDate rc = d->m_dateEdit->date();
   if (rc == INVALID_DATE)
-    rc = QDate();
+    rc = MyMoneyDate();
   return rc;
 }
 
-void kMyMoneyDateInput::setDate(QDate date)
+void kMyMoneyDateInput::setDate(MyMoneyDate date)
 {
   slotDateChosen(date);
 }
 
-void kMyMoneyDateInput::loadDate(const QDate& date)
+void kMyMoneyDateInput::loadDate(const MyMoneyDate& date)
 {
   d->m_date = d->m_prevDate = date;
 
@@ -393,7 +394,7 @@ void kMyMoneyDateInput::resetDate()
   setDate(d->m_prevDate);
 }
 
-void kMyMoneyDateInput::setMaximumDate(const QDate& max)
+void kMyMoneyDateInput::setMaximumDate(const MyMoneyDate& max)
 {
   d->m_dateEdit->setMaximumDate(max);
 }
@@ -406,7 +407,7 @@ QWidget* kMyMoneyDateInput::focusWidget() const
   return w;
 }
 /*
-void kMyMoneyDateInput::setRange(const QDate & min, const QDate & max)
+void kMyMoneyDateInput::setRange(const MyMoneyDate & min, const MyMoneyDate & max)
 {
   d->m_dateEdit->setDateRange(min, max);
 }

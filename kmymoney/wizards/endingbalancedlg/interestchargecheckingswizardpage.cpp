@@ -35,8 +35,8 @@ InterestChargeCheckingsWizardPage::InterestChargeCheckingsWizardPage(QWidget *pa
 
   // Register the fields with the QWizard and connect the
   // appropriate signals to update the "Next" button correctly
-  registerField("interestDateEdit", m_interestDateEdit, "date", SIGNAL(dateChanged(QDate)));
-  registerField("chargesDateEdit", m_chargesDateEdit, "date", SIGNAL(dateChanged(QDate)));
+  registerField("interestDateEdit", m_interestDateEdit, "date", SIGNAL(dateChanged(MyMoneyDate)));
+  registerField("chargesDateEdit", m_chargesDateEdit, "date", SIGNAL(dateChanged(MyMoneyDate)));
 
   registerField("interestEdit", m_interestEdit, "value", SIGNAL(textChanged()));
   registerField("interestEditValid", m_interestEdit, "valid", SIGNAL(textChanged()));

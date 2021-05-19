@@ -52,7 +52,7 @@ public:
   /**
     * returns the date of the first day in the current fiscal year
     */
-  static QDate firstFiscalDate();
+  static MyMoneyDate firstFiscalDate();
 
   /**
     * Construct a MyMoneyForecast object setup with all KMyMoneySettings

@@ -105,7 +105,7 @@ public:
   MousePressFilter*    m_mousePressFilter;
   KMyMoneyRegister::RegisterSearchLineWidget* m_registerSearchLine;
   QString              m_reconciliationAccount;
-  QDate                m_reconciliationDate;
+  MyMoneyDate                m_reconciliationDate;
   MyMoneyMoney         m_endingBalance;
   int                  m_precision;
   bool                 m_recursion;
@@ -195,7 +195,7 @@ KGlobalLedgerView::Private::Private() :
 {
 }
 
-QDate KGlobalLedgerView::m_lastPostDate;
+MyMoneyDate KGlobalLedgerView::m_lastPostDate;
 
 KGlobalLedgerView::KGlobalLedgerView(QWidget *parent, const char *name)
     : KMyMoneyViewBase(parent, name, i18n("Ledgers")),
@@ -456,7 +456,7 @@ void KGlobalLedgerView::loadView()
     // and update the sort order
     QString sortOrder;
     QString key;
-    QDate reconciliationDate = d->m_reconciliationDate;
+    MyMoneyDate reconciliationDate = d->m_reconciliationDate;
 
     MyMoneyTransactionFilter filter(m_account.id());
     // if it's an investment account, we also take care of
@@ -470,7 +470,7 @@ void KGlobalLedgerView::loadView()
       filter.addState(MyMoneyTransactionFilter::notReconciled);
       filter.addState(MyMoneyTransactionFilter::cleared);
     } else {
-      filter.setDateFilter(KMyMoneyGlobalSettings::startDate().date(), QDate());
+      filter.setDateFilter(KMyMoneyGlobalSettings::startDate().date(), MyMoneyDate());
       key = "kmm-sort-std";
       sortOrder = KMyMoneyGlobalSettings::sortNormalView();
       if (KMyMoneyGlobalSettings::hideReconciledTransactions()
@@ -516,7 +516,7 @@ void KGlobalLedgerView::loadView()
       // show scheduled transactions which have a scheduled postdate
       // within the next 'period' days. In reconciliation mode, the
       // period starts on the statement date.
-      QDate endDate = QDate::currentDate().addDays(period);
+      MyMoneyDate endDate = MyMoneyDate::currentDate().addDays(period);
       if (isReconciliationAccount())
         endDate = reconciliationDate.addDays(period);
       QList<MyMoneySchedule> scheduleList = MyMoneyFile::instance()->scheduleList(m_account.id());
@@ -532,7 +532,7 @@ void KGlobalLedgerView::loadView()
           // certainly be posted in the past. So we take today's date
           // as the alternative
           if (s.isOverdue() && !KMyMoneyGlobalSettings::showPlannedScheduleDates()) {
-            t.setPostDate(s.adjustedDate(QDate::currentDate(), s.weekendOption()));
+            t.setPostDate(s.adjustedDate(MyMoneyDate::currentDate(), s.weekendOption()));
           } else {
             t.setPostDate(s.adjustedNextDueDate());
           }
@@ -545,7 +545,7 @@ void KGlobalLedgerView::loadView()
           }
           // keep track of this payment locally (not in the engine)
           if (s.isOverdue() && !KMyMoneyGlobalSettings::showPlannedScheduleDates()) {
-            s.setLastPayment(QDate::currentDate());
+            s.setLastPayment(MyMoneyDate::currentDate());
           } else {
             s.setLastPayment(s.nextDueDate());
           }
@@ -555,7 +555,7 @@ void KGlobalLedgerView::loadView()
             break;
 
           // for all others, we check if the next payment date is still 'in range'
-          QDate nextDueDate = s.nextPayment(s.nextDueDate());
+          MyMoneyDate nextDueDate = s.nextPayment(s.nextDueDate());
           if (nextDueDate.isValid()) {
             s.setNextDueDate(nextDueDate);
           } else {
@@ -573,7 +573,7 @@ void KGlobalLedgerView::loadView()
     m_register->sortItems();
 
     // remove trailing and adjacent markers
-    m_register->removeUnwantedGroupMarkers();
+    //m_register->removeUnwantedGroupMarkers();
 
     // add special markers for reconciliation now so that they do not get
     // removed by m_register->removeUnwantedGroupMarkers(). Needs resorting
@@ -661,7 +661,7 @@ void KGlobalLedgerView::loadView()
       p = p->prevItem();
     }
 
-    bool showBalance = m_register->primarySortKey() == KMyMoneyRegister::PostDateSort;
+    bool showBalance = true; //m_register->primarySortKey() == KMyMoneyRegister::PostDateSort;
     bool ascending = m_register->primarySortKeyDirection() == KMyMoneyRegister::AscendingOrder;
     p = ascending ? m_register->lastItem() : m_register->firstItem();
     while (p) {
@@ -698,7 +698,7 @@ void KGlobalLedgerView::loadView()
             }
           }
 
-          if (t->transaction().postDate() > QDate::currentDate()) {
+          if (t->transaction().postDate() > MyMoneyDate::currentDate()) {
             tracer.printf("Reducing actual balance by %s because %s/%s(%s) is in the future", qPrintable((split.shares() * factor).formatMoney("", 2)), qPrintable(t->transaction().id()), qPrintable(split.id()), qPrintable(t->transaction().postDate().toString(Qt::ISODate)));
             actBalance[split.accountId()] -= split.shares() * factor;
           }
@@ -794,10 +794,10 @@ void KGlobalLedgerView::updateSummaryLine(const QMap<QString, MyMoneyMoney>& act
     }
   } else {
     // update summary line in normal mode
-    QDate reconcileDate = m_account.lastReconciliationDate();
+    MyMoneyDate reconcileDate = m_account.lastReconciliationDate();
 
     if (reconcileDate.isValid()) {
-      m_leftSummaryLabel->setText(i18n("Last reconciled: %1", KGlobal::locale()->formatDate(reconcileDate, KLocale::ShortDate)));
+      m_leftSummaryLabel->setText(i18n("Last reconciled: %1", MyMoneyLocale::formatDate(reconcileDate, KLocale::ShortDate)));
     } else {
       m_leftSummaryLabel->setText(i18n("Never reconciled"));
     }
@@ -993,7 +993,7 @@ void KGlobalLedgerView::slotSelectAllTransactions()
   emit transactionsSelected(list);
 }
 
-void KGlobalLedgerView::slotSetReconcileAccount(const MyMoneyAccount& acc, const QDate& reconciliationDate, const MyMoneyMoney& endingBalance)
+void KGlobalLedgerView::slotSetReconcileAccount(const MyMoneyAccount& acc, const MyMoneyDate& reconciliationDate, const MyMoneyMoney& endingBalance)
 {
   if (d->m_reconciliationAccount != acc.id()) {
     // make sure the account is selected
@@ -1239,7 +1239,7 @@ TransactionEditor* KGlobalLedgerView::startEdit(const KMyMoneyRegister::Selected
       connect(editor, SIGNAL(createCategory(MyMoneyAccount&,MyMoneyAccount)), kmymoney, SLOT(slotCategoryNew(MyMoneyAccount&,MyMoneyAccount)));
       connect(editor, SIGNAL(createSecurity(MyMoneyAccount&,MyMoneyAccount)), kmymoney, SLOT(slotInvestmentNew(MyMoneyAccount&,MyMoneyAccount)));
       connect(editor, SIGNAL(assignNumber()), kmymoney, SLOT(slotTransactionAssignNumber()));
-      connect(editor, SIGNAL(lastPostDateUsed(QDate)), this, SLOT(slotKeepPostDate(QDate)));
+      connect(editor, SIGNAL(lastPostDateUsed(MyMoneyDate)), this, SLOT(slotKeepPostDate(MyMoneyDate)));
 
       // create the widgets, place them in the parent and load them with data
       // setup tab order
@@ -1456,7 +1456,7 @@ void KGlobalLedgerView::slotToggleTransactionMark(KMyMoneyRegister::Transaction*
   }
 }
 
-void KGlobalLedgerView::slotKeepPostDate(const QDate& date)
+void KGlobalLedgerView::slotKeepPostDate(const MyMoneyDate& date)
 {
   m_lastPostDate = date;
 }

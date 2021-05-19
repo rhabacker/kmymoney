@@ -111,11 +111,11 @@ public:
   /**
     * This method returns the date of the payout transaction.
     * If the checkbox that allows to skip the creation of
-    * this transaction is checked, this method returns QDate()
+    * this transaction is checked, this method returns MyMoneyDate()
     *
-    * @return selected date or invalid QDate if checkbox is selected.
+    * @return selected date or invalid MyMoneyDate if checkbox is selected.
     */
-  QDate initialPaymentDate() const;
+  MyMoneyDate initialPaymentDate() const;
 
   bool validateCurrentPage();
 

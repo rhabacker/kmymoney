@@ -121,8 +121,8 @@ void CsvExportDlg::readConfig()
   ui->m_qlineeditFile->setText(conf.readEntry("CsvExportDlg_LastFile"));
   ui->m_radioButtonAccount->setChecked(conf.readEntry("CsvExportDlg_AccountOpt", true));
   ui->m_radioButtonCategories->setChecked(conf.readEntry("CsvExportDlg_CatOpt", true));
-  ui->m_kmymoneydateStart->setDate(conf.readEntry("CsvExportDlg_StartDate", QDate()));
-  ui->m_kmymoneydateEnd->setDate(conf.readEntry("CsvExportDlg_EndDate", QDate()));
+  ui->m_kmymoneydateStart->setDate(conf.readEntry("CsvExportDlg_StartDate", MyMoneyDate()));
+  ui->m_kmymoneydateEnd->setDate(conf.readEntry("CsvExportDlg_EndDate", MyMoneyDate()));
 }
 
 void CsvExportDlg::writeConfig()
@@ -151,8 +151,8 @@ void CsvExportDlg::checkData(const QString& accountName)
     strFile += QLatin1String(".csv");
     ui->m_qlineeditFile->setText(strFile);
   }
-  QDate earliestDate(QDate(2500, 01, 01));
-  QDate latestDate(QDate(1900, 01, 01));
+  MyMoneyDate earliestDate(MyMoneyDate(2500, 01, 01));
+  MyMoneyDate latestDate(MyMoneyDate(1900, 01, 01));
   QList<MyMoneyTransaction> listTrans;
   QList<MyMoneyTransaction>::Iterator itTrans;
   MyMoneyAccount account;

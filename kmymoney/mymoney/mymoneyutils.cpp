@@ -140,7 +140,7 @@ void MyMoneyTracer::off()
   m_onoff = 0;
 }
 
-QString dateToString(const QDate& date)
+QString dateToString(const MyMoneyDate& date)
 {
   if (!date.isNull() && date.isValid())
     return date.toString(Qt::ISODate);
@@ -148,14 +148,14 @@ QString dateToString(const QDate& date)
   return QString();
 }
 
-QDate stringToDate(const QString& str)
+MyMoneyDate stringToDate(const QString& str)
 {
   if (str.length()) {
-    QDate date = QDate::fromString(str, Qt::ISODate);
+    MyMoneyDate date = MyMoneyDate::fromString(str, Qt::ISODate);
     if (!date.isNull() && date.isValid())
       return date;
   }
-  return QDate();
+  return MyMoneyDate();
 }
 
 QString QStringEmpty(const QString& val)
@@ -178,3 +178,9 @@ unsigned long extractId(const QString& txt)
   return rc;
 }
 
+#include <KGlobal>
+
+QString MyMoneyLocale::formatDate(const MyMoneyDate &date, KLocale::DateFormat format)
+{
+    return KGlobal::locale()->formatDateTime(date, format);
+}

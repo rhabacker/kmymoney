@@ -80,8 +80,8 @@ KEndingBalanceDlg::KEndingBalanceDlg(const MyMoneyAccount& account, QWidget *par
     // if the last statement has been entered long enough ago (more than one month),
     // then take the last statement date and add one month and use that as statement
     // date.
-    QDate lastStatementDate = account.lastReconciliationDate();
-    if (lastStatementDate.addMonths(1) < QDate::currentDate()) {
+    MyMoneyDate lastStatementDate = account.lastReconciliationDate();
+    if (lastStatementDate.addMonths(1) < MyMoneyDate::currentDate()) {
       setField("statementDate", lastStatementDate.addMonths(1));
     }
 
@@ -115,17 +115,17 @@ KEndingBalanceDlg::KEndingBalanceDlg(const MyMoneyAccount& account, QWidget *par
 
   value = account.value("statementDate");
   if (!value.isEmpty())
-    setField("statementDate", QDate::fromString(value, Qt::ISODate));
+    setField("statementDate", MyMoneyDate::fromString(value, Qt::ISODate));
 
   //FIXME: port
   m_statementInfoPageCheckings->m_lastStatementDate->setText(QString());
   if (account.lastReconciliationDate().isValid()) {
-    m_statementInfoPageCheckings->m_lastStatementDate->setText(i18n("Last reconciled statement: %1", KGlobal::locale()->formatDate(account.lastReconciliationDate())));
+    m_statementInfoPageCheckings->m_lastStatementDate->setText(i18n("Last reconciled statement: %1", MyMoneyLocale::formatDate(account.lastReconciliationDate())));
   }
 
   // connect the signals with the slots
   connect(MyMoneyFile::instance(), SIGNAL(dataChanged()), this, SLOT(slotReloadEditWidgets()));
-  connect(m_statementInfoPageCheckings->m_statementDate, SIGNAL(dateChanged(QDate)), this, SLOT(slotUpdateBalances()));
+  connect(m_statementInfoPageCheckings->m_statementDate, SIGNAL(dateChanged(MyMoneyDate)), this, SLOT(slotUpdateBalances()));
   connect(m_interestChargeCheckings->m_interestCategoryEdit, SIGNAL(createItem(QString,QString&)), this, SLOT(slotCreateInterestCategory(QString,QString&)));
   connect(m_interestChargeCheckings->m_chargesCategoryEdit, SIGNAL(createItem(QString,QString&)), this, SLOT(slotCreateChargesCategory(QString,QString&)));
   connect(m_interestChargeCheckings->m_payeeEdit, SIGNAL(createItem(QString,QString&)), this, SIGNAL(createPayee(QString,QString&)));
@@ -181,11 +181,11 @@ void KEndingBalanceDlg::slotUpdateBalances()
   MyMoneyFile::instance()->transactionList(transactionList, filter);
 
   //first retrieve the oldest not reconciled transaction
-  QDate oldestTransactionDate;
+  MyMoneyDate oldestTransactionDate;
   it = transactionList.constBegin();
   if (it != transactionList.constEnd()) {
     oldestTransactionDate = (*it).first.postDate();
-    m_statementInfoPageCheckings->m_oldestTransactionDate->setText(i18n("Oldest unmarked transaction: %1", KGlobal::locale()->formatDate(oldestTransactionDate)));
+    m_statementInfoPageCheckings->m_oldestTransactionDate->setText(i18n("Oldest unmarked transaction: %1", MyMoneyLocale::formatDate(oldestTransactionDate)));
   }
 
   filter.addState(MyMoneyTransactionFilter::cleared);
@@ -319,7 +319,7 @@ const MyMoneyTransaction KEndingBalanceDlg::chargeTransaction()
   return d->m_tCharges;
 }
 
-bool KEndingBalanceDlg::createTransaction(MyMoneyTransaction &t, const int sign, const MyMoneyMoney& amount, const QString& category, const QDate& date)
+bool KEndingBalanceDlg::createTransaction(MyMoneyTransaction &t, const int sign, const MyMoneyMoney& amount, const QString& category, const MyMoneyDate& date)
 {
   t = MyMoneyTransaction();
 

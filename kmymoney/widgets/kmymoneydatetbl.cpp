@@ -127,7 +127,7 @@ void KMyMoneyDateTbDelegate::paint(QPainter *painter, const QStyleOptionViewItem
   } else {
     int pos = 0;
     QString text;
-    QDate drawDate(m_parent->date);
+    MyMoneyDate drawDate(m_parent->date);
 
     if (m_parent->m_type == kMyMoneyDateTbl::MONTHLY) {
       pos = 7 * (index.row() - 1) + index.column();
@@ -155,7 +155,7 @@ void KMyMoneyDateTbDelegate::paint(QPainter *painter, const QStyleOptionViewItem
       }
     } else if (m_parent->m_type == kMyMoneyDateTbl::WEEKLY) {
       // TODO: Handle other start weekdays than Monday
-      text = QDate::shortDayName(index.row());
+      text = MyMoneyDate::shortDayName(index.row());
       text += ' ';
 
       int dayOfWeek = m_parent->date.dayOfWeek();
@@ -181,7 +181,7 @@ void KMyMoneyDateTbDelegate::paint(QPainter *painter, const QStyleOptionViewItem
   }
 }
 
-kMyMoneyDateTbl::kMyMoneyDateTbl(QWidget *parent, QDate date_)
+kMyMoneyDateTbl::kMyMoneyDateTbl(QWidget *parent, MyMoneyDate date_)
     : QTableWidget(parent), m_colCount(0), m_rowCount(0), m_itemDelegate(new KMyMoneyDateTbDelegate(this))
 {
   // call this first to make sure that member variables are initialized
@@ -191,7 +191,7 @@ kMyMoneyDateTbl::kMyMoneyDateTbl(QWidget *parent, QDate date_)
 
   if (!date_.isValid()) {
     kDebug() << "kMyMoneyDateTbl ctor: WARNING: Given date is invalid, using current date.";
-    date_ = QDate::currentDate();
+    date_ = MyMoneyDate::currentDate();
   }
   setFocusPolicy(Qt::StrongFocus);
 
@@ -250,7 +250,7 @@ void kMyMoneyDateTbl::keyPressEvent(QKeyEvent *e)
     return;
   }
   if (e->key() == Qt::Key_N) {
-    setDate(QDate::currentDate());
+    setDate(MyMoneyDate::currentDate());
     return;
   }
   KNotification::beep();
@@ -331,7 +331,7 @@ void kMyMoneyDateTbl::mouseReleaseEvent(QMouseEvent *e)
       return;
     }
 
-    setDate(QDate(date.year(), date.month(), pos - firstday + dayoff % 7));
+    setDate(MyMoneyDate(date.year(), date.month(), pos - firstday + dayoff % 7));
   } else if (m_type == WEEKLY) {
     int dayOfWeek = date.dayOfWeek();
     int diff;
@@ -348,10 +348,10 @@ void kMyMoneyDateTbl::mouseReleaseEvent(QMouseEvent *e)
   emit(tableClicked());
 }
 
-bool kMyMoneyDateTbl::setDate(const QDate& date_)
+bool kMyMoneyDateTbl::setDate(const MyMoneyDate &date_)
 {
   bool changed = false;
-  QDate temp;
+  MyMoneyDate temp;
   // -----
   if (!date_.isValid()) {
     kDebug() << "kMyMoneyDateTbl::setDate: refusing to set invalid date.";
@@ -387,7 +387,7 @@ bool kMyMoneyDateTbl::setDate(const QDate& date_)
   return true;
 }
 
-const QDate& kMyMoneyDateTbl::getDate() const
+const MyMoneyDate& kMyMoneyDateTbl::getDate() const
 {
   return date;
 }
@@ -443,7 +443,7 @@ void kMyMoneyDateTbl::mouseMoveEvent(QMouseEvent* e)
 
   int firstWeekDay = KGlobal::locale()->weekStartDay();
 
-  QDate drawDate(date);
+  MyMoneyDate drawDate(date);
   QString text;
 
   if (m_type == MONTHLY) {
@@ -472,7 +472,7 @@ void kMyMoneyDateTbl::mouseMoveEvent(QMouseEvent* e)
     }
   } else if (m_type == WEEKLY) {
     // TODO: Handle other start weekdays than Monday
-    text = QDate::shortDayName(row);
+    text = MyMoneyDate::shortDayName(row);
     text += ' ';
 
     int dayOfWeek = date.dayOfWeek();

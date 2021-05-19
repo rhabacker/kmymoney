@@ -115,11 +115,11 @@ public:
   virtual bool isErroneous() const = 0;
 
   // helper functions used for sorting
-  virtual const QDate& sortPostDate() const {
+  virtual const MyMoneyDate& sortPostDate() const {
     return nullDate;
   }
   virtual int sortSamePostDate() const = 0;
-  virtual const QDate& sortEntryDate() const {
+  virtual const MyMoneyDate& sortEntryDate() const {
     return nullDate;
   }
   virtual const QString& sortPayee() const {
@@ -298,7 +298,7 @@ protected:
   bool                     m_visible;
 
 private:
-  static QDate             nullDate;
+  static MyMoneyDate       nullDate;
   static QString           nullString;
   static MyMoneyMoney      nullValue;
 };

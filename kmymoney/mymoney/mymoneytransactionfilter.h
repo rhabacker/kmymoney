@@ -220,15 +220,15 @@ public:
 
   /**
     * This method sets the date filter to match only transactions with posting dates in
-    * the date range specified by @p from and @p to. If @p from equal QDate()
-    * all transactions with dates prior to @p to match. If @p to equals QDate()
+    * the date range specified by @p from and @p to. If @p from equal MyMoneyDate()
+    * all transactions with dates prior to @p to match. If @p to equals MyMoneyDate()
     * all transactions with posting dates past @p from match. If @p from and @p to
-    * are equal QDate() the filter is not activated and all transactions match.
+    * are equal MyMoneyDate() the filter is not activated and all transactions match.
     *
     * @param from from date
     * @param to   to date
     */
-  void setDateFilter(const QDate& from, const QDate& to);
+  void setDateFilter(const MyMoneyDate &from, const MyMoneyDate &to);
 
   void setDateFilter(dateOptionE range);
 
@@ -386,23 +386,23 @@ public:
 
   /**
     * This method returns the from date set in the filter. If
-    * no value has been set up for this filter, then QDate() is
+    * no value has been set up for this filter, then MyMoneyDate() is
     * returned.
     *
     * @return returns m_fromDate
     */
-  const QDate fromDate() const {
+  const MyMoneyDate fromDate() const {
     return m_fromDate;
   };
 
   /**
     * This method returns the to date set in the filter. If
-    * no value has been set up for this filter, then QDate() is
+    * no value has been set up for this filter, then MyMoneyDate() is
     * returned.
     *
     * @return returns m_toDate
     */
-  const QDate toDate() const {
+  const MyMoneyDate toDate() const {
     return m_toDate;
   };
 
@@ -458,7 +458,7 @@ public:
     * @param to result value for the end of the date range
     * @return true if a date filter is set
     */
-  bool dateFilter(QDate& from, QDate& to) const;
+  bool dateFilter(MyMoneyDate &from, MyMoneyDate &to) const;
 
   /**
     * This method is used to return information about the
@@ -567,15 +567,15 @@ public:
   };
 
   /**
-    * This method translates a plain-language date range into QDate
+    * This method translates a plain-language date range into MyMoneyDate
     * start & end
     *
     * @param range Plain-language range of dates, e.g. 'CurrentYear'
-    * @param start QDate will be set to corresponding to the first date in @p range
-    * @param end QDate will be set to corresponding to the last date in @p range
+    * @param start MyMoneyDate will be set to corresponding to the first date in @p range
+    * @param end MyMoneyDate will be set to corresponding to the last date in @p range
     * @return return true if a range was successfully set, or false if @p range was invalid
     */
-  static bool translateDateRange(dateOptionE range, QDate& start, QDate& end);
+  static bool translateDateRange(dateOptionE range, MyMoneyDate &start, MyMoneyDate &end);
 
   static void setFiscalYearStart(int firstMonth, int firstDay);
 
@@ -637,7 +637,7 @@ protected:
   QHash<int, QString>      m_types;
   QHash<int, QString>      m_validity;
   QString             m_fromNr, m_toNr;
-  QDate               m_fromDate, m_toDate;
+  MyMoneyDate         m_fromDate, m_toDate;
   MyMoneyMoney        m_fromAmount, m_toAmount;
   QList<MyMoneySplit> m_matchingSplits;
 };

@@ -260,7 +260,7 @@ void MyMoneyReport::clear()
   MyMoneyTransactionFilter::clear();
 }
 
-void MyMoneyReport::validDateRange(QDate& _db, QDate& _de)
+void MyMoneyReport::validDateRange(MyMoneyDate& _db, MyMoneyDate& _de)
 {
   _db = fromDate();
   _de = toDate();
@@ -277,7 +277,7 @@ void MyMoneyReport::validDateRange(QDate& _db, QDate& _de)
 
   if (!_db.isValid() || !_de.isValid()) {
     QList<MyMoneyTransaction> list = MyMoneyFile::instance()->transactionList(*this);
-    QDate tmpBegin, tmpEnd;
+    MyMoneyDate tmpBegin, tmpEnd;
 
     if (!list.isEmpty()) {
       qSort(list);
@@ -292,8 +292,8 @@ void MyMoneyReport::validDateRange(QDate& _db, QDate& _de)
     }
     // make sure that we leave this function with valid dates no mather what
     if (!tmpBegin.isValid() || !tmpEnd.isValid() || tmpBegin > tmpEnd) {
-      tmpBegin = QDate(QDate::currentDate().year(), 1, 1);   // the first date in the file
-      tmpEnd = QDate(QDate::currentDate().year(), 12, 31);   // the last date in the file
+      tmpBegin = MyMoneyDate(MyMoneyDate::currentDate().year(), 1, 1);   // the first date in the file
+      tmpEnd = MyMoneyDate(MyMoneyDate::currentDate().year(), 12, 31);   // the last date in the file
     }
     if (!_db.isValid())
       _db = tmpBegin;
@@ -650,7 +650,7 @@ void MyMoneyReport::write(QDomElement& e, QDomDocument *doc, bool anonymous) con
   //
 
   if (m_dateLock == userDefined) {
-    QDate dateFrom, dateTo;
+    MyMoneyDate dateFrom, dateTo;
     if (dateFilter(dateFrom, dateTo)) {
       QDomElement f = doc->createElement("DATES");
       if (dateFrom.isValid())
@@ -841,11 +841,11 @@ bool MyMoneyReport::read(const QDomElement& e)
         setAmountFilter(MyMoneyMoney(c.attribute("from", "0/100")), MyMoneyMoney(c.attribute("to", "0/100")));
       }
       if ("DATES" == c.tagName()) {
-        QDate from, to;
+        MyMoneyDate from, to;
         if (c.hasAttribute("from"))
-          from = QDate::fromString(c.attribute("from"), Qt::ISODate);
+          from = MyMoneyDate::fromString(c.attribute("from"), Qt::ISODate);
         if (c.hasAttribute("to"))
-          to = QDate::fromString(c.attribute("to"), Qt::ISODate);
+          to = MyMoneyDate::fromString(c.attribute("to"), Qt::ISODate);
         MyMoneyTransactionFilter::setDateFilter(from, to);
       }
       if ("PAYEE" == c.tagName()) {

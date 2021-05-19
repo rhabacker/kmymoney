@@ -203,7 +203,7 @@ private:
   /**
     *
     */
-  void loadAncientCurrency(const QString& id, const QString& name, const QString& sym, const QDate& date, const MyMoneyMoney& rate, const QString& newId, const int partsPerUnit = 100, const int smallestCashFraction = 100, const int smallestAccountFraction = 0);
+  void loadAncientCurrency(const QString& id, const QString& name, const QString& sym, const MyMoneyDate& date, const MyMoneyMoney& rate, const QString& newId, const int partsPerUnit = 100, const int smallestCashFraction = 100, const int smallestAccountFraction = 0);
 
   /**
     * if no base currency is defined, start the dialog and force it to be set
@@ -428,7 +428,7 @@ public:
     * @retval true Reconciliation started
     * @retval false Account cannot be reconciled
     */
-  bool startReconciliation(const MyMoneyAccount& account, const QDate& reconciliationDate, const MyMoneyMoney& endingBalance);
+  bool startReconciliation(const MyMoneyAccount& account, const MyMoneyDate& reconciliationDate, const MyMoneyMoney& endingBalance);
 
   /**
     * Used to finish reconciliation of account @a account. It switches the
@@ -646,7 +646,7 @@ signals:
     * @param endingBalance collected ending balance when reconciliation starts
     *                0 otherwise
     */
-  void reconciliationStarts(const MyMoneyAccount& account, const QDate& reconciliationDate, const MyMoneyMoney& endingBalance);
+  void reconciliationStarts(const MyMoneyAccount& account, const MyMoneyDate& reconciliationDate, const MyMoneyMoney& endingBalance);
 
 };
 

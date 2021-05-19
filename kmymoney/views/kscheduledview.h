@@ -103,8 +103,8 @@ protected slots:
   void slotListViewCollapsed(QTreeWidgetItem* item);
   void slotListViewExpanded(QTreeWidgetItem* item);
 
-  void slotBriefSkipClicked(const MyMoneySchedule& schedule, const QDate&);
-  void slotBriefEnterClicked(const MyMoneySchedule& schedule, const QDate&);
+  void slotBriefSkipClicked(const MyMoneySchedule& schedule, const MyMoneyDate&);
+  void slotBriefEnterClicked(const MyMoneySchedule& schedule, const MyMoneyDate&);
 
   void slotTimerDone();
 

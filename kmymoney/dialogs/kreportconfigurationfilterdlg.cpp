@@ -376,7 +376,7 @@ void KReportConfigurationFilterDlg::slotReset()
       for (QVector<MyMoneyBudget>::const_iterator it_b = m_budgets.constBegin(); it_b != m_budgets.constEnd(); ++it_b) {
         m_tab2->findChild<KMyMoneyGeneralCombo*>("m_comboBudget")->insertItem((*it_b).name(), i);
         //set the current selected item
-        if ((m_initialState.budget() == "Any" && (*it_b).budgetStart().year() == QDate::currentDate().year())
+        if ((m_initialState.budget() == "Any" && (*it_b).budgetStart().year() == MyMoneyDate::currentDate().year())
             || m_initialState.budget() == (*it_b).id())
           m_tab2->findChild<KMyMoneyGeneralCombo*>("m_comboBudget")->setCurrentItem(i);
         i++;
@@ -635,7 +635,7 @@ void KReportConfigurationFilterDlg::slotReset()
   // that's why we call it last
 
   m_initialState.updateDateFilter();
-  QDate dateFrom, dateTo;
+  MyMoneyDate dateFrom, dateTo;
   if (m_initialState.dateFilter(dateFrom, dateTo)) {
     if (m_initialState.isUserDefined()) {
       m_ui->m_dateRange->setCurrentItem(MyMoneyTransactionFilter::userDefined);

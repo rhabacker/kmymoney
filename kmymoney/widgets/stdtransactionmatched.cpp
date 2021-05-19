@@ -95,7 +95,7 @@ void StdTransactionMatched::registerCellText(QString& txt, Qt::Alignment& align,
       }
     }
 
-    QDate postDate;
+    MyMoneyDate postDate;
     QString memo;
     switch (row) {
       case 0:
@@ -146,7 +146,7 @@ void StdTransactionMatched::registerCellText(QString& txt, Qt::Alignment& align,
             align |= Qt::AlignLeft;
             postDate = m_transaction.postDate();
             if (!m_split.value("kmm-orig-postdate").isEmpty()) {
-              postDate = QDate::fromString(m_split.value("kmm-orig-postdate"), Qt::ISODate);
+              postDate = MyMoneyDate::fromString(m_split.value("kmm-orig-postdate"), Qt::ISODate);
             }
             memo = m_split.memo();
             if (!matchedSplit.memo().isEmpty() && memo != matchedSplit.memo()) {

@@ -30,8 +30,8 @@ MyMoneyTransaction::MyMoneyTransaction() :
     MyMoneyObject()
 {
   m_nextSplitID = 1;
-  m_entryDate = QDate();
-  m_postDate = QDate();
+  m_entryDate = MyMoneyDate();
+  m_postDate = MyMoneyDate();
 }
 
 MyMoneyTransaction::MyMoneyTransaction(const QString& id, const MyMoneyTransaction& transaction) :
@@ -39,8 +39,8 @@ MyMoneyTransaction::MyMoneyTransaction(const QString& id, const MyMoneyTransacti
 {
   *this = transaction;
   m_id = id;
-  if (m_entryDate == QDate())
-    m_entryDate = QDate::currentDate();
+  if (m_entryDate == MyMoneyDate())
+    m_entryDate = MyMoneyDate::currentDate();
 
   QList<MyMoneySplit>::Iterator it;
   for (it = m_splits.begin(); it != m_splits.end(); ++it) {
@@ -241,11 +241,11 @@ const MyMoneyMoney MyMoneyTransaction::splitSum() const
   return result;
 }
 
-void MyMoneyTransaction::setPostDate(const QDate& date)
+void MyMoneyTransaction::setPostDate(const MyMoneyDate& date)
 {
   m_postDate = date;
 }
-void MyMoneyTransaction::setEntryDate(const QDate& date)
+void MyMoneyTransaction::setEntryDate(const MyMoneyDate &date)
 {
   m_entryDate = date;
 }
@@ -440,7 +440,7 @@ QString MyMoneyTransaction::accountSignature(bool includeSplitCount) const
 QString MyMoneyTransaction::uniqueSortKey() const
 {
   QString year, month, day, key;
-  const QDate& postdate = postDate();
+  const MyMoneyDate& postdate = postDate();
   year = year.setNum(postdate.year()).rightJustified(YEAR_SIZE, '0');
   month = month.setNum(postdate.month()).rightJustified(MONTH_SIZE, '0');
   day = day.setNum(postdate.day()).rightJustified(DAY_SIZE, '0');

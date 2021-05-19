@@ -98,10 +98,10 @@ KOnlineBankingStatus::KOnlineBankingStatus(const MyMoneyAccount& acc, QWidget *p
   m_pickDateRB->setChecked(!settings.value("kmmofx-pickDate").isEmpty() && settings.value("kmmofx-pickDate").toInt() != 0);
   QString specificDate = settings.value("kmmofx-specificDate");
   if (!specificDate.isEmpty())
-    m_specificDate->setDate(QDate::fromString(specificDate));
+    m_specificDate->setDate(MyMoneyDate::fromString(specificDate));
   else
-    m_specificDate->setDate(QDate::currentDate());
-  m_specificDate->setMaximumDate(QDate::currentDate());
+    m_specificDate->setDate(MyMoneyDate::currentDate());
+  m_specificDate->setMaximumDate(MyMoneyDate::currentDate());
   m_preferredPayee->setCurrentIndex(settings.value("kmmofx-preferName").toInt());
 
   const int offset = settings.value("kmmofx-timestampOffset").toInt();

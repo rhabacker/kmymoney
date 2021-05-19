@@ -26,15 +26,15 @@
 #define CASHFLOWLIST_H
 
 #include "mymoneymoney.h"
+#include "mymoneyutils.h"
 
-#include <QDate>
 #include <QList>
 
 class CashFlowListItem
 {
 public:
   CashFlowListItem() {}
-  CashFlowListItem(const QDate& _date, const MyMoneyMoney& _value): m_date(_date), m_value(_value) {}
+  CashFlowListItem(const MyMoneyDate& _date, const MyMoneyMoney& _value): m_date(_date), m_value(_value) {}
   bool operator<(const CashFlowListItem& _second) const {
     return m_date < _second.m_date;
   }
@@ -44,7 +44,7 @@ public:
   bool operator>(const CashFlowListItem& _second) const {
     return m_date > _second.m_date;
   }
-  const QDate& date() const {
+  const MyMoneyDate& date() const {
     return m_date;
   }
   const MyMoneyMoney& value() const {
@@ -52,7 +52,7 @@ public:
   }
 
 private:
-  QDate m_date;
+  MyMoneyDate m_date;
   MyMoneyMoney m_value;
 };
 

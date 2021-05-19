@@ -101,7 +101,7 @@ double CashFlowList::xirrResult(double rate) const
 {
   double r = rate + 1.0;
   double result = at(0).value().toDouble();
-  const QDate &date0 = at(0).date();
+  const MyMoneyDate &date0 = at(0).date();
 
   for(int i = 1; i < size(); i++) {
     double e_i = date0.daysTo(at(i).date()) / 365.0;
@@ -120,7 +120,7 @@ double CashFlowList::xirrResultDerive(double rate) const
 {
   double r = rate + 1.0;
   double result = 0;
-  const QDate &date0 = at(0).date();
+  const MyMoneyDate &date0 = at(0).date();
 
   for(int i = 1; i < size(); i++) {
     double e_i = date0.daysTo(at(i).date()) / 365.0;

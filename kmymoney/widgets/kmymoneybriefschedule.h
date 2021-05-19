@@ -57,11 +57,11 @@ class KMyMoneyBriefSchedule : public kScheduleBriefWidget
 public:
   KMyMoneyBriefSchedule(QWidget *parent = 0);
   ~KMyMoneyBriefSchedule();
-  void setSchedules(QList<MyMoneySchedule> list, const QDate& date);
+  void setSchedules(QList<MyMoneySchedule> list, const MyMoneyDate& date);
 
 signals:
-  void enterClicked(const MyMoneySchedule&, const QDate&);
-  void skipClicked(const MyMoneySchedule&, const QDate&);
+  void enterClicked(const MyMoneySchedule&, const MyMoneyDate&);
+  void skipClicked(const MyMoneySchedule&, const MyMoneyDate&);
 
 protected slots:
   void slotPrevClicked();
@@ -72,7 +72,7 @@ protected slots:
 private:
   QList<MyMoneySchedule> m_scheduleList;
   int m_index;
-  QDate m_date;
+  MyMoneyDate m_date;
 
   void loadSchedule();
 };

@@ -93,7 +93,7 @@ bool creditTransferSettingsBase::isBicMandatory(const QString& payeeIban, const 
   << "NO" << "PL" << "RO" << "SM" << "SK" << "SI" << "ES" << "SE" << "CH" << "GB";
 
   // Starting form 1st Febuary 2016 no bic is needed between sepa countries
-  if (QDate::currentDate() >= QDate(2016, 2, 1))
+  if (MyMoneyDate::currentDate() >= MyMoneyDate(2016, 2, 1))
     return (!sepaParticipants.contains(payeeContryCode, Qt::CaseInsensitive) || !sepaParticipants.contains(beneficaryCountryCode, Qt::CaseInsensitive));
 
   // Before that date the bic is needed except for transfers within a single sepa country

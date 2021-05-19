@@ -75,7 +75,7 @@ void MyMoneyBudget::AccountGroup::convertToYearly()
 void MyMoneyBudget::AccountGroup::convertToMonthByMonth()
 {
   MyMoneyBudget::PeriodGroup period;
-  QDate date;
+  MyMoneyDate date;
 
   switch (m_budgetlevel) {
     case eYearly:
@@ -123,14 +123,14 @@ MyMoneyBudget::AccountGroup MyMoneyBudget::AccountGroup::operator += (const MyMo
     }
   }
 
-  QMap<QDate, MyMoneyBudget::PeriodGroup> rPeriods = r.m_periods;
-  QMap<QDate, MyMoneyBudget::PeriodGroup>::const_iterator it_pr;
+  QMap<MyMoneyDate, MyMoneyBudget::PeriodGroup> rPeriods = r.m_periods;
+  QMap<MyMoneyDate, MyMoneyBudget::PeriodGroup>::const_iterator it_pr;
 
   // in case the left side is empty, we add empty periods
   // so that both budgets are identical
   if (m_budgetlevel == eNone) {
     it_pr = rPeriods.constBegin();
-    QDate date = (*it_pr).startDate();
+    MyMoneyDate date = (*it_pr).startDate();
     while (it_pr != rPeriods.constEnd()) {
       MyMoneyBudget::PeriodGroup period = *it_pr;
       period.setAmount(MyMoneyMoney());
@@ -141,15 +141,15 @@ MyMoneyBudget::AccountGroup MyMoneyBudget::AccountGroup::operator += (const MyMo
     m_budgetlevel = r.m_budgetlevel;
   }
 
-  QMap<QDate, MyMoneyBudget::PeriodGroup> periods = m_periods;
-  QMap<QDate, MyMoneyBudget::PeriodGroup>::const_iterator it_p;
+  QMap<MyMoneyDate, MyMoneyBudget::PeriodGroup> periods = m_periods;
+  QMap<MyMoneyDate, MyMoneyBudget::PeriodGroup>::const_iterator it_p;
 
   // now both budgets should be of the same type and we simply need
   // to iterate over the period list and add the values
   m_periods.clear();
   it_p = periods.constBegin();
   it_pr = rPeriods.constBegin();
-  QDate date = (*it_p).startDate();
+  MyMoneyDate date = (*it_p).startDate();
   while (it_p != periods.constEnd()) {
     MyMoneyBudget::PeriodGroup period = *it_p;
     if (it_pr != rPeriods.constEnd()) {
@@ -227,8 +227,8 @@ void MyMoneyBudget::write(QDomElement& e, QDomDocument *doc) const
       domAccount.setAttribute("budgetlevel", AccountGroup::kBudgetLevelText[it.value().budgetLevel()]);
       domAccount.setAttribute("budgetsubaccounts", it.value().budgetSubaccounts());
 
-      const QMap<QDate, PeriodGroup> periods = it.value().getPeriods();
-      QMap<QDate, PeriodGroup>::const_iterator it_per;
+      const QMap<MyMoneyDate, PeriodGroup> periods = it.value().getPeriods();
+      QMap<MyMoneyDate, PeriodGroup>::const_iterator it_per;
       for (it_per = periods.begin(); it_per != periods.end(); ++it_per) {
         if (!(*it_per).amount().isZero()) {
           QDomElement domPeriod = doc->createElement("PERIOD");
@@ -256,7 +256,7 @@ bool MyMoneyBudget::read(const QDomElement& e)
   if ("BUDGET" == e.tagName()) {
     result = true;
     m_name  = e.attribute("name");
-    m_start = QDate::fromString(e.attribute("start"), Qt::ISODate);
+    m_start = MyMoneyDate::fromString(e.attribute("start"), Qt::ISODate);
     m_id    = e.attribute("id");
 
     QDomNode child = e.firstChild();
@@ -286,7 +286,7 @@ bool MyMoneyBudget::read(const QDomElement& e)
 
         if ("PERIOD" == per.tagName() && per.hasAttribute("amount") && per.hasAttribute("start")) {
           pGroup.setAmount(MyMoneyMoney(per.attribute("amount")));
-          pGroup.setStartDate(QDate::fromString(per.attribute("start"), Qt::ISODate));
+          pGroup.setStartDate(MyMoneyDate::fromString(per.attribute("start"), Qt::ISODate));
           account.addPeriod(pGroup.startDate(), pGroup);
         }
 
@@ -346,16 +346,16 @@ const MyMoneyBudget::AccountGroup& MyMoneyBudget::account(const QString &_id) co
   return empty;
 }
 
-void MyMoneyBudget::setBudgetStart(const QDate& _start)
+void MyMoneyBudget::setBudgetStart(const MyMoneyDate& _start)
 {
-  QDate oldDate = QDate(m_start.year(), m_start.month(), 1);
-  m_start = QDate(_start.year(), _start.month(), 1);
+  MyMoneyDate oldDate = MyMoneyDate(m_start.year(), m_start.month(), 1);
+  m_start = MyMoneyDate(_start.year(), _start.month(), 1);
   if (oldDate.isValid()) {
     int adjust = ((m_start.year() - oldDate.year()) * 12) + (m_start.month() - oldDate.month());
     QMap<QString, AccountGroup>::iterator it;
     for (it = m_accounts.begin(); it != m_accounts.end(); ++it) {
-      const QMap<QDate, PeriodGroup> periods = (*it).getPeriods();
-      QMap<QDate, PeriodGroup>::const_iterator it_per;
+      const QMap<MyMoneyDate, PeriodGroup> periods = (*it).getPeriods();
+      QMap<MyMoneyDate, PeriodGroup>::const_iterator it_per;
       (*it).clearPeriods();
       for (it_per = periods.begin(); it_per != periods.end(); ++it_per) {
         PeriodGroup pgroup = (*it_per);

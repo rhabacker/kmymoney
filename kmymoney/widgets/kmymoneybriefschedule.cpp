@@ -80,7 +80,7 @@ KMyMoneyBriefSchedule::~KMyMoneyBriefSchedule()
 {
 }
 
-void KMyMoneyBriefSchedule::setSchedules(QList<MyMoneySchedule> list, const QDate& date)
+void KMyMoneyBriefSchedule::setSchedules(QList<MyMoneySchedule> list, const MyMoneyDate& date)
 {
   m_scheduleList = list;
   m_date = date;
@@ -110,27 +110,27 @@ void KMyMoneyBriefSchedule::loadSchedule()
         text = i18np("Payment on %2 for %3 with %1 transaction remaining occurring %4.",
                      "Payment on %2 for %3 with %1 transactions remaining occurring %4.",
                      transactions,
-                     KGlobal::locale()->formatDate(m_date),
+                     MyMoneyLocale::formatDate(m_date),
                      amount.formatMoney(sched.account().fraction()),
                      i18n(sched.occurrenceToString().toLatin1()));
       } else {
         text = i18n("Payment on %1 for %2 occurring %3.",
-                    KGlobal::locale()->formatDate(m_date),
+                    MyMoneyLocale::formatDate(m_date),
                     amount.formatMoney(sched.account().fraction()),
                     i18n(sched.occurrenceToString().toLatin1()));
       }
 
-      if (m_date < QDate::currentDate()) {
+      if (m_date < MyMoneyDate::currentDate()) {
         if (sched.isOverdue()) {
-          QDate startD = (sched.lastPayment().isValid()) ?
+          MyMoneyDate startD = (sched.lastPayment().isValid()) ?
                          sched.lastPayment() :
                          sched.startDate();
 
           if (m_date.isValid())
             startD = m_date;
 
-          int days = startD.daysTo(QDate::currentDate());
-          int transactions = sched.paymentDates(startD, QDate::currentDate()).count();
+          int days = startD.daysTo(MyMoneyDate::currentDate());
+          int transactions = sched.paymentDates(startD, MyMoneyDate::currentDate()).count();
 
           text += "<br><font color=red>";
           text += i18np("%1 day overdue", "%1 days overdue", days);

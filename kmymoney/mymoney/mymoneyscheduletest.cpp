@@ -52,8 +52,8 @@ void MyMoneyScheduleTest::testConstructor()
                     MyMoneySchedule::TYPE_BILL,
                     MyMoneySchedule::OCCUR_WEEKLY, 1,
                     MyMoneySchedule::STYPE_DIRECTDEBIT,
-                    QDate::currentDate(),
-                    QDate(),
+                    MyMoneyDate::currentDate(),
+                    MyMoneyDate(),
                     true,
                     true);
 
@@ -61,7 +61,7 @@ void MyMoneyScheduleTest::testConstructor()
   QCOMPARE(s.occurrence(), MyMoneySchedule::OCCUR_WEEKLY);
   QCOMPARE(s.occurrenceMultiplier(), 1);
   QCOMPARE(s.paymentType(), MyMoneySchedule::STYPE_DIRECTDEBIT);
-  QCOMPARE(s.startDate(), QDate());
+  QCOMPARE(s.startDate(), MyMoneyDate());
   QCOMPARE(s.willEnd(), false);
   QCOMPARE(s.isFixed(), true);
   QCOMPARE(s.autoEnter(), true);
@@ -80,8 +80,8 @@ void MyMoneyScheduleTest::testSetFunctions()
   s.setType(MyMoneySchedule::TYPE_BILL);
   QCOMPARE(s.type(), MyMoneySchedule::TYPE_BILL);
 
-  s.setEndDate(QDate::currentDate());
-  QCOMPARE(s.endDate(), QDate::currentDate());
+  s.setEndDate(MyMoneyDate::currentDate());
+  QCOMPARE(s.endDate(), MyMoneyDate::currentDate());
   QCOMPARE(s.willEnd(), true);
 }
 
@@ -119,13 +119,13 @@ void MyMoneyScheduleTest::testOverdue()
   // the following checks only work correctly, if currentDate() is
   // between the 1st and 27th. If it is between 28th and 31st
   // we don't perform them. Note: this should be fixed.
-  if (QDate::currentDate().day() > 27 || QDate::currentDate().day() == 1) {
+  if (MyMoneyDate::currentDate().day() > 27 || MyMoneyDate::currentDate().day() == 1) {
     qDebug() << "testOverdue() skipped because current day is between 28th and 2nd";
     return;
   }
 
-  QDate startDate = QDate::currentDate().addDays(-1).addMonths(-23);
-  QDate lastPaymentDate = QDate::currentDate().addDays(-1).addMonths(-1);
+  MyMoneyDate startDate = MyMoneyDate::currentDate().addDays(-1).addMonths(-23);
+  MyMoneyDate lastPaymentDate = MyMoneyDate::currentDate().addDays(-1).addMonths(-1);
 
   QString ref = QString(
                   "<!DOCTYPE TEST>\n"
@@ -203,9 +203,9 @@ void MyMoneyScheduleTest::testNextPayment()
 
   try {
     sch = MyMoneySchedule(node);
-    QCOMPARE(sch.nextPayment(QDate(2007, 2, 14)), QDate(2007, 2, 17));
-    QCOMPARE(sch.nextPayment(QDate(2007, 2, 17)), QDate(2008, 2, 17));
-    QCOMPARE(sch.nextPayment(QDate(2007, 2, 18)), QDate(2008, 2, 17));
+    QCOMPARE(sch.nextPayment(MyMoneyDate(2007, 2, 14)), MyMoneyDate(2007, 2, 17));
+    QCOMPARE(sch.nextPayment(MyMoneyDate(2007, 2, 17)), MyMoneyDate(2008, 2, 17));
+    QCOMPARE(sch.nextPayment(MyMoneyDate(2007, 2, 18)), MyMoneyDate(2008, 2, 17));
 
   } catch (const MyMoneyException &) {
     QFAIL("Unexpected exception");
@@ -238,22 +238,22 @@ void MyMoneyScheduleTest::testNextPaymentOnLastDayOfMonth()
 
   try {
     sch = MyMoneySchedule(node);
-    QDate nextPayment;
+    MyMoneyDate nextPayment;
 
     // check for the first payment to happen
-    nextPayment = sch.nextPayment(QDate(2014, 10, 1));
-    QCOMPARE(nextPayment, QDate(2014, 10, 31));
+    nextPayment = sch.nextPayment(MyMoneyDate(2014, 10, 1));
+    QCOMPARE(nextPayment, MyMoneyDate(2014, 10, 31));
     sch.setLastPayment(nextPayment);
 
-    QCOMPARE(sch.nextPayment(QDate(2014, 11, 1)), QDate(2014, 11, 30));
-    QCOMPARE(sch.nextPayment(QDate(2014, 12, 1)), QDate(2014, 12, 31));
-    QCOMPARE(sch.nextPayment(QDate(2015, 1, 1)), QDate(2015, 1, 31));
-    QCOMPARE(sch.nextPayment(QDate(2015, 2, 1)), QDate(2015, 2, 28));
-    QCOMPARE(sch.nextPayment(QDate(2015, 3, 1)), QDate(2015, 3, 31));
+    QCOMPARE(sch.nextPayment(MyMoneyDate(2014, 11, 1)), MyMoneyDate(2014, 11, 30));
+    QCOMPARE(sch.nextPayment(MyMoneyDate(2014, 12, 1)), MyMoneyDate(2014, 12, 31));
+    QCOMPARE(sch.nextPayment(MyMoneyDate(2015, 1, 1)), MyMoneyDate(2015, 1, 31));
+    QCOMPARE(sch.nextPayment(MyMoneyDate(2015, 2, 1)), MyMoneyDate(2015, 2, 28));
+    QCOMPARE(sch.nextPayment(MyMoneyDate(2015, 3, 1)), MyMoneyDate(2015, 3, 31));
 
     // now check that we also cover leap years
-    QCOMPARE(sch.nextPayment(QDate(2016, 2, 1)), QDate(2016, 2, 29));
-    QCOMPARE(sch.nextPayment(QDate(2016, 3, 1)), QDate(2016, 3, 31));
+    QCOMPARE(sch.nextPayment(MyMoneyDate(2016, 2, 1)), MyMoneyDate(2016, 2, 29));
+    QCOMPARE(sch.nextPayment(MyMoneyDate(2016, 3, 1)), MyMoneyDate(2016, 3, 31));
 
   } catch (const MyMoneyException &) {
     QFAIL("Unexpected exception");
@@ -265,148 +265,148 @@ void MyMoneyScheduleTest::testAddHalfMonths()
   // addHalfMonths is private
   // Test a Schedule with occurrence OCCUR_EVERYHALFMONTH using nextPayment
   MyMoneySchedule s;
-  s.setStartDate(QDate(2007, 1, 1));
+  s.setStartDate(MyMoneyDate(2007, 1, 1));
   s.setOccurrence(MyMoneySchedule::OCCUR_EVERYHALFMONTH);
   s.setNextDueDate(s.startDate());
   s.setLastPayment(s.startDate());
 
   QString format("yyyy-MM-dd");
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-16"));
-  s.setNextDueDate(QDate(2007, 1, 2));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 2));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-17"));
-  s.setNextDueDate(QDate(2007, 1, 3));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 3));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-18"));
-  s.setNextDueDate(QDate(2007, 1, 4));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 4));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-19"));
-  s.setNextDueDate(QDate(2007, 1, 5));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 5));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-20"));
-  s.setNextDueDate(QDate(2007, 1, 6));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 6));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-21"));
-  s.setNextDueDate(QDate(2007, 1, 7));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 7));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-22"));
-  s.setNextDueDate(QDate(2007, 1, 8));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 8));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-23"));
-  s.setNextDueDate(QDate(2007, 1, 9));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 9));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-24"));
-  s.setNextDueDate(QDate(2007, 1, 10));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 10));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-25"));
-  s.setNextDueDate(QDate(2007, 1, 11));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 11));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-26"));
-  s.setNextDueDate(QDate(2007, 1, 12));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 12));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-27"));
-  s.setNextDueDate(QDate(2007, 1, 13));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 13));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-28"));
-  s.setNextDueDate(QDate(2007, 1, 14));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 14));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-29"));
   // 15 -> Last Day
-  s.setNextDueDate(QDate(2007, 1, 15));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 15));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-01-31"));
-  s.setNextDueDate(QDate(2007, 1, 16));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 16));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-01"));
-  s.setNextDueDate(QDate(2007, 1, 17));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 17));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-02"));
-  s.setNextDueDate(QDate(2007, 1, 18));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 18));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-03"));
-  s.setNextDueDate(QDate(2007, 1, 19));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 19));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-04"));
-  s.setNextDueDate(QDate(2007, 1, 20));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 20));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-05"));
-  s.setNextDueDate(QDate(2007, 1, 21));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 21));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-06"));
-  s.setNextDueDate(QDate(2007, 1, 22));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 22));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-07"));
-  s.setNextDueDate(QDate(2007, 1, 23));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 23));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-08"));
-  s.setNextDueDate(QDate(2007, 1, 24));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 24));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-09"));
-  s.setNextDueDate(QDate(2007, 1, 25));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 25));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-10"));
-  s.setNextDueDate(QDate(2007, 1, 26));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 26));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-11"));
-  s.setNextDueDate(QDate(2007, 1, 27));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 27));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-12"));
-  s.setNextDueDate(QDate(2007, 1, 28));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 28));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-13"));
-  s.setNextDueDate(QDate(2007, 1, 29));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 29));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-14"));
   // 30th,31st -> 15th
-  s.setNextDueDate(QDate(2007, 1, 30));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 30));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-15"));
-  s.setNextDueDate(QDate(2007, 1, 31));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 31));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-02-15"));
   // 30th (last day)
-  s.setNextDueDate(QDate(2007, 4, 30));
+  s.setNextDueDate(MyMoneyDate(2007, 4, 30));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2007-05-15"));
   // 28th of February (Last day): to 15th
-  s.setNextDueDate(QDate(1900, 2, 28));
+  s.setNextDueDate(MyMoneyDate(1900, 2, 28));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("1900-03-15"));
   // 28th of February (Leap year): to 13th
-  s.setNextDueDate(QDate(2000, 2, 28));
+  s.setNextDueDate(MyMoneyDate(2000, 2, 28));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2000-03-13"));
   // 29th of February (Leap year)
-  s.setNextDueDate(QDate(2000, 2, 29));
+  s.setNextDueDate(MyMoneyDate(2000, 2, 29));
   QCOMPARE(s.nextPayment(s.nextDueDate()).toString(format), QLatin1String("2000-03-15"));
   // Add multiple transactions
-  s.setStartDate(QDate(2007, 1, 1));
+  s.setStartDate(MyMoneyDate(2007, 1, 1));
   QCOMPARE(s.dateAfter(2).toString(format), QLatin1String("2007-01-16"));
   QCOMPARE(s.dateAfter(3).toString(format), QLatin1String("2007-02-01"));
   QCOMPARE(s.dateAfter(4).toString(format), QLatin1String("2007-02-16"));
-  s.setStartDate(QDate(2007, 1, 12));
+  s.setStartDate(MyMoneyDate(2007, 1, 12));
   QCOMPARE(s.dateAfter(2).toString(format), QLatin1String("2007-01-27"));
   QCOMPARE(s.dateAfter(3).toString(format), QLatin1String("2007-02-12"));
   QCOMPARE(s.dateAfter(4).toString(format), QLatin1String("2007-02-27"));
   QCOMPARE(s.dateAfter(5).toString(format), QLatin1String("2007-03-12"));
-  s.setStartDate(QDate(2007, 1, 13));
+  s.setStartDate(MyMoneyDate(2007, 1, 13));
   QCOMPARE(s.dateAfter(2).toString(format), QLatin1String("2007-01-28"));
   QCOMPARE(s.dateAfter(3).toString(format), QLatin1String("2007-02-13"));
   QCOMPARE(s.dateAfter(4).toString(format), QLatin1String("2007-02-28"));
   QCOMPARE(s.dateAfter(5).toString(format), QLatin1String("2007-03-15"));
-  s.setStartDate(QDate(2007, 1, 14));
+  s.setStartDate(MyMoneyDate(2007, 1, 14));
   QCOMPARE(s.dateAfter(2).toString(format), QLatin1String("2007-01-29"));
   QCOMPARE(s.dateAfter(3).toString(format), QLatin1String("2007-02-14"));
   QCOMPARE(s.dateAfter(4).toString(format), QLatin1String("2007-02-28"));
   QCOMPARE(s.dateAfter(5).toString(format), QLatin1String("2007-03-15"));
-  s.setStartDate(QDate(2007, 1, 15));
+  s.setStartDate(MyMoneyDate(2007, 1, 15));
   QCOMPARE(s.dateAfter(2).toString(format), QLatin1String("2007-01-31"));
   QCOMPARE(s.dateAfter(3).toString(format), QLatin1String("2007-02-15"));
   QCOMPARE(s.dateAfter(4).toString(format), QLatin1String("2007-02-28"));
   QCOMPARE(s.dateAfter(5).toString(format), QLatin1String("2007-03-15"));
-  s.setStartDate(QDate(2007, 1, 16));
+  s.setStartDate(MyMoneyDate(2007, 1, 16));
   QCOMPARE(s.dateAfter(2).toString(format), QLatin1String("2007-02-01"));
   QCOMPARE(s.dateAfter(3).toString(format), QLatin1String("2007-02-16"));
   QCOMPARE(s.dateAfter(4).toString(format), QLatin1String("2007-03-01"));
   QCOMPARE(s.dateAfter(5).toString(format), QLatin1String("2007-03-16"));
-  s.setStartDate(QDate(2007, 1, 27));
+  s.setStartDate(MyMoneyDate(2007, 1, 27));
   QCOMPARE(s.dateAfter(2).toString(format), QLatin1String("2007-02-12"));
   QCOMPARE(s.dateAfter(3).toString(format), QLatin1String("2007-02-27"));
   QCOMPARE(s.dateAfter(4).toString(format), QLatin1String("2007-03-12"));
   QCOMPARE(s.dateAfter(5).toString(format), QLatin1String("2007-03-27"));
-  s.setStartDate(QDate(2007, 1, 28));
+  s.setStartDate(MyMoneyDate(2007, 1, 28));
   QCOMPARE(s.dateAfter(2).toString(format), QLatin1String("2007-02-13"));
   QCOMPARE(s.dateAfter(3).toString(format), QLatin1String("2007-02-28"));
   QCOMPARE(s.dateAfter(4).toString(format), QLatin1String("2007-03-15"));
   QCOMPARE(s.dateAfter(5).toString(format), QLatin1String("2007-03-31"));
-  s.setStartDate(QDate(2007, 1, 29));
+  s.setStartDate(MyMoneyDate(2007, 1, 29));
   QCOMPARE(s.dateAfter(2).toString(format), QLatin1String("2007-02-14"));
   QCOMPARE(s.dateAfter(3).toString(format), QLatin1String("2007-02-28"));
   QCOMPARE(s.dateAfter(4).toString(format), QLatin1String("2007-03-15"));
   QCOMPARE(s.dateAfter(5).toString(format), QLatin1String("2007-03-31"));
-  s.setStartDate(QDate(2007, 1, 30));
+  s.setStartDate(MyMoneyDate(2007, 1, 30));
   QCOMPARE(s.dateAfter(2).toString(format), QLatin1String("2007-02-15"));
   QCOMPARE(s.dateAfter(3).toString(format), QLatin1String("2007-02-28"));
   QCOMPARE(s.dateAfter(4).toString(format), QLatin1String("2007-03-15"));
   QCOMPARE(s.dateAfter(5).toString(format), QLatin1String("2007-03-31"));
-  s.setStartDate(QDate(2007, 1, 31));
+  s.setStartDate(MyMoneyDate(2007, 1, 31));
   QCOMPARE(s.dateAfter(2).toString(format), QLatin1String("2007-02-15"));
   QCOMPARE(s.dateAfter(3).toString(format), QLatin1String("2007-02-28"));
   QCOMPARE(s.dateAfter(4).toString(format), QLatin1String("2007-03-15"));
   QCOMPARE(s.dateAfter(5).toString(format), QLatin1String("2007-03-31"));
-  s.setStartDate(QDate(2007, 4, 29));
+  s.setStartDate(MyMoneyDate(2007, 4, 29));
   QCOMPARE(s.dateAfter(2).toString(format), QLatin1String("2007-05-14"));
   QCOMPARE(s.dateAfter(3).toString(format), QLatin1String("2007-05-29"));
   QCOMPARE(s.dateAfter(4).toString(format), QLatin1String("2007-06-14"));
   QCOMPARE(s.dateAfter(5).toString(format), QLatin1String("2007-06-29"));
-  s.setStartDate(QDate(2007, 4, 30));
+  s.setStartDate(MyMoneyDate(2007, 4, 30));
   QCOMPARE(s.dateAfter(2).toString(format), QLatin1String("2007-05-15"));
   QCOMPARE(s.dateAfter(3).toString(format), QLatin1String("2007-05-31"));
   QCOMPARE(s.dateAfter(4).toString(format), QLatin1String("2007-06-15"));
@@ -439,18 +439,18 @@ void MyMoneyScheduleTest::testPaymentDates()
   doc.setContent(ref_ok);
   node = doc.documentElement().firstChild().toElement();
 
-  QDate startDate(2006, 1, 28);
-  QDate endDate(2006, 5, 30);
+  MyMoneyDate startDate(2006, 1, 28);
+  MyMoneyDate endDate(2006, 5, 30);
 
   try {
     sch = MyMoneySchedule(node);
-    QDate nextPayment = sch.nextPayment(startDate);
-    QList<QDate> list = sch.paymentDates(nextPayment, endDate);
+    MyMoneyDate nextPayment = sch.nextPayment(startDate);
+    QList<MyMoneyDate> list = sch.paymentDates(nextPayment, endDate);
     QVERIFY(list.count() == 3);
-    QVERIFY(list[0] == QDate(2006, 2, 28));
-    QVERIFY(list[1] == QDate(2006, 3, 31));
+    QVERIFY(list[0] == MyMoneyDate(2006, 2, 28));
+    QVERIFY(list[1] == MyMoneyDate(2006, 3, 31));
     // Would fall on a Sunday so gets moved back to 28th.
-    QVERIFY(list[2] == QDate(2006, 4, 28));
+    QVERIFY(list[2] == MyMoneyDate(2006, 4, 28));
 
     // Add tests for each possible occurrence.
     // Check how paymentDates is meant to work
@@ -463,7 +463,7 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 1);
-    QVERIFY(list[0] == QDate(2009, 1, 1));
+    QVERIFY(list[0] == MyMoneyDate(2009, 1, 1));
     // MyMoneySchedule::OCCUR_DAILY
     sch.setOccurrence(MyMoneySchedule::OCCUR_DAILY);
     startDate.setYMD(2009, 1, 1);
@@ -472,20 +472,20 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2009, 1, 1));
-    QVERIFY(list[1] == QDate(2009, 1, 2));
+    QVERIFY(list[0] == MyMoneyDate(2009, 1, 1));
+    QVERIFY(list[1] == MyMoneyDate(2009, 1, 2));
     // Would fall on Saturday so gets moved to 2nd.
-    QVERIFY(list[2] == QDate(2009, 1, 2));
+    QVERIFY(list[2] == MyMoneyDate(2009, 1, 2));
     // Would fall on Sunday so gets moved to 2nd.
-    QVERIFY(list[3] == QDate(2009, 1, 2));
-    QVERIFY(list[4] == QDate(2009, 1, 5));
+    QVERIFY(list[3] == MyMoneyDate(2009, 1, 2));
+    QVERIFY(list[4] == MyMoneyDate(2009, 1, 5));
     // MyMoneySchedule::OCCUR_DAILY with multiplier 2
     sch.setOccurrenceMultiplier(2);
     list = sch.paymentDates(startDate.addDays(1), endDate);
     QVERIFY(list.count() == 2);
     // Would fall on Sunday so gets moved to 2nd.
-    QVERIFY(list[0] == QDate(2009, 1, 2));
-    QVERIFY(list[1] == QDate(2009, 1, 5));
+    QVERIFY(list[0] == MyMoneyDate(2009, 1, 2));
+    QVERIFY(list[1] == MyMoneyDate(2009, 1, 5));
     sch.setOccurrenceMultiplier(1);
     // MyMoneySchedule::OCCUR_WEEKLY
     sch.setOccurrence(MyMoneySchedule::OCCUR_WEEKLY);
@@ -495,11 +495,11 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2009, 1, 6));
-    QVERIFY(list[1] == QDate(2009, 1, 13));
-    QVERIFY(list[2] == QDate(2009, 1, 20));
-    QVERIFY(list[3] == QDate(2009, 1, 27));
-    QVERIFY(list[4] == QDate(2009, 2, 3));
+    QVERIFY(list[0] == MyMoneyDate(2009, 1, 6));
+    QVERIFY(list[1] == MyMoneyDate(2009, 1, 13));
+    QVERIFY(list[2] == MyMoneyDate(2009, 1, 20));
+    QVERIFY(list[3] == MyMoneyDate(2009, 1, 27));
+    QVERIFY(list[4] == MyMoneyDate(2009, 2, 3));
     // MyMoneySchedule::OCCUR_EVERYOTHERWEEK
     sch.setOccurrence(MyMoneySchedule::OCCUR_EVERYOTHERWEEK);
     startDate.setYMD(2009, 2, 5);
@@ -508,11 +508,11 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2009, 2, 5));
-    QVERIFY(list[1] == QDate(2009, 2, 19));
-    QVERIFY(list[2] == QDate(2009, 3, 5));
-    QVERIFY(list[3] == QDate(2009, 3, 19));
-    QVERIFY(list[4] == QDate(2009, 4, 2));
+    QVERIFY(list[0] == MyMoneyDate(2009, 2, 5));
+    QVERIFY(list[1] == MyMoneyDate(2009, 2, 19));
+    QVERIFY(list[2] == MyMoneyDate(2009, 3, 5));
+    QVERIFY(list[3] == MyMoneyDate(2009, 3, 19));
+    QVERIFY(list[4] == MyMoneyDate(2009, 4, 2));
     // MyMoneySchedule::OCCUR_FORTNIGHTLY
     sch.setOccurrence(MyMoneySchedule::OCCUR_FORTNIGHTLY);
     startDate.setYMD(2009, 4, 4);
@@ -524,13 +524,13 @@ void MyMoneyScheduleTest::testPaymentDates()
     // First one would fall on a Saturday and would get moved
     // to 3rd which is before start date so is not in list.
     // Would fall on a Saturday so gets moved to 17th.
-    QVERIFY(list[0] == QDate(2009, 4, 17));
+    QVERIFY(list[0] == MyMoneyDate(2009, 4, 17));
     // Would fall on a Saturday so gets moved to 1st.
-    QVERIFY(list[1] == QDate(2009, 5, 1));
+    QVERIFY(list[1] == MyMoneyDate(2009, 5, 1));
     // Would fall on a Saturday so gets moved to 15th.
-    QVERIFY(list[2] == QDate(2009, 5, 15));
+    QVERIFY(list[2] == MyMoneyDate(2009, 5, 15));
     // Would fall on a Saturday so gets moved to 29th.
-    QVERIFY(list[3] == QDate(2009, 5, 29));
+    QVERIFY(list[3] == MyMoneyDate(2009, 5, 29));
     // MyMoneySchedule::OCCUR_EVERYHALFMONTH
     sch.setOccurrence(MyMoneySchedule::OCCUR_EVERYHALFMONTH);
     startDate.setYMD(2009, 6, 1);
@@ -539,12 +539,12 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2009, 6, 1));
-    QVERIFY(list[1] == QDate(2009, 6, 16));
-    QVERIFY(list[2] == QDate(2009, 7, 1));
-    QVERIFY(list[3] == QDate(2009, 7, 16));
+    QVERIFY(list[0] == MyMoneyDate(2009, 6, 1));
+    QVERIFY(list[1] == MyMoneyDate(2009, 6, 16));
+    QVERIFY(list[2] == MyMoneyDate(2009, 7, 1));
+    QVERIFY(list[3] == MyMoneyDate(2009, 7, 16));
     // Would fall on a Saturday so gets moved to 31st.
-    QVERIFY(list[4] == QDate(2009, 7, 31));
+    QVERIFY(list[4] == MyMoneyDate(2009, 7, 31));
     // MyMoneySchedule::OCCUR_EVERYTHREEWEEKS
     sch.setOccurrence(MyMoneySchedule::OCCUR_EVERYTHREEWEEKS);
     startDate.setYMD(2009, 8, 12);
@@ -553,11 +553,11 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2009, 8, 12));
-    QVERIFY(list[1] == QDate(2009, 9, 2));
-    QVERIFY(list[2] == QDate(2009, 9, 23));
-    QVERIFY(list[3] == QDate(2009, 10, 14));
-    QVERIFY(list[4] == QDate(2009, 11, 4));
+    QVERIFY(list[0] == MyMoneyDate(2009, 8, 12));
+    QVERIFY(list[1] == MyMoneyDate(2009, 9, 2));
+    QVERIFY(list[2] == MyMoneyDate(2009, 9, 23));
+    QVERIFY(list[3] == MyMoneyDate(2009, 10, 14));
+    QVERIFY(list[4] == MyMoneyDate(2009, 11, 4));
     // MyMoneySchedule::OCCUR_EVERYFOURWEEKS
     sch.setOccurrence(MyMoneySchedule::OCCUR_EVERYFOURWEEKS);
     startDate.setYMD(2009, 11, 13);
@@ -566,11 +566,11 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2009, 11, 13));
-    QVERIFY(list[1] == QDate(2009, 12, 11));
-    QVERIFY(list[2] == QDate(2010, 1, 8));
-    QVERIFY(list[3] == QDate(2010, 2, 5));
-    QVERIFY(list[4] == QDate(2010, 3, 5));
+    QVERIFY(list[0] == MyMoneyDate(2009, 11, 13));
+    QVERIFY(list[1] == MyMoneyDate(2009, 12, 11));
+    QVERIFY(list[2] == MyMoneyDate(2010, 1, 8));
+    QVERIFY(list[3] == MyMoneyDate(2010, 2, 5));
+    QVERIFY(list[4] == MyMoneyDate(2010, 3, 5));
     // MyMoneySchedule::OCCUR_EVERYTHIRTYDAYS
     sch.setOccurrence(MyMoneySchedule::OCCUR_EVERYTHIRTYDAYS);
     startDate.setYMD(2010, 3, 19);
@@ -579,13 +579,13 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2010, 3, 19));
+    QVERIFY(list[0] == MyMoneyDate(2010, 3, 19));
     // Would fall on a Sunday so gets moved to 16th.
-    QVERIFY(list[1] == QDate(2010, 4, 16));
-    QVERIFY(list[2] == QDate(2010, 5, 18));
-    QVERIFY(list[3] == QDate(2010, 6, 17));
+    QVERIFY(list[1] == MyMoneyDate(2010, 4, 16));
+    QVERIFY(list[2] == MyMoneyDate(2010, 5, 18));
+    QVERIFY(list[3] == MyMoneyDate(2010, 6, 17));
     // Would fall on a Saturday so gets moved to 16th.
-    QVERIFY(list[4] == QDate(2010, 7, 16));
+    QVERIFY(list[4] == MyMoneyDate(2010, 7, 16));
     // MyMoneySchedule::OCCUR_EVERYEIGHTWEEKS
     sch.setOccurrence(MyMoneySchedule::OCCUR_EVERYEIGHTWEEKS);
     startDate.setYMD(2010, 7, 26);
@@ -594,11 +594,11 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2010, 7, 26));
-    QVERIFY(list[1] == QDate(2010, 9, 20));
-    QVERIFY(list[2] == QDate(2010, 11, 15));
-    QVERIFY(list[3] == QDate(2011, 1, 10));
-    QVERIFY(list[4] == QDate(2011, 3, 7));
+    QVERIFY(list[0] == MyMoneyDate(2010, 7, 26));
+    QVERIFY(list[1] == MyMoneyDate(2010, 9, 20));
+    QVERIFY(list[2] == MyMoneyDate(2010, 11, 15));
+    QVERIFY(list[3] == MyMoneyDate(2011, 1, 10));
+    QVERIFY(list[4] == MyMoneyDate(2011, 3, 7));
     // MyMoneySchedule::OCCUR_EVERYOTHERMONTH
     sch.setOccurrence(MyMoneySchedule::OCCUR_EVERYOTHERMONTH);
     startDate.setYMD(2011, 3, 14);
@@ -607,12 +607,12 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2011, 3, 14));
+    QVERIFY(list[0] == MyMoneyDate(2011, 3, 14));
     // Would fall on a Saturday so gets moved to 13th.
-    QVERIFY(list[1] == QDate(2011, 5, 13));
-    QVERIFY(list[2] == QDate(2011, 7, 14));
-    QVERIFY(list[3] == QDate(2011, 9, 14));
-    QVERIFY(list[4] == QDate(2011, 11, 14));
+    QVERIFY(list[1] == MyMoneyDate(2011, 5, 13));
+    QVERIFY(list[2] == MyMoneyDate(2011, 7, 14));
+    QVERIFY(list[3] == MyMoneyDate(2011, 9, 14));
+    QVERIFY(list[4] == MyMoneyDate(2011, 11, 14));
     // MyMoneySchedule::OCCUR_EVERYTHREEMONTHS
     sch.setOccurrence(MyMoneySchedule::OCCUR_EVERYTHREEMONTHS);
     startDate.setYMD(2011, 11, 15);
@@ -621,11 +621,11 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2011, 11, 15));
-    QVERIFY(list[1] == QDate(2012, 2, 15));
-    QVERIFY(list[2] == QDate(2012, 5, 15));
-    QVERIFY(list[3] == QDate(2012, 8, 15));
-    QVERIFY(list[4] == QDate(2012, 11, 15));
+    QVERIFY(list[0] == MyMoneyDate(2011, 11, 15));
+    QVERIFY(list[1] == MyMoneyDate(2012, 2, 15));
+    QVERIFY(list[2] == MyMoneyDate(2012, 5, 15));
+    QVERIFY(list[3] == MyMoneyDate(2012, 8, 15));
+    QVERIFY(list[4] == MyMoneyDate(2012, 11, 15));
     // MyMoneySchedule::OCCUR_QUARTERLY
     sch.setOccurrence(MyMoneySchedule::OCCUR_QUARTERLY);
     startDate.setYMD(2012, 11, 20);
@@ -634,11 +634,11 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2012, 11, 20));
-    QVERIFY(list[1] == QDate(2013, 2, 20));
-    QVERIFY(list[2] == QDate(2013, 5, 20));
-    QVERIFY(list[3] == QDate(2013, 8, 20));
-    QVERIFY(list[4] == QDate(2013, 11, 20));
+    QVERIFY(list[0] == MyMoneyDate(2012, 11, 20));
+    QVERIFY(list[1] == MyMoneyDate(2013, 2, 20));
+    QVERIFY(list[2] == MyMoneyDate(2013, 5, 20));
+    QVERIFY(list[3] == MyMoneyDate(2013, 8, 20));
+    QVERIFY(list[4] == MyMoneyDate(2013, 11, 20));
     // MyMoneySchedule::OCCUR_EVERYFOURMONTHS
     sch.setOccurrence(MyMoneySchedule::OCCUR_EVERYFOURMONTHS);
     startDate.setYMD(2013, 11, 21);
@@ -647,12 +647,12 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2013, 11, 21));
-    QVERIFY(list[1] == QDate(2014, 3, 21));
-    QVERIFY(list[2] == QDate(2014, 7, 21));
-    QVERIFY(list[3] == QDate(2014, 11, 21));
+    QVERIFY(list[0] == MyMoneyDate(2013, 11, 21));
+    QVERIFY(list[1] == MyMoneyDate(2014, 3, 21));
+    QVERIFY(list[2] == MyMoneyDate(2014, 7, 21));
+    QVERIFY(list[3] == MyMoneyDate(2014, 11, 21));
     // Would fall on a Saturday so gets moved to 20th.
-    QVERIFY(list[4] == QDate(2015, 3, 20));
+    QVERIFY(list[4] == MyMoneyDate(2015, 3, 20));
     // MyMoneySchedule::OCCUR_TWICEYEARLY
     sch.setOccurrence(MyMoneySchedule::OCCUR_TWICEYEARLY);
     startDate.setYMD(2015, 3, 22);
@@ -663,10 +663,10 @@ void MyMoneyScheduleTest::testPaymentDates()
     QVERIFY(list.count() == 4);
     // First date would fall on a Sunday which would get moved
     // to 20th which is before start date so not in list.
-    QVERIFY(list[0] == QDate(2015, 9, 22));
-    QVERIFY(list[1] == QDate(2016, 3, 22));
-    QVERIFY(list[2] == QDate(2016, 9, 22));
-    QVERIFY(list[3] == QDate(2017, 3, 22));
+    QVERIFY(list[0] == MyMoneyDate(2015, 9, 22));
+    QVERIFY(list[1] == MyMoneyDate(2016, 3, 22));
+    QVERIFY(list[2] == MyMoneyDate(2016, 9, 22));
+    QVERIFY(list[3] == MyMoneyDate(2017, 3, 22));
     // MyMoneySchedule::OCCUR_YEARLY
     sch.setOccurrence(MyMoneySchedule::OCCUR_YEARLY);
     startDate.setYMD(2017, 3, 23);
@@ -675,12 +675,12 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2017, 3, 23));
-    QVERIFY(list[1] == QDate(2018, 3, 23));
+    QVERIFY(list[0] == MyMoneyDate(2017, 3, 23));
+    QVERIFY(list[1] == MyMoneyDate(2018, 3, 23));
     // Would fall on a Saturday so gets moved to 22nd.
-    QVERIFY(list[2] == QDate(2019, 3, 22));
-    QVERIFY(list[3] == QDate(2020, 3, 23));
-    QVERIFY(list[4] == QDate(2021, 3, 23));
+    QVERIFY(list[2] == MyMoneyDate(2019, 3, 22));
+    QVERIFY(list[3] == MyMoneyDate(2020, 3, 23));
+    QVERIFY(list[4] == MyMoneyDate(2021, 3, 23));
     // MyMoneySchedule::OCCUR_EVERYOTHERYEAR
     sch.setOccurrence(MyMoneySchedule::OCCUR_EVERYOTHERYEAR);
     startDate.setYMD(2021, 3, 24);
@@ -689,12 +689,12 @@ void MyMoneyScheduleTest::testPaymentDates()
     sch.setNextDueDate(startDate);
     list = sch.paymentDates(startDate, endDate);
     QVERIFY(list.count() == 5);
-    QVERIFY(list[0] == QDate(2021, 3, 24));
-    QVERIFY(list[1] == QDate(2023, 3, 24));
-    QVERIFY(list[2] == QDate(2025, 3, 24));
-    QVERIFY(list[3] == QDate(2027, 3, 24));
+    QVERIFY(list[0] == MyMoneyDate(2021, 3, 24));
+    QVERIFY(list[1] == MyMoneyDate(2023, 3, 24));
+    QVERIFY(list[2] == MyMoneyDate(2025, 3, 24));
+    QVERIFY(list[3] == MyMoneyDate(2027, 3, 24));
     // Would fall on a Saturday so gets moved to 23rd.
-    QVERIFY(list[4] == QDate(2029, 3, 23));
+    QVERIFY(list[4] == MyMoneyDate(2029, 3, 23));
   } catch (const MyMoneyException &) {
     QFAIL("Unexpected exception");
   }
@@ -706,18 +706,18 @@ void MyMoneyScheduleTest::testWriteXML()
                       MyMoneySchedule::TYPE_BILL,
                       MyMoneySchedule::OCCUR_WEEKLY, 123,
                       MyMoneySchedule::STYPE_DIRECTDEBIT,
-                      QDate::currentDate(),
-                      QDate(),
+                      MyMoneyDate::currentDate(),
+                      MyMoneyDate(),
                       true,
                       true);
 
-  sch.setLastPayment(QDate::currentDate());
-  sch.recordPayment(QDate::currentDate());
+  sch.setLastPayment(MyMoneyDate::currentDate());
+  sch.recordPayment(MyMoneyDate::currentDate());
   sch.setId("SCH0001");
 
   MyMoneyTransaction t;
-  t.setPostDate(QDate(2001, 12, 28));
-  t.setEntryDate(QDate(2003, 9, 29));
+  t.setPostDate(MyMoneyDate(2001, 12, 28));
+  t.setEntryDate(MyMoneyDate(2003, 9, 29));
   t.setId("T000000000000000001");
   t.setMemo("Wohnung:Miete");
   t.setCommodity("EUR");
@@ -761,8 +761,8 @@ void MyMoneyScheduleTest::testWriteXML()
   QCOMPARE(schedule.attribute("paymentType"), QLatin1String("1"));
   QCOMPARE(schedule.attribute("autoEnter"), QLatin1String("1"));
   QCOMPARE(schedule.attribute("occurenceMultiplier"), QLatin1String("123"));
-  QCOMPARE(schedule.attribute("startDate"), QDate::currentDate().toString(Qt::ISODate));
-  QCOMPARE(schedule.attribute("lastPayment"), QDate::currentDate().toString(Qt::ISODate));
+  QCOMPARE(schedule.attribute("startDate"), MyMoneyDate::currentDate().toString(Qt::ISODate));
+  QCOMPARE(schedule.attribute("lastPayment"), MyMoneyDate::currentDate().toString(Qt::ISODate));
   QCOMPARE(schedule.attribute("occurenceMultiplier"), QLatin1String("123"));
   QCOMPARE(schedule.attribute("occurence"), QLatin1String("4"));
   QCOMPARE(schedule.attribute("type"), QLatin1String("1"));
@@ -854,9 +854,9 @@ void MyMoneyScheduleTest::testReadXML()
                       "  </TRANSACTION>\n"
                       " </SCHEDULED_TX>\n"
                       "</SCHEDULE-CONTAINER>\n"
-                    ).arg(QDate::currentDate().toString(Qt::ISODate))
-                    .arg(QDate::currentDate().toString(Qt::ISODate))
-                    .arg(QDate::currentDate().toString(Qt::ISODate));
+                    ).arg(MyMoneyDate::currentDate().toString(Qt::ISODate))
+                    .arg(MyMoneyDate::currentDate().toString(Qt::ISODate))
+                    .arg(MyMoneyDate::currentDate().toString(Qt::ISODate));
 
   // diff to ref_ok1 is that we now have an empty entrydate
   // in the transaction parameters
@@ -878,9 +878,9 @@ void MyMoneyScheduleTest::testReadXML()
                       "  </TRANSACTION>\n"
                       " </SCHEDULED_TX>\n"
                       "</SCHEDULE-CONTAINER>\n"
-                    ).arg(QDate::currentDate().toString(Qt::ISODate))
-                    .arg(QDate::currentDate().toString(Qt::ISODate))
-                    .arg(QDate::currentDate().toString(Qt::ISODate));
+                    ).arg(MyMoneyDate::currentDate().toString(Qt::ISODate))
+                    .arg(MyMoneyDate::currentDate().toString(Qt::ISODate))
+                    .arg(MyMoneyDate::currentDate().toString(Qt::ISODate));
 
   QString ref_false = QString(
                         "<!DOCTYPE TEST>\n"
@@ -900,9 +900,9 @@ void MyMoneyScheduleTest::testReadXML()
                         "  </TRANSACTION>\n"
                         " </SCHEDULED_TX>\n"
                         "</SCHEDULE-CONTAINER>\n"
-                      ).arg(QDate::currentDate().toString(Qt::ISODate))
-                      .arg(QDate::currentDate().toString(Qt::ISODate))
-                      .arg(QDate::currentDate().toString(Qt::ISODate));
+                      ).arg(MyMoneyDate::currentDate().toString(Qt::ISODate))
+                      .arg(MyMoneyDate::currentDate().toString(Qt::ISODate))
+                      .arg(MyMoneyDate::currentDate().toString(Qt::ISODate));
 
   QDomDocument doc;
   QDomElement node;
@@ -922,13 +922,13 @@ void MyMoneyScheduleTest::testReadXML()
   try {
     sch = MyMoneySchedule(node);
     QVERIFY(sch.id() == "SCH0002");
-    QVERIFY(sch.nextDueDate() == QDate::currentDate().addDays(7));
-    QVERIFY(sch.startDate() == QDate::currentDate());
-    QVERIFY(sch.endDate() == QDate());
+    QVERIFY(sch.nextDueDate() == MyMoneyDate::currentDate().addDays(7));
+    QVERIFY(sch.startDate() == MyMoneyDate::currentDate());
+    QVERIFY(sch.endDate() == MyMoneyDate());
     QVERIFY(sch.autoEnter() == true);
     QVERIFY(sch.isFixed() == true);
     QVERIFY(sch.weekendOption() == MyMoneySchedule::MoveNothing);
-    QVERIFY(sch.lastPayment() == QDate::currentDate());
+    QVERIFY(sch.lastPayment() == MyMoneyDate::currentDate());
     QVERIFY(sch.paymentType() == MyMoneySchedule::STYPE_DIRECTDEBIT);
     QVERIFY(sch.type() == MyMoneySchedule::TYPE_BILL);
     QVERIFY(sch.name() == "A Name");
@@ -936,7 +936,7 @@ void MyMoneyScheduleTest::testReadXML()
     QVERIFY(sch.occurrenceMultiplier() == 1);
     QVERIFY(sch.nextDueDate() == sch.lastPayment().addDays(7));
     QVERIFY(sch.recordedPayments().count() == 1);
-    QVERIFY(sch.recordedPayments()[0] == QDate::currentDate());
+    QVERIFY(sch.recordedPayments()[0] == MyMoneyDate::currentDate());
   } catch (const MyMoneyException &) {
     QFAIL("Unexpected exception");
   }
@@ -948,13 +948,13 @@ void MyMoneyScheduleTest::testReadXML()
   try {
     sch = MyMoneySchedule(node);
     QVERIFY(sch.id() == "SCH0002");
-    QVERIFY(sch.nextDueDate() == QDate::currentDate().addDays(7));
-    QVERIFY(sch.startDate() == QDate::currentDate());
-    QVERIFY(sch.endDate() == QDate());
+    QVERIFY(sch.nextDueDate() == MyMoneyDate::currentDate().addDays(7));
+    QVERIFY(sch.startDate() == MyMoneyDate::currentDate());
+    QVERIFY(sch.endDate() == MyMoneyDate());
     QVERIFY(sch.autoEnter() == true);
     QVERIFY(sch.isFixed() == true);
     QVERIFY(sch.weekendOption() == MyMoneySchedule::MoveNothing);
-    QVERIFY(sch.lastPayment() == QDate::currentDate());
+    QVERIFY(sch.lastPayment() == MyMoneyDate::currentDate());
     QVERIFY(sch.paymentType() == MyMoneySchedule::STYPE_DIRECTDEBIT);
     QVERIFY(sch.type() == MyMoneySchedule::TYPE_BILL);
     QVERIFY(sch.name() == "A Name");
@@ -962,7 +962,7 @@ void MyMoneyScheduleTest::testReadXML()
     QVERIFY(sch.occurrenceMultiplier() == 1);
     QVERIFY(sch.nextDueDate() == sch.lastPayment().addDays(7));
     QVERIFY(sch.recordedPayments().count() == 1);
-    QVERIFY(sch.recordedPayments()[0] == QDate::currentDate());
+    QVERIFY(sch.recordedPayments()[0] == MyMoneyDate::currentDate());
   } catch (const MyMoneyException &) {
     QFAIL("Unexpected exception");
   }
@@ -989,9 +989,9 @@ void MyMoneyScheduleTest::testHasReferenceTo()
                      "  </TRANSACTION>\n"
                      " </SCHEDULED_TX>\n"
                      "</SCHEDULE-CONTAINER>\n"
-                   ).arg(QDate::currentDate().toString(Qt::ISODate))
-                   .arg(QDate::currentDate().toString(Qt::ISODate))
-                   .arg(QDate::currentDate().toString(Qt::ISODate));
+                   ).arg(MyMoneyDate::currentDate().toString(Qt::ISODate))
+                   .arg(MyMoneyDate::currentDate().toString(Qt::ISODate))
+                   .arg(MyMoneyDate::currentDate().toString(Qt::ISODate));
 
   QDomDocument doc;
   QDomElement node;
@@ -1015,7 +1015,7 @@ void MyMoneyScheduleTest::testAdjustedNextDueDate()
 {
   MyMoneySchedule s;
 
-  QDate dueDate(2007, 9, 3); // start on a Monday
+  MyMoneyDate dueDate(2007, 9, 3); // start on a Monday
   for (int i = 0; i < 7; ++i) {
     s.setNextDueDate(dueDate);
     s.setWeekendOption(MyMoneySchedule::MoveNothing);
@@ -1025,7 +1025,7 @@ void MyMoneyScheduleTest::testAdjustedNextDueDate()
     switch (i) {
       case 5: // Saturday
       case 6: // Sunday
-        QVERIFY(s.adjustedNextDueDate() == QDate(2007, 9, 7));
+        QVERIFY(s.adjustedNextDueDate() == MyMoneyDate(2007, 9, 7));
         break;
       default:
         QVERIFY(s.adjustedNextDueDate() == dueDate);
@@ -1036,7 +1036,7 @@ void MyMoneyScheduleTest::testAdjustedNextDueDate()
     switch (i) {
       case 5: // Saturday
       case 6: // Sunday
-        QVERIFY(s.adjustedNextDueDate() == QDate(2007, 9, 10));
+        QVERIFY(s.adjustedNextDueDate() == MyMoneyDate(2007, 9, 10));
         break;
       default:
         QVERIFY(s.adjustedNextDueDate() == dueDate);
@@ -1049,30 +1049,30 @@ void MyMoneyScheduleTest::testAdjustedNextDueDate()
 void MyMoneyScheduleTest::testModifyNextDueDate()
 {
   MyMoneySchedule s;
-  s.setStartDate(QDate(2007, 1, 2));
+  s.setStartDate(MyMoneyDate(2007, 1, 2));
   s.setOccurrence(MyMoneySchedule::OCCUR_MONTHLY);
   s.setNextDueDate(s.startDate().addMonths(1));
   s.setLastPayment(s.startDate());
 
-  QList<QDate> dates;
-  dates = s.paymentDates(QDate(2007, 2, 2), QDate(2007, 2, 2));
-  QCOMPARE(s.nextDueDate(), QDate(2007, 2, 2));
+  QList<MyMoneyDate> dates;
+  dates = s.paymentDates(MyMoneyDate(2007, 2, 2), MyMoneyDate(2007, 2, 2));
+  QCOMPARE(s.nextDueDate(), MyMoneyDate(2007, 2, 2));
   QCOMPARE(dates.count(), 1);
-  QCOMPARE(dates[0], QDate(2007, 2, 2));
+  QCOMPARE(dates[0], MyMoneyDate(2007, 2, 2));
 
-  s.setNextDueDate(QDate(2007, 1, 24));
+  s.setNextDueDate(MyMoneyDate(2007, 1, 24));
 
-  dates = s.paymentDates(QDate(2007, 2, 1), QDate(2007, 2, 1));
-  QCOMPARE(s.nextDueDate(), QDate(2007, 1, 24));
+  dates = s.paymentDates(MyMoneyDate(2007, 2, 1), MyMoneyDate(2007, 2, 1));
+  QCOMPARE(s.nextDueDate(), MyMoneyDate(2007, 1, 24));
   QCOMPARE(dates.count(), 0);
 
-  dates = s.paymentDates(QDate(2007, 1, 24), QDate(2007, 1, 24));
+  dates = s.paymentDates(MyMoneyDate(2007, 1, 24), MyMoneyDate(2007, 1, 24));
   QCOMPARE(dates.count(), 1);
 
-  dates = s.paymentDates(QDate(2007, 1, 24), QDate(2007, 2, 24));
+  dates = s.paymentDates(MyMoneyDate(2007, 1, 24), MyMoneyDate(2007, 2, 24));
   QCOMPARE(dates.count(), 2);
-  QCOMPARE(dates[0], QDate(2007, 1, 24));
-  QCOMPARE(dates[1], QDate(2007, 2, 2));
+  QCOMPARE(dates[0], MyMoneyDate(2007, 1, 24));
+  QCOMPARE(dates[1], MyMoneyDate(2007, 2, 2));
 
 }
 
@@ -1143,7 +1143,7 @@ void MyMoneyScheduleTest::testOccurrenceToString()
   QCOMPARE(MyMoneySchedule::occurrenceToString(MyMoneySchedule::OCCUR_EVERYOTHERYEAR), QLatin1String("Every other year"));
   // For each occurrenceE set occurrence and compare occurrenceToString() with oTS(occurrence())
   MyMoneySchedule s;
-  s.setStartDate(QDate(2007, 1, 1));
+  s.setStartDate(MyMoneyDate(2007, 1, 1));
   s.setNextDueDate(s.startDate());
   s.setLastPayment(s.startDate());
   s.setOccurrence(MyMoneySchedule::OCCUR_ONCE); QCOMPARE(s.occurrenceToString(), QLatin1String("Once"));
@@ -1271,7 +1271,7 @@ void MyMoneyScheduleTest::testOccurrencePeriod()
   // Once occurrence() and setOccurrence() are converting between compound and simple occurrences
   // we need to change the occurrence() check and add an occurrenceMultiplier() check
   MyMoneySchedule s;
-  s.setStartDate(QDate(2007, 1, 1));
+  s.setStartDate(MyMoneyDate(2007, 1, 1));
   s.setNextDueDate(s.startDate());
   s.setLastPayment(s.startDate());
   // Set all base occurrences
@@ -1585,11 +1585,11 @@ void MyMoneyScheduleTest::testProcessingDates()
   // Check there is no processing caledar defined.
   QVERIFY(s.processingCalendar() == 0);
   // This should be a processing day.
-  QVERIFY(s.isProcessingDate(QDate(2009, 12, 31)));
+  QVERIFY(s.isProcessingDate(MyMoneyDate(2009, 12, 31)));
   // This should be a processing day when there is no calendar.
-  QVERIFY(s.isProcessingDate(QDate(2010, 1, 1)));
+  QVERIFY(s.isProcessingDate(MyMoneyDate(2010, 1, 1)));
   // This should be a non-processing day as it is on a weekend.
-  QVERIFY(!s.isProcessingDate(QDate(2010, 1, 2)));
+  QVERIFY(!s.isProcessingDate(MyMoneyDate(2010, 1, 2)));
 }
 
 void MyMoneyScheduleTest::testPaidEarlyOneTime()
@@ -1598,7 +1598,7 @@ void MyMoneyScheduleTest::testPaidEarlyOneTime()
 // https://bugs.kde.org/show_bug.cgi?id=231029
 
   MyMoneySchedule sch;
-  QDate paymentInFuture = QDate::currentDate().addDays(7);
+  MyMoneyDate paymentInFuture = MyMoneyDate::currentDate().addDays(7);
 
   QString ref_ok = QString(
                      "<!DOCTYPE TEST>\n"
@@ -1626,7 +1626,7 @@ void MyMoneyScheduleTest::testPaidEarlyOneTime()
     sch = MyMoneySchedule(node);
     QVERIFY(sch.isFinished() == true);
     QVERIFY(sch.occurrencePeriod() == MyMoneySchedule::OCCUR_MONTHLY);
-    QVERIFY(sch.paymentDates(QDate::currentDate(), QDate::currentDate().addDays(21)).count() == 0);
+    QVERIFY(sch.paymentDates(MyMoneyDate::currentDate(), MyMoneyDate::currentDate().addDays(21)).count() == 0);
   } catch (const MyMoneyException &) {
     QFAIL("Unexpected exception");
   }
@@ -1637,14 +1637,14 @@ void MyMoneyScheduleTest::testAdjustedNextPayment()
 {
   MyMoneySchedule s;
 
-  QDate dueDate(2010, 5, 23);
-  QDate adjustedDueDate(2010, 5, 21);
+  MyMoneyDate dueDate(2010, 5, 23);
+  MyMoneyDate adjustedDueDate(2010, 5, 21);
   s.setNextDueDate(dueDate);
   s.setOccurrence(MyMoneySchedule::OCCUR_MONTHLY);
   s.setWeekendOption(MyMoneySchedule::MoveBefore);
 
   //if adjustedNextPayment works ok with adjusted date prior to the current date, it should return 2010-06-23
-  QDate nextDueDate(2010, 6, 23);
+  MyMoneyDate nextDueDate(2010, 6, 23);
   //this is the current behaviour, and it is wrong
   //QVERIFY(s.adjustedNextPayment(adjustedDueDate) == adjustedDueDate);
 
@@ -1655,7 +1655,7 @@ void MyMoneyScheduleTest::testAdjustedNextPayment()
 void MyMoneyScheduleTest::testReplaceId()
 {
   MyMoneySchedule sch;
-  QDate paymentInFuture = QDate::currentDate().addDays(7);
+  MyMoneyDate paymentInFuture = MyMoneyDate::currentDate().addDays(7);
 
   QString ref_ok = QString(
                      "<!DOCTYPE TEST>\n"
@@ -1698,9 +1698,9 @@ void MyMoneyScheduleTest::testAdjustedWhenItWillEnd()
 {
   MyMoneySchedule s;
 
-  QDate endDate(2011, 8, 13); // this is a nonprocessing day because
+  MyMoneyDate endDate(2011, 8, 13); // this is a nonprocessing day because
   // it's a Saturday
-  QDate refDate(2011, 8, 10); // just some ref date before the last payment
+  MyMoneyDate refDate(2011, 8, 10); // just some ref date before the last payment
 
   s.setStartDate(endDate.addMonths(-1));
   s.setOccurrence(MyMoneySchedule::OCCUR_MONTHLY);
@@ -1721,10 +1721,10 @@ void MyMoneyScheduleTest::testAdjustedWhenItWillEnd()
   QVERIFY(s.adjustedNextPayment(refDate) == endDate.addDays(2));
 
   // reference for Sunday is still OK
-  QVERIFY(s.adjustedNextPayment(QDate(2011, 8, 14)) == endDate.addDays(2));
+  QVERIFY(s.adjustedNextPayment(MyMoneyDate(2011, 8, 14)) == endDate.addDays(2));
 
   // but it is finished on Monday (as reference date)
-  QVERIFY(!s.adjustedNextPayment(QDate(2011, 8, 15)).isValid());
+  QVERIFY(!s.adjustedNextPayment(MyMoneyDate(2011, 8, 15)).isValid());
 
   // check the # of remaining transactions
   s.setNextDueDate(endDate.addMonths(-1));
@@ -1737,14 +1737,14 @@ void MyMoneyScheduleTest::testProcessLastDayInMonth()
   // occurence is unrelated
   s.setOccurrence(MyMoneySchedule::OCCUR_ANY);
   s.setLastDayInMonth(true);
-  s.setNextDueDate(QDate(2010, 1, 1));
-  QCOMPARE(s.adjustedNextDueDate(), QDate(2010,1,31));
-  s.setNextDueDate(QDate(2010, 2, 1));
-  QCOMPARE(s.adjustedNextDueDate(), QDate(2010,2,28));
-  s.setNextDueDate(QDate(2016, 2, 1));
-  QCOMPARE(s.adjustedNextDueDate(), QDate(2016,2,29));
-  s.setNextDueDate(QDate(2016, 4, 1));
-  QCOMPARE(s.adjustedNextDueDate(), QDate(2016,4,30));
+  s.setNextDueDate(MyMoneyDate(2010, 1, 1));
+  QCOMPARE(s.adjustedNextDueDate(), MyMoneyDate(2010,1,31));
+  s.setNextDueDate(MyMoneyDate(2010, 2, 1));
+  QCOMPARE(s.adjustedNextDueDate(), MyMoneyDate(2010,2,28));
+  s.setNextDueDate(MyMoneyDate(2016, 2, 1));
+  QCOMPARE(s.adjustedNextDueDate(), MyMoneyDate(2016,2,29));
+  s.setNextDueDate(MyMoneyDate(2016, 4, 1));
+  QCOMPARE(s.adjustedNextDueDate(), MyMoneyDate(2016,4,30));
   s.setLastDayInMonth(false);
-  QCOMPARE(s.adjustedNextDueDate(), QDate(2016,4,1));
+  QCOMPARE(s.adjustedNextDueDate(), MyMoneyDate(2016,4,1));
 }

@@ -90,8 +90,8 @@ KExportDlg::KExportDlg(QWidget *parent)
   connect(m_qcheckboxCategories, SIGNAL(toggled(bool)), this, SLOT(checkData()));
   connect(m_accountComboBox, SIGNAL(accountSelected(QString)), this, SLOT(checkData(QString)));
   connect(m_profileComboBox, SIGNAL(activated(int)), this, SLOT(checkData()));
-  connect(m_kmymoneydateStart, SIGNAL(dateChanged(QDate)), this, SLOT(checkData()));
-  connect(m_kmymoneydateEnd, SIGNAL(dateChanged(QDate)), this, SLOT(checkData()));
+  connect(m_kmymoneydateStart, SIGNAL(dateChanged(MyMoneyDate)), this, SLOT(checkData()));
+  connect(m_kmymoneydateEnd, SIGNAL(dateChanged(MyMoneyDate)), this, SLOT(checkData()));
 
   checkData(QString());
 }
@@ -163,8 +163,8 @@ void KExportDlg::readConfig()
   m_qlineeditFile->setText(kgrp.readEntry("KExportDlg_LastFile"));
   m_qcheckboxAccount->setChecked(kgrp.readEntry("KExportDlg_AccountOpt", true));
   m_qcheckboxCategories->setChecked(kgrp.readEntry("KExportDlg_CatOpt", true));
-  m_kmymoneydateStart->setDate(kgrp.readEntry("KExportDlg_StartDate", QDate()));
-  m_kmymoneydateEnd->setDate(kgrp.readEntry("KExportDlg_EndDate", QDate()));
+  m_kmymoneydateStart->setDate(kgrp.readEntry("KExportDlg_StartDate", MyMoneyDate()));
+  m_kmymoneydateEnd->setDate(kgrp.readEntry("KExportDlg_EndDate", MyMoneyDate()));
   // m_profileComboBox is loaded in loadProfiles(), so we don't worry here
   // m_accountComboBox is loaded in loadAccounts(), so we don't worry here
 }

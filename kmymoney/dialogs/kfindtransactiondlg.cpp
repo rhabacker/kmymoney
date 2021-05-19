@@ -449,8 +449,8 @@ void KFindTransactionDlg::setupDatePage()
   }
 
   connect(m_ui->m_dateRange, SIGNAL(itemSelected(int)), this, SLOT(slotDateRangeChanged(int)));
-  connect(m_ui->m_fromDate, SIGNAL(dateChanged(QDate)), this, SLOT(slotDateChanged()));
-  connect(m_ui->m_toDate, SIGNAL(dateChanged(QDate)), this, SLOT(slotDateChanged()));
+  connect(m_ui->m_fromDate, SIGNAL(dateChanged(MyMoneyDate)), this, SLOT(slotDateChanged()));
+  connect(m_ui->m_toDate, SIGNAL(dateChanged(MyMoneyDate)), this, SLOT(slotDateChanged()));
 
   slotDateRangeChanged(MyMoneyTransactionFilter::allDates);
 }
@@ -460,8 +460,8 @@ void KFindTransactionDlg::slotDateRangeChanged(int idx)
   switch (idx) {
     case MyMoneyTransactionFilter::allDates:
     case MyMoneyTransactionFilter::userDefined:
-      m_ui->m_fromDate->loadDate(QDate());
-      m_ui->m_toDate->loadDate(QDate());
+      m_ui->m_fromDate->loadDate(MyMoneyDate());
+      m_ui->m_toDate->loadDate(MyMoneyDate());
       break;
     default:
       m_ui->m_fromDate->loadDate(m_startDates[idx]);

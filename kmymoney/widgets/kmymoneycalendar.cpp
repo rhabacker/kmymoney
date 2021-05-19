@@ -82,7 +82,7 @@
 #include "kmymoneydatetbl.h"
 
 KDatePickerPrivateYearSelector::KDatePickerPrivateYearSelector(
-  const KCalendarSystem *cal, const QDate &currentDate, QWidget* parent)
+  const KCalendarSystem *cal, const MyMoneyDate &currentDate, QWidget* parent)
     : KLineEdit(parent), val(new QIntValidator(this)), result(0)
 {
   calendar = cal;
@@ -105,7 +105,7 @@ void KDatePickerPrivateYearSelector::yearEnteredSlot()
 {
   bool ok;
   int newYear;
-  QDate newDate;
+  MyMoneyDate newDate;
 
   // check if entered value is a number
   newYear = text().toInt(&ok);
@@ -134,7 +134,7 @@ void KDatePickerPrivateYearSelector::setYear(int year)
 }
 
 KDatePickerPrivateWeekSelector::KDatePickerPrivateWeekSelector(
-  const KCalendarSystem *cal, const QDate &currentDate, QWidget* parent)
+  const KCalendarSystem *cal, const MyMoneyDate &currentDate, QWidget* parent)
     : KLineEdit(parent), val(new QIntValidator(this)), result(0)
 {
   calendar = cal;
@@ -184,8 +184,8 @@ public:
   kMyMoneyCalendarPrivate()
       : closeButton(0), selectWeek(0), userButton1(0), userButton2(0) {}
 
-  QDate validDateInYearMonth(int year, int month) {
-    QDate newDate;
+  MyMoneyDate validDateInYearMonth(int year, int month) {
+    MyMoneyDate newDate;
     const KCalendarSystem* calendar = KGlobal::locale()->calendar();
 
     // Try to create a valid date in this year and month
@@ -196,7 +196,7 @@ public:
       calendar->setDate(newDate, year, month, 1);
       calendar->addDays(newDate, -1);
     } else {
-      newDate = QDate::fromJulianDay(0);
+      newDate = MyMoneyDate::fromJulianDay(0);
     }
 
     return newDate;
@@ -219,7 +219,7 @@ kMyMoneyCalendar::~kMyMoneyCalendar()
   delete d;
 }
 
-void kMyMoneyCalendar::init(const QDate &dt)
+void kMyMoneyCalendar::init(const MyMoneyDate &dt)
 {
   styleControl = new QPushButton(i18n("Select Style"), this);
   yearForward = new QToolButton(this);
@@ -257,7 +257,7 @@ void kMyMoneyCalendar::init(const QDate &dt)
   monthForward->setIcon(QIcon(BarIcon("arrow-right")));
   monthBackward->setIcon(QIcon(BarIcon("arrow-left")));
   setDate(dt); // set button texts
-  connect(table, SIGNAL(dateChanged(QDate)), SLOT(dateChangedSlot(QDate)));
+  connect(table, SIGNAL(dateChanged(MyMoneyDate)), SLOT(dateChangedSlot(MyMoneyDate)));
   connect(table, SIGNAL(tableClicked()), SLOT(tableClickedSlot()));
   connect(monthForward, SIGNAL(clicked()), SLOT(monthForwardClicked()));
   connect(monthBackward, SIGNAL(clicked()), SLOT(monthBackwardClicked()));
@@ -367,10 +367,10 @@ kMyMoneyCalendar::resizeEvent(QResizeEvent*)
 }
 
 void
-kMyMoneyCalendar::dateChangedSlot(const QDate& date)
+kMyMoneyCalendar::dateChangedSlot(const MyMoneyDate& date)
 {
   kDebug() << "kMyMoneyCalendar::dateChangedSlot: date changed (" << date.year() << "/" << date.month() << "/" << date.day() << ").";
-  line->setText(KGlobal::locale()->formatDate(date, KLocale::ShortDate));
+  line->setText(MyMoneyLocale::formatDate(date, KLocale::ShortDate));
   d->selectWeek->setText(i18n("Week %1", weekOfYear(date)));
   selectMonth->setText(MONTH_NAME(date.month(), date.year(), KCalendarSystem::ShortName));
   selectYear->setText(date.toString("yyyy"));
@@ -385,20 +385,20 @@ kMyMoneyCalendar::tableClickedSlot()
   emit(tableClicked());
 }
 
-const QDate&
+const MyMoneyDate&
 kMyMoneyCalendar::getDate() const
 {
   return table->getDate();
 }
 
-const QDate &
+const MyMoneyDate &
 kMyMoneyCalendar::date() const
 {
   return table->getDate();
 }
 
 bool
-kMyMoneyCalendar::setDate(const QDate& date)
+kMyMoneyCalendar::setDate(const MyMoneyDate& date)
 {
   if (!table)
     return true;  // hack
@@ -411,7 +411,7 @@ kMyMoneyCalendar::setDate(const QDate& date)
     selectMonth->setText(MONTH_NAME(date.month(), date.year(), KCalendarSystem::LongName));
     temp.setNum(date.year());
     selectYear->setText(temp);
-    line->setText(KGlobal::locale()->formatDate(date, KLocale::ShortDate));
+    line->setText(MyMoneyLocale::formatDate(date, KLocale::ShortDate));
     return true;
   } else {
     kDebug() << "kMyMoneyCalendar::setDate: refusing to set invalid date.";
@@ -458,7 +458,7 @@ kMyMoneyCalendar::selectWeekClicked()
   picker->setFocus();
 
   if (popup->exec(d->selectWeek->mapToGlobal(QPoint(0, d->selectWeek->height())))) {
-    QDate newDate;
+    MyMoneyDate newDate;
     int week = picker->week();
     // check if new week will lead to a valid date
     calendar->setDate(newDate, calendar->year(date()), 1, 1);
@@ -487,8 +487,8 @@ kMyMoneyCalendar::selectMonthClicked()
 
   // Populate the pick list with all the month names, this may change by year
   // JPL do we need to do somethng here for months that fall outside valid range?
-  for (int m = 1; m <= calendar->monthsInYear(date()); m++) {
-    popup.addAction(calendar->monthName(m, calendar->year(date())))->setData(m);
+  for (int m = 1; m <= calendar->monthsInYear(date().date()); m++) {
+    popup.addAction(calendar->monthName(m, calendar->year(date().date())))->setData(m);
   }
 
   QAction *item = popup.actions()[calendar->month(date()) - 1];
@@ -504,7 +504,7 @@ kMyMoneyCalendar::selectMonthClicked()
 
   // We need to create a valid date in the month selected so we can find out how many days are
   // in the month.
-  QDate newDate = d->validDateInYearMonth(calendar->year(date()), item->data().toInt());
+  MyMoneyDate newDate = d->validDateInYearMonth(calendar->year(date()), item->data().toInt());
 
   // If we have succeeded in creating a date in the new month, then try to create the new date,
   // checking we don't set a day after the last day of the month
@@ -524,7 +524,7 @@ kMyMoneyCalendar::selectMonthClicked()
 void
 kMyMoneyCalendar::selectYearClicked()
 {
-  QDate newDate;
+  MyMoneyDate newDate;
   const KCalendarSystem* calendar = KGlobal::locale()->calendar();
 
   KPopupFrame *popup = new KPopupFrame(this);
@@ -578,7 +578,7 @@ kMyMoneyCalendar::setEnabled(bool enable)
 void
 kMyMoneyCalendar::lineEnterPressed()
 {
-  QDate temp;
+  MyMoneyDate temp;
   // -----
   if (val->date(line->text(), temp) == QValidator::Acceptable) {
     kDebug() << "kMyMoneyCalendar::lineEnterPressed: valid date entered.";
@@ -692,22 +692,22 @@ bool kMyMoneyCalendar::hasCloseButton() const
   return (d->closeButton != 0);
 }
 
-int kMyMoneyCalendar::weekOfYear(const QDate& date)
+int kMyMoneyCalendar::weekOfYear(const MyMoneyDate& date)
 {
   // Calculate ISO 8601 week number (taken from glibc/Gnumeric)
   int year, week, jan1wday, nextjan1wday;
-  QDate jan1date, nextjan1date;
+  MyMoneyDate jan1date, nextjan1date;
 
   year = date.year();
 
-  jan1date = QDate(year, 1, 1);
+  jan1date = MyMoneyDate(year, 1, 1);
   jan1wday = jan1date.dayOfWeek();
 
   week = (date.dayOfYear() - 1 + jan1wday - 1) / 7 + ((jan1wday - 1) == 0 ? 1 : 0);
 
   /* Does date belong to last week of previous year? */
   if ((week == 0) && (jan1wday > 4 /*THURSDAY*/)) {
-    QDate tmpdate = QDate(year - 1, 12, 31);
+    MyMoneyDate tmpdate = MyMoneyDate(year - 1, 12, 31);
     return weekOfYear(tmpdate);
   }
 
@@ -715,7 +715,7 @@ int kMyMoneyCalendar::weekOfYear(const QDate& date)
     week++;
 
   if (week == 53) {
-    nextjan1date = QDate(year + 1, 1, 1);
+    nextjan1date = MyMoneyDate(year + 1, 1, 1);
     nextjan1wday = nextjan1date.dayOfWeek();
     if (nextjan1wday <= 4 /*THURSDAY*/)
       week = 1;

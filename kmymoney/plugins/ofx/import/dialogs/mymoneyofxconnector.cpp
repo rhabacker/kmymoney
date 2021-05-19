@@ -243,16 +243,16 @@ QString MyMoneyOfxConnector::url() const
   return m_fiSettings.value("url");
 }
 
-QDate MyMoneyOfxConnector::statementStartDate() const
+MyMoneyDate MyMoneyOfxConnector::statementStartDate() const
 {
   if ((m_fiSettings.value("kmmofx-todayMinus").toInt() != 0) && !m_fiSettings.value("kmmofx-numRequestDays").isEmpty()) {
-    return QDate::currentDate().addDays(-m_fiSettings.value("kmmofx-numRequestDays").toInt());
+    return MyMoneyDate::currentDate().addDays(-m_fiSettings.value("kmmofx-numRequestDays").toInt());
   } else if ((m_fiSettings.value("kmmofx-lastUpdate").toInt() != 0) && !m_account.value("lastImportedTransactionDate").isEmpty()) {
-    return QDate::fromString(m_account.value("lastImportedTransactionDate"), Qt::ISODate);
+    return MyMoneyDate::fromString(m_account.value("lastImportedTransactionDate"), Qt::ISODate);
   } else if ((m_fiSettings.value("kmmofx-pickDate").toInt() != 0) && !m_fiSettings.value("kmmofx-specificDate").isEmpty()) {
-    return QDate::fromString(m_fiSettings.value("kmmofx-specificDate"));
+    return MyMoneyDate::fromString(m_fiSettings.value("kmmofx-specificDate"));
   }
-  return QDate::currentDate().addMonths(-2);
+  return MyMoneyDate::currentDate().addMonths(-2);
 }
 
 OfxAccountData::AccountType MyMoneyOfxConnector::accounttype() const
@@ -395,7 +395,7 @@ MyMoneyOfxConnector::Tag MyMoneyOfxConnector::investmentRequest() const
                  .element("INCBAL", "Y"));
 }
 
-MyMoneyOfxConnector::Tag MyMoneyOfxConnector::bankStatementRequest(const QDate& _dtstart) const
+MyMoneyOfxConnector::Tag MyMoneyOfxConnector::bankStatementRequest(const MyMoneyDate& _dtstart) const
 {
   QString dtstart_string = _dtstart.toString(Qt::ISODate).remove(QRegExp("[^0-9]"));
 
@@ -404,7 +404,7 @@ MyMoneyOfxConnector::Tag MyMoneyOfxConnector::bankStatementRequest(const QDate& 
                  .subtag(Tag("INCTRAN").element("DTSTART", dtstart_string).element("INCLUDE", "Y")));
 }
 
-MyMoneyOfxConnector::Tag MyMoneyOfxConnector::creditCardRequest(const QDate& _dtstart) const
+MyMoneyOfxConnector::Tag MyMoneyOfxConnector::creditCardRequest(const MyMoneyDate& _dtstart) const
 {
   QString dtstart_string = _dtstart.toString(Qt::ISODate).remove(QRegExp("[^0-9]"));
 
@@ -464,7 +464,7 @@ QString MyMoneyOfxConnector::uuid()
 // the open source software community.
 //
 
-const QByteArray MyMoneyOfxConnector::statementResponse(const QDate& _dtstart) const
+const QByteArray MyMoneyOfxConnector::statementResponse(const MyMoneyDate& _dtstart) const
 {
   QString request;
 
@@ -518,7 +518,7 @@ MyMoneyOfxConnector::Tag MyMoneyOfxConnector::messageResponse(const QString& _ms
                  .subtag(_response));
 }
 
-MyMoneyOfxConnector::Tag MyMoneyOfxConnector::bankStatementResponse(const QDate& _dtstart) const
+MyMoneyOfxConnector::Tag MyMoneyOfxConnector::bankStatementResponse(const MyMoneyDate& _dtstart) const
 {
   MyMoneyFile* file = MyMoneyFile::instance();
 
@@ -528,7 +528,7 @@ MyMoneyOfxConnector::Tag MyMoneyOfxConnector::bankStatementResponse(const QDate&
   QString transactionlist;
 
   MyMoneyTransactionFilter filter;
-  filter.setDateFilter(_dtstart, QDate::currentDate());
+  filter.setDateFilter(_dtstart, MyMoneyDate::currentDate());
   filter.addAccount(m_account.id());
   QList<MyMoneyTransaction> transactions = file->transactionList(filter);
   QList<MyMoneyTransaction>::const_iterator it_transaction = transactions.begin();
@@ -544,7 +544,7 @@ MyMoneyOfxConnector::Tag MyMoneyOfxConnector::bankStatementResponse(const QDate&
                          .subtag(Tag("LEDGERBAL").element("BALAMT", file->balance(m_account.id()).formatMoney(QString(), 2, false)).element("DTASOF", dtnow_string)));
 }
 
-MyMoneyOfxConnector::Tag MyMoneyOfxConnector::creditCardStatementResponse(const QDate& _dtstart) const
+MyMoneyOfxConnector::Tag MyMoneyOfxConnector::creditCardStatementResponse(const MyMoneyDate& _dtstart) const
 {
   MyMoneyFile* file = MyMoneyFile::instance();
 
@@ -554,7 +554,7 @@ MyMoneyOfxConnector::Tag MyMoneyOfxConnector::creditCardStatementResponse(const 
   QString transactionlist;
 
   MyMoneyTransactionFilter filter;
-  filter.setDateFilter(_dtstart, QDate::currentDate());
+  filter.setDateFilter(_dtstart, MyMoneyDate::currentDate());
   filter.addAccount(m_account.id());
   QList<MyMoneyTransaction> transactions = file->transactionList(filter);
   QList<MyMoneyTransaction>::const_iterator it_transaction = transactions.begin();
@@ -570,7 +570,7 @@ MyMoneyOfxConnector::Tag MyMoneyOfxConnector::creditCardStatementResponse(const 
                          .subtag(Tag("LEDGERBAL").element("BALAMT", file->balance(m_account.id()).formatMoney(QString(), 2, false)).element("DTASOF", dtnow_string)));
 }
 
-QString MyMoneyOfxConnector::investmentStatementResponse(const QDate& _dtstart) const
+QString MyMoneyOfxConnector::investmentStatementResponse(const MyMoneyDate& _dtstart) const
 {
   MyMoneyFile* file = MyMoneyFile::instance();
 
@@ -580,7 +580,7 @@ QString MyMoneyOfxConnector::investmentStatementResponse(const QDate& _dtstart) 
   QString transactionlist;
 
   MyMoneyTransactionFilter filter;
-  filter.setDateFilter(_dtstart, QDate::currentDate());
+  filter.setDateFilter(_dtstart, MyMoneyDate::currentDate());
   filter.addAccount(m_account.id());
   filter.addAccount(m_account.accountList());
   QList<MyMoneyTransaction> transactions = file->transactionList(filter);

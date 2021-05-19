@@ -30,9 +30,9 @@
 using namespace std;
 
 // copied from reports/reportstestcommon.cpp
-QString makeAccount(const QString& _name, MyMoneyAccount::accountTypeE _type, MyMoneyMoney _balance, const QDate& _open, const QString& _parent, QString _currency = "", bool _taxReport = false, bool _openingBalance = false);
+QString makeAccount(const QString& _name, MyMoneyAccount::accountTypeE _type, MyMoneyMoney _balance, const MyMoneyDate& _open, const QString& _parent, QString _currency = "", bool _taxReport = false, bool _openingBalance = false);
 
-QString makeAccount(const QString& _name, MyMoneyAccount::accountTypeE _type, MyMoneyMoney _balance, const QDate& _open, const QString& _parent, QString _currency, bool _taxReport, bool _openingBalance)
+QString makeAccount(const QString& _name, MyMoneyAccount::accountTypeE _type, MyMoneyMoney _balance, const MyMoneyDate& _open, const QString& _parent, QString _currency, bool _taxReport, bool _openingBalance)
 {
   MyMoneyAccount info;
   MyMoneyFileTransaction ft;
@@ -85,9 +85,9 @@ void MyMoneyTransactionFilterTest::initTestCase()
   QString acAsset = MyMoneyFile::instance()->asset().id();
   QString acExpense = (MyMoneyFile::instance()->expense().id());
   QString acIncome = (MyMoneyFile::instance()->income().id());
-  acCheckingId = makeAccount("Account 10.2", MyMoneyAccount::Checkings, MyMoneyMoney(0.0), QDate(2004, 1, 1), acAsset);
-  acExpenseId = makeAccount("Expense", MyMoneyAccount::Expense, MyMoneyMoney(), QDate(2004, 1, 11), acExpense);
-  acIncomeId = makeAccount("Expense", MyMoneyAccount::Expense, MyMoneyMoney(), QDate(2004, 1, 11), acIncome);
+  acCheckingId = makeAccount("Account 10.2", MyMoneyAccount::Checkings, MyMoneyMoney(0.0), MyMoneyDate(2004, 1, 1), acAsset);
+  acExpenseId = makeAccount("Expense", MyMoneyAccount::Expense, MyMoneyMoney(), MyMoneyDate(2004, 1, 11), acExpense);
+  acIncomeId = makeAccount("Expense", MyMoneyAccount::Expense, MyMoneyMoney(), MyMoneyDate(2004, 1, 11), acIncome);
 
   ft.commit();
 }
@@ -179,7 +179,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionAll()
   split2.setShares(MyMoneyMoney(123.00));
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2014, 1, 2));
+  transaction.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction.addSplit(split);
   transaction.addSplit(split2);
 
@@ -205,7 +205,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionAccount()
   split2.setShares(MyMoneyMoney(123.00));
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2014, 1, 2));
+  transaction.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction.addSplit(split);
   transaction.addSplit(split2);
 
@@ -244,7 +244,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionCategory()
   split2.setShares(MyMoneyMoney(123.00));
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2014, 1, 2));
+  transaction.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction.addSplit(split);
   transaction.addSplit(split2);
 
@@ -270,18 +270,18 @@ void MyMoneyTransactionFilterTest::testMatchTransactionDate()
   split2.setShares(MyMoneyMoney(123.00));
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2014, 1, 2));
+  transaction.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction.addSplit(split);
   transaction.addSplit(split2);
 
   MyMoneyTransactionFilter filter;
   filter.setReportAllSplits(true);
-  filter.setDateFilter(QDate(2014, 1, 1), QDate(2014, 1, 3));
+  filter.setDateFilter(MyMoneyDate(2014, 1, 1), MyMoneyDate(2014, 1, 3));
   QVERIFY(filter.match(transaction));
   QCOMPARE(filter.matchingSplits().size(), 2);
 
   // check same date
-  filter.setDateFilter(QDate(2014, 1, 2), QDate(2014, 1, 2));
+  filter.setDateFilter(MyMoneyDate(2014, 1, 2), MyMoneyDate(2014, 1, 2));
   QVERIFY(filter.match(transaction));
   QCOMPARE(filter.matchingSplits().size(), 2);
 
@@ -290,10 +290,10 @@ void MyMoneyTransactionFilterTest::testMatchTransactionDate()
   QCOMPARE(filter.matchingSplits().size(), 1);
 
   // check bad date order
-  filter.setDateFilter(QDate(2014, 1, 2), QDate(2014, 1, 1));
+  filter.setDateFilter(MyMoneyDate(2014, 1, 2), MyMoneyDate(2014, 1, 1));
   QVERIFY(!filter.match(transaction));
 
-  filter.setDateFilter(QDate(2014, 1, 3), QDate(2014, 1, 5));
+  filter.setDateFilter(MyMoneyDate(2014, 1, 3), MyMoneyDate(2014, 1, 5));
   QVERIFY(!filter.match(transaction));
 }
 
@@ -323,7 +323,7 @@ void setupTransactionForNumber(MyMoneyTransaction &transaction, const QString &a
   split4.setNumber("4");
   split4.setMemo("4");
 
-  transaction.setPostDate(QDate(2014, 1, 2));
+  transaction.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction.addSplit(split);
   transaction.addSplit(split2);
   transaction.addSplit(split3);
@@ -394,7 +394,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionPayee()
   split2.setShares(MyMoneyMoney(124.00));
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2014, 1, 2));
+  transaction.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction.addSplit(split);
   transaction.addSplit(split2);
 
@@ -416,7 +416,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionPayee()
   split3.setPayeeId(payeeId);
 
   MyMoneyTransaction transaction2;
-  transaction2.setPostDate(QDate(2014, 1, 2));
+  transaction2.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction2.addSplit(split3);
 
   filter.setReportAllSplits(true);
@@ -449,7 +449,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionState()
   split4.setReconcileFlag(MyMoneySplit::Frozen);
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2014, 1, 2));
+  transaction.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction.addSplit(split);
   transaction.addSplit(split2);
   transaction.addSplit(split3);
@@ -496,7 +496,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionState()
   split5.setReconcileFlag(MyMoneySplit::Frozen);
 
   MyMoneyTransaction transaction2;
-  transaction.setPostDate(QDate(2014, 1, 2));
+  transaction.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction.addSplit(split5);
 
   filter.clear();
@@ -526,7 +526,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionTag()
   split3.setTagIdList(tagIdList);
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2014, 1, 2));
+  transaction.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction.addSplit(split);
   transaction.addSplit(split2);
   transaction.addSplit(split3);
@@ -549,7 +549,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionTag()
   split4.setTagIdList(tagIdList);
 
   MyMoneyTransaction transaction2;
-  transaction2.setPostDate(QDate(2014, 1, 2));
+  transaction2.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction2.addSplit(split4);
 
   filter.setReportAllSplits(true);
@@ -578,7 +578,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionTypeAllTypes()
   split2.setValue(MyMoneyMoney(-123.00));
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2014, 1, 2));
+  transaction.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction.addSplit(split);
   transaction.addSplit(split2);
 
@@ -616,7 +616,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionTypeDeposits()
   split.setValue(MyMoneyMoney(123.00));
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2014, 1, 2));
+  transaction.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction.addSplit(split);
 
   MyMoneyTransactionFilter filter;
@@ -637,7 +637,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionTypeDeposits()
   split2.setValue(MyMoneyMoney(-123.00));
 
   MyMoneyTransaction transaction2;
-  transaction2.setPostDate(QDate(2014, 1, 2));
+  transaction2.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction2.addSplit(split2);
 
   QVERIFY(!filter.match(transaction2));
@@ -658,7 +658,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionTypePayments()
   split.setValue(MyMoneyMoney(-123.00));
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2014, 1, 2));
+  transaction.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction.addSplit(split);
 
   MyMoneyTransactionFilter filter;
@@ -723,7 +723,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionTypeTransfers()
   split3.setValue(MyMoneyMoney(-123.00));
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2014, 1, 2));
+  transaction.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction.addSplit(split);
   transaction.addSplit(split2);
 
@@ -754,7 +754,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionTypeTransfers()
   split5.setValue(MyMoneyMoney(123.00));
 
   MyMoneyTransaction transaction2;
-  transaction2.setPostDate(QDate(2014, 1, 2));
+  transaction2.setPostDate(MyMoneyDate(2014, 1, 2));
   transaction2.addSplit(split4);
   transaction2.addSplit(split5);
 
@@ -773,7 +773,7 @@ void MyMoneyTransactionFilterTest::testMatchTransactionValidity()
     split2.setValue(MyMoneyMoney(-123.00));
 
     MyMoneyTransaction transaction;
-    transaction.setPostDate(QDate(2014, 1, 2));
+    transaction.setPostDate(MyMoneyDate(2014, 1, 2));
     transaction.addSplit(split);
     transaction.addSplit(split2);
 

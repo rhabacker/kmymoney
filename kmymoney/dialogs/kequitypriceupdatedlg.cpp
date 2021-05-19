@@ -108,7 +108,7 @@ KEquityPriceUpdateDlg::KEquityPriceUpdateDlg(QWidget *parent, const QString& sec
     const MyMoneySecurityPair& pair = it_price.key();
     if (file->security(pair.first).isCurrency() && (securityId.isEmpty() || (pair == currencyIds))) {
       const MyMoneyPriceEntries& entries = (*it_price);
-      if (entries.count() > 0 && entries.begin().key() <= QDate::currentDate()) {
+      if (entries.count() > 0 && entries.begin().key() <= MyMoneyDate::currentDate()) {
         addPricePair(pair);
         btnUpdateAll->setEnabled(true);
       }
@@ -140,8 +140,8 @@ KEquityPriceUpdateDlg::KEquityPriceUpdateDlg(QWidget *parent, const QString& sec
   connect(btnUpdateSelected, SIGNAL(clicked()), this, SLOT(slotUpdateSelectedClicked()));
   connect(btnUpdateAll, SIGNAL(clicked()), this, SLOT(slotUpdateAllClicked()));
 
-  connect(&m_webQuote, SIGNAL(quote(QString,QString,QDate,double)),
-          this, SLOT(slotReceivedQuote(QString,QString,QDate,double)));
+  connect(&m_webQuote, SIGNAL(quote(QString,QString,MyMoneyDate,double)),
+          this, SLOT(slotReceivedQuote(QString,QString,MyMoneyDate,double)));
   connect(&m_webQuote, SIGNAL(failed(QString,QString)),
           this, SLOT(slotQuoteFailed(QString,QString)));
   connect(&m_webQuote, SIGNAL(status(QString)),
@@ -309,12 +309,12 @@ MyMoneyPrice KEquityPriceUpdateDlg::price(const QString& id) const
         QStringList ids = id.split(' ', QString::SkipEmptyParts);
         QString fromid = ids[0].toUtf8();
         QString toid = ids[1].toUtf8();
-        price = MyMoneyPrice(fromid, toid, QDate().fromString(item->text(DATE_COL), Qt::ISODate), rate, item->text(SOURCE_COL));
+        price = MyMoneyPrice(fromid, toid, MyMoneyDate().fromString(item->text(DATE_COL), Qt::ISODate), rate, item->text(SOURCE_COL));
       } else
         // otherwise, it's a security quote
       {
         MyMoneySecurity security = MyMoneyFile::instance()->security(id);
-        price = MyMoneyPrice(id, security.tradingCurrency(), QDate().fromString(item->text(DATE_COL), Qt::ISODate), rate, item->text(SOURCE_COL));
+        price = MyMoneyPrice(id, security.tradingCurrency(), MyMoneyDate().fromString(item->text(DATE_COL), Qt::ISODate), rate, item->text(SOURCE_COL));
       }
     }
   }
@@ -348,14 +348,14 @@ void KEquityPriceUpdateDlg::storePrices()
           QString fromid = ids[0].toUtf8();
           QString toid = ids[1].toUtf8();
           name = QString("%1 --> %2").arg(fromid).arg(toid);
-          MyMoneyPrice price(fromid, toid, QDate().fromString(item->text(DATE_COL), Qt::ISODate), rate, item->text(SOURCE_COL));
+          MyMoneyPrice price(fromid, toid, MyMoneyDate().fromString(item->text(DATE_COL), Qt::ISODate), rate, item->text(SOURCE_COL));
           file->addPrice(price);
         } else
           // otherwise, it's a security quote
         {
           MyMoneySecurity security = MyMoneyFile::instance()->security(id);
           name = security.name();
-          MyMoneyPrice price(id, security.tradingCurrency(), QDate().fromString(item->text(DATE_COL), Qt::ISODate), rate, item->text(SOURCE_COL));
+          MyMoneyPrice price(id, security.tradingCurrency(), MyMoneyDate().fromString(item->text(DATE_COL), Qt::ISODate), rate, item->text(SOURCE_COL));
 
           // TODO (Ace) Better handling of the case where there is already a price
           // for this date.  Currently, it just overrides the old value.  Really it
@@ -481,7 +481,7 @@ void KEquityPriceUpdateDlg::slotQuoteFailed(const QString& _id, const QString& _
   }
 }
 
-void KEquityPriceUpdateDlg::slotReceivedQuote(const QString& _id, const QString& _symbol, const QDate& _date, const double& _price)
+void KEquityPriceUpdateDlg::slotReceivedQuote(const QString& _id, const QString& _symbol, const MyMoneyDate& _date, const double& _price)
 {
   QList<QTreeWidgetItem*> foundItems = lvEquityList->findItems(_id, Qt::MatchExactly, ID_COL);
   QTreeWidgetItem* item = 0;
@@ -493,9 +493,9 @@ void KEquityPriceUpdateDlg::slotReceivedQuote(const QString& _id, const QString&
 
   if (item) {
     if (_price > 0.0f && _date.isValid()) {
-      QDate date = _date;
-      if (date > QDate::currentDate())
-        date = QDate::currentDate();
+      MyMoneyDate date = _date;
+      if (date > MyMoneyDate::currentDate())
+        date = MyMoneyDate::currentDate();
 
       double price = _price;
       QString id = _id.toUtf8();

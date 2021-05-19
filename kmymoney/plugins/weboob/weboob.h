@@ -44,8 +44,8 @@ public:
 
   struct Transaction {
     QString id;
-    QDate date;
-    QDate rdate;
+    MyMoneyDate date;
+    MyMoneyDate rdate;
     enum type_t {
       TYPE_UNKNOWN = 0,
       TYPE_TRANSFER,

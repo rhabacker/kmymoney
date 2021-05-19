@@ -108,13 +108,13 @@ public:
     return m_erroneous;
   }
 
-  virtual const QDate& sortPostDate() const {
+  virtual const MyMoneyDate& sortPostDate() const {
     return m_transaction.postDate();
   }
   virtual int sortSamePostDate() const {
     return 2;
   }
-  virtual const QDate& sortEntryDate() const {
+  virtual const MyMoneyDate& sortEntryDate() const {
     return m_transaction.entryDate();
   }
   virtual const QString& sortPayee() const {
@@ -233,7 +233,7 @@ public:
   /**
     * This method creates an editor for the transaction
     */
-  virtual TransactionEditor* createEditor(TransactionEditorContainer* regForm, const KMyMoneyRegister::SelectedTransactions& list, const QDate& lastPostDate) = 0;
+  virtual TransactionEditor* createEditor(TransactionEditorContainer* regForm, const KMyMoneyRegister::SelectedTransactions& list, const MyMoneyDate& lastPostDate) = 0;
 
   virtual void setVisible(bool visible);
 
@@ -339,7 +339,7 @@ public:
     return RegisterItem::numRowsRegister();
   }
 
-  TransactionEditor* createEditor(TransactionEditorContainer* regForm, const KMyMoneyRegister::SelectedTransactions& list, const QDate& lastPostDate);
+  TransactionEditor* createEditor(TransactionEditorContainer* regForm, const KMyMoneyRegister::SelectedTransactions& list, const MyMoneyDate& lastPostDate);
 
   /**
     * Return information if @a row should be shown (@a true )
@@ -407,7 +407,7 @@ public:
     return RegisterItem::numRowsRegister();
   }
 
-  TransactionEditor* createEditor(TransactionEditorContainer* regForm, const KMyMoneyRegister::SelectedTransactions& list, const QDate& lastPostDate);
+  TransactionEditor* createEditor(TransactionEditorContainer* regForm, const KMyMoneyRegister::SelectedTransactions& list, const MyMoneyDate& lastPostDate);
 
   void splits(MyMoneySplit& assetAccountSplit, QList<MyMoneySplit>& interestSplits, QList<MyMoneySplit>& feeSplits) const;
 

@@ -782,7 +782,7 @@ void MyMoneyQifReader::processMSAccountEntry(const MyMoneyAccount::accountTypeE 
     QString txt = extractLine('T');
     MyMoneyMoney balance = m_qifProfile.value('T', txt);
 
-    QDate date = m_qifProfile.date(extractLine('D'));
+    MyMoneyDate date = m_qifProfile.date(extractLine('D'));
     m_account.setOpeningDate(date);
 
     QString name = extractLine('L');
@@ -1101,7 +1101,7 @@ void MyMoneyQifReader::processTransactionEntry()
              i18n("Invalid date format"));
     switch (rc) {
       case KMessageBox::Continue:
-        tr.m_datePosted = (QDate::currentDate());
+        tr.m_datePosted = (MyMoneyDate::currentDate());
         break;
 
       case KMessageBox::Cancel:
@@ -1316,7 +1316,7 @@ void MyMoneyQifReader::processInvestmentTransactionEntry()
 
 //  t.setCommodity(m_account.currencyId());
   // 'D' field: Date
-  QDate date = m_qifProfile.date(extractLine('D'));
+  MyMoneyDate date = m_qifProfile.date(extractLine('D'));
   if (date.isValid())
     tr.m_datePosted = date;
   else {
@@ -1329,7 +1329,7 @@ void MyMoneyQifReader::processInvestmentTransactionEntry()
              i18n("Invalid date format"));
     switch (rc) {
       case KMessageBox::Continue:
-        tr.m_datePosted = QDate::currentDate();
+        tr.m_datePosted = MyMoneyDate::currentDate();
         break;
 
       case KMessageBox::Cancel:
@@ -2282,7 +2282,7 @@ void MyMoneyQifReader::processPriceEntry()
       // Only add the price if the date is valid.  If invalid, fail silently.  See note above.
       // Also require the price value to not have any slashes.  Old prices will be something like
       // "25 9/16", which we do not support.  So we'll skip the price for now.
-      QDate date = m_qifProfile.date(datestr);
+      MyMoneyDate date = m_qifProfile.date(datestr);
       MyMoneyMoney rate(m_qifProfile.value('P', pricestr));
       if (date.isValid() && !rate.isZero()) {
         price.m_amount = rate;

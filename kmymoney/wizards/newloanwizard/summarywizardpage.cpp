@@ -47,7 +47,7 @@ void SummaryWizardPage::initializePage()
   else
     m_summaryLoanType->setText(i18n("lend"));
 
-  m_summaryFirstPayment->setText(KGlobal::locale()->formatDate(field("firstDueDateEdit").toDate()));
+  m_summaryFirstPayment->setText(MyMoneyLocale::formatDate(field("firstDueDateEdit").toDate()));
 
   const QString &payeeId = field("payeeEdit").toString();
   if (!payeeId.isEmpty()) {
@@ -85,7 +85,7 @@ void SummaryWizardPage::initializePage()
   }
   m_summaryAdditionalFees->setText(field("additionalCost").toString());
   m_summaryTotalPeriodicPayment->setText(field("periodicPayment").toString());
-  m_summaryNextPayment->setText(KGlobal::locale()->formatDate(field("nextDueDateEdit").toDate()));
+  m_summaryNextPayment->setText(MyMoneyLocale::formatDate(field("nextDueDateEdit").toDate()));
 
   try {
     QStringList sel = field("paymentAccountEdit").toStringList();

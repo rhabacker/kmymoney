@@ -49,7 +49,7 @@ KNewBudgetDlg::KNewBudgetDlg(QWidget* parent) :
 {
   d->ui.setupUi(this);
   QStringList slYear;
-  QDate dToday = QDate::currentDate();
+  MyMoneyDate dToday = MyMoneyDate::currentDate();
   int iYear = dToday.year();
 
   for (int i = 0; i <= icFutureYears; i++)

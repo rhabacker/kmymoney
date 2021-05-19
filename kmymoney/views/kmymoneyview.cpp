@@ -146,7 +146,7 @@ KMyMoneyView::KMyMoneyView(QWidget *parent)
   connect(kmymoney, SIGNAL(fileLoaded(KUrl)), this, SLOT(slotRefreshViews()));
 
   // let the accounts model know which account is being currently reconciled
-  connect(this, SIGNAL(reconciliationStarts(MyMoneyAccount,QDate,MyMoneyMoney)), Models::instance()->accountsModel(), SLOT(slotReconcileAccount(MyMoneyAccount,QDate,MyMoneyMoney)));
+  connect(this, SIGNAL(reconciliationStarts(MyMoneyAccount,MyMoneyDate,MyMoneyMoney)), Models::instance()->accountsModel(), SLOT(slotReconcileAccount(MyMoneyAccount,MyMoneyDate,MyMoneyMoney)));
 
   // Page 0
   m_homeView = new KHomeView();
@@ -183,7 +183,7 @@ KMyMoneyView::KMyMoneyView(QWidget *parent)
   connect(m_accountsView, SIGNAL(selectObject(MyMoneyObject)), kmymoney, SLOT(slotSelectInvestment(MyMoneyObject)));
   connect(m_accountsView, SIGNAL(openContextMenu(MyMoneyObject)), kmymoney, SLOT(slotShowAccountContextMenu(MyMoneyObject)));
   connect(m_accountsView, SIGNAL(openObject(MyMoneyObject)), kmymoney, SLOT(slotAccountOpen(MyMoneyObject)));
-  connect(this, SIGNAL(reconciliationStarts(MyMoneyAccount,QDate,MyMoneyMoney)), m_accountsView, SLOT(slotReconcileAccount(MyMoneyAccount,QDate,MyMoneyMoney)));
+  connect(this, SIGNAL(reconciliationStarts(MyMoneyAccount,MyMoneyDate,MyMoneyMoney)), m_accountsView, SLOT(slotReconcileAccount(MyMoneyAccount,MyMoneyDate,MyMoneyMoney)));
   connect(m_accountsView, SIGNAL(aboutToShow()), this, SIGNAL(aboutToChangeView()));
 
   // Page 3
@@ -250,7 +250,7 @@ KMyMoneyView::KMyMoneyView(QWidget *parent)
   connect(m_ledgerView, SIGNAL(startEdit()), kmymoney, SLOT(slotTransactionsEdit()));
   connect(m_ledgerView, SIGNAL(endEdit()), kmymoney, SLOT(slotTransactionsEnter()));
   connect(m_ledgerView, SIGNAL(toggleReconciliationFlag()), kmymoney, SLOT(slotToggleReconciliationFlag()));
-  connect(this, SIGNAL(reconciliationStarts(MyMoneyAccount,QDate,MyMoneyMoney)), m_ledgerView, SLOT(slotSetReconcileAccount(MyMoneyAccount,QDate,MyMoneyMoney)));
+  connect(this, SIGNAL(reconciliationStarts(MyMoneyAccount,MyMoneyDate,MyMoneyMoney)), m_ledgerView, SLOT(slotSetReconcileAccount(MyMoneyAccount,MyMoneyDate,MyMoneyMoney)));
   connect(kmymoney, SIGNAL(selectAllTransactions()), m_ledgerView, SLOT(slotSelectAllTransactions()));
   connect(m_ledgerView, SIGNAL(aboutToShow()), this, SIGNAL(aboutToChangeView()));
 
@@ -1375,7 +1375,7 @@ bool KMyMoneyView::dirty()
   return MyMoneyFile::instance()->dirty();
 }
 
-bool KMyMoneyView::startReconciliation(const MyMoneyAccount& account, const QDate& reconciliationDate, const MyMoneyMoney& endingBalance)
+bool KMyMoneyView::startReconciliation(const MyMoneyAccount& account, const MyMoneyDate& reconciliationDate, const MyMoneyMoney& endingBalance)
 {
   bool  ok = true;
 
@@ -1400,7 +1400,7 @@ bool KMyMoneyView::startReconciliation(const MyMoneyAccount& account, const QDat
 
 void KMyMoneyView::finishReconciliation(const MyMoneyAccount& /* account */)
 {
-  emit reconciliationStarts(MyMoneyAccount(), QDate(), MyMoneyMoney());
+  emit reconciliationStarts(MyMoneyAccount(), MyMoneyDate(), MyMoneyMoney());
 }
 
 void KMyMoneyView::newFile()
@@ -1688,7 +1688,7 @@ void KMyMoneyView::loadDefaultCurrencies()
   loadDefaultCurrency(MyMoneySecurity("XAG", i18n("Silver"),     "XAG", 1, 1000000), create);
 }
 
-void KMyMoneyView::loadAncientCurrency(const QString& id, const QString& name, const QString& sym, const QDate& date, const MyMoneyMoney& rate, const QString& newId, const int partsPerUnit, const int smallestCashFraction, const int smallestAccountFraction)
+void KMyMoneyView::loadAncientCurrency(const QString& id, const QString& name, const QString& sym, const MyMoneyDate& date, const MyMoneyMoney& rate, const QString& newId, const int partsPerUnit, const int smallestCashFraction, const int smallestAccountFraction)
 {
   MyMoneyFile* file = MyMoneyFile::instance();
   MyMoneyPrice price(id, newId, date, rate, "KMyMoney");
@@ -1716,49 +1716,49 @@ void KMyMoneyView::loadAncientCurrency(const QString& id, const QString& name, c
 
 void KMyMoneyView::loadAncientCurrencies()
 {
-  loadAncientCurrency("ATS", i18n("Austrian Schilling"), "ÖS", QDate(1998, 12, 31), MyMoneyMoney(10000, 137603), "EUR");
-  loadAncientCurrency("DEM", i18n("German Mark"), "DM", QDate(1998, 12, 31), MyMoneyMoney(100000, 195583), "EUR");
-  loadAncientCurrency("FRF", i18n("French Franc"), "FF", QDate(1998, 12, 31), MyMoneyMoney(100000, 655957), "EUR");
-  loadAncientCurrency("ITL", i18n("Italian Lira"), QChar(0x20A4), QDate(1998, 12, 31), MyMoneyMoney(100, 193627), "EUR");
-  loadAncientCurrency("ESP", i18n("Spanish Peseta"), QString(), QDate(1998, 12, 31), MyMoneyMoney(1000, 166386), "EUR");
-  loadAncientCurrency("NLG", i18n("Dutch Guilder"), QString(), QDate(1998, 12, 31), MyMoneyMoney(100000, 220371), "EUR");
-  loadAncientCurrency("BEF", i18n("Belgian Franc"), "Fr", QDate(1998, 12, 31), MyMoneyMoney(10000, 403399), "EUR");
-  loadAncientCurrency("LUF", i18n("Luxembourg Franc"), "Fr", QDate(1998, 12, 31), MyMoneyMoney(10000, 403399), "EUR");
-  loadAncientCurrency("PTE", i18n("Portuguese Escudo"), QString(), QDate(1998, 12, 31), MyMoneyMoney(1000, 200482), "EUR");
-  loadAncientCurrency("IEP", i18n("Irish Pound"), QChar(0x00A3), QDate(1998, 12, 31), MyMoneyMoney(1000000, 787564), "EUR");
-  loadAncientCurrency("FIM", i18n("Finnish Markka"), QString(), QDate(1998, 12, 31), MyMoneyMoney(100000, 594573), "EUR");
-  loadAncientCurrency("GRD", i18n("Greek Drachma"), QChar(0x20AF), QDate(1998, 12, 31), MyMoneyMoney(100, 34075), "EUR");
+  loadAncientCurrency("ATS", i18n("Austrian Schilling"), "ÖS", MyMoneyDate(1998, 12, 31), MyMoneyMoney(10000, 137603), "EUR");
+  loadAncientCurrency("DEM", i18n("German Mark"), "DM", MyMoneyDate(1998, 12, 31), MyMoneyMoney(100000, 195583), "EUR");
+  loadAncientCurrency("FRF", i18n("French Franc"), "FF", MyMoneyDate(1998, 12, 31), MyMoneyMoney(100000, 655957), "EUR");
+  loadAncientCurrency("ITL", i18n("Italian Lira"), QChar(0x20A4), MyMoneyDate(1998, 12, 31), MyMoneyMoney(100, 193627), "EUR");
+  loadAncientCurrency("ESP", i18n("Spanish Peseta"), QString(), MyMoneyDate(1998, 12, 31), MyMoneyMoney(1000, 166386), "EUR");
+  loadAncientCurrency("NLG", i18n("Dutch Guilder"), QString(), MyMoneyDate(1998, 12, 31), MyMoneyMoney(100000, 220371), "EUR");
+  loadAncientCurrency("BEF", i18n("Belgian Franc"), "Fr", MyMoneyDate(1998, 12, 31), MyMoneyMoney(10000, 403399), "EUR");
+  loadAncientCurrency("LUF", i18n("Luxembourg Franc"), "Fr", MyMoneyDate(1998, 12, 31), MyMoneyMoney(10000, 403399), "EUR");
+  loadAncientCurrency("PTE", i18n("Portuguese Escudo"), QString(), MyMoneyDate(1998, 12, 31), MyMoneyMoney(1000, 200482), "EUR");
+  loadAncientCurrency("IEP", i18n("Irish Pound"), QChar(0x00A3), MyMoneyDate(1998, 12, 31), MyMoneyMoney(1000000, 787564), "EUR");
+  loadAncientCurrency("FIM", i18n("Finnish Markka"), QString(), MyMoneyDate(1998, 12, 31), MyMoneyMoney(100000, 594573), "EUR");
+  loadAncientCurrency("GRD", i18n("Greek Drachma"), QChar(0x20AF), MyMoneyDate(1998, 12, 31), MyMoneyMoney(100, 34075), "EUR");
 
   // http://en.wikipedia.org/wiki/Bulgarian_lev
-  loadAncientCurrency("BGL", i18n("Bulgarian Lev"), "BGL", QDate(1999, 7, 5), MyMoneyMoney(1, 1000), "BGN");
+  loadAncientCurrency("BGL", i18n("Bulgarian Lev"), "BGL", MyMoneyDate(1999, 7, 5), MyMoneyMoney(1, 1000), "BGN");
 
-  loadAncientCurrency("ROL", i18n("Romanian Leu"), "ROL", QDate(2005, 6, 30), MyMoneyMoney(1, 10000), "RON");
+  loadAncientCurrency("ROL", i18n("Romanian Leu"), "ROL", MyMoneyDate(2005, 6, 30), MyMoneyMoney(1, 10000), "RON");
 
-  loadAncientCurrency("RUR", i18n("Russian Ruble (old)"), "RUR", QDate(1998, 1, 1), MyMoneyMoney(1, 1000), "RUB");
+  loadAncientCurrency("RUR", i18n("Russian Ruble (old)"), "RUR", MyMoneyDate(1998, 1, 1), MyMoneyMoney(1, 1000), "RUB");
 
-  loadAncientCurrency("SIT", i18n("Slovenian Tolar"), "SIT", QDate(2006, 12, 31), MyMoneyMoney(100, 23964), "EUR");
+  loadAncientCurrency("SIT", i18n("Slovenian Tolar"), "SIT", MyMoneyDate(2006, 12, 31), MyMoneyMoney(100, 23964), "EUR");
 
   // Source: http://www.tf-portfoliosolutions.net/products/turkishlira.aspx
-  loadAncientCurrency("TRL", i18n("Turkish Lira (old)"), "TL", QDate(2004, 12, 31), MyMoneyMoney(1, 1000000), "TRY");
+  loadAncientCurrency("TRL", i18n("Turkish Lira (old)"), "TL", MyMoneyDate(2004, 12, 31), MyMoneyMoney(1, 1000000), "TRY");
 
   // Source: http://www.focus.de/finanzen/news/malta-und-zypern_aid_66058.html
-  loadAncientCurrency("MTL", i18n("Maltese Lira"), "MTL", QDate(2008, 1, 1), MyMoneyMoney(429300, 1000000), "EUR");
-  loadAncientCurrency("CYP", i18n("Cyprus Pound"), QString("C%1").arg(QChar(0x00A3)), QDate(2008, 1, 1), MyMoneyMoney(585274, 1000000), "EUR");
+  loadAncientCurrency("MTL", i18n("Maltese Lira"), "MTL", MyMoneyDate(2008, 1, 1), MyMoneyMoney(429300, 1000000), "EUR");
+  loadAncientCurrency("CYP", i18n("Cyprus Pound"), QString("C%1").arg(QChar(0x00A3)), MyMoneyDate(2008, 1, 1), MyMoneyMoney(585274, 1000000), "EUR");
 
   // Source: http://www.focus.de/finanzen/news/waehrungszone-slowakei-ist-neuer-euro-staat_aid_359025.html
-  loadAncientCurrency("SKK", i18n("Slovak Koruna"), "SKK", QDate(2008, 12, 31), MyMoneyMoney(1000, 30126), "EUR");
+  loadAncientCurrency("SKK", i18n("Slovak Koruna"), "SKK", MyMoneyDate(2008, 12, 31), MyMoneyMoney(1000, 30126), "EUR");
 
   // Source: http://en.wikipedia.org/wiki/Mozambican_metical
-  loadAncientCurrency("MZM", i18n("Mozambique Metical"), "MT", QDate(2006, 7, 1), MyMoneyMoney(1, 1000), "MZN");
+  loadAncientCurrency("MZM", i18n("Mozambique Metical"), "MT", MyMoneyDate(2006, 7, 1), MyMoneyMoney(1, 1000), "MZN");
 
   // Source https://en.wikipedia.org/wiki/Azerbaijani_manat
-  loadAncientCurrency("AZM", i18n("Azerbaijani Manat"), "m.", QDate(2006, 1, 1), MyMoneyMoney(1, 5000), "AZN");
+  loadAncientCurrency("AZM", i18n("Azerbaijani Manat"), "m.", MyMoneyDate(2006, 1, 1), MyMoneyMoney(1, 5000), "AZN");
 
   // Source: https://en.wikipedia.org/wiki/Litas
-  loadAncientCurrency("LTL", i18n("Lithuanian Litas"), "Lt", QDate(2015, 1, 1), MyMoneyMoney(100000, 345280), "EUR");
+  loadAncientCurrency("LTL", i18n("Lithuanian Litas"), "Lt", MyMoneyDate(2015, 1, 1), MyMoneyMoney(100000, 345280), "EUR");
 
   // Source: https://en.wikipedia.org/wiki/Belarusian_ruble
-  loadAncientCurrency("BYR", i18n("Belarusian Ruble (old)"), "BYR", QDate(2016, 7, 1), MyMoneyMoney(1, 10000), "BYN");
+  loadAncientCurrency("BYR", i18n("Belarusian Ruble (old)"), "BYR", MyMoneyDate(2016, 7, 1), MyMoneyMoney(1, 10000), "BYN");
 }
 
 void KMyMoneyView::viewAccountList(const QString& /*selectAccount*/)
@@ -2028,7 +2028,7 @@ void KMyMoneyView::fixSchedule_0(MyMoneySchedule sched)
       if ((*it_s).reconcileFlag() != MyMoneySplit::NotReconciled) {
         kDebug(2) << Q_FUNC_INFO << " " << sched.id() << " " << (*it_s).id() << " should be 'not reconciled'";
         MyMoneySplit split = *it_s;
-        split.setReconcileDate(QDate());
+        split.setReconcileDate(MyMoneyDate());
         split.setReconcileFlag(MyMoneySplit::NotReconciled);
         t.modifySplit(split);
         updated = true;

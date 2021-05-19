@@ -459,7 +459,7 @@ void KBudgetView::loadBudgets()
   m_budgetList->clear();
 
   // add the correct years to the drop down list
-  QDate date = QDate::currentDate();
+  MyMoneyDate date = MyMoneyDate::currentDate();
   int iStartYear = date.year() - m_iBudgetYearsBack;
 
   m_yearList.clear();

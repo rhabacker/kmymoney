@@ -1195,7 +1195,7 @@ int InvestProcessing::processInvestLine(const QString& inBuffer)
   m_trInvestData.security.clear();
   m_trInvestData.brokerageAccnt.clear();
   m_trInvestData.type.clear();
-  m_trInvestData.date = QDate();
+  m_trInvestData.date = MyMoneyDate();
 
   MyMoneyMoney zero = MyMoneyMoney();
 
@@ -1227,8 +1227,8 @@ int InvestProcessing::processInvestLine(const QString& inBuffer)
       ++neededFieldsCount;
       txt = m_columnList[i];
       txt = txt.remove('"');
-      QDate dat = m_convertDat->convertDate(txt);
-      if (dat == QDate()) {
+      MyMoneyDate dat = m_convertDat->convertDate(txt);
+      if (dat == MyMoneyDate()) {
         KMessageBox::sorry(nullptr, i18n("<center>An invalid date has been detected during import.</center>"
                                    "<center><b>'%1'</b></center>"
                                    "Please check that you have set the correct date format,\n"
@@ -1702,7 +1702,7 @@ void InvestProcessing::investCsvImport(MyMoneyStatement& st)
              m_dateFormats[m_dateFormatIndex]), i18n("Invalid date format"));
     switch (rc) {
       case KMessageBox::Continue:
-        tr.m_datePosted = (QDate::currentDate());
+        tr.m_datePosted = (MyMoneyDate::currentDate());
         break;
       case KMessageBox::Cancel:
         m_importNow = false;//                             Don't process statement

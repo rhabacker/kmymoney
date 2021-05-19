@@ -220,8 +220,8 @@ protected:
   void addItemToFilter(const opTypeE op, const QString& id);
 
 protected:
-  QDate                m_startDates[MyMoneyTransactionFilter::dateOptionCount];
-  QDate                m_endDates[MyMoneyTransactionFilter::dateOptionCount];
+  MyMoneyDate                m_startDates[MyMoneyTransactionFilter::dateOptionCount];
+  MyMoneyDate                m_endDates[MyMoneyTransactionFilter::dateOptionCount];
 
   /**
     * This member holds a list of all transactions matching the filter criteria

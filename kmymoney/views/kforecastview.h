@@ -156,7 +156,7 @@ private:
   void setNegative(QTreeWidgetItem *item, bool isNegative);
   void showAmount(QTreeWidgetItem *item, int column, const MyMoneyMoney &amount, const MyMoneySecurity &security);
   void adjustParentValue(QTreeWidgetItem *item, int column, const MyMoneyMoney& value);
-  void setValue(QTreeWidgetItem *item, int column, const MyMoneyMoney &amount, const QDate &forecastDate);
+  void setValue(QTreeWidgetItem *item, int column, const MyMoneyMoney &amount, const MyMoneyDate &forecastDate);
   void setAmount(QTreeWidgetItem *item, int column, const MyMoneyMoney &amount);
 
   bool m_needReload[MaxViewTabs];

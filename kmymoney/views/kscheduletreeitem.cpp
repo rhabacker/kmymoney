@@ -21,8 +21,6 @@
 // ----------------------------------------------------------------------------
 // QT Includes
 
-#include <QDate>
-
 // ----------------------------------------------------------------------------
 // KDE Includes
 
@@ -31,6 +29,7 @@
 // Project Includes
 
 #include <mymoneymoney.h>
+#include "mymoneyutils.h"
 
 KScheduleTreeItem::KScheduleTreeItem(QTreeWidget* parent) : QTreeWidgetItem(parent)
 {

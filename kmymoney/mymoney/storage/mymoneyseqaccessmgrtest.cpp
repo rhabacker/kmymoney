@@ -67,7 +67,7 @@ void MyMoneySeqAccessMgrTest::testEmptyConstructor()
   QCOMPARE(m->m_scheduleList.count(), 0);
 
   QCOMPARE(m->m_dirty, false);
-  QCOMPARE(m->m_creationDate, QDate::currentDate());
+  QCOMPARE(m->m_creationDate, MyMoneyDate::currentDate());
 
   QCOMPARE(m->liability().name(), QLatin1String("Liability"));
   QCOMPARE(m->asset().name(), QLatin1String("Asset"));
@@ -513,7 +513,7 @@ void MyMoneySeqAccessMgrTest::testAddTransactions()
     QVERIFY(s.id().isEmpty());
     t1.addSplit(s);
 
-    t1.setPostDate(QDate(2002, 5, 10));
+    t1.setPostDate(MyMoneyDate(2002, 5, 10));
   } catch (const MyMoneyException &e) {
     unexpectedException(e);
   }
@@ -561,7 +561,7 @@ void MyMoneySeqAccessMgrTest::testAddTransactions()
     QVERIFY(s.id().isEmpty());
     t2.addSplit(s);
 
-    t2.setPostDate(QDate(2002, 5, 9));
+    t2.setPostDate(MyMoneyDate(2002, 5, 9));
   } catch (const MyMoneyException &e) {
     unexpectedException(e);
   }
@@ -630,9 +630,9 @@ void MyMoneySeqAccessMgrTest::testBalance()
   QCOMPARE(m->balance("A000002"),  MyMoneyMoney(1200, 100));
   QCOMPARE(m->balance("A000003"),  MyMoneyMoney(400, 100));
   QCOMPARE(m->totalBalance("A000001"),  MyMoneyMoney(1600, 100));
-  QCOMPARE(m->balance("A000006", QDate(2002, 5, 9)),  MyMoneyMoney(-11600, 100));
-  QCOMPARE(m->balance("A000005", QDate(2002, 5, 10)),  MyMoneyMoney(-100000, 100));
-  QCOMPARE(m->balance("A000006", QDate(2002, 5, 10)),  MyMoneyMoney(88400, 100));
+  QCOMPARE(m->balance("A000006", MyMoneyDate(2002, 5, 9)),  MyMoneyMoney(-11600, 100));
+  QCOMPARE(m->balance("A000005", MyMoneyDate(2002, 5, 10)),  MyMoneyMoney(-100000, 100));
+  QCOMPARE(m->balance("A000006", MyMoneyDate(2002, 5, 10)),  MyMoneyMoney(88400, 100));
 }
 
 void MyMoneySeqAccessMgrTest::testModifyTransaction()
@@ -670,7 +670,7 @@ void MyMoneySeqAccessMgrTest::testModifyTransaction()
   }
 
   // now modify the date
-  t.setPostDate(QDate(2002, 5, 11));
+  t.setPostDate(MyMoneyDate(2002, 5, 11));
   try {
     m->modifyTransaction(t);
     QCOMPARE(m->balance("A000004"),  MyMoneyMoney(11000, 100));
@@ -1278,11 +1278,11 @@ void MyMoneySeqAccessMgrTest::testAddSchedule()
                              MyMoneySchedule::TYPE_DEPOSIT,
                              MyMoneySchedule::OCCUR_DAILY, 1,
                              MyMoneySchedule::STYPE_MANUALDEPOSIT,
-                             QDate(),
-                             QDate(),
+                             MyMoneyDate(),
+                             MyMoneyDate(),
                              true,
                              false);
-    t1.setPostDate(QDate(2003, 7, 10));
+    t1.setPostDate(MyMoneyDate(2003, 7, 10));
     schedule.setTransaction(t1);
 
     m->addSchedule(schedule);
@@ -1299,8 +1299,8 @@ void MyMoneySeqAccessMgrTest::testAddSchedule()
                              MyMoneySchedule::TYPE_DEPOSIT,
                              MyMoneySchedule::OCCUR_DAILY, 1,
                              MyMoneySchedule::STYPE_MANUALDEPOSIT,
-                             QDate(),
-                             QDate(),
+                             MyMoneyDate(),
+                             MyMoneyDate(),
                              true,
                              false);
     m->addSchedule(schedule);
@@ -1384,9 +1384,9 @@ void MyMoneySeqAccessMgrTest::testRemoveSchedule()
 
 void MyMoneySeqAccessMgrTest::testScheduleList()
 {
-  QDate testDate = QDate::currentDate();
-  QDate notOverdue = testDate.addDays(2);
-  QDate overdue = testDate.addDays(-2);
+  MyMoneyDate testDate = MyMoneyDate::currentDate();
+  MyMoneyDate notOverdue = testDate.addDays(2);
+  MyMoneyDate overdue = testDate.addDays(-2);
 
 
   MyMoneyTransaction t1;
@@ -1399,8 +1399,8 @@ void MyMoneySeqAccessMgrTest::testScheduleList()
                             MyMoneySchedule::TYPE_BILL,
                             MyMoneySchedule::OCCUR_ONCE, 1,
                             MyMoneySchedule::STYPE_DIRECTDEBIT,
-                            QDate(),
-                            QDate(),
+                            MyMoneyDate(),
+                            MyMoneyDate(),
                             false,
                             false);
   t1.setPostDate(notOverdue);
@@ -1417,8 +1417,8 @@ void MyMoneySeqAccessMgrTest::testScheduleList()
                             MyMoneySchedule::TYPE_DEPOSIT,
                             MyMoneySchedule::OCCUR_DAILY, 1,
                             MyMoneySchedule::STYPE_DIRECTDEPOSIT,
-                            QDate(),
-                            QDate(),
+                            MyMoneyDate(),
+                            MyMoneyDate(),
                             false,
                             false);
   t2.setPostDate(notOverdue.addDays(1));
@@ -1435,8 +1435,8 @@ void MyMoneySeqAccessMgrTest::testScheduleList()
                             MyMoneySchedule::TYPE_TRANSFER,
                             MyMoneySchedule::OCCUR_WEEKLY, 1,
                             MyMoneySchedule::STYPE_OTHER,
-                            QDate(),
-                            QDate(),
+                            MyMoneyDate(),
+                            MyMoneyDate(),
                             false,
                             false);
   t3.setPostDate(notOverdue.addDays(2));
@@ -1453,7 +1453,7 @@ void MyMoneySeqAccessMgrTest::testScheduleList()
                             MyMoneySchedule::TYPE_BILL,
                             MyMoneySchedule::OCCUR_WEEKLY, 1,
                             MyMoneySchedule::STYPE_WRITECHEQUE,
-                            QDate(),
+                            MyMoneyDate(),
                             notOverdue.addDays(31),
                             false,
                             false);
@@ -1517,7 +1517,7 @@ void MyMoneySeqAccessMgrTest::testScheduleList()
   list = m->scheduleList("", MyMoneySchedule::TYPE_ANY,
                          MyMoneySchedule::OCCUR_ANY,
                          MyMoneySchedule::STYPE_ANY,
-                         QDate(),
+                         MyMoneyDate(),
                          notOverdue.addDays(1));
   QCOMPARE(list.count(), 3);
   QCOMPARE(list[0].name(), QLatin1String("Schedule 1"));
@@ -1538,8 +1538,8 @@ void MyMoneySeqAccessMgrTest::testScheduleList()
   list = m->scheduleList("", MyMoneySchedule::TYPE_ANY,
                          MyMoneySchedule::OCCUR_ANY,
                          MyMoneySchedule::STYPE_ANY,
-                         QDate(),
-                         QDate(),
+                         MyMoneyDate(),
+                         MyMoneyDate(),
                          true);
   QCOMPARE(list.count(), 1);
   QCOMPARE(list[0].name(), QLatin1String("Schedule 4"));

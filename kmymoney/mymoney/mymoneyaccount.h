@@ -47,13 +47,13 @@ class MyMoneyObjectContainer;
 
 class KMM_MYMONEY_EXPORT ReconciliationKey {
 public:
-    QDate _date;
+    MyMoneyDate _date;
     QString _transactionID;
-    ReconciliationKey(const QDate &date) : _date(date) {}
+    ReconciliationKey(const MyMoneyDate &date) : _date(date) {}
     ReconciliationKey(const QString &transactionID) : _transactionID(transactionID) {}
     bool hasDate() const { return _date.isValid(); }
     bool hasId() const { return !_transactionID.isEmpty(); }
-    const QDate &toDate() const { return _date; }
+    const MyMoneyDate &toDate() const { return _date; }
     const QString toString() const { return hasDate() ? _date.toString(Qt::ISODate) : _transactionID; }
     bool operator==(const ReconciliationKey &b) const { return hasDate() && b.hasDate() ? toDate() == b.toDate() : toString() == b .toString(); }
     bool operator<(const ReconciliationKey &b) const { return hasDate() && b.hasDate() ? toDate() < b.toDate() : toString() < b.toString(); }
@@ -235,28 +235,28 @@ public:
 
   /**
     * This method returns the opening date of this account
-    * @return date of opening of this account as const QDate value
+    * @return date of opening of this account as const MyMoneyDate value
     * @see setOpeningDate()
     */
-  const QDate& openingDate() const {
+  const MyMoneyDate& openingDate() const {
     return m_openingDate;
   }
 
   /**
     * This method returns the date of the last reconciliation of this account
-    * @return date of last reconciliation as const QDate value
+    * @return date of last reconciliation as const MyMoneyDate value
     * @see setLastReconciliationDate
     */
-  const QDate& lastReconciliationDate() const {
+  const MyMoneyDate& lastReconciliationDate() const {
     return m_lastReconciliationDate;
   }
 
   /**
     * This method returns the date the account was last modified
-    * @return date of last modification as const QDate value
+    * @return date of last modification as const MyMoneyDate value
     * @see setLastModified
     */
-  const QDate& lastModified() const {
+  const MyMoneyDate& lastModified() const {
     return m_lastModified;
   }
 
@@ -310,7 +310,7 @@ public:
     * @param date date of last modification
     * @see lastModified
     */
-  void setLastModified(const QDate& date);
+  void setLastModified(const MyMoneyDate &date);
 
   /**
     * This method is used to set the name of the account
@@ -361,18 +361,18 @@ public:
     * This method is used to set the opening date information of an
     * account.
     *
-    * @param date QDate of opening date
+    * @param date MyMoneyDate of opening date
     * @see openingDate
     */
-  void setOpeningDate(const QDate& date);
+  void setOpeningDate(const MyMoneyDate &date);
 
   /**
     * This method is used to set the date of the last reconciliation
     * of an account.
-    * @param date QDate of last reconciliation
+    * @param date MyMoneyDate of last reconciliation
     * @see lastReconciliationDate
     */
-  void setLastReconciliationDate(const QDate& date);
+  void setLastReconciliationDate(const MyMoneyDate& date);
 
   /**
     * This method is used to change the account type
@@ -391,7 +391,7 @@ public:
     * This method is used to update m_lastModified to the current date
     */
   void touch() {
-    setLastModified(QDate::currentDate());
+    setLastModified(MyMoneyDate::currentDate());
   }
 
   /**
@@ -611,7 +611,7 @@ public:
     *
     * @sa reconciliationHistory()
     */
-  bool addReconciliation(const QDate& date, const MyMoneyMoney& amount);
+  bool addReconciliation(const MyMoneyDate& date, const MyMoneyMoney& amount);
 
   /**
     * keeps a history record of a reconciliation for this account on @a transactionID
@@ -682,19 +682,19 @@ private:
     * This member variable keeps the date when the account
     * was last modified.
     */
-  QDate m_lastModified;
+  MyMoneyDate m_lastModified;
 
   /**
     * This member variable keeps the date when the
     * account was created as an object in a MyMoneyFile
     */
-  QDate m_openingDate;
+  MyMoneyDate m_openingDate;
 
   /**
     * This member variable keeps the date of the last
     * reconciliation of this account
     */
-  QDate m_lastReconciliationDate;
+  MyMoneyDate m_lastReconciliationDate;
 
   /**
     * This member holds the ID's of all sub-ordinate accounts
@@ -763,12 +763,12 @@ public:
 
   const MyMoneyMoney loanAmount() const;
   void setLoanAmount(const MyMoneyMoney& amount);
-  const MyMoneyMoney interestRate(const QDate& date) const;
-  void setInterestRate(const QDate& date, const MyMoneyMoney& rate);
+  const MyMoneyMoney interestRate(const MyMoneyDate &date) const;
+  void setInterestRate(const MyMoneyDate& date, const MyMoneyMoney& rate);
   interestDueE interestCalculation() const;
   void setInterestCalculation(const interestDueE onReception);
-  const QDate nextInterestChange() const;
-  void setNextInterestChange(const QDate& date);
+  const MyMoneyDate nextInterestChange() const;
+  void setNextInterestChange(const MyMoneyDate& date);
   const QString schedule() const;
   void setSchedule(const QString& sched);
   bool fixedInterestRate() const;

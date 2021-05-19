@@ -122,8 +122,8 @@ Weboob::Account Weboob::getAccount(QString backend, QString accid, QString max)
     Weboob::Transaction tr;
 
     tr.id = params["id"].toString();
-    tr.date = QDate::fromString(params["date"].toString(), "yyyy-MM-dd");
-    tr.rdate = QDate::fromString(params["rdate"].toString(), "yyyy-MM-dd");
+    tr.date = MyMoneyDate::fromString(params["date"].toString(), "yyyy-MM-dd");
+    tr.rdate = MyMoneyDate::fromString(params["rdate"].toString(), "yyyy-MM-dd");
     tr.type = (Weboob::Transaction::type_t)params["type"].toInt();
     tr.raw = params["raw"].toString();
     tr.category = params["category"].toString();

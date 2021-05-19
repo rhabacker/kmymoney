@@ -47,14 +47,14 @@
 struct KBPickStartDate::Private {
   Ui::KBPickStartDate ui;
   KMyMoneyBanking *banking;
-  QDate firstPossible;
-  QDate lastUpdate;
+  MyMoneyDate firstPossible;
+  MyMoneyDate lastUpdate;
 };
 
 
 KBPickStartDate::KBPickStartDate(KMyMoneyBanking* qb,
-                                 const QDate &firstPossible,
-                                 const QDate &lastUpdate,
+                                 const MyMoneyDate &firstPossible,
+                                 const MyMoneyDate &lastUpdate,
                                  const QString& accountName,
                                  int defaultChoice,
                                  QWidget* parent, bool modal) :
@@ -95,7 +95,7 @@ KBPickStartDate::KBPickStartDate(KMyMoneyBanking* qb,
     // a chance to control the range. Once we are able
     // to use a KMyMoneyDateInput widget, we can make use
     // of the setRange() method again.
-    // d->ui.pickDateEdit->setRange(firstPossible, QDate());
+    // d->ui.pickDateEdit->setRange(firstPossible, MyMoneyDate());
   } else {
     d->ui.firstDateButton->setEnabled(false);
     d->ui.firstDateLabel->setEnabled(false);
@@ -115,7 +115,7 @@ KBPickStartDate::KBPickStartDate(KMyMoneyBanking* qb,
       break;
   }
 
-  d->ui.pickDateEdit->setDate(QDate::currentDate());
+  d->ui.pickDateEdit->setDate(MyMoneyDate::currentDate());
 
   d->ui.buttonGroup->setFocus();
 }
@@ -128,10 +128,10 @@ KBPickStartDate::~KBPickStartDate()
 }
 
 
-QDate KBPickStartDate::date()
+MyMoneyDate KBPickStartDate::date()
 {
   if (d->ui.noDateButton->isChecked())
-    return QDate();
+    return MyMoneyDate();
   else if (d->ui.firstDateButton->isChecked())
     return d->firstPossible;
   else if (d->ui.pickDateButton->isChecked())
@@ -140,7 +140,7 @@ QDate KBPickStartDate::date()
     return d->lastUpdate;
   else {
     DBG_ERROR(0, "Unknown date state");
-    return QDate();
+    return MyMoneyDate();
   }
 }
 

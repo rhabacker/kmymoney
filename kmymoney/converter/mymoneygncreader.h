@@ -384,8 +384,8 @@ protected:
   friend class GncSplit;
   friend class GncSchedule;
   friend class GncRecurrence;
-  const QDate date() const {
-    return (QDate::fromString(m_v[TSDATE].section(' ', 0, 0), Qt::ISODate));
+  const MyMoneyDate date() const {
+    return (MyMoneyDate::fromString(m_v[TSDATE].section(' ', 0, 0), Qt::ISODate));
   };
 private:
   // data elements
@@ -458,7 +458,7 @@ protected:
   QString value() const {
     return (var(VALUE));
   };
-  QDate priceDate() const {
+  MyMoneyDate priceDate() const {
     return (m_vpPriceDate->date());
   };
 private:
@@ -536,8 +536,8 @@ protected:
   QString acct() const {
     return (var(ACCT));
   };
-  const QDate reconDate() const {
-    QDate x = QDate(); return (m_vpDateReconciled == NULL ? x : m_vpDateReconciled->date());
+  const MyMoneyDate reconDate() const {
+    MyMoneyDate x = MyMoneyDate(); return (m_vpDateReconciled == NULL ? x : m_vpDateReconciled->date());
   };
 private:
   // subsidiary objects/elements
@@ -569,10 +569,10 @@ protected:
   QString currency() const {
     return (m_vpCurrency == NULL ? QString() : m_vpCurrency->id());
   };
-  QDate dateEntered() const {
+  MyMoneyDate dateEntered() const {
     return (m_vpDateEntered->date());
   };
-  QDate datePosted() const {
+  MyMoneyDate datePosted() const {
     return (m_vpDatePosted->date());
   };
   bool isTemplate() const {
@@ -684,14 +684,14 @@ protected:
   QString templId() const {
     return (var(TEMPLID));
   };
-  QDate startDate() const {
-    QDate x = QDate(); return (m_vpStartDate == NULL ? x : m_vpStartDate->date());
+  MyMoneyDate startDate() const {
+    MyMoneyDate x = MyMoneyDate(); return (m_vpStartDate == NULL ? x : m_vpStartDate->date());
   };
-  QDate lastDate() const {
-    QDate x = QDate(); return (m_vpLastDate == NULL ? x : m_vpLastDate->date());
+  MyMoneyDate lastDate() const {
+    MyMoneyDate x = MyMoneyDate(); return (m_vpLastDate == NULL ? x : m_vpLastDate->date());
   };
-  QDate endDate() const {
-    QDate x = QDate(); return (m_vpEndDate == NULL ? x : m_vpEndDate->date());
+  MyMoneyDate endDate() const {
+    MyMoneyDate x = MyMoneyDate(); return (m_vpEndDate == NULL ? x : m_vpEndDate->date());
   };
   const GncFreqSpec *getFreqSpec() const {
     return (m_vpFreqSpec);
@@ -747,8 +747,8 @@ public:
 protected:
   friend class MyMoneyGncReader;
   // access data values
-  QDate startDate() const {
-    QDate x = QDate(); return (m_vpStartDate == NULL ? x : m_vpStartDate->date());
+  MyMoneyDate startDate() const {
+    MyMoneyDate x = MyMoneyDate(); return (m_vpStartDate == NULL ? x : m_vpStartDate->date());
   };
   QString mult() const {
     return (var(MULT));
@@ -1049,7 +1049,7 @@ private:
     */
   QString m_txCommodity; // save commodity for current transaction
   QString m_txPayeeId;    // gnc has payee at tx level, we need it at split level
-  QDate m_txDatePosted;   // ditto for post date
+  MyMoneyDate m_txDatePosted;   // ditto for post date
   QString m_txChequeNo;    // ditto for cheque number
   /** In kmm, the order of splits is critical to some operations. These
     * areas will hold the splits until we've read them all */
@@ -1072,7 +1072,7 @@ private:
     */
   QString createPayee(const QString&);  // create a payee and return it's id
   QString createOrphanAccount(const QString&);  // create unknown account and return the id
-  QDate incrDate(QDate lastDate, unsigned char interval, unsigned int intervalCount);  // for date calculations
+  MyMoneyDate incrDate(MyMoneyDate lastDate, unsigned char interval, unsigned int intervalCount);  // for date calculations
   MyMoneyAccount checkConsistency(MyMoneyAccount& parent, MyMoneyAccount& child);  // gnucash is sometimes TOO flexible
   void checkInvestmentOption(QString stockId);  // implement user investment option
   void getPriceSource(MyMoneySecurity stock, QString gncSource);

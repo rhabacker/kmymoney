@@ -111,8 +111,8 @@ public:
 
   // general get functions
   virtual const MyMoneyPayee& user() const = 0;
-  virtual const QDate creationDate() const = 0;
-  virtual const QDate lastModificationDate() const = 0;
+  virtual const MyMoneyDate creationDate() const = 0;
+  virtual const MyMoneyDate lastModificationDate() const = 0;
   virtual unsigned int currentFixVersion() const = 0;
   virtual unsigned int fileFixVersion() const = 0;
 
@@ -346,7 +346,7 @@ public:
     * @param date return balance for specific date
     * @return balance of the account as MyMoneyMoney object
     */
-  virtual const MyMoneyMoney balance(const QString& id, const QDate& date) const = 0;
+  virtual const MyMoneyMoney balance(const QString& id, const MyMoneyDate& date) const = 0;
 
   /**
     * This method is used to return the actual balance of an account
@@ -359,7 +359,7 @@ public:
     * @param date return balance for specific date
     * @return balance of the account as MyMoneyMoney object
     */
-  virtual const MyMoneyMoney totalBalance(const QString& id, const QDate& date) const = 0;
+  virtual const MyMoneyMoney totalBalance(const QString& id, const MyMoneyDate& date) const = 0;
 
   /**
     * Returns the institution of a given ID
@@ -637,7 +637,7 @@ public:
 
   virtual void addPrice(const MyMoneyPrice& price) = 0;
   virtual void removePrice(const MyMoneyPrice& price) = 0;
-  virtual MyMoneyPrice price(const QString& fromId, const QString& toId, const QDate& date, const bool exactDate) const = 0;
+  virtual MyMoneyPrice price(const QString& fromId, const QString& toId, const MyMoneyDate& date, const bool exactDate) const = 0;
 
   /**
     * This method returns a list of all prices.
@@ -707,9 +707,9 @@ public:
     *                  See MyMoneySchedule::paymentTypeE for details.
     *                  Default is MyMoneySchedule::STYPE_ANY
     * @param startDate only schedules with payment dates after @p startDate
-    *                  are searched for. Default is all dates (QDate()).
+    *                  are searched for. Default is all dates (MyMoneyDate()).
     * @param endDate   only schedules with payment dates ending prior to @p endDate
-    *                  are searched for. Default is all dates (QDate()).
+    *                  are searched for. Default is all dates (MyMoneyDate()).
     * @param overdue   if true, only those schedules that are overdue are
     *                  searched for. Default is false (all schedules will be returned).
     *
@@ -719,14 +719,14 @@ public:
       const MyMoneySchedule::typeE type = MyMoneySchedule::TYPE_ANY,
       const MyMoneySchedule::occurrenceE occurrence = MyMoneySchedule::OCCUR_ANY,
       const MyMoneySchedule::paymentTypeE paymentType = MyMoneySchedule::STYPE_ANY,
-      const QDate& startDate = QDate(),
-      const QDate& endDate = QDate(),
+      const MyMoneyDate& startDate = MyMoneyDate(),
+      const MyMoneyDate& endDate = MyMoneyDate(),
       const bool overdue = false) const = 0;
 
   virtual const QList<MyMoneySchedule> scheduleListEx(int scheduleTypes,
       int scheduleOcurrences,
       int schedulePaymentTypes,
-      QDate startDate,
+      MyMoneyDate startDate,
       const QStringList& accounts = QStringList()) const = 0;
 
   /**

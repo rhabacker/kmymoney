@@ -82,7 +82,7 @@ public:
   QString expenseId(const QString& name);
   QString feeId(const QString& name);
   void assignUniqueBankID(MyMoneySplit& s, const MyMoneyStatement::Transaction& t_in);
-  void setupPrice(MyMoneySplit &s, const MyMoneyAccount &splitAccount, const MyMoneyAccount &transactionAccount, const QDate &postDate);
+  void setupPrice(MyMoneySplit &s, const MyMoneyAccount &splitAccount, const MyMoneyAccount &transactionAccount, const MyMoneyDate &postDate);
 
   MyMoneyAccount                 lastAccount;
   QList<MyMoneyTransaction> transactions;
@@ -268,7 +268,7 @@ void MyMoneyStatementReader::Private::assignUniqueBankID(MyMoneySplit& s, const 
   }
 }
 
-void MyMoneyStatementReader::Private::setupPrice(MyMoneySplit &s, const MyMoneyAccount &splitAccount, const MyMoneyAccount &transactionAccount, const QDate &postDate)
+void MyMoneyStatementReader::Private::setupPrice(MyMoneySplit &s, const MyMoneyAccount &splitAccount, const MyMoneyAccount &transactionAccount, const MyMoneyDate &postDate)
 {
   if (transactionAccount.currencyId() != splitAccount.currencyId()) {
     // a currency converstion is needed assume that split has already a proper value

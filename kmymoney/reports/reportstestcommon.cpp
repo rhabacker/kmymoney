@@ -85,7 +85,7 @@ QString acInterest;
 QString acTax;
 QString acCash;
 
-TransactionHelper::TransactionHelper(const QDate& _date, const QString& _action, MyMoneyMoney _value, const QString& _accountid, const QString& _categoryid, const QString& _currencyid, const QString& _payee)
+TransactionHelper::TransactionHelper(const MyMoneyDate& _date, const QString& _action, MyMoneyMoney _value, const QString& _accountid, const QString& _categoryid, const QString& _currencyid, const QString& _payee)
 {
   // _currencyid is the currency of the transaction, and of the _value
   // both the account and category can have their own currency (athough the category having
@@ -142,12 +142,12 @@ void TransactionHelper::update()
   ft.commit();
 }
 
-InvTransactionHelper::InvTransactionHelper(const QDate& _date, const QString& _action, MyMoneyMoney _shares, MyMoneyMoney _price, const QString& _stockaccountid, const QString& _transferid, const QString& _categoryid)
+InvTransactionHelper::InvTransactionHelper(const MyMoneyDate& _date, const QString& _action, MyMoneyMoney _shares, MyMoneyMoney _price, const QString& _stockaccountid, const QString& _transferid, const QString& _categoryid)
 {
   init(_date, _action, _shares, _price, _stockaccountid, _transferid, _categoryid);
 }
 
-void InvTransactionHelper::init(const QDate& _date, const QString& _action, MyMoneyMoney _shares, MyMoneyMoney _price, const QString& _stockaccountid, const QString& _transferid, const QString& _categoryid)
+void InvTransactionHelper::init(const MyMoneyDate& _date, const QString& _action, MyMoneyMoney _shares, MyMoneyMoney _price, const QString& _stockaccountid, const QString& _transferid, const QString& _categoryid)
 {
   MyMoneyFile* file = MyMoneyFile::instance();
   MyMoneyAccount stockaccount = file->account(_stockaccountid);
@@ -220,7 +220,7 @@ void InvTransactionHelper::init(const QDate& _date, const QString& _action, MyMo
   //kDebug(2) << "successfully added " << id();
 }
 
-QString makeAccount(const QString& _name, MyMoneyAccount::accountTypeE _type, MyMoneyMoney _balance, const QDate& _open, const QString& _parent, QString _currency, bool _taxReport, bool _openingBalance)
+QString makeAccount(const QString& _name, MyMoneyAccount::accountTypeE _type, MyMoneyMoney _balance, const MyMoneyDate& _open, const QString& _parent, QString _currency, bool _taxReport, bool _openingBalance)
 {
   MyMoneyAccount info;
   MyMoneyFileTransaction ft;
@@ -252,7 +252,7 @@ QString makeAccount(const QString& _name, MyMoneyAccount::accountTypeE _type, My
   return info.id();
 }
 
-void makePrice(const QString& _currencyid, const QDate& _date, const MyMoneyMoney& _price)
+void makePrice(const QString& _currencyid, const MyMoneyDate& _date, const MyMoneyMoney& _price)
 {
   MyMoneyFileTransaction ft;
   MyMoneyFile* file = MyMoneyFile::instance();
@@ -277,7 +277,7 @@ QString makeEquity(const QString& _name, const QString& _symbol)
   return equity.id();
 }
 
-void makeEquityPrice(const QString& _id, const QDate& _date, const MyMoneyMoney& _price)
+void makeEquityPrice(const QString& _id, const MyMoneyDate& _date, const MyMoneyMoney& _price)
 {
   MyMoneyFile* file = MyMoneyFile::instance();
   MyMoneyFileTransaction ft;

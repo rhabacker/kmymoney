@@ -21,7 +21,6 @@
 // QT Includes
 
 #include <QWidget>
-#include <QDateTime>
 #include <QDateEdit>
 
 // ----------------------------------------------------------------------------
@@ -33,6 +32,7 @@
 // Project Includes
 
 #include "kmm_widgets_export.h"
+#include "mymoneyutils.h"
 
 // Ideas neatly taken from korganizer
 // Respective authors are credited.
@@ -42,12 +42,12 @@ namespace KMyMoney {
   /**
     * Provided to be able to catch the focusOut events before the contents gets changed
     */
-  class OldDateEdit : public QDateEdit
+  class OldDateEdit : public QDateTimeEdit
   {
     Q_OBJECT
   public:
-    explicit OldDateEdit(const QDate& date, QWidget *parent = 0)
-      : QDateEdit(date, parent)
+    explicit OldDateEdit(const MyMoneyDate& date, QWidget *parent = 0)
+      : QDateTimeEdit(date, parent)
       , m_initialSection(QDateTimeEdit::NoSection)
     {}
 
@@ -82,7 +82,7 @@ namespace KMyMoney {
 class KMM_WIDGETS_EXPORT kMyMoneyDateInput : public KHBox
 {
   Q_OBJECT
-  Q_PROPERTY(QDate date READ date WRITE setDate STORED false)
+  Q_PROPERTY(MyMoneyDate date READ date WRITE setDate STORED false)
 
 public:
   explicit kMyMoneyDateInput(QWidget *parent = 0, Qt::AlignmentFlag flags = Qt::AlignLeft);
@@ -90,9 +90,9 @@ public:
 
   /**
     * Returns the selected date in the widget. If the widget is not
-    * showing a date, a QDate() object is returned which has an invalid date.
+    * showing a date, a MyMoneyDate() object is returned which has an invalid date.
     */
-  QDate date() const;
+  MyMoneyDate date() const;
 
   /**
     * Set the date shown in the widget to @a date. If @a date is invalid,
@@ -101,9 +101,9 @@ public:
     * invalid date as of Qt4 anymore, but we need it anyway for multi transaction
     * edit.
     */
-  void setDate(QDate date);
+  void setDate(MyMoneyDate date);
 
-  void setMaximumDate(const QDate& max);
+  void setMaximumDate(const MyMoneyDate& max);
 
   /**
     * Setup the widget with @a date. This date is stored internally and
@@ -111,7 +111,7 @@ public:
     *
     * @sa setDate, resetDate
     */
-  void loadDate(const QDate& date);
+  void loadDate(const MyMoneyDate &date);
 
   /**
     * Setup the widget with the date loaded using loadDate().
@@ -121,11 +121,11 @@ public:
   void resetDate();
 
   QWidget* focusWidget() const;
-  void setRange(const QDate & min, const QDate & max);
+  void setRange(const MyMoneyDate & min, const MyMoneyDate & max);
   void markAsBadDate(bool bad = false, const QColor& = QColor());
 
 signals:
-  void dateChanged(const QDate& date);
+  void dateChanged(const MyMoneyDate& date);
 
 protected:
   /**
@@ -143,11 +143,11 @@ protected:
 
 
 protected slots:
-  void slotDateChosen(QDate date);
+  void slotDateChosen(MyMoneyDate date);
   void toggleDatePicker();
 
 private slots:
-  void slotDateChosenRef(const QDate& date);
+  void slotDateChosenRef(const MyMoneyDate& date);
   void fixSize();
 
 private:

@@ -1634,7 +1634,7 @@ void MyMoneyStorageSql::removeAccount(const MyMoneyAccount& acc)
 void MyMoneyStorageSql::writeAccountList(const QList<MyMoneyAccount>& accList, QSqlQuery& q)
 {
   DBG("*** Entering MyMoneyStorageSql::writeAccountList");
-  //MyMoneyMoney balance = m_storagePtr->balance(acc.id(), QDate());
+  //MyMoneyMoney balance = m_storagePtr->balance(acc.id(), MyMoneyDate());
 
   QVariantList idList;
   QVariantList institutionIdList;
@@ -1660,12 +1660,12 @@ void MyMoneyStorageSql::writeAccountList(const QList<MyMoneyAccount>& accList, Q
     idList << a.id();
     institutionIdList << a.institutionId();
     parentIdList << a.parentAccountId();
-    if (a.lastReconciliationDate() == QDate())
+    if (a.lastReconciliationDate() == MyMoneyDate())
       lastReconciledList << a.lastReconciliationDate();
     else
       lastReconciledList << a.lastReconciliationDate().toString(Qt::ISODate);
     lastModifiedList << a.lastModified();
-    if (a.openingDate() == QDate())
+    if (a.openingDate() == MyMoneyDate())
       openingDateList << a.openingDate();
     else
       openingDateList << a.openingDate().toString(Qt::ISODate);
@@ -1686,7 +1686,7 @@ void MyMoneyStorageSql::writeAccountList(const QList<MyMoneyAccount>& accList, Q
     //FIXME: Using exceptions for branching always feels like a kludge.
     //       Look for a better way.
     try {
-      MyMoneyMoney bal = m_storagePtr->balance(a.id(), QDate());
+      MyMoneyMoney bal = m_storagePtr->balance(a.id(), MyMoneyDate());
       balanceList << bal.toString();
       balanceFormattedList << bal.formatMoney("", -1, false);
     } catch (const MyMoneyException &) {
@@ -2026,7 +2026,7 @@ void MyMoneyStorageSql::writeSplitList
     txIdList << txId;
     typeList << type;
     payeeIdList << s.payeeId();
-    if (s.reconcileDate() == QDate())
+    if (s.reconcileDate() == MyMoneyDate())
       reconcileDateList << s.reconcileDate();
     else
       reconcileDateList << s.reconcileDate().toString(Qt::ISODate);
@@ -2215,7 +2215,7 @@ void MyMoneyStorageSql::writeSchedule(const MyMoneySchedule& sch, QSqlQuery& q, 
   if (!q.exec()) throw MYMONEYEXCEPTION(buildError(q, Q_FUNC_INFO, QString("deleting  Schedule Payment History"))); // krazy:exclude=crashy
 
   q.prepare(m_db.m_tables["kmmSchedulePaymentHistory"].insertString());
-  foreach (const QDate& it, sch.recordedPayments()) {
+  foreach (const MyMoneyDate& it, sch.recordedPayments()) {
     q.bindValue(":schedId", sch.id());
     q.bindValue(":payDate", it.toString(Qt::ISODate));
     if (!q.exec()) throw MYMONEYEXCEPTION(buildError(q, Q_FUNC_INFO, QString("writing Schedule Payment History"))); // krazy:exclude=crashy
@@ -3025,10 +3025,10 @@ void MyMoneyStorageSql::writeFileInfo()
   q.bindValue(":fixLevel", m_storage->fileFixVersion());
   q.bindValue(":created", m_storage->creationDate().toString(Qt::ISODate));
   //q.bindValue(":lastModified", m_storage->lastModificationDate().toString(Qt::ISODate));
-  q.bindValue(":lastModified", QDate::currentDate().toString(Qt::ISODate));
+  q.bindValue(":lastModified", MyMoneyDate::currentDate().toString(Qt::ISODate));
   q.bindValue(":baseCurrency", m_storage->pairs()["kmm-baseCurrency"]);
-  q.bindValue(":dateRangeStart", QDate());
-  q.bindValue(":dateRangeEnd", QDate());
+  q.bindValue(":dateRangeStart", MyMoneyDate());
+  q.bindValue(":dateRangeEnd", MyMoneyDate());
 
   //FIXME: This modifies all m_<variable> used in this function.
   // Sometimes the memory has been updated.
@@ -3183,8 +3183,8 @@ void MyMoneyStorageSql::readFileInfo()
     throw MYMONEYEXCEPTION(buildError(q, Q_FUNC_INFO, QString("retrieving FileInfo")));
 
   QSqlRecord rec = q.record();
-  m_storage->setCreationDate(GETDATE(rec.indexOf("created")));
-  m_storage->setLastModificationDate(GETDATE(rec.indexOf("lastModified")));
+  m_storage->setCreationDate(GETDATETIME(rec.indexOf("created")));
+  m_storage->setLastModificationDate(GETDATETIME(rec.indexOf("lastModified")));
 
   m_institutions = (unsigned long) GETULL(rec.indexOf("institutions"));
   m_accounts = (unsigned long) GETULL(rec.indexOf("accounts"));
@@ -3748,7 +3748,7 @@ void MyMoneyStorageSql::readAccounts()
   m_storage->loadAccountId(m_hiIdAccounts);
 }
 
-const QMap<QString, MyMoneyMoney> MyMoneyStorageSql::fetchBalance(const QStringList& idList, const QDate& date) const
+const QMap<QString, MyMoneyMoney> MyMoneyStorageSql::fetchBalance(const QStringList& idList, const MyMoneyDate& date) const
 {
 
   QMap<QString, MyMoneyMoney> returnValue;
@@ -3898,9 +3898,9 @@ const QMap<QString, MyMoneyTransaction> MyMoneyStorageSql::fetchTransactions(con
       }
       // start a new transaction
       tx = MyMoneyTransaction(txId, MyMoneyTransaction());
-      tx.setPostDate(GETDATE(txPostDateCol));
+      tx.setPostDate(GETDATETIME(txPostDateCol));
       tx.setMemo(GETSTRING(txMemoCol));
-      tx.setEntryDate(GETDATE(txEntryDateCol));
+      tx.setEntryDate(GETDATETIME(txEntryDateCol));
       tx.setCommodity(GETSTRING(txCurrencyIdCol));
       tx.setBankID(GETSTRING(txBankIdCol));
 
@@ -3920,7 +3920,7 @@ const QMap<QString, MyMoneyTransaction> MyMoneyStorageSql::fetchTransactions(con
     // prepare split
     MyMoneySplit s;
     s.setPayeeId(GETSTRING(payeeIdCol));
-    s.setReconcileDate(GETDATE(reconcileDateCol));
+    s.setReconcileDate(GETDATETIME(reconcileDateCol));
     s.setAction(GETSTRING(actionCol));
     s.setReconcileFlag(static_cast<MyMoneySplit::reconcileFlagE>(GETINT(reconcileFlagCol)));
     s.setValue(MyMoneyMoney(QStringEmpty(GETSTRING(valueCol))));
@@ -4044,12 +4044,12 @@ const QMap<QString, MyMoneyTransaction> MyMoneyStorageSql::fetchTransactions(con
 
   bool splitFilterActive = false; // the split filter is active if we are selecting on fields in the split table
   // get start and end dates
-  QDate start = filter.fromDate();
-  QDate end = filter.toDate();
+  MyMoneyDate start = filter.fromDate();
+  MyMoneyDate end = filter.toDate();
   // not entirely sure if the following is correct, but at best, saves a lot of reads, at worst
   // it only causes us to read a few more transactions that strictly necessary (I think...)
-  if (start == m_startDate) start = QDate();
-  bool txFilterActive = ((start != QDate()) || (end != QDate())); // and this for fields in the transaction table
+  if (start == m_startDate) start = MyMoneyDate();
+  bool txFilterActive = ((start != MyMoneyDate()) || (end != MyMoneyDate())); // and this for fields in the transaction table
 
   QString whereClause = "";
   QString subClauseconnector = " WHERE txType = 'N' AND ";
@@ -4147,11 +4147,11 @@ const QMap<QString, MyMoneyTransaction> MyMoneyStorageSql::fetchTransactions(con
   // build a date clause for the transaction table
   QString dateClause;
   QString connector = "";
-  if (end != QDate()) {
+  if (end != MyMoneyDate()) {
     dateClause = QString("(kmmTransactions.postDate < '%1')").arg(end.addDays(1).toString(Qt::ISODate));
     connector = " AND ";
   }
-  if (start != QDate()) {
+  if (start != MyMoneyDate()) {
     dateClause += QString("%1 (kmmTransactions.postDate >= '%2')").arg(connector).arg(start.toString(Qt::ISODate));
   }
   // now get a list of transaction ids
@@ -4324,14 +4324,14 @@ const QMap<QString, MyMoneySchedule> MyMoneyStorageSql::fetchSchedules(const QSt
     s.setOccurrencePeriod(static_cast<MyMoneySchedule::occurrenceE>(GETINT(occurenceCol)));
     s.setOccurrenceMultiplier(GETINT(occurenceMultiplierCol));
     s.setPaymentType(static_cast<MyMoneySchedule::paymentTypeE>(GETINT(paymentTypeCol)));
-    s.setStartDate(GETDATE(startDateCol));
-    s.setEndDate(GETDATE(endDateCol));
+    s.setStartDate(GETDATETIME(startDateCol));
+    s.setEndDate(GETDATETIME(endDateCol));
     boolChar = GETSTRING(fixedCol); s.setFixed(boolChar == "Y");
     boolChar = GETSTRING(lastDayInMonthCol); s.setLastDayInMonth(boolChar == "Y");
     boolChar = GETSTRING(autoEnterCol); s.setAutoEnter(boolChar == "Y");
-    s.setLastPayment(GETDATE(lastPaymentCol));
+    s.setLastPayment(GETDATETIME(lastPaymentCol));
     s.setWeekendOption(static_cast<MyMoneySchedule::weekendOptionE>(GETINT(weekendOptionCol)));
-    QDate nextPaymentDue = GETDATE(nextPaymentDueCol);
+    MyMoneyDate nextPaymentDue = GETDATETIME(nextPaymentDueCol);
 
     // convert simple occurrence to compound occurrence
     int mult = s.occurrenceMultiplier();
@@ -4353,9 +4353,9 @@ const QMap<QString, MyMoneySchedule> MyMoneyStorageSql::fetchSchedules(const QSt
     QSqlRecord rec = q2.record();
     if (!q2.next()) throw MYMONEYEXCEPTION(buildError(q2, Q_FUNC_INFO, QString("retrieving scheduled transaction")));
     MyMoneyTransaction tx(s.id(), MyMoneyTransaction());
-    tx.setPostDate(getDate(q2.value(t.fieldNumber("postDate")).toString()));
+    tx.setPostDate(getDateTime(q2.value(t.fieldNumber("postDate")).toString()));
     tx.setMemo(q2.value(t.fieldNumber("memo")).toString());
-    tx.setEntryDate(getDate(q2.value(t.fieldNumber("entryDate")).toString()));
+    tx.setEntryDate(getDateTime(q2.value(t.fieldNumber("entryDate")).toString()));
     tx.setCommodity(q2.value(t.fieldNumber("currencyId")).toString());
     tx.setBankID(q2.value(t.fieldNumber("bankId")).toString());
 
@@ -4373,7 +4373,7 @@ const QMap<QString, MyMoneySchedule> MyMoneyStorageSql::fetchSchedules(const QSt
 
     // If the transaction doesn't have a post date, setTransaction will reject it.
     // The old way of handling things was to store the next post date in the schedule object
-    // and set the transaction post date to QDate().
+    // and set the transaction post date to MyMoneyDate().
     // For compatibility, if this is the case, copy the next post date from the schedule object
     // to the transaction object post date.
     if (!tx.postDate().isValid()) {
@@ -4385,7 +4385,7 @@ const QMap<QString, MyMoneySchedule> MyMoneyStorageSql::fetchSchedules(const QSt
     // read in the recorded payments
     sq.bindValue(":id", s.id());
     if (!sq.exec()) throw MYMONEYEXCEPTION(buildError(q, Q_FUNC_INFO, QString("reading schedule payment history"))); // krazy:exclude=crashy
-    while (sq.next()) s.recordPayment(sq.value(0).toDate());
+    while (sq.next()) s.recordPayment(sq.value(0).toDateTime());
 
     sList[s.id()] = s;
 
@@ -4476,7 +4476,7 @@ void MyMoneyStorageSql::readPrices()
 //  }
 }
 
-MyMoneyPrice MyMoneyStorageSql::fetchSinglePrice(const QString& fromId, const QString& toId, const QDate& date_, bool exactDate, bool /*forUpdate*/) const
+MyMoneyPrice MyMoneyStorageSql::fetchSinglePrice(const QString& fromId, const QString& toId, const MyMoneyDate& date_, bool exactDate, bool /*forUpdate*/) const
 {
   DBG("*** Entering MyMoneyStorageSql::fetchSinglePrice");
   const MyMoneyDbTable& t = m_db.m_tables["kmmPrices"];
@@ -4500,10 +4500,10 @@ MyMoneyPrice MyMoneyStorageSql::fetchSinglePrice(const QString& fromId, const QS
 
   q.prepare(queryString);
 
-  QDate date(date_);
+  MyMoneyDate date(date_);
 
   if (!date.isValid())
-    date = QDate::currentDate();
+    date = MyMoneyDate::currentDate();
 
   q.bindValue(":fromId", fromId);
   q.bindValue(":toId", toId);
@@ -4585,7 +4585,7 @@ const MyMoneyPriceList MyMoneyStorageSql::fetchPrices(const QStringList& fromIdL
   while (q.next()) {
     QString from = GETSTRING(fromIdCol);
     QString to = GETSTRING(toIdCol);
-    QDate date = GETDATE(priceDateCol);
+    MyMoneyDate date = GETDATETIME(priceDateCol);
 
     pList [MyMoneySecurityPair(from, to)].insert(date, MyMoneyPrice(from, to, date, MyMoneyMoney(GETSTRING(priceCol)), GETSTRING(priceSourceCol)));
     signalProgress(++progress, 0);
@@ -5065,14 +5065,14 @@ QString& MyMoneyStorageSql::buildError(const QSqlQuery& q, const QString& functi
 }
 
 int MyMoneyStorageSql::m_precision = 4;
-QDate MyMoneyStorageSql::m_startDate = QDate(1900, 1, 1);
+MyMoneyDate MyMoneyStorageSql::m_startDate = MyMoneyDate(MyMoneyDate(1900, 1, 1));
 
 void MyMoneyStorageSql::setPrecision(int prec)
 {
   m_precision = prec;
 }
 
-void MyMoneyStorageSql::setStartDate(const QDate& startDate)
+void MyMoneyStorageSql::setStartDate(const MyMoneyDate& startDate)
 {
   m_startDate = startDate;
 }

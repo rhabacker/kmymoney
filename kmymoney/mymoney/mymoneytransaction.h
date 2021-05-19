@@ -64,10 +64,10 @@ public:
   friend QDataStream &operator>>(QDataStream &, MyMoneyTransaction &);
 
   // Simple get operations
-  const QDate& entryDate() const {
+  const MyMoneyDate& entryDate() const {
     return m_entryDate;
   };
-  const QDate& postDate() const {
+  const MyMoneyDate& postDate() const {
     return m_postDate;
   };
   const QString& memo() const {
@@ -90,8 +90,8 @@ public:
   };
 
   // Simple set operations
-  void setPostDate(const QDate& date);
-  void setEntryDate(const QDate& date);
+  void setPostDate(const MyMoneyDate& date);
+  void setEntryDate(const MyMoneyDate& date);
   void setMemo(const QString& memo);
   void setCommodity(const QString& commodityId) {
     m_commodity = commodityId;
@@ -344,12 +344,12 @@ private:
     * This member contains the date when the transaction was entered
     * into the engine
     */
-  QDate m_entryDate;
+   MyMoneyDate m_entryDate;
 
   /**
     * This member contains the date the transaction was posted
     */
-  QDate m_postDate;
+  MyMoneyDate m_postDate;
 
   /**
     * This member keeps the memo text associated with this transaction

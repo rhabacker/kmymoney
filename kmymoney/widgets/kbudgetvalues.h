@@ -86,7 +86,7 @@ private:
   kMyMoneyEdit*   m_field[12];
   QLabel*         m_label[12];
   QWidget*        m_currentTab;
-  QDate           m_budgetDate;
+  MyMoneyDate           m_budgetDate;
 
 signals:
   void valuesChanged();

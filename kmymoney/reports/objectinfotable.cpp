@@ -156,7 +156,7 @@ void ObjectInfoTable::constructScheduleTable()
       //convert to base currency if needed
       MyMoneyMoney xr = MyMoneyMoney::ONE;
       if (m_config.isConvertCurrency() && account.isForeignCurrency()) {
-        xr = account.baseCurrencyPrice(QDate::currentDate()).reduce();
+        xr = account.baseCurrencyPrice(MyMoneyDate::currentDate()).reduce();
       }
 
       // help for sort and render functions
@@ -270,7 +270,7 @@ void ObjectInfoTable::constructAccountTable()
 
       //convert to base currency if needed
       if (m_config.isConvertCurrency() && account.isForeignCurrency()) {
-        MyMoneyMoney xr = account.baseCurrencyPrice(QDate::currentDate()).reduce();
+        MyMoneyMoney xr = account.baseCurrencyPrice(MyMoneyDate::currentDate()).reduce();
         value = value * xr;
       }
       accountRow["currentbalance"] = value.toString();
@@ -297,7 +297,7 @@ void ObjectInfoTable::constructAccountLoanTable()
       //convert to base currency if needed
       MyMoneyMoney xr = MyMoneyMoney::ONE;
       if (m_config.isConvertCurrency() && account.isForeignCurrency()) {
-        xr = account.baseCurrencyPrice(QDate::currentDate()).reduce();
+        xr = account.baseCurrencyPrice(MyMoneyDate::currentDate()).reduce();
       }
 
       accountRow["rank"] = '0';
@@ -312,7 +312,7 @@ void ObjectInfoTable::constructAccountLoanTable()
       accountRow["currencyname"] = (file->currency(account.currencyId())).name();
       accountRow["payee"] = file->payee(loan.payee()).name();
       accountRow["loanamount"] = (loan.loanAmount() * xr).toString();
-      accountRow["interestrate"] = (loan.interestRate(QDate::currentDate()) / MyMoneyMoney(100, 1) * xr).toString();
+      accountRow["interestrate"] = (loan.interestRate(MyMoneyDate::currentDate()) / MyMoneyMoney(100, 1) * xr).toString();
       accountRow["nextinterestchange"] = loan.nextInterestChange().toString(Qt::ISODate);
       accountRow["periodicpayment"] = (loan.periodicPayment() * xr).toString();
       accountRow["finalpayment"] = (loan.finalPayment() * xr).toString();

@@ -120,18 +120,18 @@ public:
    *  @returns @p false and does not change anything
    *      if the date given is invalid.
    **/
-  bool setDate(const QDate&);
+  bool setDate(const MyMoneyDate&);
 
   /**
    * Returns the selected date.
    * @deprecated
    **/
-  const QDate& getDate() const;
+  const MyMoneyDate& getDate() const;
 
   /**
    * @returns the selected date.
    */
-  const QDate &date() const;
+  const MyMoneyDate &date() const;
 
   /**
    * Enables or disables the widget.
@@ -206,7 +206,7 @@ protected:
   QSize maxMonthRect;
 
 protected slots:
-  void dateChangedSlot(const QDate&);
+  void dateChangedSlot(const MyMoneyDate&);
   void tableClickedSlot();
   void monthForwardClicked();
   void monthBackwardClicked();
@@ -228,19 +228,19 @@ signals:
    *  selected.
    *  @see dateSelected
    */
-  void dateChanged(const QDate&);
+  void dateChanged(const MyMoneyDate&);
   /** This signal is emitted each time a day has been selected by
    *  clicking on the table (hitting a day in the current month). It
    *  has the same meaning as dateSelected() in older versions of
    *  KDatePicker.
    */
-  void dateSelected(const QDate&);
+  void dateSelected(const MyMoneyDate&);
   /** This signal is emitted when enter is pressed and a VALID date
    *  has been entered before into the line edit. Connect to both
    *  dateEntered() and dateSelected() to receive all events where the
    *  user really enters a date.
    */
-  void dateEntered(const QDate&);
+  void dateEntered(const MyMoneyDate&);
   /** This signal is emitted when the day has been selected by
    *  clicking on it in the table.
    */
@@ -252,13 +252,13 @@ private:
 
 protected:
   virtual void virtual_hook(int id, void* data);
-  void init(const QDate &dt);
+  void init(const MyMoneyDate &dt);
 
 private:
   class kMyMoneyCalendarPrivate;
   kMyMoneyCalendarPrivate* const d;
   // calculate ISO 8601 week number
-  int weekOfYear(const QDate&);
+  int weekOfYear(const MyMoneyDate&);
 
 #define MONTH_NAME(a,b,c)  KGlobal::locale()->calendar()->monthName(a,b,c)
 };
@@ -269,7 +269,7 @@ class KDatePickerPrivateYearSelector : public KLineEdit
   Q_OBJECT
 
 public:
-  KDatePickerPrivateYearSelector(const KCalendarSystem *calendar, const QDate &currentDate, QWidget *parent = 0);
+  KDatePickerPrivateYearSelector(const KCalendarSystem *calendar, const MyMoneyDate &currentDate, QWidget *parent = 0);
   int year();
   void setYear(int year);
 
@@ -285,7 +285,7 @@ protected:
 
 private:
   const KCalendarSystem *calendar;
-  QDate oldDate;
+  MyMoneyDate oldDate;
 
   Q_DISABLE_COPY(KDatePickerPrivateYearSelector)
 };
@@ -295,7 +295,7 @@ class KDatePickerPrivateWeekSelector : public KLineEdit
   Q_OBJECT
 
 public:
-  KDatePickerPrivateWeekSelector(const KCalendarSystem *calendar, const QDate &currentDate, QWidget *parent = 0);
+  KDatePickerPrivateWeekSelector(const KCalendarSystem *calendar, const MyMoneyDate &currentDate, QWidget *parent = 0);
   int week();
   void setWeek(int week);
 
@@ -311,7 +311,7 @@ protected:
 
 private:
   const KCalendarSystem *calendar;
-  QDate oldDate;
+  MyMoneyDate oldDate;
 
   Q_DISABLE_COPY(KDatePickerPrivateWeekSelector)
 };

@@ -56,7 +56,7 @@ const QString MyMoneyFile::AccountSeparator = QChar(':');
 
 MyMoneyFile MyMoneyFile::file;
 
-typedef QList<std::pair<QString, QDate> > BalanceNotifyList;
+typedef QList<std::pair<QString, MyMoneyDate> > BalanceNotifyList;
 typedef QMap<QString, bool> CacheNotifyList;
 
 class MyMoneyNotification
@@ -155,7 +155,7 @@ public:
       m_notificationList[id] = reload;
   }
 
-  void addCacheNotification(const QString& id, const QDate& date, bool reload = true) {
+  void addCacheNotification(const QString& id, const MyMoneyDate& date, bool reload = true) {
     if (!id.isEmpty()) {
       m_notificationList[id] = reload;
       m_balanceNotifyList.append(std::make_pair(id, date));
@@ -943,13 +943,13 @@ void MyMoneyFile::addAccount(MyMoneyAccount& account, MyMoneyAccount& parent)
 
   // if we don't have a valid opening date use today
   if (!account.openingDate().isValid()) {
-    account.setOpeningDate(QDate::currentDate());
+    account.setOpeningDate(MyMoneyDate::currentDate());
   }
 
   // make sure to set the opening date for categories to a
   // fixed date (1900-1-1). See #313793 on b.k.o for details
   if (account.isIncomeExpense()) {
-    account.setOpeningDate(QDate(1900, 1, 1));
+    account.setOpeningDate(MyMoneyDate(1900, 1, 1));
   }
 
   // if we don't have a currency assigned use the base currency
@@ -1511,7 +1511,7 @@ unsigned int MyMoneyFile::institutionCount() const
   return d->m_storage->institutionCount();
 }
 
-const MyMoneyMoney MyMoneyFile::balance(const QString& id, const QDate& date) const
+const MyMoneyMoney MyMoneyFile::balance(const QString& id, const MyMoneyDate& date) const
 {
   if (date.isValid()) {
     MyMoneyBalanceCacheItem bal = d->m_balanceCache.balance(id, date);
@@ -1530,7 +1530,7 @@ const MyMoneyMoney MyMoneyFile::balance(const QString& id, const QDate& date) co
   return returnValue;
 }
 
-const MyMoneyMoney MyMoneyFile::clearedBalance(const QString &id, const QDate& date) const
+const MyMoneyMoney MyMoneyFile::clearedBalance(const QString &id, const MyMoneyDate& date) const
 {
   MyMoneyMoney cleared;
   QList<MyMoneyTransaction> list;
@@ -1544,7 +1544,7 @@ const MyMoneyMoney MyMoneyFile::clearedBalance(const QString &id, const QDate& d
 
   MyMoneyTransactionFilter filter;
   filter.addAccount(id);
-  filter.setDateFilter(QDate(), date);
+  filter.setDateFilter(MyMoneyDate(), date);
   filter.setReportAllSplits(false);
   filter.addState(MyMoneyTransactionFilter::notReconciled);
   transactionList(list, filter);
@@ -1561,7 +1561,7 @@ const MyMoneyMoney MyMoneyFile::clearedBalance(const QString &id, const QDate& d
   return cleared * factor;
 }
 
-const MyMoneyMoney MyMoneyFile::totalBalance(const QString& id, const QDate& date) const
+const MyMoneyMoney MyMoneyFile::totalBalance(const QString& id, const MyMoneyDate &date) const
 {
   d->checkStorage();
 
@@ -1793,8 +1793,8 @@ const QList<MyMoneySchedule> MyMoneyFile::scheduleList(
   const MyMoneySchedule::typeE type,
   const MyMoneySchedule::occurrenceE occurrence,
   const MyMoneySchedule::paymentTypeE paymentType,
-  const QDate& startDate,
-  const QDate& endDate,
+  const MyMoneyDate& startDate,
+  const MyMoneyDate& endDate,
   const bool overdue) const
 {
   d->checkStorage();
@@ -2002,8 +2002,8 @@ const QStringList MyMoneyFile::consistencyCheck()
 
     // check if it is a category and set the date to 1900-01-01 if different
     if ((*it_a).isIncomeExpense()) {
-      if (((*it_a).openingDate().isValid() == false) || ((*it_a).openingDate() != QDate(1900, 1, 1))) {
-        (*it_a).setOpeningDate(QDate(1900, 1, 1));
+      if (((*it_a).openingDate().isValid() == false) || ((*it_a).openingDate() != MyMoneyDate(1900, 1, 1))) {
+        (*it_a).setOpeningDate(MyMoneyDate(1900, 1, 1));
       }
     }
 
@@ -2123,7 +2123,7 @@ const QStringList MyMoneyFile::consistencyCheck()
     QList<MyMoneySplit> splits = t.splits();
     QList<MyMoneySplit>::const_iterator it_s;
     bool tChanged = false;
-    QDate accountOpeningDate;
+    MyMoneyDate accountOpeningDate;
     QStringList accountList;
     for (it_s = splits.constBegin(); it_s != splits.constEnd(); ++it_s) {
       bool sChanged = false;
@@ -2209,9 +2209,9 @@ const QStringList MyMoneyFile::consistencyCheck()
     // make sure that the transaction's post date is valid
     if (!t.postDate().isValid()) {
       tChanged = true;
-      t.setPostDate(t.entryDate().isValid() ? t.entryDate() : QDate::currentDate());
+      t.setPostDate(t.entryDate().isValid() ? t.entryDate() : MyMoneyDate::currentDate());
       rc << i18n("  * Transaction '%1' has an invalid post date.", t.id());
-      rc << i18n("    The post date was updated to '%1'.", KGlobal::locale()->formatDate(t.postDate(), KLocale::ShortDate));
+      rc << i18n("    The post date was updated to '%1'.", MyMoneyLocale::formatDate(t.postDate(), KLocale::ShortDate));
       ++problemCount;
     }
     // check if the transaction's post date is after the opening date
@@ -2219,7 +2219,7 @@ const QStringList MyMoneyFile::consistencyCheck()
     // issue a warning with the details about the transaction incl.
     // the account names and dates involved
     if (accountOpeningDate.isValid() && t.postDate() < accountOpeningDate) {
-      QDate originalPostDate = t.postDate();
+      MyMoneyDate originalPostDate = t.postDate();
 #if 0
       // for now we do not activate the logic to move the post date to a later
       // point in time. This could cause some severe trouble if you have lots
@@ -2245,9 +2245,9 @@ const QStringList MyMoneyFile::consistencyCheck()
         break;
       }
 #endif
-      rc << i18n("  * Transaction '%1' has a post date '%2' before one of the referenced account's opening date.", t.id(), KGlobal::locale()->formatDate(originalPostDate, KLocale::ShortDate));
+      rc << i18n("  * Transaction '%1' has a post date '%2' before one of the referenced account's opening date.", t.id(), MyMoneyLocale::formatDate(originalPostDate, KLocale::ShortDate));
       rc << i18n("    Referenced accounts: %1", accountList.join(","));
-      rc << i18n("    The post date was not updated to '%1'.", KGlobal::locale()->formatDate(accountOpeningDate, KLocale::ShortDate));
+      rc << i18n("    The post date was not updated to '%1'.", MyMoneyLocale::formatDate(accountOpeningDate, KLocale::ShortDate));
       ++unfixedCount;
     }
 
@@ -2377,7 +2377,7 @@ const QStringList MyMoneyFile::consistencyCheck()
   }
 
   MyMoneyPriceList pricesList = priceList();
-  QMap<MyMoneySecurityPair, QDate> securityPriceDate;
+  QMap<MyMoneySecurityPair, MyMoneyDate> securityPriceDate;
 
   //get the first date of the price for each security
   MyMoneyPriceList::const_iterator prices_it;
@@ -2422,7 +2422,7 @@ const QStringList MyMoneyFile::consistencyCheck()
         firstInvProblem = false;
         rc << i18n("* Potential problem with investments/currencies");
       }
-      QDate openingDate = (*accForeignList_it).openingDate();
+      MyMoneyDate openingDate = (*accForeignList_it).openingDate();
       MyMoneySecurity secError = security((*accForeignList_it).currencyId());
       if (!(*accForeignList_it).isInvest()) {
         rc << i18n("  * The account '%1' in currency '%2' has no price set for the opening date '%3'.", (*accForeignList_it).name(), secError.name(), openingDate.toString(Qt::ISODate));
@@ -2525,7 +2525,7 @@ QString MyMoneyFile::createCategory(const MyMoneyAccount& base, const QString& n
 const QList<MyMoneySchedule> MyMoneyFile::scheduleListEx(int scheduleTypes,
     int scheduleOcurrences,
     int schedulePaymentTypes,
-    QDate startDate,
+    MyMoneyDate startDate,
     const QStringList& accounts) const
 {
   d->checkStorage();
@@ -2731,7 +2731,7 @@ void MyMoneyFile::removePrice(const MyMoneyPrice& price)
   d->m_storage->removePrice(price);
 }
 
-MyMoneyPrice MyMoneyFile::price(const QString& fromId, const QString& toId, const QDate& date, const bool exactDate) const
+MyMoneyPrice MyMoneyFile::price(const QString& fromId, const QString& toId, const MyMoneyDate& date, const bool exactDate) const
 {
   d->checkStorage();
 
@@ -3097,11 +3097,11 @@ QString MyMoneyFile::highestCheckNo(const QString& accId) const
   return no;
 }
 
-bool MyMoneyFile::hasNewerTransaction(const QString& accId, const QDate& date) const
+bool MyMoneyFile::hasNewerTransaction(const QString& accId, const MyMoneyDate& date) const
 {
   MyMoneyTransactionFilter filter;
   filter.addAccount(accId);
-  filter.setDateFilter(date.addDays(+1), QDate());
+  filter.setDateFilter(date.addDays(+1), MyMoneyDate());
   QList<MyMoneyTransaction> transactions = transactionList(filter);
   return transactions.count() > 0;
 }
@@ -3203,7 +3203,7 @@ bool MyMoneyFile::hasMatchingOnlineBalance(const MyMoneyAccount& _acc) const
 
   // otherwise, we compare the balances
   MyMoneyMoney balance(acc.value("lastStatementBalance"));
-  MyMoneyMoney accBalance = this->balance(acc.id(), QDate::fromString(acc.value("lastImportedTransactionDate"), Qt::ISODate));
+  MyMoneyMoney accBalance = this->balance(acc.id(), MyMoneyDate::fromString(acc.value("lastImportedTransactionDate"), Qt::ISODate));
 
   return balance == accBalance;
 }

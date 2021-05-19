@@ -102,7 +102,7 @@ InvestTransactionEditor::~InvestTransactionEditor()
   delete d;
 }
 
-InvestTransactionEditor::InvestTransactionEditor(TransactionEditorContainer* regForm, KMyMoneyRegister::InvestTransaction* item, const KMyMoneyRegister::SelectedTransactions& list, const QDate& lastPostDate) :
+InvestTransactionEditor::InvestTransactionEditor(TransactionEditorContainer* regForm, KMyMoneyRegister::InvestTransaction* item, const KMyMoneyRegister::SelectedTransactions& list, const MyMoneyDate& lastPostDate) :
     TransactionEditor(regForm, item, list, lastPostDate),
     d(new Private(this))
 {
@@ -648,7 +648,7 @@ void InvestTransactionEditor::loadEditWidgets(KMyMoneyRegister::Action /* action
     else if (m_lastPostDate.isValid())
       postDate->setDate(m_lastPostDate);
     else
-      postDate->setDate(QDate::currentDate());
+      postDate->setDate(MyMoneyDate::currentDate());
 
     // security (but only if it's not the investment account)
     if (m_split.accountId() != m_account.id()) {
@@ -709,7 +709,7 @@ void InvestTransactionEditor::loadEditWidgets(KMyMoneyRegister::Action /* action
     reconcile->setState(m_split.reconcileFlag());
 
   } else {
-    postDate->loadDate(QDate());
+    postDate->loadDate(MyMoneyDate());
     reconcile->setState(MyMoneySplit::Unknown);
 
     // We don't allow to change the activity
@@ -1091,7 +1091,7 @@ bool InvestTransactionEditor::createTransaction(MyMoneyTransaction& t, const MyM
     s0.setReconcileFlag(status->state());
 
   if (s0.reconcileFlag() == MyMoneySplit::Reconciled && !s0.reconcileDate().isValid())
-    s0.setReconcileDate(QDate::currentDate());
+    s0.setReconcileDate(MyMoneyDate::currentDate());
 
   // call the creation logic for the current selected activity
   bool rc = d->m_activity->createTransaction(t, s0, assetAccountSplit, feeSplits, m_feeSplits, interestSplits, m_interestSplits, security, currency);

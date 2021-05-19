@@ -583,13 +583,13 @@ void MyMoneyFileTest::testAddCategories()
 {
   MyMoneyAccount  a, b, c;
   a.setAccountType(MyMoneyAccount::Income);
-  a.setOpeningDate(QDate::currentDate());
+  a.setOpeningDate(MyMoneyDate::currentDate());
   b.setAccountType(MyMoneyAccount::Expense);
 
   storage->m_dirty = false;
 
   QCOMPARE(m->accountCount(), static_cast<unsigned>(5));
-  QCOMPARE(a.openingDate(), QDate::currentDate());
+  QCOMPARE(a.openingDate(), MyMoneyDate::currentDate());
   QVERIFY(!b.openingDate().isValid());
 
   a.setName("Account1");
@@ -606,7 +606,7 @@ void MyMoneyFileTest::testAddCategories()
     QCOMPARE(a.id(), QLatin1String("A000001"));
     QCOMPARE(a.institutionId(), QString());
     QCOMPARE(a.currencyId(), QLatin1String("EUR"));
-    QCOMPARE(a.openingDate(), QDate(1900, 1, 1));
+    QCOMPARE(a.openingDate(), MyMoneyDate(1900, 1, 1));
     QCOMPARE(m->dirty(), true);
     QCOMPARE(m->income().accountList().count(), 1);
     QCOMPARE(m->income().accountList()[0], QLatin1String("A000001"));
@@ -628,7 +628,7 @@ void MyMoneyFileTest::testAddCategories()
     QCOMPARE(b.id(), QLatin1String("A000002"));
     QCOMPARE(a.institutionId(), QString());
     QCOMPARE(b.currencyId(), QLatin1String("EUR"));
-    QCOMPARE(b.openingDate(), QDate(1900, 1, 1));
+    QCOMPARE(b.openingDate(), MyMoneyDate(1900, 1, 1));
     QCOMPARE(b.parentAccountId(), QLatin1String("AStd::Expense"));
     QCOMPARE(m->accountCount(), static_cast<unsigned>(7));
 
@@ -964,7 +964,7 @@ void MyMoneyFileTest::testAddTransaction()
   // fake the last modified flag to check that the
   // date is updated when we add the transaction
   MyMoneyAccount a = m->account("A000001");
-  a.setLastModified(QDate(1, 2, 3));
+  a.setLastModified(MyMoneyDate(1, 2, 3));
   ft.restart();
   try {
     m->modifyAccount(a);
@@ -976,10 +976,10 @@ void MyMoneyFileTest::testAddTransaction()
 
   QCOMPARE(m->accountCount(), static_cast<unsigned>(9));
   a = m->account("A000001");
-  QCOMPARE(a.lastModified(), QDate(1, 2, 3));
+  QCOMPARE(a.lastModified(), MyMoneyDate(1, 2, 3));
 
   // construct a transaction and add it to the pool
-  t.setPostDate(QDate(2002, 2, 1));
+  t.setPostDate(MyMoneyDate(2002, 2, 1));
   t.setMemo("Memotext");
 
   MyMoneySplit split1;
@@ -1028,17 +1028,17 @@ void MyMoneyFileTest::testAddTransaction()
   clearObjectLists();
 
   QCOMPARE(t.id(), QLatin1String("T000000000000000001"));
-  QCOMPARE(t.postDate(), QDate(2002, 2, 1));
-  QCOMPARE(t.entryDate(), QDate::currentDate());
+  QCOMPARE(t.postDate(), MyMoneyDate(2002, 2, 1));
+  QCOMPARE(t.entryDate(), MyMoneyDate::currentDate());
   QCOMPARE(m->dirty(), true);
 
   // check the balance of the accounts
   a = m->account("A000001");
-  QCOMPARE(a.lastModified(), QDate::currentDate());
+  QCOMPARE(a.lastModified(), MyMoneyDate::currentDate());
   QCOMPARE(a.balance(), MyMoneyMoney(-1000, 100));
 
   MyMoneyAccount b = m->account("A000003");
-  QCOMPARE(b.lastModified(), QDate::currentDate());
+  QCOMPARE(b.lastModified(), MyMoneyDate::currentDate());
   QCOMPARE(b.balance(), MyMoneyMoney(1000, 100));
 
   storage->m_dirty = false;
@@ -1141,7 +1141,7 @@ void MyMoneyFileTest::testModifyTransactionNewPostDate()
   testAddTransaction();
 
   MyMoneyTransaction t = m->transaction("T000000000000000001");
-  t.setPostDate(QDate(2004, 2, 1));
+  t.setPostDate(MyMoneyDate(2004, 2, 1));
   storage->m_dirty = false;
 
   MyMoneyFileTransaction ft;
@@ -1150,7 +1150,7 @@ void MyMoneyFileTest::testModifyTransactionNewPostDate()
     m->modifyTransaction(t);
     ft.commit();
     t = m->transaction("T000000000000000001");
-    QCOMPARE(t.postDate(), QDate(2004, 2, 1));
+    QCOMPARE(t.postDate(), MyMoneyDate(2004, 2, 1));
     t = m->transaction("A000001", 0);
     QCOMPARE(t.id(), QLatin1String("T000000000000000001"));
     QCOMPARE(m->dirty(), true);
@@ -1193,7 +1193,7 @@ void MyMoneyFileTest::testModifyTransactionNewAccount()
     m->modifyTransaction(t);
     ft.commit();
     t = m->transaction("T000000000000000001");
-    QCOMPARE(t.postDate(), QDate(2002, 2, 1));
+    QCOMPARE(t.postDate(), MyMoneyDate(2002, 2, 1));
     t = m->transaction("A000002", 0);
     QCOMPARE(m->dirty(), true);
     QCOMPARE(m->transactionList(f1).count(), 0);
@@ -1280,7 +1280,7 @@ void MyMoneyFileTest::testBalanceTotal()
   MyMoneyTransaction t;
 
   // construct a transaction and add it to the pool
-  t.setPostDate(QDate(2002, 2, 1));
+  t.setPostDate(MyMoneyDate(2002, 2, 1));
   t.setMemo("Memotext");
 
   MyMoneySplit split1;
@@ -1310,19 +1310,19 @@ void MyMoneyFileTest::testBalanceTotal()
     // check totalBalance() and balance() with combinations of parameters
     QCOMPARE(m->totalBalance("A000001"), MyMoneyMoney(-1000, 100));
     QCOMPARE(m->totalBalance("A000002"), MyMoneyMoney(-2000, 100));
-    QVERIFY(m->totalBalance("A000002", QDate(2002, 1, 15)).isZero());
+    QVERIFY(m->totalBalance("A000002", MyMoneyDate(2002, 1, 15)).isZero());
 
     QCOMPARE(m->balance("A000001"), MyMoneyMoney(-1000, 100));
     QCOMPARE(m->balance("A000002"), MyMoneyMoney(-1000, 100));
     // Date of a transaction
-    QCOMPARE(m->balance("A000001", QDate(2002, 2, 1)), MyMoneyMoney(-1000, 100));
-    QCOMPARE(m->balance("A000002", QDate(2002, 2, 1)), MyMoneyMoney(-1000, 100));
+    QCOMPARE(m->balance("A000001", MyMoneyDate(2002, 2, 1)), MyMoneyMoney(-1000, 100));
+    QCOMPARE(m->balance("A000002", MyMoneyDate(2002, 2, 1)), MyMoneyMoney(-1000, 100));
     // Date after last transaction
-    QCOMPARE(m->balance("A000001", QDate(2002, 2, 1)), MyMoneyMoney(-1000, 100));
-    QCOMPARE(m->balance("A000002", QDate(2002, 2, 1)), MyMoneyMoney(-1000, 100));
+    QCOMPARE(m->balance("A000001", MyMoneyDate(2002, 2, 1)), MyMoneyMoney(-1000, 100));
+    QCOMPARE(m->balance("A000002", MyMoneyDate(2002, 2, 1)), MyMoneyMoney(-1000, 100));
     // Date before first transaction
-    QVERIFY(m->balance("A000001", QDate(2002, 1, 15)).isZero());
-    QVERIFY(m->balance("A000002", QDate(2002, 1, 15)).isZero());
+    QVERIFY(m->balance("A000001", MyMoneyDate(2002, 1, 15)).isZero());
+    QVERIFY(m->balance("A000002", MyMoneyDate(2002, 1, 15)).isZero());
 
   } catch (const MyMoneyException &) {
     QFAIL("Unexpected exception!");
@@ -1546,7 +1546,7 @@ void MyMoneyFileTest::testAddTransactionStd()
   a = m->account("A000001");
 
   // construct a transaction and add it to the pool
-  t.setPostDate(QDate(2002, 2, 1));
+  t.setPostDate(MyMoneyDate(2002, 2, 1));
   t.setMemo("Memotext");
 
   MyMoneySplit split1;
@@ -1898,7 +1898,7 @@ void MyMoneyFileTest::testOpeningBalance()
     openingAcc = m->openingBalanceAccount(m->baseCurrency());
     QCOMPARE(openingAcc.parentAccountId(), m->equity().id());
     QCOMPARE(openingAcc.name(), MyMoneyFile::openingBalancesPrefix());
-    QCOMPARE(openingAcc.openingDate(), QDate::currentDate());
+    QCOMPARE(openingAcc.openingDate(), MyMoneyDate::currentDate());
   } catch (const MyMoneyException &e) {
     unexpectedException(e);
   }
@@ -1917,7 +1917,7 @@ void MyMoneyFileTest::testOpeningBalance()
     openingAcc = m->openingBalanceAccount(second);
     QCOMPARE(openingAcc.parentAccountId(), m->equity().id());
     QCOMPARE(openingAcc.name(), refName);
-    QCOMPARE(openingAcc.openingDate(), QDate::currentDate());
+    QCOMPARE(openingAcc.openingDate(), MyMoneyDate::currentDate());
   } catch (const MyMoneyException &e) {
     unexpectedException(e);
   }
@@ -1977,7 +1977,7 @@ void MyMoneyFileTest::testAddPrice()
 
   clearObjectLists();
   ft.restart();
-  MyMoneyPrice price("EUR", "RON", QDate::currentDate(), MyMoneyMoney(4.1), "Test source");
+  MyMoneyPrice price("EUR", "RON", MyMoneyDate::currentDate(), MyMoneyMoney(4.1), "Test source");
   m->addPrice(price);
   ft.commit();
   QCOMPARE(m_balanceChanged.count(), 0);
@@ -1986,7 +1986,7 @@ void MyMoneyFileTest::testAddPrice()
 
   clearObjectLists();
   ft.restart();
-  MyMoneyPrice priceReciprocal("RON", "EUR", QDate::currentDate(), MyMoneyMoney(1 / 4.1), "Test source reciprocal price");
+  MyMoneyPrice priceReciprocal("RON", "EUR", MyMoneyDate::currentDate(), MyMoneyMoney(1 / 4.1), "Test source reciprocal price");
   m->addPrice(priceReciprocal);
   ft.commit();
   QCOMPARE(m_balanceChanged.count(), 0);
@@ -1999,7 +1999,7 @@ void MyMoneyFileTest::testRemovePrice()
   testAddPrice();
   clearObjectLists();
   MyMoneyFileTransaction ft;
-  MyMoneyPrice price("EUR", "RON", QDate::currentDate(), MyMoneyMoney(4.1), "Test source");
+  MyMoneyPrice price("EUR", "RON", MyMoneyDate::currentDate(), MyMoneyMoney(4.1), "Test source");
   m->removePrice(price);
   ft.commit();
   QCOMPARE(m_balanceChanged.count(), 0);
@@ -2011,46 +2011,46 @@ void MyMoneyFileTest::testGetPrice()
 {
   testAddPrice();
   // the price for the current date is found
-  QVERIFY(m->price("EUR", "RON", QDate::currentDate()).isValid());
+  QVERIFY(m->price("EUR", "RON", MyMoneyDate::currentDate()).isValid());
   // the price for the current date is returned when asking for the next day with exact date set to false
   {
-    const MyMoneyPrice &price = m->price("EUR", "RON", QDate::currentDate().addDays(1), false);
-    QVERIFY(price.isValid() && price.date() == QDate::currentDate());
+    const MyMoneyPrice &price = m->price("EUR", "RON", MyMoneyDate::currentDate().addDays(1), false);
+    QVERIFY(price.isValid() && price.date() == MyMoneyDate::currentDate());
   }
   // no price is returned while asking for the next day with exact date set to true
-  QVERIFY(!m->price("EUR", "RON", QDate::currentDate().addDays(1), true).isValid());
+  QVERIFY(!m->price("EUR", "RON", MyMoneyDate::currentDate().addDays(1), true).isValid());
 
   // no price is returned while asking for the previous day with exact date set to true/false because all prices are newer
-  QVERIFY(!m->price("EUR", "RON", QDate::currentDate().addDays(-1), false).isValid());
-  QVERIFY(!m->price("EUR", "RON", QDate::currentDate().addDays(-1), true).isValid());
+  QVERIFY(!m->price("EUR", "RON", MyMoneyDate::currentDate().addDays(-1), false).isValid());
+  QVERIFY(!m->price("EUR", "RON", MyMoneyDate::currentDate().addDays(-1), true).isValid());
 
   // add two more prices
   MyMoneyFileTransaction ft;
-  m->addPrice(MyMoneyPrice("EUR", "RON", QDate::currentDate().addDays(3), MyMoneyMoney(4.1), "Test source"));
-  m->addPrice(MyMoneyPrice("EUR", "RON", QDate::currentDate().addDays(5), MyMoneyMoney(4.1), "Test source"));
+  m->addPrice(MyMoneyPrice("EUR", "RON", MyMoneyDate::currentDate().addDays(3), MyMoneyMoney(4.1), "Test source"));
+  m->addPrice(MyMoneyPrice("EUR", "RON", MyMoneyDate::currentDate().addDays(5), MyMoneyMoney(4.1), "Test source"));
   ft.commit();
   clearObjectLists();
 
   // extra tests for the exactDate=false behavior
   {
-    const MyMoneyPrice &price = m->price("EUR", "RON", QDate::currentDate().addDays(2), false);
-    QVERIFY(price.isValid() && price.date() == QDate::currentDate());
+    const MyMoneyPrice &price = m->price("EUR", "RON", MyMoneyDate::currentDate().addDays(2), false);
+    QVERIFY(price.isValid() && price.date() == MyMoneyDate::currentDate());
   }
   {
-    const MyMoneyPrice &price = m->price("EUR", "RON", QDate::currentDate().addDays(3), false);
-    QVERIFY(price.isValid() && price.date() == QDate::currentDate().addDays(3));
+    const MyMoneyPrice &price = m->price("EUR", "RON", MyMoneyDate::currentDate().addDays(3), false);
+    QVERIFY(price.isValid() && price.date() == MyMoneyDate::currentDate().addDays(3));
   }
   {
-    const MyMoneyPrice &price = m->price("EUR", "RON", QDate::currentDate().addDays(4), false);
-    QVERIFY(price.isValid() && price.date() == QDate::currentDate().addDays(3));
+    const MyMoneyPrice &price = m->price("EUR", "RON", MyMoneyDate::currentDate().addDays(4), false);
+    QVERIFY(price.isValid() && price.date() == MyMoneyDate::currentDate().addDays(3));
   }
   {
-    const MyMoneyPrice &price = m->price("EUR", "RON", QDate::currentDate().addDays(5), false);
-    QVERIFY(price.isValid() && price.date() == QDate::currentDate().addDays(5));
+    const MyMoneyPrice &price = m->price("EUR", "RON", MyMoneyDate::currentDate().addDays(5), false);
+    QVERIFY(price.isValid() && price.date() == MyMoneyDate::currentDate().addDays(5));
   }
   {
-    const MyMoneyPrice &price = m->price("EUR", "RON", QDate::currentDate().addDays(6), false);
-    QVERIFY(price.isValid() && price.date() == QDate::currentDate().addDays(5));
+    const MyMoneyPrice &price = m->price("EUR", "RON", MyMoneyDate::currentDate().addDays(6), false);
+    QVERIFY(price.isValid() && price.date() == MyMoneyDate::currentDate().addDays(5));
   }
 }
 
@@ -2141,7 +2141,7 @@ void MyMoneyFileTest::testHasMatchingOnlineBalance_emptyAccountWithEqualImported
 
   MyMoneyAccount a = m->account("A000001");
 
-  a.setValue("lastImportedTransactionDate", QDate(2011, 12, 1).toString(Qt::ISODate));
+  a.setValue("lastImportedTransactionDate", MyMoneyDate(2011, 12, 1).toString(Qt::ISODate));
   a.setValue("lastStatementBalance", MyMoneyMoney().toString());
 
   MyMoneyFileTransaction ft;
@@ -2157,7 +2157,7 @@ void MyMoneyFileTest::testHasMatchingOnlineBalance_emptyAccountWithUnequalImport
 
   MyMoneyAccount a = m->account("A000001");
 
-  a.setValue("lastImportedTransactionDate", QDate(2011, 12, 1).toString(Qt::ISODate));
+  a.setValue("lastImportedTransactionDate", MyMoneyDate(2011, 12, 1).toString(Qt::ISODate));
   a.setValue("lastStatementBalance", MyMoneyMoney::ONE.toString());
 
   MyMoneyFileTransaction ft;
@@ -2173,7 +2173,7 @@ void MyMoneyFileTest::testHasNewerTransaction_withoutAnyTransaction_afterLastImp
 
   MyMoneyAccount a = m->account("A000001");
 
-  QDate dateOfLastTransactionImport(2011, 12, 1);
+  MyMoneyDate dateOfLastTransactionImport(2011, 12, 1);
 
   // There are no transactions at all:
   QCOMPARE(m->hasNewerTransaction(a.id(), dateOfLastTransactionImport), false);
@@ -2185,7 +2185,7 @@ void MyMoneyFileTest::testHasNewerTransaction_withoutNewerTransaction_afterLastI
   AddOneAccount();
 
   QString accId("A000001");
-  QDate dateOfLastTransactionImport(2011, 12, 1);
+  MyMoneyDate dateOfLastTransactionImport(2011, 12, 1);
 
   MyMoneyFileTransaction ft;
   MyMoneyTransaction t;
@@ -2213,8 +2213,8 @@ void MyMoneyFileTest::testHasNewerTransaction_withNewerTransaction_afterLastImpo
   AddOneAccount();
 
   QString accId("A000001");
-  QDate dateOfLastTransactionImport(2011, 12, 1);
-  QDate dateOfDayAfterLastTransactionImport(dateOfLastTransactionImport.addDays(1));
+  MyMoneyDate dateOfLastTransactionImport(2011, 12, 1);
+  MyMoneyDate dateOfDayAfterLastTransactionImport(dateOfLastTransactionImport.addDays(1));
 
   MyMoneyFileTransaction ft;
   MyMoneyTransaction t;
@@ -2296,7 +2296,7 @@ void MyMoneyFileTest::testCountTransactionsWithSpecificReconciliationState_trans
   split.setValue(MyMoneyMoney(-1000, 100));
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2013, 1, 1));
+  transaction.setPostDate(MyMoneyDate(2013, 1, 1));
   transaction.addSplit(split);
 
   // add transaction
@@ -2320,7 +2320,7 @@ void MyMoneyFileTest::testCountTransactionsWithSpecificReconciliationState_trans
   split.setReconcileFlag(MyMoneySplit::Reconciled);
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2013, 1, 1));
+  transaction.setPostDate(MyMoneyDate(2013, 1, 1));
   transaction.addSplit(split);
 
   // add transaction
@@ -2480,10 +2480,10 @@ void MyMoneyFileTest::testClearedBalance()
   MyMoneyTransaction t2;
 
   // construct a transaction and add it to the pool
-  t1.setPostDate(QDate(2002, 2, 1));
+  t1.setPostDate(MyMoneyDate(2002, 2, 1));
   t1.setMemo("Memotext");
 
-  t2.setPostDate(QDate(2002, 2, 4));
+  t2.setPostDate(MyMoneyDate(2002, 2, 4));
   t2.setMemo("Memotext");
 
   MyMoneySplit split1;
@@ -2521,16 +2521,16 @@ void MyMoneyFileTest::testClearedBalance()
     ft.commit();
     ft.restart();
 
-    QCOMPARE(m->balance("A000001", QDate(2002, 2, 4)), MyMoneyMoney(-1000, 100));
-    QCOMPARE(m->balance("A000002", QDate(2002, 2, 4)), MyMoneyMoney(-3000, 100));
+    QCOMPARE(m->balance("A000001", MyMoneyDate(2002, 2, 4)), MyMoneyMoney(-1000, 100));
+    QCOMPARE(m->balance("A000002", MyMoneyDate(2002, 2, 4)), MyMoneyMoney(-3000, 100));
     // Date of last cleared transaction
-    QCOMPARE(m->clearedBalance("A000002", QDate(2002, 2, 1)), MyMoneyMoney(-1000, 100));
+    QCOMPARE(m->clearedBalance("A000002", MyMoneyDate(2002, 2, 1)), MyMoneyMoney(-1000, 100));
 
     // Date of last transaction
-    QCOMPARE(m->balance("A000002", QDate(2002, 2, 4)), MyMoneyMoney(-3000, 100));
+    QCOMPARE(m->balance("A000002", MyMoneyDate(2002, 2, 4)), MyMoneyMoney(-3000, 100));
 
     // Date before first transaction
-    QVERIFY(m->clearedBalance("A000002", QDate(2002, 1, 15)).isZero());
+    QVERIFY(m->clearedBalance("A000002", MyMoneyDate(2002, 1, 15)).isZero());
 
 
   } catch (const MyMoneyException &) {
@@ -2602,7 +2602,7 @@ void MyMoneyFileTest::testAdjustedValues()
 
   MyMoneyTransaction t;
   t.setCommodity(QLatin1String("EUR"));
-  t.setPostDate(QDate::currentDate());
+  t.setPostDate(MyMoneyDate::currentDate());
   t.addSplit(s1);
   t.addSplit(s2);
   t.addSplit(s3);

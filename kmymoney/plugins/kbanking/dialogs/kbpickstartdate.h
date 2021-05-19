@@ -38,15 +38,15 @@ class KBPickStartDate : public QDialog
   Q_OBJECT
 public:
   KBPickStartDate(KMyMoneyBanking* qb,
-                  const QDate &firstPossible,
-                  const QDate &lastUpdate,
+                  const MyMoneyDate &firstPossible,
+                  const MyMoneyDate &lastUpdate,
                   const QString& accountName,
                   int defaultChoice,
                   QWidget* parent = 0,
                   bool modal = false);
   ~KBPickStartDate();
 
-  QDate date();
+  MyMoneyDate date();
 
 public slots:
   void slotHelpClicked();

@@ -61,14 +61,14 @@ public:
 
   // general get functions
   virtual const MyMoneyPayee& user() const = 0;
-  virtual const QDate creationDate() const = 0;
-  virtual const QDate lastModificationDate() const = 0;
+  virtual const MyMoneyDate creationDate() const = 0;
+  virtual const MyMoneyDate lastModificationDate() const = 0;
   virtual unsigned int currentFixVersion() const = 0;
   virtual unsigned int fileFixVersion() const = 0;
 
   // general set functions
   virtual void setUser(const MyMoneyPayee& val) = 0;
-  virtual void setCreationDate(const QDate& val) = 0;
+  virtual void setCreationDate(const MyMoneyDate& val) = 0;
   virtual void setFileFixVersion(const unsigned int v) = 0;
   /**
    * This method is used to get a SQL reader for subsequent database access
@@ -88,9 +88,9 @@ public:
     * therefor be called as last operation when loading from a
     * file.
     *
-    * @param val QDate of last modification
+    * @param val MyMoneyDate of last modification
     */
-  virtual void setLastModificationDate(const QDate& val) = 0;
+  virtual void setLastModificationDate(const MyMoneyDate& val) = 0;
 
   /**
     * This method returns a list of accounts inside the storage object.
@@ -153,8 +153,8 @@ public:
       const MyMoneySchedule::typeE = MyMoneySchedule::TYPE_ANY,
       const MyMoneySchedule::occurrenceE = MyMoneySchedule::OCCUR_ANY,
       const MyMoneySchedule::paymentTypeE = MyMoneySchedule::STYPE_ANY,
-      const QDate& = QDate(),
-      const QDate& = QDate(),
+      const MyMoneyDate& = MyMoneyDate(),
+      const MyMoneyDate& = MyMoneyDate(),
       const bool = false) const = 0;
 
   /**
@@ -338,7 +338,7 @@ public:
   virtual const QList<MyMoneySchedule> scheduleListEx(int scheduleTypes,
       int scheduleOcurrences,
       int schedulePaymentTypes,
-      QDate startDate,
+      MyMoneyDate startDate,
       const QStringList& accounts = QStringList()) const = 0;
 
   /**

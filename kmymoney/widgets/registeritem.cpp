@@ -31,7 +31,7 @@
 
 using namespace KMyMoneyRegister;
 
-QDate RegisterItem::nullDate;
+MyMoneyDate RegisterItem::nullDate;
 QString RegisterItem::nullString;
 MyMoneyMoney RegisterItem::nullValue;
 

@@ -66,11 +66,11 @@ KEditLoanWizard::KEditLoanWizard(const MyMoneyAccount& account, QWidget *parent)
 
   loadWidgets(m_account);
 
-  if (m_account.openingDate() > QDate::currentDate()) {
+  if (m_account.openingDate() > MyMoneyDate::currentDate()) {
     //FIXME: port
     m_effectiveDatePage->m_effectiveDateNoteLabel->setText(QString("\n") + i18n(
           "Note: you will not be able to modify this account today, because the opening date \"%1\" is in the future. "
-          "Please revisit this dialog when the time has come.", KGlobal::locale()->formatDate(m_account.openingDate())));
+          "Please revisit this dialog when the time has come.", MyMoneyLocale::formatDate(m_account.openingDate())));
   } else {
     m_effectiveDatePage->m_effectiveDateNoteLabel->hide();
   }
@@ -118,10 +118,10 @@ void KEditLoanWizard::loadWidgets(const MyMoneyAccount& /* account */)
   m_loanAttributesPage->setInstitution(institutionName);
 
   MyMoneyMoney ir;
-  if (m_schedule.startDate() > QDate::currentDate()) {
+  if (m_schedule.startDate() > MyMoneyDate::currentDate()) {
     ir = m_account.interestRate(m_schedule.startDate());
   } else {
-    ir = m_account.interestRate(QDate::currentDate());
+    ir = m_account.interestRate(MyMoneyDate::currentDate());
   }
   //FIXME: port
   m_interestPage->m_interestRateEdit->loadText(ir.formatMoney("", 3));
@@ -373,7 +373,7 @@ bool KEditLoanWizard::validateCurrentPage()
         MyMoneySplit split;
         MyMoneyTransactionFilter filter(m_account.id());
 
-        filter.setDateFilter(QDate(), m_effectiveChangeDateEdit->date().addDays(-1));
+        filter.setDateFilter(MyMoneyDate(), m_effectiveChangeDateEdit->date().addDays(-1));
         list = MyMoneyFile::instance()->transactionList(filter);
 
         for(it = list.begin(); it != list.end(); ++it) {
@@ -421,7 +421,7 @@ void KEditLoanWizard::updateEditSummary()
 {
   // calculate the number of affected transactions
   MyMoneyTransactionFilter filter(m_account.id());
-  filter.setDateFilter(field("effectiveChangeDateEdit").toDate(), QDate());
+  filter.setDateFilter(field("effectiveChangeDateEdit").toDate(), MyMoneyDate());
 
   int count = 0;
   QList<MyMoneyTransaction> list;

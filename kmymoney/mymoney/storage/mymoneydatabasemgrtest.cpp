@@ -95,7 +95,7 @@ void MyMoneyDatabaseMgrTest::testEmptyConstructor()
   QCOMPARE(m->tagList().count(), 0);
   QCOMPARE(m->scheduleList().count(), 0);
 
-  QCOMPARE(m->m_creationDate, QDate::currentDate());
+  QCOMPARE(m->m_creationDate, MyMoneyDate::currentDate());
 }
 
 void MyMoneyDatabaseMgrTest::setupUrl(const QString& fname)
@@ -661,7 +661,7 @@ void MyMoneyDatabaseMgrTest::testAddTransactions()
     QVERIFY(s.id().isEmpty());
     t1.addSplit(s);
 
-    t1.setPostDate(QDate(2002, 5, 10));
+    t1.setPostDate(MyMoneyDate(2002, 5, 10));
   } catch (const MyMoneyException &e) {
     unexpectedException(e);
   }
@@ -710,7 +710,7 @@ void MyMoneyDatabaseMgrTest::testAddTransactions()
     QVERIFY(s.id().isEmpty());
     t2.addSplit(s);
 
-    t2.setPostDate(QDate(2002, 5, 9));
+    t2.setPostDate(MyMoneyDate(2002, 5, 9));
   } catch (const MyMoneyException &e) {
     unexpectedException(e);
   }
@@ -784,7 +784,7 @@ void MyMoneyDatabaseMgrTest::testAddBudget()
   MyMoneyBudget budget;
 
   budget.setName("TestBudget");
-  budget.setBudgetStart(QDate::currentDate());
+  budget.setBudgetStart(MyMoneyDate::currentDate());
 
   m->addBudget(budget);
 
@@ -837,7 +837,7 @@ void MyMoneyDatabaseMgrTest::testModifyBudget()
 
   MyMoneyBudget budget = m->budgetByName("TestBudget");
 
-  budget.setBudgetStart(QDate::currentDate().addDays(-1));
+  budget.setBudgetStart(MyMoneyDate::currentDate().addDays(-1));
 
   m->modifyBudget(budget);
 
@@ -877,9 +877,9 @@ void MyMoneyDatabaseMgrTest::testBalance()
   testAddTransactions();
 
   try {
-    QVERIFY(m->balance("A000001", QDate()).isZero());
-    QCOMPARE(m->balance("A000002", QDate()), MyMoneyMoney(1200, 100));
-    QCOMPARE(m->balance("A000003", QDate()), MyMoneyMoney(400, 100));
+    QVERIFY(m->balance("A000001", MyMoneyDate()).isZero());
+    QCOMPARE(m->balance("A000002", MyMoneyDate()), MyMoneyMoney(1200, 100));
+    QCOMPARE(m->balance("A000003", MyMoneyDate()), MyMoneyMoney(400, 100));
     //Add a transaction to zero account A000003
     MyMoneyTransaction t1;
     MyMoneySplit s;
@@ -897,15 +897,15 @@ void MyMoneyDatabaseMgrTest::testBalance()
     QVERIFY(s.id().isEmpty());
     t1.addSplit(s);
 
-    t1.setPostDate(QDate(2007, 5, 10));
+    t1.setPostDate(MyMoneyDate(2007, 5, 10));
 
     m->addTransaction(t1);
 
-    QVERIFY(m->balance("A000003", QDate()).isZero());
-    QCOMPARE(m->totalBalance("A000001", QDate()), MyMoneyMoney(1600, 100));
-    QCOMPARE(m->balance("A000006", QDate(2002, 5, 9)), MyMoneyMoney(-11600, 100));
-    QCOMPARE(m->balance("A000005", QDate(2002, 5, 10)), MyMoneyMoney(-100000, 100));
-    QCOMPARE(m->balance("A000006", QDate(2002, 5, 10)), MyMoneyMoney(88400, 100));
+    QVERIFY(m->balance("A000003", MyMoneyDate()).isZero());
+    QCOMPARE(m->totalBalance("A000001", MyMoneyDate()), MyMoneyMoney(1600, 100));
+    QCOMPARE(m->balance("A000006", MyMoneyDate(2002, 5, 9)), MyMoneyMoney(-11600, 100));
+    QCOMPARE(m->balance("A000005", MyMoneyDate(2002, 5, 10)), MyMoneyMoney(-100000, 100));
+    QCOMPARE(m->balance("A000006", MyMoneyDate(2002, 5, 10)), MyMoneyMoney(88400, 100));
   } catch (const MyMoneyException &e) {
     unexpectedException(e);
   }
@@ -944,28 +944,28 @@ void MyMoneyDatabaseMgrTest::testModifyTransaction()
   QVERIFY(ch.value("Key") == "Value");
 
   try {
-    QVERIFY(m->balance("A000004", QDate()) == MyMoneyMoney(10000, 100));
-    QVERIFY(m->balance("A000006", QDate()) == MyMoneyMoney(100000 - 11600, 100));
-    QVERIFY(m->totalBalance("A000001", QDate()) == MyMoneyMoney(1600, 100));
+    QVERIFY(m->balance("A000004", MyMoneyDate()) == MyMoneyMoney(10000, 100));
+    QVERIFY(m->balance("A000006", MyMoneyDate()) == MyMoneyMoney(100000 - 11600, 100));
+    QVERIFY(m->totalBalance("A000001", MyMoneyDate()) == MyMoneyMoney(1600, 100));
     m->modifyTransaction(t);
     ch = m->account("A000006");
     QVERIFY(ch.value("Key") == "Value");
-    QVERIFY(m->balance("A000004", QDate()) == MyMoneyMoney(11000, 100));
-    QVERIFY(m->balance("A000006", QDate()) == MyMoneyMoney(100000 - 12600, 100));
-    QVERIFY(m->totalBalance("A000001", QDate()) == MyMoneyMoney(1600, 100));
+    QVERIFY(m->balance("A000004", MyMoneyDate()) == MyMoneyMoney(11000, 100));
+    QVERIFY(m->balance("A000006", MyMoneyDate()) == MyMoneyMoney(100000 - 12600, 100));
+    QVERIFY(m->totalBalance("A000001", MyMoneyDate()) == MyMoneyMoney(1600, 100));
   } catch (const MyMoneyException &e) {
     unexpectedException(e);
   }
 
   // now modify the date
-  t.setPostDate(QDate(2002, 5, 11));
+  t.setPostDate(MyMoneyDate(2002, 5, 11));
   try {
     ch = m->account("A000006");
     QVERIFY(ch.value("Key") == "Value");
     m->modifyTransaction(t);
-    QVERIFY(m->balance("A000004", QDate()) == MyMoneyMoney(11000, 100));
-    QVERIFY(m->balance("A000006", QDate()) == MyMoneyMoney(100000 - 12600, 100));
-    QVERIFY(m->totalBalance("A000001", QDate()) == MyMoneyMoney(1600, 100));
+    QVERIFY(m->balance("A000004", MyMoneyDate()) == MyMoneyMoney(11000, 100));
+    QVERIFY(m->balance("A000006", MyMoneyDate()) == MyMoneyMoney(100000 - 12600, 100));
+    QVERIFY(m->totalBalance("A000001", MyMoneyDate()) == MyMoneyMoney(1600, 100));
 
     //QMap<QString, QString>::ConstIterator it_k;
     MyMoneyTransactionFilter f;
@@ -1021,7 +1021,7 @@ void MyMoneyDatabaseMgrTest::testModifyTransaction()
     QVERIFY(s.id().isEmpty());
     t1.addSplit(s);
 
-    t1.setPostDate(QDate(2002, 5, 10));
+    t1.setPostDate(MyMoneyDate(2002, 5, 10));
   } catch (const MyMoneyException &e) {
     unexpectedException(e);
   }
@@ -1031,11 +1031,11 @@ void MyMoneyDatabaseMgrTest::testModifyTransaction()
 
   ch = m->account("A000005");
   QVERIFY(ch.balance() == MyMoneyMoney(-100000 - 10000, 100));
-  QVERIFY(m->balance("A000005", QDate()) == MyMoneyMoney(-100000 - 10000, 100));
+  QVERIFY(m->balance("A000005", MyMoneyDate()) == MyMoneyMoney(-100000 - 10000, 100));
 
   ch = m->account("A000006");
   QVERIFY(ch.balance() == MyMoneyMoney(100000 - 12600 + 10000, 100));
-  QVERIFY(m->balance("A000006", QDate()) == MyMoneyMoney(100000 - 12600 + 10000, 100));
+  QVERIFY(m->balance("A000006", MyMoneyDate()) == MyMoneyMoney(100000 - 12600 + 10000, 100));
 
   // Oops, the income was classified as Salary, but should have been
   // a refund from the grocery store.
@@ -1046,15 +1046,15 @@ void MyMoneyDatabaseMgrTest::testModifyTransaction()
   // Make sure the account balances got updated correctly.
   ch = m->account("A000004");
   QVERIFY(ch.balance() == MyMoneyMoney(11000 - 10000, 100));
-  QVERIFY(m->balance("A000004", QDate()) == MyMoneyMoney(11000 - 10000, 100));
+  QVERIFY(m->balance("A000004", MyMoneyDate()) == MyMoneyMoney(11000 - 10000, 100));
 
   ch = m->account("A000005");
-  QVERIFY(m->balance("A000005", QDate()) == MyMoneyMoney(-100000, 100));
+  QVERIFY(m->balance("A000005", MyMoneyDate()) == MyMoneyMoney(-100000, 100));
   QVERIFY(ch.balance() == MyMoneyMoney(-100000, 100));
 
   ch = m->account("A000006");
   QVERIFY(ch.balance() == MyMoneyMoney(100000 - 12600 + 10000, 100));
-  QVERIFY(m->balance("A000006", QDate()) == MyMoneyMoney(100000 - 12600 + 10000, 100));
+  QVERIFY(m->balance("A000006", MyMoneyDate()) == MyMoneyMoney(100000 - 12600 + 10000, 100));
 
 }
 
@@ -1232,14 +1232,14 @@ void MyMoneyDatabaseMgrTest::testTransactionList()
   // test the date filtering while split filtering is active but with an empty filter
   filter.clear();
   filter.addPayee(QString());
-  filter.setDateFilter(QDate(2002, 5, 10), QDate(2002, 5, 10));
+  filter.setDateFilter(MyMoneyDate(2002, 5, 10), MyMoneyDate(2002, 5, 10));
   list = m->transactionList(filter);
   QVERIFY(list.count() == 1);
   QVERIFY(list.at(0).id() == "T000000000000000001");
 
   filter.clear();
   filter.addAccount(QString());
-  filter.setDateFilter(QDate(2002, 5, 9), QDate(2002, 5, 9));
+  filter.setDateFilter(MyMoneyDate(2002, 5, 9), MyMoneyDate(2002, 5, 9));
   list = m->transactionList(filter);
   QVERIFY(list.count() == 1);
   QVERIFY(list.at(0).id() == "T000000000000000002");
@@ -1749,11 +1749,11 @@ void MyMoneyDatabaseMgrTest::testAddSchedule()
                              MyMoneySchedule::TYPE_DEPOSIT,
                              MyMoneySchedule::OCCUR_DAILY, 1,
                              MyMoneySchedule::STYPE_MANUALDEPOSIT,
-                             QDate(),
-                             QDate(),
+                             MyMoneyDate(),
+                             MyMoneyDate(),
                              true,
                              false);
-    t1.setPostDate(QDate(2003, 7, 10));
+    t1.setPostDate(MyMoneyDate(2003, 7, 10));
     schedule.setTransaction(t1);
 
     m->addSchedule(schedule);
@@ -1771,8 +1771,8 @@ void MyMoneyDatabaseMgrTest::testAddSchedule()
                              MyMoneySchedule::TYPE_DEPOSIT,
                              MyMoneySchedule::OCCUR_DAILY, 1,
                              MyMoneySchedule::STYPE_MANUALDEPOSIT,
-                             QDate(),
-                             QDate(),
+                             MyMoneyDate(),
+                             MyMoneyDate(),
                              true,
                              false);
     m->addSchedule(schedule);
@@ -1794,11 +1794,11 @@ void MyMoneyDatabaseMgrTest::testAddSchedule()
                              MyMoneySchedule::TYPE_DEPOSIT,
                              MyMoneySchedule::OCCUR_DAILY, 1,
                              MyMoneySchedule::STYPE_MANUALDEPOSIT,
-                             QDate(),
-                             QDate(),
+                             MyMoneyDate(),
+                             MyMoneyDate(),
                              true,
                              false);
-    t1.setPostDate(QDate(2003, 7, 10));
+    t1.setPostDate(MyMoneyDate(2003, 7, 10));
     schedule.setTransaction(t1);
 
     m->addSchedule(schedule);
@@ -1901,9 +1901,9 @@ void MyMoneyDatabaseMgrTest::testScheduleList()
   // put some accounts in the db, so the tests don't break
   testReparentAccount();
 
-  QDate  testDate = QDate::currentDate();
-  QDate  notOverdue = testDate.addDays(2);
-  QDate  overdue = testDate.addDays(-2);
+  MyMoneyDate  testDate = MyMoneyDate::currentDate();
+  MyMoneyDate  notOverdue = testDate.addDays(2);
+  MyMoneyDate  overdue = testDate.addDays(-2);
 
   MyMoneyTransaction t1;
   MyMoneySplit s1, s2;
@@ -1915,8 +1915,8 @@ void MyMoneyDatabaseMgrTest::testScheduleList()
                             MyMoneySchedule::TYPE_BILL,
                             MyMoneySchedule::OCCUR_ONCE, 1,
                             MyMoneySchedule::STYPE_DIRECTDEBIT,
-                            QDate(),
-                            QDate(),
+                            MyMoneyDate(),
+                            MyMoneyDate(),
                             false,
                             false);
   t1.setPostDate(notOverdue);
@@ -1933,8 +1933,8 @@ void MyMoneyDatabaseMgrTest::testScheduleList()
                             MyMoneySchedule::TYPE_DEPOSIT,
                             MyMoneySchedule::OCCUR_DAILY, 1,
                             MyMoneySchedule::STYPE_DIRECTDEPOSIT,
-                            QDate(),
-                            QDate(),
+                            MyMoneyDate(),
+                            MyMoneyDate(),
                             false,
                             false);
   t2.setPostDate(notOverdue.addDays(1));
@@ -1951,8 +1951,8 @@ void MyMoneyDatabaseMgrTest::testScheduleList()
                             MyMoneySchedule::TYPE_TRANSFER,
                             MyMoneySchedule::OCCUR_WEEKLY, 1,
                             MyMoneySchedule::STYPE_OTHER,
-                            QDate(),
-                            QDate(),
+                            MyMoneyDate(),
+                            MyMoneyDate(),
                             false,
                             false);
   t3.setPostDate(notOverdue.addDays(2));
@@ -1969,7 +1969,7 @@ void MyMoneyDatabaseMgrTest::testScheduleList()
                             MyMoneySchedule::TYPE_BILL,
                             MyMoneySchedule::OCCUR_WEEKLY, 1,
                             MyMoneySchedule::STYPE_WRITECHEQUE,
-                            QDate(),
+                            MyMoneyDate(),
                             notOverdue.addDays(31),
                             false,
                             false);
@@ -2032,7 +2032,7 @@ void MyMoneyDatabaseMgrTest::testScheduleList()
   list = m->scheduleList("", MyMoneySchedule::TYPE_ANY,
                          MyMoneySchedule::OCCUR_ANY,
                          MyMoneySchedule::STYPE_ANY,
-                         QDate(),
+                         MyMoneyDate(),
                          notOverdue.addDays(1));
   QVERIFY(list.count() == 3);
   QVERIFY(list[0].name() == "Schedule 1");
@@ -2053,8 +2053,8 @@ void MyMoneyDatabaseMgrTest::testScheduleList()
   list = m->scheduleList("", MyMoneySchedule::TYPE_ANY,
                          MyMoneySchedule::OCCUR_ANY,
                          MyMoneySchedule::STYPE_ANY,
-                         QDate(),
-                         QDate(),
+                         MyMoneyDate(),
+                         MyMoneyDate(),
                          true);
   QVERIFY(list.count() == 1);
   QVERIFY(list[0].name() == "Schedule 4");

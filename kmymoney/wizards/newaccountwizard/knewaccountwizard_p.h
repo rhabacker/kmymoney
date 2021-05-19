@@ -343,7 +343,7 @@ public:
   /**
    * This method returns the due date of the first payment to be recorded.
    */
-  QDate firstPaymentDueDate(void) const;
+  MyMoneyDate firstPaymentDueDate(void) const;
 
   QWidget* initialFocusWidget(void) const {
     return m_interestCategory;

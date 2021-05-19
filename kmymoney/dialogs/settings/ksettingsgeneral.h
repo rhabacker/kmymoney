@@ -46,7 +46,7 @@ public:
 
 protected slots:
   void slotChooseLogPath();
-  void slotLoadStartDate(const QDate&);
+  void slotLoadStartDate(const MyMoneyDate&);
   void slotUpdateLogTypes();
 
 protected:

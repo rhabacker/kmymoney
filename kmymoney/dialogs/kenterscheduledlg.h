@@ -77,7 +77,7 @@ protected:
     * This method returns the adjusts @a _date according to
     * the setting of the schedule's weekend option.
     */
-  QDate date(const QDate& _date) const;
+  MyMoneyDate date(const MyMoneyDate& _date) const;
 
   void resizeEvent(QResizeEvent* ev);
 

@@ -69,7 +69,7 @@ public:
   {
   public:
     Transaction() : m_reconcile(MyMoneySplit::NotReconciled), m_eAction(eaNone) {}
-    QDate m_datePosted;
+    MyMoneyDate m_datePosted;
     QString m_strPayee;
     QString m_strMemo;
     QString m_strNumber;
@@ -92,7 +92,7 @@ public:
   };
 
   struct Price {
-    QDate m_date;
+    MyMoneyDate m_date;
     QString m_strSecurity;
     MyMoneyMoney m_amount;
   };
@@ -118,8 +118,8 @@ public:
   QString m_accountId;
 
   QString m_strCurrency;
-  QDate m_dateBegin;
-  QDate m_dateEnd;
+  MyMoneyDate m_dateBegin;
+  MyMoneyDate m_dateEnd;
   MyMoneyMoney m_closingBalance;
   EType m_eType;
 

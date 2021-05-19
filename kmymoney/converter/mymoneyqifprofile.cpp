@@ -387,7 +387,7 @@ const QString MyMoneyQifProfile::accountDelimiter() const
   return rc;
 }
 
-const QString MyMoneyQifProfile::date(const QDate& datein) const
+const QString MyMoneyQifProfile::date(const MyMoneyDate& datein) const
 {
   QString::const_iterator format = m_dateFormat.begin();;
   QString buffer;
@@ -438,11 +438,11 @@ const QString MyMoneyQifProfile::date(const QDate& datein) const
   return buffer;
 }
 
-const QDate MyMoneyQifProfile::date(const QString& datein) const
+const MyMoneyDate MyMoneyQifProfile::date(const QString& datein) const
 {
   // in case we don't know the format, we return an invalid date
   if (d->m_partPos.count() != 3)
-    return QDate();
+    return MyMoneyDate();
 
   QVector<QString> scannedParts(3);
   d->dissectDate(scannedParts, datein);
@@ -463,7 +463,7 @@ const QDate MyMoneyQifProfile::date(const QString& datein) const
     }
     if (j == 13) {
       qWarning("Unknown month '%s'", qPrintable(scannedParts[d->m_partPos['m']]));
-      return QDate();
+      return MyMoneyDate();
     }
   }
 
@@ -474,7 +474,7 @@ const QDate MyMoneyQifProfile::date(const QString& datein) const
     else
       yr += 1900;
   }
-  return QDate(yr, mon, day);
+  return MyMoneyDate(yr, mon, day);
 
 #if 0
   QString scannedDelim[2];
@@ -491,7 +491,7 @@ const QDate MyMoneyQifProfile::date(const QString& datein) const
       ++part;
       if (part == 3) {
         qWarning("MyMoneyQifProfile::date(const QString& datein) Too many parts in date format");
-        return QDate();
+        return MyMoneyDate();
       }
       ++i;
     }
@@ -507,14 +507,14 @@ const QDate MyMoneyQifProfile::date(const QString& datein) const
       case '\'':
         if (delim == 2) {
           qWarning("MyMoneyQifProfile::date(const QString& datein) Too many delimiters in date format");
-          return QDate();
+          return MyMoneyDate();
         }
         formatDelim[delim] = m_dateFormat[i];
         ++delim;
         break;
       default:
         qWarning("MyMoneyQifProfile::date(const QString& datein) Invalid char in date format");
-        return QDate();
+        return MyMoneyDate();
     }
   }
 
@@ -530,7 +530,7 @@ const QDate MyMoneyQifProfile::date(const QString& datein) const
       case '\'':
         if (delim == 2) {
           qWarning("MyMoneyQifProfile::date(const QString& datein) Too many delimiters in date field");
-          return QDate();
+          return MyMoneyDate();
         }
         scannedDelim[delim] = datein[i];
         ++delim;
@@ -560,7 +560,7 @@ const QDate MyMoneyQifProfile::date(const QString& datein) const
         && scannedDelim[i] != QChar('\'')) {
       qWarning("MyMoneyQifProfile::date(const QString& datein) Invalid delimiter '%s' when '%s' was expected",
                scannedDelim[i].toLatin1(), formatDelim[i].toLatin1());
-      return QDate();
+      return MyMoneyDate();
     }
   }
 
@@ -644,10 +644,10 @@ const QDate MyMoneyQifProfile::date(const QString& datein) const
     }
     if (!msg.isEmpty()) {
       qWarning("MyMoneyQifProfile::date(const QString& datein) %s", msg.toLatin1());
-      return QDate();
+      return MyMoneyDate();
     }
   }
-  return QDate(yr, mon, day);
+  return MyMoneyDate(yr, mon, day);
 #endif
 }
 

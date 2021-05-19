@@ -68,7 +68,7 @@ class KMM_MYMONEY_EXPORT MyMoneyPrice
 public:
   MyMoneyPrice();
   MyMoneyPrice(const QString& from, const QString& to, const QDomElement& node);
-  MyMoneyPrice(const QString& from, const QString& to, const QDate& date, const MyMoneyMoney& rate, const QString& source = QString());
+  MyMoneyPrice(const QString& from, const QString& to, const MyMoneyDate& date, const MyMoneyMoney& rate, const QString& source = QString());
   virtual ~MyMoneyPrice();
 
   /**
@@ -92,7 +92,7 @@ public:
     *
     * @code
     *
-    * MyMoneyPrice price("ADF", "GBP", QDate(2005,9,20), MyMoneyMoney(1,3), "User");
+    * MyMoneyPrice price("ADF", "GBP", MyMoneyDate(2005,9,20), MyMoneyMoney(1,3), "User");
     * MyMoneyMoney valADF, valGBP(100,1);
     *
     * valADF = valGBP * price.rate("ADF");
@@ -105,7 +105,7 @@ public:
     */
   const MyMoneyMoney& rate(const QString& id) const;
 
-  const QDate& date() const {
+  const MyMoneyDate& date() const {
     return m_date;
   };
   const QString& source() const {
@@ -150,7 +150,7 @@ public:
 private:
   QString       m_fromSecurity;
   QString       m_toSecurity;
-  QDate         m_date;
+  MyMoneyDate   m_date;
   MyMoneyMoney  m_rate;
   MyMoneyMoney  m_invRate;
   QString       m_source;
@@ -158,7 +158,7 @@ private:
 
 
 typedef QPair<QString, QString> MyMoneySecurityPair;
-typedef QMap<QDate, MyMoneyPrice> MyMoneyPriceEntries;
+typedef QMap<MyMoneyDate, MyMoneyPrice> MyMoneyPriceEntries;
 typedef QMap<MyMoneySecurityPair, MyMoneyPriceEntries> MyMoneyPriceList;
 
 /**

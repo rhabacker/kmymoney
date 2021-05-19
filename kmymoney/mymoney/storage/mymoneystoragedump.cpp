@@ -336,8 +336,8 @@ void MyMoneyStorageDump::writeStream(QDataStream& _s, IMyMoneySerialize* _storag
         s << "               = overdue!" << "\n";
     }
 
-    QList<QDate> list_d;
-    QList<QDate>::ConstIterator it_d;
+    QList<MyMoneyDate> list_d;
+    QList<MyMoneyDate>::ConstIterator it_d;
 
     list_d = (*it_s).recordedPayments();
     if (list_d.count() > 0) {

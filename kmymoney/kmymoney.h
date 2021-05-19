@@ -1242,7 +1242,7 @@ private:
   /**
     * Re-implemented from IMyMoneyProcessingCalendar
     */
-  bool isProcessingDate(const QDate& date) const;
+  bool isProcessingDate(const MyMoneyDate& date) const;
 
   /**
     * Depending on the setting of AutoSaveOnQuit, this method
@@ -1372,7 +1372,7 @@ signals:
     * @param transactionList reference to QList of QPair containing all
     *        transaction/split pairs processed by the reconciliation.
     */
-  void accountReconciled(const MyMoneyAccount& account, const QDate& date, const MyMoneyMoney& startingBalance, const MyMoneyMoney& endingBalance, const QList<QPair<MyMoneyTransaction, MyMoneySplit> >& transactionList);
+  void accountReconciled(const MyMoneyAccount& account, const MyMoneyDate& date, const MyMoneyMoney& startingBalance, const MyMoneyMoney& endingBalance, const QList<QPair<MyMoneyTransaction, MyMoneySplit> >& transactionList);
 
   /**
     * This signal is emitted when the style of the tool bar has been changed.

@@ -39,12 +39,12 @@ void MyMoneyPriceTest::testDefaultConstructor()
 
 void MyMoneyPriceTest::testConstructor()
 {
-  MyMoneyPrice n(QString("from"), QString("to"), QDate(2005, 9, 23), MyMoneyMoney(1, 3),  QString("MySource"));
+  MyMoneyPrice n(QString("from"), QString("to"), MyMoneyDate(2005, 9, 23), MyMoneyMoney(1, 3),  QString("MySource"));
 
   QVERIFY(n.isValid() == true);
   QVERIFY(n.from() == QString("from"));
   QVERIFY(n.to() == QString("to"));
-  QVERIFY(n.date() == QDate(2005, 9, 23));
+  QVERIFY(n.date() == MyMoneyDate(2005, 9, 23));
   QVERIFY(n.source() == QString("MySource"));
   QVERIFY(n.rate("to") == MyMoneyMoney(1, 3));
 }
@@ -52,10 +52,10 @@ void MyMoneyPriceTest::testConstructor()
 void MyMoneyPriceTest::testValidity()
 {
   QString emptyId;
-  MyMoneyPrice n1(emptyId, QString("to"), QDate(2005, 9, 23), MyMoneyMoney(1, 3),  QString("MySource"));
-  MyMoneyPrice n2(QString("from"), emptyId, QDate(2005, 9, 23), MyMoneyMoney(1, 3),  QString("MySource"));
-  MyMoneyPrice n3(QString("from"), QString("to"), QDate(), MyMoneyMoney(1, 3),  QString("MySource"));
-  MyMoneyPrice n4(QString("from"), QString("to"), QDate(2005, 9, 23), MyMoneyMoney(1, 3),  QString("MySource"));
+  MyMoneyPrice n1(emptyId, QString("to"), MyMoneyDate(2005, 9, 23), MyMoneyMoney(1, 3),  QString("MySource"));
+  MyMoneyPrice n2(QString("from"), emptyId, MyMoneyDate(2005, 9, 23), MyMoneyMoney(1, 3),  QString("MySource"));
+  MyMoneyPrice n3(QString("from"), QString("to"), MyMoneyDate(), MyMoneyMoney(1, 3),  QString("MySource"));
+  MyMoneyPrice n4(QString("from"), QString("to"), MyMoneyDate(2005, 9, 23), MyMoneyMoney(1, 3),  QString("MySource"));
 
   QVERIFY(n1.isValid() == false);
   QVERIFY(n2.isValid() == false);
@@ -65,8 +65,8 @@ void MyMoneyPriceTest::testValidity()
 
 void MyMoneyPriceTest::testRate()
 {
-  MyMoneyPrice n1(QString("from"), QString("to"), QDate(2005, 9, 23), MyMoneyMoney(1, 3),  QString("MySource"));
-  MyMoneyPrice n2(QString("from"), QString("to"), QDate(), MyMoneyMoney(1, 3),  QString("MySource"));
+  MyMoneyPrice n1(QString("from"), QString("to"), MyMoneyDate(2005, 9, 23), MyMoneyMoney(1, 3),  QString("MySource"));
+  MyMoneyPrice n2(QString("from"), QString("to"), MyMoneyDate(), MyMoneyMoney(1, 3),  QString("MySource"));
 
   try {
     QVERIFY(n1.rate("to") == MyMoneyMoney(1, 3));

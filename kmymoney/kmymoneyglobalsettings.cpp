@@ -102,10 +102,10 @@ int KMyMoneyGlobalSettings::firstFiscalDay()
   return KMyMoneySettings::fiscalYearBeginDay();
 }
 
-QDate KMyMoneyGlobalSettings::firstFiscalDate()
+MyMoneyDate KMyMoneyGlobalSettings::firstFiscalDate()
 {
-  QDate date = QDate(QDate::currentDate().year(), firstFiscalMonth(), firstFiscalDay());
-  if (date > QDate::currentDate())
+  MyMoneyDate date = MyMoneyDate(MyMoneyDate::currentDate().year(), firstFiscalMonth(), firstFiscalDay());
+  if (date > MyMoneyDate::currentDate())
     date = date.addYears(-1);
   return date;
 }
@@ -117,8 +117,8 @@ MyMoneyForecast KMyMoneyGlobalSettings::forecast()
   // override object defaults with those of the application
   forecast.setForecastCycles(KMyMoneyGlobalSettings::forecastCycles());
   forecast.setAccountsCycle(KMyMoneyGlobalSettings::forecastAccountCycle());
-  forecast.setHistoryStartDate(QDate::currentDate().addDays(-forecast.forecastCycles()*forecast.accountsCycle()));
-  forecast.setHistoryEndDate(QDate::currentDate().addDays(-1));
+  forecast.setHistoryStartDate(MyMoneyDate::currentDate().addDays(-forecast.forecastCycles()*forecast.accountsCycle()));
+  forecast.setHistoryEndDate(MyMoneyDate::currentDate().addDays(-1));
   forecast.setForecastDays(KMyMoneyGlobalSettings::forecastDays());
   forecast.setBeginForecastDay(KMyMoneyGlobalSettings::beginForecastDay());
   forecast.setForecastMethod(KMyMoneyGlobalSettings::forecastMethod());

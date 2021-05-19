@@ -113,7 +113,7 @@ void MyMoneySplit::setMemo(const QString& memo)
   m_memo = memo;
 }
 
-void MyMoneySplit::setReconcileDate(const QDate& date)
+void MyMoneySplit::setReconcileDate(const MyMoneyDate& date)
 {
   m_reconcileDate = date;
 }

@@ -97,7 +97,7 @@ void ReportAccount::calculateAccountHierarchy()
   }
 }
 
-MyMoneyMoney ReportAccount::deepCurrencyPrice(const QDate& date, bool exactDate) const
+MyMoneyMoney ReportAccount::deepCurrencyPrice(const MyMoneyDate &date, bool exactDate) const
 {
   DEBUG_ENTER(Q_FUNC_INFO);
 
@@ -127,7 +127,7 @@ MyMoneyMoney ReportAccount::deepCurrencyPrice(const QDate& date, bool exactDate)
   return result;
 }
 
-MyMoneyMoney ReportAccount::baseCurrencyPrice(const QDate& date, bool exactDate) const
+MyMoneyMoney ReportAccount::baseCurrencyPrice(const MyMoneyDate& date, bool exactDate) const
 {
   // Note that whether or not the user chooses to convert to base currency, all the values
   // for a given account/category are converted to the currency for THAT account/category
@@ -153,7 +153,7 @@ MyMoneyMoney ReportAccount::baseCurrencyPrice(const QDate& date, bool exactDate)
   return result;
 }
 
-MyMoneyMoney ReportAccount::foreignCurrencyPrice(const QString foreignCurrency, const QDate& date, bool exactDate) const
+MyMoneyMoney ReportAccount::foreignCurrencyPrice(const QString foreignCurrency, const MyMoneyDate& date, bool exactDate) const
 {
   DEBUG_ENTER(Q_FUNC_INFO);
 

@@ -54,7 +54,7 @@ MyMoneySeqAccessMgr::MyMoneySeqAccessMgr()
   m_nextOnlineJobID = 0;
   m_user = MyMoneyPayee();
   m_dirty = false;
-  m_creationDate = QDate::currentDate();
+  m_creationDate = MyMoneyDate::currentDate();
 
   // setup standard accounts
   MyMoneyAccount acc_l;
@@ -593,7 +593,7 @@ void MyMoneySeqAccessMgr::adjustBalance(MyMoneyAccount& acc, const MyMoneySplit&
 void MyMoneySeqAccessMgr::touch()
 {
   m_dirty = true;
-  m_lastModificationDate = QDate::currentDate();
+  m_lastModificationDate = MyMoneyDate::currentDate();
 }
 
 bool MyMoneySeqAccessMgr::hasActiveSplits(const QString& id) const
@@ -1023,7 +1023,7 @@ const MyMoneyTransaction MyMoneySeqAccessMgr::transaction(const QString& account
   return transaction(list[idx].id());
 }
 
-const MyMoneyMoney MyMoneySeqAccessMgr::balance(const QString& id, const QDate& date) const
+const MyMoneyMoney MyMoneySeqAccessMgr::balance(const QString& id, const MyMoneyDate& date) const
 {
   MyMoneyAccount acc = account(id);
   if (!date.isValid()) {
@@ -1039,13 +1039,13 @@ const MyMoneyMoney MyMoneySeqAccessMgr::balance(const QString& id, const QDate& 
   return calculateBalance(id, date);
 }
 
-MyMoneyMoney MyMoneySeqAccessMgr::calculateBalance(const QString& id, const QDate& date) const
+MyMoneyMoney MyMoneySeqAccessMgr::calculateBalance(const QString& id, const MyMoneyDate& date) const
 {
   MyMoneyMoney balance;
   QList<MyMoneyTransaction> list;
 
   MyMoneyTransactionFilter filter;
-  filter.setDateFilter(QDate(), date);
+  filter.setDateFilter(MyMoneyDate(), date);
   filter.setReportAllSplits(false);
   transactionList(list, filter);
 
@@ -1066,7 +1066,7 @@ MyMoneyMoney MyMoneySeqAccessMgr::calculateBalance(const QString& id, const QDat
   return balance;
 }
 
-const MyMoneyMoney MyMoneySeqAccessMgr::totalBalance(const QString& id, const QDate& date) const
+const MyMoneyMoney MyMoneySeqAccessMgr::totalBalance(const QString& id, const MyMoneyDate &date) const
 {
   QStringList accounts;
   QStringList::ConstIterator it_a;
@@ -1361,8 +1361,8 @@ const QList<MyMoneySchedule> MyMoneySeqAccessMgr::scheduleList(
   const MyMoneySchedule::typeE type,
   const MyMoneySchedule::occurrenceE occurrence,
   const MyMoneySchedule::paymentTypeE paymentType,
-  const QDate& startDate,
-  const QDate& endDate,
+  const MyMoneyDate& startDate,
+  const MyMoneyDate& endDate,
   const bool overdue) const
 {
   QMap<QString, MyMoneySchedule>::ConstIterator pos;
@@ -1460,7 +1460,7 @@ void MyMoneySeqAccessMgr::loadScheduleId(const unsigned long id)
 const QList<MyMoneySchedule> MyMoneySeqAccessMgr::scheduleListEx(int scheduleTypes,
     int scheduleOcurrences,
     int schedulePaymentTypes,
-    QDate date,
+    MyMoneyDate date,
     const QStringList& accounts) const
 {
 //  qDebug("scheduleListEx");
@@ -1841,13 +1841,13 @@ const MyMoneyPriceList MyMoneySeqAccessMgr::priceList() const
   return list;
 }
 
-MyMoneyPrice MyMoneySeqAccessMgr::price(const QString& fromId, const QString& toId, const QDate& _date, const bool exactDate) const
+MyMoneyPrice MyMoneySeqAccessMgr::price(const QString& fromId, const QString& toId, const MyMoneyDate &_date, const bool exactDate) const
 {
   // if the caller selected an exact entry, we can search for it using the date as the key
   QMap<MyMoneySecurityPair, MyMoneyPriceEntries>::const_iterator itm = m_priceList.find(qMakePair(fromId, toId));
   if (itm != m_priceList.end()) {
     // if no valid date is passed, we use today's date.
-    const QDate &date = _date.isValid() ? _date : QDate::currentDate();
+    const MyMoneyDate &date = _date.isValid() ? _date : MyMoneyDate::currentDate();
     const MyMoneyPriceEntries &entries = itm.value();
     // regardless of the exactDate flag if the exact date is present return it's value since it's the correct value
     MyMoneyPriceEntries::const_iterator it = entries.find(date);

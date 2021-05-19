@@ -114,7 +114,7 @@ public:
     *                  @a false is the default
     * @return MyMoneyMoney The value of the account's currency on that date
     */
-  MyMoneyMoney deepCurrencyPrice(const QDate& date, bool exactDate = false) const;
+  MyMoneyMoney deepCurrencyPrice(const MyMoneyDate &date, bool exactDate = false) const;
 
   /**
     * Returns the price of this account's deep currency on the indicated date,
@@ -126,7 +126,7 @@ public:
     *                  @a false is the default
     * @return MyMoneyMoney The value of the account's currency on that date
     */
-  MyMoneyMoney baseCurrencyPrice(const QDate& date, bool exactDate = false) const;
+  MyMoneyMoney baseCurrencyPrice(const MyMoneyDate &date, bool exactDate = false) const;
 
   /**
    * Returns the price of this account's deep currency on the indicated date,
@@ -139,7 +139,7 @@ public:
    *                  @a false is the default
    * @return MyMoneyMoney The value of the account's currency on that date
    */
-  MyMoneyMoney foreignCurrencyPrice(const QString foreignCurrency, const QDate& date, bool exactDate = false) const;
+  MyMoneyMoney foreignCurrencyPrice(const QString foreignCurrency, const MyMoneyDate &date, bool exactDate = false) const;
 
   /**
     * Fetch the trading symbol of this account's deep currency

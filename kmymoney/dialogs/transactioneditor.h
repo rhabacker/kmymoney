@@ -44,7 +44,7 @@ class TransactionEditor : public QObject
   Q_OBJECT
 public:
   TransactionEditor();
-  TransactionEditor(TransactionEditorContainer* regForm, KMyMoneyRegister::Transaction* item, const KMyMoneyRegister::SelectedTransactions& list, const QDate& lastPostDate);
+  TransactionEditor(TransactionEditorContainer* regForm, KMyMoneyRegister::Transaction* item, const KMyMoneyRegister::SelectedTransactions& list, const MyMoneyDate& lastPostDate);
   virtual ~TransactionEditor();
 
   /**
@@ -265,7 +265,7 @@ signals:
     *
     * @param date the post date of the newly created transaction
     */
-  void lastPostDateUsed(const QDate& date);
+  void lastPostDateUsed(const MyMoneyDate& date);
 
   /**
     * This signal is sent out, if the user decides to schedule the transaction @a t
@@ -308,7 +308,7 @@ protected:
   MyMoneyAccount                                    m_account;
   MyMoneyTransaction                                m_transaction;
   MyMoneySplit                                      m_split;
-  QDate                                             m_lastPostDate;
+  MyMoneyDate                                             m_lastPostDate;
   QMap<QString, MyMoneyMoney>                       m_priceInfo;
   KMyMoneyRegister::Action                          m_initialAction;
   bool                                              m_openEditSplits;
@@ -327,7 +327,7 @@ class StdTransactionEditor : public TransactionEditor
   Q_OBJECT
 public:
   StdTransactionEditor();
-  StdTransactionEditor(TransactionEditorContainer* regForm, KMyMoneyRegister::Transaction* item, const KMyMoneyRegister::SelectedTransactions& list, const QDate& lastPostDate);
+  StdTransactionEditor(TransactionEditorContainer* regForm, KMyMoneyRegister::Transaction* item, const KMyMoneyRegister::SelectedTransactions& list, const MyMoneyDate& lastPostDate);
   ~StdTransactionEditor();
 
   bool isComplete(QString& reason) const;

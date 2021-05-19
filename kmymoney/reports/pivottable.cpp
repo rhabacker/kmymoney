@@ -122,8 +122,8 @@ void PivotTable::init()
   if (! m_config_f.isColumnsAreDays()) {
     // strip out the 'days' component of the begin and end dates.
     // we're only using these variables to contain year and month.
-    m_beginDate =  QDate(m_beginDate.year(), m_beginDate.month(), 1);
-    m_endDate = QDate(m_endDate.year(), m_endDate.month(), 1);
+    m_beginDate =  MyMoneyDate(m_beginDate.year(), m_beginDate.month(), 1);
+    m_endDate = MyMoneyDate(m_endDate.year(), m_endDate.month(), 1);
   }
 
   m_numColumns = columnValue(m_endDate) - columnValue(m_beginDate) + 2;
@@ -189,10 +189,10 @@ void PivotTable::init()
     // Create a custom version of the report filter, excluding date
     // We'll use this to compare the transaction against
     MyMoneyTransactionFilter schedulefilter(m_config_f);
-    schedulefilter.setDateFilter(QDate(), QDate());
+    schedulefilter.setDateFilter(MyMoneyDate(), MyMoneyDate());
 
     // Get the real dates from the config filter
-    QDate configbegin, configend;
+    MyMoneyDate configbegin, configend;
     m_config_f.validDateRange(configbegin, configend);
 
     QList<MyMoneySchedule> schedules = file->scheduleList();
@@ -206,15 +206,15 @@ void PivotTable::init()
         tx.setValue("kmm-schedule-id", (*it_schedule).id());
 
         // Get the dates when a payment will be made within the report window
-        QDate nextpayment = (*it_schedule).adjustedNextPayment(configbegin);
+        MyMoneyDate nextpayment = (*it_schedule).adjustedNextPayment(configbegin);
         if (nextpayment.isValid()) {
           // Add one transaction for each date
-          QList<QDate> paymentDates = (*it_schedule).paymentDates(nextpayment, configend);
-          QList<QDate>::const_iterator it_date = paymentDates.constBegin();
+          QList<MyMoneyDate> paymentDates = (*it_schedule).paymentDates(nextpayment, configend);
+          QList<MyMoneyDate>::const_iterator it_date = paymentDates.constBegin();
           while (it_date != paymentDates.constEnd()) {
             //if the payment occurs in the past, enter it tomorrow
-            if (QDate::currentDate() >= *it_date) {
-              tx.setPostDate(QDate::currentDate().addDays(1));
+            if (MyMoneyDate::currentDate() >= *it_date) {
+              tx.setPostDate(MyMoneyDate::currentDate().addDays(1));
             } else {
               tx.setPostDate(*it_date);
             }
@@ -245,7 +245,7 @@ void PivotTable::init()
   int colofs = columnValue(m_beginDate) - 1;
   while (it_transaction != transactions.constEnd()) {
     MyMoneyTransaction tx = (*it_transaction);
-    QDate postdate = tx.postDate();
+    MyMoneyDate postdate = tx.postDate();
     if (postdate < m_beginDate) {
       qDebug("MyMoneyFile::transactionList returned a transaction that is outside the date filter, skipping it");
       ++it_transaction;
@@ -269,11 +269,11 @@ void PivotTable::init()
         } else {
           //if it is not in the report and also not in loanBalances, get the balance from the file
           if (!loanBalances.contains(splitAccount.id())) {
-            QDate dueDate = sched.nextDueDate();
+            MyMoneyDate dueDate = sched.nextDueDate();
 
             //if the payment is overdue, use current date
-            if (dueDate < QDate::currentDate())
-              dueDate = QDate::currentDate();
+            if (dueDate < MyMoneyDate::currentDate())
+              dueDate = MyMoneyDate::currentDate();
 
             //get the balance from the file for the date
             loanBalances[splitAccount.id()] = file->balance(splitAccount.id(), dueDate.addDays(-1));
@@ -523,7 +523,7 @@ void PivotTable::calculateColumnHeadings()
   // if this is a days-based report
   if (m_config_f.isColumnsAreDays()) {
     if (columnpitch == 1) {
-      QDate columnDate = m_beginDate;
+      MyMoneyDate columnDate = m_beginDate;
       int column = 1;
       while (column++ < m_numColumns) {
         QString heading = KGlobal::locale()->calendar()->monthName(columnDate.month(), columnDate.year(), KCalendarSystem::ShortName) + ' ' + QString::number(columnDate.day());
@@ -531,8 +531,8 @@ void PivotTable::calculateColumnHeadings()
         m_columnHeadings.append(heading);
       }
     } else {
-      QDate day = m_beginDate;
-      QDate prv = m_beginDate;
+      MyMoneyDate day = m_beginDate;
+      MyMoneyDate prv = m_beginDate;
 
       // use the user's locale to determine the week's start
       int dow = (day.dayOfWeek() + 8 - KGlobal::locale()->weekStartDay()) % 7;
@@ -614,8 +614,8 @@ void PivotTable::calculateOpeningBalances()
   // First, determine the inclusive dates of the report.  Normally, that's just
   // the begin & end dates of m_config_f.  However, if either of those dates are
   // blank, we need to use m_beginDate and/or m_endDate instead.
-  QDate from = m_config_f.fromDate();
-  QDate to = m_config_f.toDate();
+  MyMoneyDate from = m_config_f.fromDate();
+  MyMoneyDate to = m_config_f.toDate();
   if (! from.isValid())
     from = m_beginDate;
   if (! to.isValid())
@@ -810,7 +810,7 @@ void PivotTable::calculateBudgetMapping()
       QList<MyMoneyBudget>::const_iterator budgets_it = budgets.constBegin();
       while (budgets_it != budgets.constEnd()) {
         //pick the first budget that matches the report start year
-        if ((*budgets_it).budgetStart().year() == QDate::currentDate().year()) {
+        if ((*budgets_it).budgetStart().year() == MyMoneyDate::currentDate().year()) {
           budget = file->budget((*budgets_it).id());
           break;
         }
@@ -880,7 +880,7 @@ void PivotTable::calculateBudgetMapping()
         // reverse sign to match common notation for cash flow direction, only for expense/income splits
         MyMoneyMoney reverse((splitAccount.accountType() == MyMoneyAccount::Expense) ? -1 : 1, 1);
 
-        const QMap<QDate, MyMoneyBudget::PeriodGroup>& periods = (*it_bacc).getPeriods();
+        const QMap<MyMoneyDate, MyMoneyBudget::PeriodGroup>& periods = (*it_bacc).getPeriods();
 
         // skip the account if it has no periods
         if (periods.count() < 1) {
@@ -905,7 +905,7 @@ void PivotTable::calculateBudgetMapping()
                 || m_config_f.columnType() == MyMoneyReport::Column::Months
                 || m_config_f.columnType() == MyMoneyReport::Column::Years
                 || m_config_f.columnType() == MyMoneyReport::Column::Quarters) {
-              QDate budgetDate = budget.budgetStart();
+              MyMoneyDate budgetDate = budget.budgetStart();
               while (column < m_numColumns && budget.budgetStart().addYears(1) > budgetDate) {
                 //only show budget values if the budget year and the column date match
                 //no currency conversion is done here because that is done for all columns later
@@ -926,7 +926,7 @@ void PivotTable::calculateBudgetMapping()
             // place each value in the appropriate column
             // budget periods are supposed to come in order just like columns
             {
-              QMap<QDate, MyMoneyBudget::PeriodGroup>::const_iterator it_period = periods.begin();
+              QMap<MyMoneyDate, MyMoneyBudget::PeriodGroup>::const_iterator it_period = periods.begin();
               while (it_period != periods.end() && column < m_numColumns) {
                 if ((*it_period).startDate() > columnDate(column)) {
                   ++column;
@@ -977,7 +977,7 @@ void PivotTable::convertToBaseCurrency()
           if (it_row.value()[eActual].count() <= column)
             throw MYMONEYEXCEPTION(QString("Column %1 out of grid range (%2) in PivotTable::convertToBaseCurrency").arg(column).arg(it_row.value()[eActual].count()));
 
-          QDate valuedate = columnDate(column);
+          MyMoneyDate valuedate = columnDate(column);
 
           //get base price for that date
           MyMoneyMoney conversionfactor = it_row.key().baseCurrencyPrice(valuedate, m_config_f.isSkippingZero());
@@ -1022,7 +1022,7 @@ void PivotTable::convertToDeepCurrency()
           if (it_row.value()[eActual].count() <= column)
             throw MYMONEYEXCEPTION(QString("Column %1 out of grid range (%2) in PivotTable::convertToDeepCurrency").arg(column).arg(it_row.value()[eActual].count()));
 
-          QDate valuedate = columnDate(column);
+          MyMoneyDate valuedate = columnDate(column);
 
           //get conversion factor for the account and date
           MyMoneyMoney conversionfactor = it_row.key().deepCurrencyPrice(valuedate, m_config_f.isSkippingZero());
@@ -1276,7 +1276,7 @@ void PivotTable::createRow(const QString& outergroup, const ReportAccount& row, 
   }
 }
 
-int PivotTable::columnValue(const QDate& _date) const
+int PivotTable::columnValue(const MyMoneyDate& _date) const
 {
   if (m_config_f.isColumnsAreDays())
     return (m_beginDate.daysTo(_date));
@@ -1284,7 +1284,7 @@ int PivotTable::columnValue(const QDate& _date) const
     return (_date.year() * 12 + _date.month());
 }
 
-QDate PivotTable::columnDate(int column) const
+MyMoneyDate PivotTable::columnDate(int column) const
 {
   if (m_config_f.isColumnsAreDays())
     return m_beginDate.addDays(m_config_f.columnPitch() * column - 1);
@@ -1301,7 +1301,7 @@ QString PivotTable::renderCSV() const
   //
 
   QString result = QString("\"Report: %1\"\n").arg(m_config_f.name());
-  result += i18nc("Report date range", "%1 through %2\n", KGlobal::locale()->formatDate(m_config_f.fromDate(), KLocale::ShortDate), KGlobal::locale()->formatDate(m_config_f.toDate(), KLocale::ShortDate));
+  result += i18nc("Report date range", "%1 through %2\n", MyMoneyLocale::formatDate(m_config_f.fromDate(), KLocale::ShortDate), MyMoneyLocale::formatDate(m_config_f.toDate(), KLocale::ShortDate));
   if (m_config_f.isConvertCurrency())
     result += i18n("All currencies converted to %1\n", MyMoneyFile::instance()->baseCurrency().name());
   else
@@ -1549,7 +1549,7 @@ QString PivotTable::renderBody() const
 
   //actual dates of the report
   result += QString("<div class=\"subtitle\">");
-  result += i18nc("Report date range", "%1 through %2", KGlobal::locale()->formatDate(m_config_f.fromDate(), KLocale::ShortDate), KGlobal::locale()->formatDate(m_config_f.toDate(), KLocale::ShortDate));
+  result += i18nc("Report date range", "%1 through %2", MyMoneyLocale::formatDate(m_config_f.fromDate(), KLocale::ShortDate), MyMoneyLocale::formatDate(m_config_f.toDate(), KLocale::ShortDate));
   result += QString("</div>\n");
   result += QString("<div class=\"gap\">&nbsp;</div>\n");
 
@@ -1955,10 +1955,10 @@ void PivotTable::calculateForecast()
   forecast.setIncludeUnusedAccounts(true);
 
   //setup forecast dates
-  if (m_endDate > QDate::currentDate()) {
+  if (m_endDate > MyMoneyDate::currentDate()) {
     forecast.setForecastEndDate(m_endDate);
-    forecast.setForecastStartDate(QDate::currentDate());
-    forecast.setForecastDays(QDate::currentDate().daysTo(m_endDate));
+    forecast.setForecastStartDate(MyMoneyDate::currentDate());
+    forecast.setForecastDays(MyMoneyDate::currentDate().daysTo(m_endDate));
   } else {
     forecast.setForecastStartDate(m_beginDate);
     forecast.setForecastEndDate(m_endDate);
@@ -1966,7 +1966,7 @@ void PivotTable::calculateForecast()
   }
 
   //adjust history dates if beginning date is before today
-  if (m_beginDate < QDate::currentDate()) {
+  if (m_beginDate < MyMoneyDate::currentDate()) {
     forecast.setHistoryEndDate(m_beginDate.addDays(-1));
     forecast.setHistoryStartDate(forecast.historyEndDate().addDays(-forecast.accountsCycle()*forecast.forecastCycles()));
   }
@@ -1987,7 +1987,7 @@ void PivotTable::calculateForecast()
       PivotInnerGroup::iterator it_row = (*it_innergroup).begin();
       while (it_row != (*it_innergroup).end()) {
         int column = 1;
-        QDate forecastDate = m_beginDate;
+        MyMoneyDate forecastDate = m_beginDate;
         //check whether columns are days or months
         if (m_config_f.isColumnsAreDays()) {
           while (column < m_numColumns) {
@@ -2000,7 +2000,7 @@ void PivotTable::calculateForecast()
           //if columns are months
           while (column < m_numColumns) {
             // the forecast balance is on the first day of the month see MyMoneyForecast::calculateScheduledMonthlyBalances()
-            forecastDate = QDate(forecastDate.year(), forecastDate.month(), 1);
+            forecastDate = MyMoneyDate(forecastDate.year(), forecastDate.month(), 1);
             //check that forecastDate is not over ending date
             if (forecastDate > m_endDate)
               forecastDate = m_endDate;
@@ -2083,9 +2083,9 @@ void PivotTable::calculateMovingAverage()
           while (column < m_numColumns) {
             MyMoneyMoney totalPrice = MyMoneyMoney();
 
-            QDate averageStart = columnDate(column).addDays(-delta);
-            QDate averageEnd = columnDate(column).addDays(delta);
-            for (QDate averageDate = averageStart; averageDate <= averageEnd; averageDate = averageDate.addDays(1)) {
+            MyMoneyDate averageStart = columnDate(column).addDays(-delta);
+            MyMoneyDate averageEnd = columnDate(column).addDays(delta);
+            for (MyMoneyDate averageDate = averageStart; averageDate <= averageEnd; averageDate = averageDate.addDays(1)) {
               if (m_config_f.isConvertCurrency()) {
                 totalPrice += it_row.key().deepCurrencyPrice(averageDate) * it_row.key().baseCurrencyPrice(averageDate);
               } else {
@@ -2106,24 +2106,24 @@ void PivotTable::calculateMovingAverage()
         } else {
           //if columns are months
           while (column < m_numColumns) {
-            QDate averageStart = columnDate(column);
+            MyMoneyDate averageStart = columnDate(column);
 
             //set the right start date depending on the column type
             switch (m_config_f.columnType()) {
               case MyMoneyReport::Column::Years: {
-                  averageStart = QDate(columnDate(column).year(), 1, 1);
+                  averageStart = MyMoneyDate(columnDate(column).year(), 1, 1);
                   break;
                 }
               case MyMoneyReport::Column::BiMonths: {
-                  averageStart = QDate(columnDate(column).year(), columnDate(column).month(), 1).addMonths(-1);
+                  averageStart = MyMoneyDate(columnDate(column).year(), columnDate(column).month(), 1).addMonths(-1);
                   break;
                 }
               case MyMoneyReport::Column::Quarters: {
-                  averageStart = QDate(columnDate(column).year(), columnDate(column).month(), 1).addMonths(-1);
+                  averageStart = MyMoneyDate(columnDate(column).year(), columnDate(column).month(), 1).addMonths(-1);
                   break;
                 }
               case MyMoneyReport::Column::Months: {
-                  averageStart = QDate(columnDate(column).year(), columnDate(column).month(), 1);
+                  averageStart = MyMoneyDate(columnDate(column).year(), columnDate(column).month(), 1);
                   break;
                 }
               case MyMoneyReport::Column::Weeks: {
@@ -2136,8 +2136,8 @@ void PivotTable::calculateMovingAverage()
 
             //gather the actual data and calculate the average
             MyMoneyMoney totalPrice = MyMoneyMoney();
-            QDate averageEnd = columnDate(column);
-            for (QDate averageDate = averageStart; averageDate <= averageEnd; averageDate = averageDate.addDays(1)) {
+            MyMoneyDate averageEnd = columnDate(column);
+            for (MyMoneyDate averageDate = averageStart; averageDate <= averageEnd; averageDate = averageDate.addDays(1)) {
               if (m_config_f.isConvertCurrency()) {
                 totalPrice += it_row.key().deepCurrencyPrice(averageDate) * it_row.key().baseCurrencyPrice(averageDate);
               } else {
@@ -2169,7 +2169,7 @@ void PivotTable::fillBasePriceUnit(ERowType rowType)
   QString baseCurrencyId = file->baseCurrency().id();
 
   //get the first price date for securities
-  QMap<QString, QDate> securityDates = securityFirstPrice();
+  QMap<QString, MyMoneyDate> securityDates = securityFirstPrice();
 
   //go through the data
   PivotGrid::iterator it_outergroup = m_grid.begin();
@@ -2209,11 +2209,11 @@ void PivotTable::fillBasePriceUnit(ERowType rowType)
   }
 }
 
-QMap<QString, QDate> PivotTable::securityFirstPrice()
+QMap<QString, MyMoneyDate> PivotTable::securityFirstPrice()
 {
   MyMoneyFile* file = MyMoneyFile::instance();
   MyMoneyPriceList priceList = file->priceList();
-  QMap<QString, QDate> securityPriceDate;
+  QMap<QString, MyMoneyDate> securityPriceDate;
 
   MyMoneyPriceList::const_iterator prices_it;
   for (prices_it = priceList.constBegin(); prices_it != priceList.constEnd(); ++prices_it) {
@@ -2269,7 +2269,7 @@ int PivotTable::currentDateColumn()
 {
 
   //return -1 if the columns do not include the current date
-  if (m_beginDate > QDate::currentDate() || m_endDate < QDate::currentDate()) {
+  if (m_beginDate > MyMoneyDate::currentDate() || m_endDate < MyMoneyDate::currentDate()) {
     return -1;
   }
 
@@ -2278,7 +2278,7 @@ int PivotTable::currentDateColumn()
   int column = 1;
 
   while (column < m_numColumns) {
-    if (columnDate(column) >= QDate::currentDate()) {
+    if (columnDate(column) >= MyMoneyDate::currentDate()) {
       break;
     }
     column++;

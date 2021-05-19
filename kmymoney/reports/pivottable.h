@@ -124,8 +124,8 @@ private:
 
   QStringList m_columnHeadings;
   int m_numColumns;
-  QDate m_beginDate;
-  QDate m_endDate;
+  MyMoneyDate m_beginDate;
+  MyMoneyDate m_endDate;
   bool m_runningSumsCalculated;
 
   /**
@@ -268,7 +268,7 @@ protected:
   /**
    * This method collects the first date for which there is a price for every security
    */
-  QMap<QString, QDate> securityFirstPrice();
+  QMap<QString, MyMoneyDate> securityFirstPrice();
 
   /**
     * This method calculates moving average for a report
@@ -330,14 +330,14 @@ protected:
     *
     * @param _date The date
     */
-  int columnValue(const QDate& _date) const;
+  int columnValue(const MyMoneyDate& _date) const;
 
   /**
     * Calculate the date of the last day covered by a given column.
     *
     * @param column The column
     */
-  QDate columnDate(int column) const;
+  MyMoneyDate columnDate(int column) const;
 
   /**
     * Returns the balance of a given cell. Throws an exception once calculateRunningSums() has been run.

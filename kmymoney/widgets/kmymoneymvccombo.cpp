@@ -761,22 +761,22 @@ MyMoneyTransactionFilter::dateOptionE KMyMoneyPeriodCombo::currentItem() const
   return static_cast<MyMoneyTransactionFilter::dateOptionE>(KMyMoneyGeneralCombo::currentItem());
 }
 
-QDate KMyMoneyPeriodCombo::start(MyMoneyTransactionFilter::dateOptionE id)
+MyMoneyDate KMyMoneyPeriodCombo::start(MyMoneyTransactionFilter::dateOptionE id)
 {
-  QDate start, end;
+  MyMoneyDate start, end;
   MyMoneyTransactionFilter::translateDateRange(id, start, end);
   return start;
 }
 
-QDate KMyMoneyPeriodCombo::end(MyMoneyTransactionFilter::dateOptionE id)
+MyMoneyDate KMyMoneyPeriodCombo::end(MyMoneyTransactionFilter::dateOptionE id)
 {
-  QDate start, end;
+  MyMoneyDate start, end;
   MyMoneyTransactionFilter::translateDateRange(id, start, end);
   return end;
 }
 
 #if 0
-void KMyMoneyPeriodCombo::dates(QDate& start, QDate& end, MyMoneyTransactionFilter::dateOptionE id)
+void KMyMoneyPeriodCombo::dates(MyMoneyDate& start, MyMoneyDate& end, MyMoneyTransactionFilter::dateOptionE id)
 {
 }
 #endif

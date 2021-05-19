@@ -35,8 +35,6 @@
 // ----------------------------------------------------------------------------
 // QT Includes
 
-class QDate;
-
 // ----------------------------------------------------------------------------
 // KDE Includes
 class KComboBox;
@@ -46,6 +44,7 @@ class KLineEdit;
 // Project Includes
 
 #include <mymoneykeyvaluecontainer.h>
+#include "mymoneyutils.h"
 
 class MyMoneyAccount;
 
@@ -106,11 +105,11 @@ public:
    * by statementStartDate()
    */
   const QByteArray statementRequest() const;
-  const QByteArray statementResponse(const QDate& _dtstart) const;
+  const QByteArray statementResponse(const MyMoneyDate& _dtstart) const;
 
 private:
   void initRequest(OfxFiLogin* fi) const;
-  QDate statementStartDate() const;
+  MyMoneyDate statementStartDate() const;
   QString iban() const;
   QString fiorg() const;
   QString fiid() const;

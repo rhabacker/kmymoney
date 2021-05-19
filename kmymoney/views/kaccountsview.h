@@ -70,7 +70,7 @@ public slots:
     * @param reconciliationDate the date of the statement
     * @param endingBalance the ending balance noted on the statement
     */
-  void slotReconcileAccount(const MyMoneyAccount& acc, const QDate& reconciliationDate, const MyMoneyMoney& endingBalance);
+  void slotReconcileAccount(const MyMoneyAccount& acc, const MyMoneyDate& reconciliationDate, const MyMoneyMoney& endingBalance);
 
 protected:
   typedef enum {

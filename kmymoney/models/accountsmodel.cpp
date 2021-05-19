@@ -577,7 +577,7 @@ MyMoneyMoney AccountsModel::accountValue(const MyMoneyAccount &account, const My
 /**
   * This slot should be connected so that the model will be notified which account is being reconciled.
   */
-void AccountsModel::slotReconcileAccount(const MyMoneyAccount &account, const QDate &reconciliationDate, const MyMoneyMoney &endingBalance)
+void AccountsModel::slotReconcileAccount(const MyMoneyAccount &account, const MyMoneyDate &reconciliationDate, const MyMoneyMoney &endingBalance)
 {
   Q_UNUSED(reconciliationDate)
   Q_UNUSED(endingBalance)

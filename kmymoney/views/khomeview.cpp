@@ -98,7 +98,7 @@ public:
   /**
    * daily balances of an account
    */
-  typedef QMap<QDate, MyMoneyMoney> dailyBalances;
+  typedef QMap<MyMoneyDate, MyMoneyMoney> dailyBalances;
 
   KHTMLPart*      m_part;
   QString         m_html;
@@ -338,7 +338,7 @@ void KHomeView::showNetWorthGraph()
   reportCfg.setColumnsAreDays(true);
   reportCfg.setConvertCurrency(true);
   reportCfg.setIncludingForecast(true);
-  reportCfg.setDateFilter(QDate::currentDate(), QDate::currentDate().addDays(+ 90));
+  reportCfg.setDateFilter(MyMoneyDate::currentDate(), MyMoneyDate::currentDate().addDays(+ 90));
   reports::PivotTable table(reportCfg);
 
   reports::KReportChartView* chartWidget = new reports::KReportChartView(0);
@@ -381,12 +381,12 @@ void KHomeView::showPayments()
   schedule = file->scheduleList("", MyMoneySchedule::TYPE_ANY,
                                 MyMoneySchedule::OCCUR_ANY,
                                 MyMoneySchedule::STYPE_ANY,
-                                QDate::currentDate(),
-                                QDate::currentDate().addMonths(1));
+                                MyMoneyDate::currentDate(),
+                                MyMoneyDate::currentDate().addMonths(1));
   overdues = file->scheduleList("", MyMoneySchedule::TYPE_ANY,
                                 MyMoneySchedule::OCCUR_ANY,
                                 MyMoneySchedule::STYPE_ANY,
-                                QDate(), QDate(), true);
+                                MyMoneyDate(), MyMoneyDate(), true);
 
   if (schedule.empty() && overdues.empty())
     return;
@@ -446,7 +446,7 @@ void KHomeView::showPayments()
     for (it = overdues.begin(); it != overdues.end(); ++it) {
       // determine number of overdue payments
       int cnt =
-        (*it).transactionsRemainingUntil(QDate::currentDate().addDays(-1));
+        (*it).transactionsRemainingUntil(MyMoneyDate::currentDate().addDays(-1));
 
       d->m_html += QString("<tr class=\"row-%1\">").arg(i++ & 0x01 ? "even" : "odd");
       showPaymentEntry(*it, cnt);
@@ -462,13 +462,13 @@ void KHomeView::showPayments()
     QList<MyMoneySchedule> todays;
     QList<MyMoneySchedule>::Iterator t_it;
     for (t_it = schedule.begin(); t_it != schedule.end();) {
-      if ((*t_it).adjustedNextDueDate() == QDate::currentDate()) {
+      if ((*t_it).adjustedNextDueDate() == MyMoneyDate::currentDate()) {
         todays.append(*t_it);
-        (*t_it).setNextDueDate((*t_it).nextPayment(QDate::currentDate()));
+        (*t_it).setNextDueDate((*t_it).nextPayment(MyMoneyDate::currentDate()));
 
         // if adjustedNextDueDate is still currentDate then remove it from
         // scheduled payments
-        if ((*t_it).adjustedNextDueDate() == QDate::currentDate()) {
+        if ((*t_it).adjustedNextDueDate() == MyMoneyDate::currentDate()) {
           t_it = schedule.erase(t_it);
           continue;
         }
@@ -536,7 +536,7 @@ void KHomeView::showPayments()
       cnt = (d->m_showAllSchedules) ? -1 : 6;
       bool needMoreLess = d->m_showAllSchedules;
 
-      QDate lastDate = QDate::currentDate().addMonths(1);
+      MyMoneyDate lastDate = MyMoneyDate::currentDate().addMonths(1);
       qSort(schedule);
       do {
         it = schedule.begin();
@@ -545,7 +545,7 @@ void KHomeView::showPayments()
 
         // if the next due date is invalid (schedule is finished)
         // we remove it from the list
-        QDate nextDate = (*it).nextDueDate();
+        MyMoneyDate nextDate = (*it).nextDueDate();
         if (!nextDate.isValid()) {
           schedule.erase(it);
           continue;
@@ -625,7 +625,7 @@ void KHomeView::showPaymentEntry(const MyMoneySchedule& sched, int cnt)
 
         //show payment date
         tmp = QString("<td>") +
-              KGlobal::locale()->formatDate(sched.adjustedNextDueDate(), KLocale::ShortDate) +
+              MyMoneyLocale::formatDate(sched.adjustedNextDueDate(), KLocale::ShortDate) +
               "</td><td>";
         if (!pathEnter.isEmpty())
           tmp += link(VIEW_SCHEDULE, QString("?id=%1&amp;mode=enter").arg(sched.id()), i18n("Enter schedule")) + QString("<img src=\"%1\" border=\"0\"></a>").arg(pathEnter) + linkend();
@@ -654,7 +654,7 @@ void KHomeView::showPaymentEntry(const MyMoneySchedule& sched, int cnt)
         tmp += "</td>";
         //show balance after payments
         tmp += "<td align=\"right\">";
-        QDate paymentDate = QDate(sched.adjustedNextDueDate());
+        MyMoneyDate paymentDate = MyMoneyDate(sched.adjustedNextDueDate());
         MyMoneyMoney balanceAfter = forecastPaymentBalance(acc, payment, paymentDate);
         QString balance = MyMoneyUtils::formatMoney(balanceAfter, acc, currency);
         balance.replace(QChar(' '), "&nbsp;");
@@ -824,10 +824,10 @@ void KHomeView::showAccountEntry(const MyMoneyAccount& acc)
     showAccountEntry(acc, value, MyMoneyMoney(), showLimit);
   } else {
     //get balance for normal accounts
-    value = file->balance(acc.id(), QDate::currentDate());
+    value = file->balance(acc.id(), MyMoneyDate::currentDate());
     if (acc.currencyId() != file->baseCurrency().id()) {
       ReportAccount repAcc = ReportAccount(acc.id());
-      MyMoneyMoney curPrice = repAcc.baseCurrencyPrice(QDate::currentDate());
+      MyMoneyMoney curPrice = repAcc.baseCurrencyPrice(MyMoneyDate::currentDate());
       MyMoneyMoney baseValue = value * curPrice;
       baseValue = baseValue.convert(file->baseCurrency().smallestAccountFraction());
       d->m_total += baseValue;
@@ -879,7 +879,7 @@ void KHomeView::showAccountEntry(const MyMoneyAccount& acc, const MyMoneyMoney& 
     if (acc.value("lastImportedTransactionDate").isEmpty() || acc.value("lastStatementBalance").isEmpty())
       cellStatus = '-';
     else if (file->hasMatchingOnlineBalance(acc)) {
-      if (file->hasNewerTransaction(acc.id(), QDate::fromString(acc.value("lastImportedTransactionDate"), Qt::ISODate)))
+      if (file->hasNewerTransaction(acc.id(), MyMoneyDate::fromString(acc.value("lastImportedTransactionDate"), Qt::ISODate)))
         cellStatus = QString("<img src=\"%1\" border=\"0\">").arg(pathTODO);
       else
         cellStatus = QString("<img src=\"%1\" border=\"0\">").arg(pathOK);
@@ -949,14 +949,14 @@ MyMoneyMoney KHomeView::investmentBalance(const MyMoneyAccount& acc)
 {
   MyMoneyFile* file = MyMoneyFile::instance();
   MyMoneyMoney value;
-  value = file->balance(acc.id(), QDate::currentDate());
+  value = file->balance(acc.id(), MyMoneyDate::currentDate());
   QList<QString>::const_iterator it_a;
   for (it_a = acc.accountList().begin(); it_a != acc.accountList().end(); ++it_a) {
     MyMoneyAccount stock = file->account(*it_a);
     if (!stock.isClosed()) {
       try {
         MyMoneyMoney val;
-        MyMoneyMoney balance = file->balance(stock.id(), QDate::currentDate());
+        MyMoneyMoney balance = file->balance(stock.id(), MyMoneyDate::currentDate());
         MyMoneySecurity security = file->security(stock.currencyId());
         const MyMoneyPrice &price = file->price(stock.currencyId(), security.tradingCurrency());
         val = (balance * price.rate(security.tradingCurrency())).convert(MyMoneyMoney::precToDenom(KMyMoneyGlobalSettings::pricePrecision()));
@@ -1027,7 +1027,7 @@ void KHomeView::showForecast()
 
     int colspan = 1;
     //get begin day
-    int beginDay = QDate::currentDate().daysTo(d->m_forecast.beginForecastDate());
+    int beginDay = MyMoneyDate::currentDate().daysTo(d->m_forecast.beginForecastDate());
     //if begin day is today skip to next cycle
     if (beginDay == 0)
       beginDay = d->m_forecast.accountsCycle();
@@ -1075,7 +1075,7 @@ void KHomeView::showForecast()
       }
 
       for (int f = beginDay; f <= d->m_forecast.forecastDays(); f += d->m_forecast.accountsCycle()) {
-        forecastBalance = d->m_forecast.forecastBalance(*it_account, QDate::currentDate().addDays(f));
+        forecastBalance = d->m_forecast.forecastBalance(*it_account, MyMoneyDate::currentDate().addDays(f));
         QString amount;
         amount = MyMoneyUtils::formatMoney(forecastBalance, *it_account, currency);
         amount.replace(QChar(' '), "&nbsp;");
@@ -1384,13 +1384,13 @@ void KHomeView::showAssetsLiabilities()
         if ((*asset_it).accountType() == MyMoneyAccount::Investment) {
           value = investmentBalance(*asset_it);
         } else {
-          value = MyMoneyFile::instance()->balance((*asset_it).id(), QDate::currentDate());
+          value = MyMoneyFile::instance()->balance((*asset_it).id(), MyMoneyDate::currentDate());
         }
 
         //calculate balance for foreign currency accounts
         if ((*asset_it).currencyId() != file->baseCurrency().id()) {
           ReportAccount repAcc = ReportAccount((*asset_it).id());
-          MyMoneyMoney curPrice = repAcc.baseCurrencyPrice(QDate::currentDate());
+          MyMoneyMoney curPrice = repAcc.baseCurrencyPrice(MyMoneyDate::currentDate());
           MyMoneyMoney baseValue = value * curPrice;
           baseValue = baseValue.convert(10000);
           netAssets += baseValue;
@@ -1411,11 +1411,11 @@ void KHomeView::showAssetsLiabilities()
       //write a liability account
       if (liabilities_it != liabilities.constEnd()) {
         MyMoneyMoney value;
-        value = MyMoneyFile::instance()->balance((*liabilities_it).id(), QDate::currentDate());
+        value = MyMoneyFile::instance()->balance((*liabilities_it).id(), MyMoneyDate::currentDate());
         //calculate balance if foreign currency
         if ((*liabilities_it).currencyId() != file->baseCurrency().id()) {
           ReportAccount repAcc = ReportAccount((*liabilities_it).id());
-          MyMoneyMoney curPrice = repAcc.baseCurrencyPrice(QDate::currentDate());
+          MyMoneyMoney curPrice = repAcc.baseCurrencyPrice(MyMoneyDate::currentDate());
           MyMoneyMoney baseValue = value * curPrice;
           baseValue = baseValue.convert(10000);
           netLiabilities += baseValue;
@@ -1635,17 +1635,17 @@ void KHomeView::doForecast()
   d->m_forecast.doForecast();
 }
 
-MyMoneyMoney KHomeView::forecastPaymentBalance(const MyMoneyAccount& acc, const MyMoneyMoney& payment, QDate& paymentDate)
+MyMoneyMoney KHomeView::forecastPaymentBalance(const MyMoneyAccount& acc, const MyMoneyMoney& payment, MyMoneyDate& paymentDate)
 {
   //if paymentDate before or equal to currentDate set it to current date plus 1
   //so we get to accumulate forecast balance correctly
-  if (paymentDate <= QDate::currentDate())
-    paymentDate = QDate::currentDate().addDays(1);
+  if (paymentDate <= MyMoneyDate::currentDate())
+    paymentDate = MyMoneyDate::currentDate().addDays(1);
 
   //check if the account is already there
   if (d->m_accountList.find(acc.id()) == d->m_accountList.end()
       || d->m_accountList[acc.id()].find(paymentDate) == d->m_accountList[acc.id()].end()) {
-    if (paymentDate == QDate::currentDate()) {
+    if (paymentDate == MyMoneyDate::currentDate()) {
       d->m_accountList[acc.id()][paymentDate] = d->m_forecast.forecastBalance(acc, paymentDate);
     } else {
       d->m_accountList[acc.id()][paymentDate] = d->m_forecast.forecastBalance(acc, paymentDate.addDays(-1));
@@ -1665,8 +1665,8 @@ void KHomeView::showCashFlowSummary()
   int prec = MyMoneyMoney::denomToPrec(file->baseCurrency().smallestAccountFraction());
 
   //set start and end of month dates
-  QDate startOfMonth = QDate(QDate::currentDate().year(), QDate::currentDate().month(), 1);
-  QDate endOfMonth = QDate(QDate::currentDate().year(), QDate::currentDate().month(), QDate::currentDate().daysInMonth());
+  MyMoneyDate startOfMonth = MyMoneyDate(MyMoneyDate::currentDate().year(), MyMoneyDate::currentDate().month(), 1);
+  MyMoneyDate endOfMonth = MyMoneyDate(MyMoneyDate::currentDate().year(), MyMoneyDate::currentDate().month(), MyMoneyDate::currentDate().daysInMonth());
 
   //Add total income and expenses for this month
   //get transactions for current month
@@ -1731,7 +1731,7 @@ void KHomeView::showCashFlowSummary()
   QList<MyMoneySchedule> schedule = file->scheduleList("", MyMoneySchedule::TYPE_ANY,
                                     MyMoneySchedule::OCCUR_ANY,
                                     MyMoneySchedule::STYPE_ANY,
-                                    QDate(),
+                                    MyMoneyDate(),
                                     endOfMonth);
 
   //Remove the finished schedules
@@ -1747,7 +1747,7 @@ void KHomeView::showCashFlowSummary()
   //add income and expenses
   QList<MyMoneySchedule>::Iterator sched_it;
   for (sched_it = schedule.begin(); sched_it != schedule.end();) {
-    QDate nextDate = (*sched_it).nextDueDate();
+    MyMoneyDate nextDate = (*sched_it).nextDueDate();
     int cnt = 0;
 
     while (nextDate.isValid() && nextDate <= endOfMonth) {
@@ -1768,7 +1768,7 @@ void KHomeView::showCashFlowSummary()
 
       // take care of the autoCalc stuff
       if ((*sched_it).type() == MyMoneySchedule::TYPE_LOANPAYMENT) {
-        QDate nextDate = (*sched_it).nextPayment((*sched_it).lastPayment());
+        MyMoneyDate nextDate = (*sched_it).nextPayment((*sched_it).lastPayment());
 
         //make sure we have all 'starting balances' so that the autocalc works
         QList<MyMoneySplit>::const_iterator it_s;
@@ -1777,11 +1777,11 @@ void KHomeView::showCashFlowSummary()
         for (it_s = transaction.splits().constBegin(); it_s != transaction.splits().constEnd(); ++it_s) {
           MyMoneyAccount acc = file->account((*it_s).accountId());
           // collect all overdues on the first day
-          QDate schedDate = nextDate;
-          if (QDate::currentDate() >= nextDate)
-            schedDate = QDate::currentDate().addDays(1);
+          MyMoneyDate schedDate = nextDate;
+          if (MyMoneyDate::currentDate() >= nextDate)
+            schedDate = MyMoneyDate::currentDate().addDays(1);
 
-          balanceMap[acc.id()] += file->balance(acc.id(), QDate::currentDate());
+          balanceMap[acc.id()] += file->balance(acc.id(), MyMoneyDate::currentDate());
         }
         KMyMoneyUtils::calculateAutoLoan(*sched_it, transaction, balanceMap);
       }
@@ -1798,7 +1798,7 @@ void KHomeView::showCashFlowSummary()
 
           //convert to foreign currency if needed
           if (repSplitAcc.currencyId() != file->baseCurrency().id()) {
-            MyMoneyMoney curPrice = repSplitAcc.baseCurrencyPrice(QDate::currentDate());
+            MyMoneyMoney curPrice = repSplitAcc.baseCurrencyPrice(MyMoneyDate::currentDate());
             value = value * curPrice;
             value = value.convert(10000);
           }
@@ -1850,11 +1850,11 @@ void KHomeView::showCashFlowSummary()
         case MyMoneyAccount::Checkings:
         case MyMoneyAccount::Savings:
         case MyMoneyAccount::Cash: {
-            MyMoneyMoney value = MyMoneyFile::instance()->balance((*account_it).id(), QDate::currentDate());
+            MyMoneyMoney value = MyMoneyFile::instance()->balance((*account_it).id(), MyMoneyDate::currentDate());
             //calculate balance for foreign currency accounts
             if ((*account_it).currencyId() != file->baseCurrency().id()) {
               ReportAccount repAcc = ReportAccount((*account_it).id());
-              MyMoneyMoney curPrice = repAcc.baseCurrencyPrice(QDate::currentDate());
+              MyMoneyMoney curPrice = repAcc.baseCurrencyPrice(MyMoneyDate::currentDate());
               MyMoneyMoney baseValue = value * curPrice;
               liquidAssets += baseValue;
               liquidAssets = liquidAssets.convert(10000);
@@ -1866,11 +1866,11 @@ void KHomeView::showCashFlowSummary()
           //group the liabilities into the other
         case MyMoneyAccount::CreditCard: {
             MyMoneyMoney value;
-            value = MyMoneyFile::instance()->balance((*account_it).id(), QDate::currentDate());
+            value = MyMoneyFile::instance()->balance((*account_it).id(), MyMoneyDate::currentDate());
             //calculate balance if foreign currency
             if ((*account_it).currencyId() != file->baseCurrency().id()) {
               ReportAccount repAcc = ReportAccount((*account_it).id());
-              MyMoneyMoney curPrice = repAcc.baseCurrencyPrice(QDate::currentDate());
+              MyMoneyMoney curPrice = repAcc.baseCurrencyPrice(MyMoneyDate::currentDate());
               MyMoneyMoney baseValue = value * curPrice;
               liquidLiabilities += baseValue;
               liquidLiabilities = liquidLiabilities.convert(10000);

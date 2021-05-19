@@ -45,7 +45,7 @@ void MyMoneySplitTest::testEmptyConstructor()
   QVERIFY(m->shares().isZero());
   QVERIFY(m->value().isZero());
   QVERIFY(m->reconcileFlag() == MyMoneySplit::NotReconciled);
-  QVERIFY(m->reconcileDate() == QDate());
+  QVERIFY(m->reconcileDate() == MyMoneyDate());
   QVERIFY(m->transactionId().isEmpty());
 }
 
@@ -53,7 +53,7 @@ void MyMoneySplitTest::testSetFunctions()
 {
   m->setAccountId("Account");
   m->setMemo("Memo");
-  m->setReconcileDate(QDate(1, 2, 3));
+  m->setReconcileDate(MyMoneyDate(1, 2, 3));
   m->setReconcileFlag(MyMoneySplit::Cleared);
   m->setShares(MyMoneyMoney(1234, 100));
   m->setValue(MyMoneyMoney(3456, 100));
@@ -68,7 +68,7 @@ void MyMoneySplitTest::testSetFunctions()
 
   QVERIFY(m->accountId() == "Account");
   QVERIFY(m->memo() == "Memo");
-  QVERIFY(m->reconcileDate() == QDate(1, 2, 3));
+  QVERIFY(m->reconcileDate() == MyMoneyDate(1, 2, 3));
   QVERIFY(m->reconcileFlag() == MyMoneySplit::Cleared);
   QVERIFY(m->shares() == MyMoneyMoney(1234, 100));
   QVERIFY(m->value() == MyMoneyMoney(3456, 100));
@@ -89,7 +89,7 @@ void MyMoneySplitTest::testCopyConstructor()
 
   QVERIFY(n.accountId() == "Account");
   QVERIFY(n.memo() == "Memo");
-  QVERIFY(n.reconcileDate() == QDate(1, 2, 3));
+  QVERIFY(n.reconcileDate() == MyMoneyDate(1, 2, 3));
   QVERIFY(n.reconcileFlag() == MyMoneySplit::Cleared);
   QVERIFY(n.shares() == MyMoneyMoney(1234, 100));
   QVERIFY(n.value() == MyMoneyMoney(3456, 100));
@@ -113,7 +113,7 @@ void MyMoneySplitTest::testAssignmentConstructor()
 
   QVERIFY(n.accountId() == "Account");
   QVERIFY(n.memo() == "Memo");
-  QVERIFY(n.reconcileDate() == QDate(1, 2, 3));
+  QVERIFY(n.reconcileDate() == MyMoneyDate(1, 2, 3));
   QVERIFY(n.reconcileFlag() == MyMoneySplit::Cleared);
   QVERIFY(n.shares() == MyMoneyMoney(1234, 100));
   QVERIFY(n.value() == MyMoneyMoney(3456, 100));
@@ -176,7 +176,7 @@ void MyMoneySplitTest::testInequality()
   QVERIFY(!(n == *m));
 
   n = *m;
-  n.setReconcileDate(QDate(3, 4, 5));
+  n.setReconcileDate(MyMoneyDate(3, 4, 5));
   QVERIFY(!(n == *m));
 
   n = *m;
@@ -360,7 +360,7 @@ void MyMoneySplitTest::testReadXML()
     QList<QString> tagIdList;
     tagIdList << "G000001";
     QVERIFY(s.tagIdList() == tagIdList);
-    QVERIFY(s.reconcileDate() == QDate());
+    QVERIFY(s.reconcileDate() == MyMoneyDate());
     QVERIFY(s.shares() == MyMoneyMoney(96379, 100));
     QVERIFY(s.value() == MyMoneyMoney(96379, 1000));
     QVERIFY(s.number() == "124");

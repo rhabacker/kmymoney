@@ -35,10 +35,10 @@
 #include "../mymoneycategory.h"
 
 MyMoneyDatabaseMgr::MyMoneyDatabaseMgr() :
-    m_creationDate(QDate::currentDate()),
+    m_creationDate(MyMoneyDate::currentDate()),
     m_currentFixVersion(0),
     m_fileFixVersion(0),
-    m_lastModificationDate(QDate::currentDate()),
+    m_lastModificationDate(MyMoneyDate::currentDate()),
     m_sql(0)
 { }
 
@@ -51,12 +51,12 @@ const MyMoneyPayee& MyMoneyDatabaseMgr::user() const
   return m_user;
 }
 
-const QDate MyMoneyDatabaseMgr::creationDate() const
+const MyMoneyDate MyMoneyDatabaseMgr::creationDate() const
 {
   return m_creationDate;
 }
 
-const QDate MyMoneyDatabaseMgr::lastModificationDate() const
+const MyMoneyDate MyMoneyDatabaseMgr::lastModificationDate() const
 {
   return m_lastModificationDate;
 }
@@ -692,9 +692,9 @@ bool MyMoneyDatabaseMgr::hasActiveSplits(const QString& id) const
   * @param date return balance for specific date
   * @return balance of the account as MyMoneyMoney object
   */
-//const MyMoneyMoney MyMoneyDatabaseMgr::balance(const QString& id, const QDate& date);
+//const MyMoneyMoney MyMoneyDatabaseMgr::balance(const QString& id, const MyMoneyDate& date);
 
-const MyMoneyMoney MyMoneyDatabaseMgr::totalBalance(const QString& id, const QDate& date) const
+const MyMoneyMoney MyMoneyDatabaseMgr::totalBalance(const QString& id, const MyMoneyDate& date) const
 {
   QStringList accounts;
 
@@ -1180,7 +1180,7 @@ const MyMoneyTransaction MyMoneyDatabaseMgr::transaction(const QString& id) cons
   return transactionList.begin().value();
 }
 
-const MyMoneyMoney MyMoneyDatabaseMgr::balance(const QString& id, const QDate& date) const
+const MyMoneyMoney MyMoneyDatabaseMgr::balance(const QString& id, const MyMoneyDate& date) const
 {
   QStringList idList;
   idList.append(id);
@@ -1192,15 +1192,15 @@ const MyMoneyMoney MyMoneyDatabaseMgr::balance(const QString& id, const QDate& d
   }
 
 //DEBUG
-  QDate date_(date);
-  //if (date_ == QDate()) date_ = QDate::currentDate();
+  MyMoneyDate date_(date);
+  //if (date_ == MyMoneyDate()) date_ = MyMoneyDate::currentDate();
 // END DEBUG
 
   MyMoneyMoney result;
   MyMoneyAccount acc;
   QMap<QString, MyMoneyAccount> accountList = m_sql->fetchAccounts(/*QString(id)*/);
   //QMap<QString, MyMoneyAccount>::const_iterator accpos = accountList.find(id);
-  if (date_ != QDate()) qDebug("request balance for %s at %s", qPrintable(id), qPrintable(date_.toString(Qt::ISODate)));
+  if (date_ != MyMoneyDate()) qDebug("request balance for %s at %s", qPrintable(id), qPrintable(date_.toString(Qt::ISODate)));
 //  if(!date_.isValid() && MyMoneyFile::instance()->account(id).accountType() != MyMoneyAccount::Stock) {
 //    if(accountList.find(id) != accountList.end())
 //      return accountList[id].balance();
@@ -1216,7 +1216,7 @@ const MyMoneyMoney MyMoneyDatabaseMgr::balance(const QString& id, const QDate& d
 
     MyMoneyTransactionFilter filter;
     filter.addAccount(id);
-    filter.setDateFilter(QDate(), date_);
+    filter.setDateFilter(MyMoneyDate(), date_);
     filter.setReportAllSplits(false);
     QList<MyMoneyTransaction> list = transactionList(filter);
 
@@ -1426,7 +1426,7 @@ void MyMoneyDatabaseMgr::removePrice(const MyMoneyPrice& price)
   m_sql->removePrice(price);
 }
 
-MyMoneyPrice MyMoneyDatabaseMgr::price(const QString& fromId, const QString& toId, const QDate& _date, const bool exactDate) const
+MyMoneyPrice MyMoneyDatabaseMgr::price(const QString& fromId, const QString& toId, const MyMoneyDate& _date, const bool exactDate) const
 {
   return m_sql->fetchSinglePrice(fromId, toId, _date, exactDate);
 }
@@ -1509,8 +1509,8 @@ const QList<MyMoneySchedule> MyMoneyDatabaseMgr::scheduleList(const QString& acc
     const MyMoneySchedule::typeE type,
     const MyMoneySchedule::occurrenceE occurrence,
     const MyMoneySchedule::paymentTypeE paymentType,
-    const QDate& startDate,
-    const QDate& endDate,
+    const MyMoneyDate& startDate,
+    const MyMoneyDate& endDate,
     const bool overdue) const
 {
   QMap<QString, MyMoneySchedule> scheduleList;
@@ -1580,10 +1580,10 @@ const QList<MyMoneySchedule> MyMoneyDatabaseMgr::scheduleList(const QString& acc
       if (!(*pos).isOverdue())
         continue;
       /*
-            QDate nextPayment = (*pos).nextPayment((*pos).lastPayment());
+            MyMoneyDate nextPayment = (*pos).nextPayment((*pos).lastPayment());
             if(!nextPayment.isValid())
               continue;
-            if(nextPayment >= QDate::currentDate())
+            if(nextPayment >= MyMoneyDate::currentDate())
               continue;
       */
     }
@@ -1597,7 +1597,7 @@ const QList<MyMoneySchedule> MyMoneyDatabaseMgr::scheduleList(const QString& acc
 const QList<MyMoneySchedule> MyMoneyDatabaseMgr::scheduleListEx(int scheduleTypes,
     int scheduleOcurrences,
     int schedulePaymentTypes,
-    QDate startDate,
+    MyMoneyDate startDate,
     const QStringList& accounts) const
 {
 //  qDebug("scheduleListEx");
@@ -1974,7 +1974,7 @@ void MyMoneyDatabaseMgr::rollbackTransaction()
   }
 }
 
-void MyMoneyDatabaseMgr::setCreationDate(const QDate& val)
+void MyMoneyDatabaseMgr::setCreationDate(const MyMoneyDate& val)
 {
   m_creationDate = val;
 }
@@ -1990,7 +1990,7 @@ void MyMoneyDatabaseMgr::fillStorage()
   m_sql->fillStorage();
 }
 
-void MyMoneyDatabaseMgr::setLastModificationDate(const QDate& val)
+void MyMoneyDatabaseMgr::setLastModificationDate(const MyMoneyDate& val)
 {
   m_lastModificationDate = val;
 }
@@ -2223,7 +2223,7 @@ void MyMoneyDatabaseMgr::rebuildAccountBalances()
   startTransaction();
   QMap<QString, MyMoneyAccount> accountMap = m_sql->fetchAccounts(QStringList(), true);
 
-  QMap<QString, MyMoneyMoney> balanceMap = m_sql->fetchBalance(accountMap.keys(), QDate());
+  QMap<QString, MyMoneyMoney> balanceMap = m_sql->fetchBalance(accountMap.keys(), MyMoneyDate());
 
   for (QMap<QString, MyMoneyMoney>::const_iterator it_b = balanceMap.constBegin();
        it_b != balanceMap.constEnd(); ++it_b) {

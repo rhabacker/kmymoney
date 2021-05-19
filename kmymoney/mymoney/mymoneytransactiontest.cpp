@@ -37,7 +37,7 @@ void MyMoneyTransactionTest::cleanup()
 void MyMoneyTransactionTest::testEmptyConstructor()
 {
   QVERIFY(m->id().isEmpty());
-  QVERIFY(m->entryDate() == QDate());
+  QVERIFY(m->entryDate() == MyMoneyDate());
   QVERIFY(m->memo().isEmpty());
   QVERIFY(m->splits().count() == 0);
 }
@@ -45,9 +45,9 @@ void MyMoneyTransactionTest::testEmptyConstructor()
 void MyMoneyTransactionTest::testSetFunctions()
 {
   m->setMemo("Memo");
-  m->setPostDate(QDate(1, 2, 3));
+  m->setPostDate(MyMoneyDate(1, 2, 3));
 
-  QVERIFY(m->postDate() == QDate(1, 2, 3));
+  QVERIFY(m->postDate() == MyMoneyDate(1, 2, 3));
   QVERIFY(m->memo() == "Memo");
 }
 
@@ -57,9 +57,9 @@ void MyMoneyTransactionTest::testConstructor()
   MyMoneyTransaction a("ID", *m);
 
   QVERIFY(a.id() == "ID");
-  QVERIFY(a.entryDate() == QDate::currentDate());
+  QVERIFY(a.entryDate() == MyMoneyDate::currentDate());
   QVERIFY(a.memo() == "Memo");
-  QVERIFY(a.postDate() == QDate(1, 2, 3));
+  QVERIFY(a.postDate() == MyMoneyDate(1, 2, 3));
 }
 
 void MyMoneyTransactionTest::testCopyConstructor()
@@ -71,9 +71,9 @@ void MyMoneyTransactionTest::testCopyConstructor()
   MyMoneyTransaction n(a);
 
   QVERIFY(n.id() == "ID");
-  QVERIFY(n.entryDate() == QDate::currentDate());
+  QVERIFY(n.entryDate() == MyMoneyDate::currentDate());
   QVERIFY(n.memo() == "Memo");
-  QVERIFY(n.postDate() == QDate(1, 2, 3));
+  QVERIFY(n.postDate() == MyMoneyDate(1, 2, 3));
   QVERIFY(n.value("Key") == "Value");
 }
 
@@ -88,9 +88,9 @@ void MyMoneyTransactionTest::testAssignmentConstructor()
   n = a;
 
   QVERIFY(n.id() == "ID");
-  QVERIFY(n.entryDate() == QDate::currentDate());
+  QVERIFY(n.entryDate() == MyMoneyDate::currentDate());
   QVERIFY(n.memo() == "Memo");
-  QVERIFY(n.postDate() == QDate(1, 2, 3));
+  QVERIFY(n.postDate() == MyMoneyDate(1, 2, 3));
   QVERIFY(n.value("Key") == "Value");
 }
 
@@ -110,7 +110,7 @@ void MyMoneyTransactionTest::testInequality()
 
   MyMoneyTransaction n(*m);
 
-  n.setPostDate(QDate(1, 1, 1));
+  n.setPostDate(MyMoneyDate(1, 1, 1));
   QVERIFY(!(n == *m));
   QVERIFY(n != *m);
 
@@ -404,8 +404,8 @@ void MyMoneyTransactionTest::testModifyDuplicateAccount()
 void MyMoneyTransactionTest::testWriteXML()
 {
   MyMoneyTransaction t;
-  t.setPostDate(QDate(2001, 12, 28));
-  t.setEntryDate(QDate(2003, 9, 29));
+  t.setPostDate(MyMoneyDate(2001, 12, 28));
+  t.setEntryDate(MyMoneyDate(2003, 9, 29));
   t.setId("T000000000000000001");
   t.setMemo("Wohnung:Miete");
   t.setCommodity("EUR");
@@ -533,8 +533,8 @@ void MyMoneyTransactionTest::testReadXML()
   t.setValue("key", "VALUE");
   try {
     t = MyMoneyTransaction(node);
-    QVERIFY(t.m_postDate == QDate(2001, 12, 28));
-    QVERIFY(t.m_entryDate == QDate(2003, 9, 29));
+    QVERIFY(t.m_postDate == MyMoneyDate(2001, 12, 28));
+    QVERIFY(t.m_entryDate == MyMoneyDate(2003, 9, 29));
     QVERIFY(t.id() == "T000000000000000001");
     QVERIFY(t.m_memo == "Wohnung:Miete");
     QVERIFY(t.m_commodity == "EUR");
@@ -604,8 +604,8 @@ void MyMoneyTransactionTest::testReadXMLEx()
 void MyMoneyTransactionTest::testHasReferenceTo()
 {
   MyMoneyTransaction t;
-  t.setPostDate(QDate(2001, 12, 28));
-  t.setEntryDate(QDate(2003, 9, 29));
+  t.setPostDate(MyMoneyDate(2001, 12, 28));
+  t.setEntryDate(MyMoneyDate(2003, 9, 29));
   t.setId("T000000000000000001");
   t.setMemo("Wohnung:Miete");
   t.setCommodity("EUR");

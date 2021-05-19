@@ -30,7 +30,6 @@
 // This is just needed for i18n().  Once I figure out how to handle i18n
 // without using this macro directly, I'll be freed of KDE dependency.
 
-#include <klocale.h>
 #include <kdebug.h>
 
 // ----------------------------------------------------------------------------
@@ -177,11 +176,11 @@ void ListTable::render(QString& result, QString& csv) const
   //actual dates of the report
   result += QString("<div class=\"subtitle\">");
   if (!m_config.fromDate().isNull()) {
-    result += i18nc("Report date range", "%1 through %2", KGlobal::locale()->formatDate(m_config.fromDate(), KLocale::ShortDate), KGlobal::locale()->formatDate(m_config.toDate(), KLocale::ShortDate));
+    result += i18nc("Report date range", "%1 through %2", MyMoneyLocale::formatDate(m_config.fromDate(), KLocale::ShortDate), MyMoneyLocale::formatDate(m_config.toDate(), KLocale::ShortDate));
     result += QString("</div>\n");
     result += QString("<div class=\"gap\">&nbsp;</div>\n");
 
-    csv += i18nc("Report date range", "%1 through %2", KGlobal::locale()->formatDate(m_config.fromDate(), KLocale::ShortDate), KGlobal::locale()->formatDate(m_config.toDate(), KLocale::ShortDate));
+    csv += i18nc("Report date range", "%1 through %2", MyMoneyLocale::formatDate(m_config.fromDate(), KLocale::ShortDate), MyMoneyLocale::formatDate(m_config.toDate(), KLocale::ShortDate));
     csv += QString("\n");
   }
 
@@ -537,8 +536,8 @@ void ListTable::render(QString& result, QString& csv) const
 
         // if we have a locale() then use its date formatter
         if (KGlobal::locale() && ! data.isEmpty()) {
-          QDate qd = QDate::fromString(data, Qt::ISODate);
-          data = KGlobal::locale()->formatDate(qd, KLocale::ShortDate);
+          MyMoneyDate qd = MyMoneyDate::fromString(data, Qt::ISODate);
+          data = MyMoneyLocale::formatDate(qd, KLocale::ShortDate);
         }
         result += QString("<td class=\"left\">%2%1%3</td>").arg(data, tlinkBegin, tlinkEnd);
       } else {

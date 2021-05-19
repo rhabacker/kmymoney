@@ -1450,7 +1450,7 @@ void MyMoneyGncReader::convertAccount(const GncAccount* gac)
 
     acc.setDescription(gac->desc());
 
-    QDate currentDate = QDate::currentDate();
+    MyMoneyDate currentDate = MyMoneyDate::currentDate();
     acc.setOpeningDate(currentDate);
     acc.setLastModified(currentDate);
     acc.setLastReconciliationDate(currentDate);
@@ -1973,8 +1973,8 @@ void MyMoneyGncReader::convertSchedule(const GncSchedule *gsc)
     MyMoneySchedule sc;
     MyMoneyTransaction tx;
     m_suspectSchedule = false;
-    QDate startDate, nextDate, lastDate, endDate;  // for date calculations
-    QDate today = QDate::currentDate();
+    MyMoneyDate startDate, nextDate, lastDate, endDate;  // for date calculations
+    MyMoneyDate today = MyMoneyDate::currentDate();
     int numOccurs, remOccurs;
 
     if (m_scheduleCount == 0) signalProgress(0, m_gncScheduleCount, i18n("Loading schedules..."));
@@ -2080,7 +2080,7 @@ void MyMoneyGncReader::convertSchedule(const GncSchedule *gsc)
     // if a last date was specified, use it, otherwise try to work out the last date
     sc.setLastPayment(gsc->lastDate());
     numOccurs = gsc->numOccurs().toInt();
-    if (sc.lastPayment() == QDate()) {
+    if (sc.lastPayment() == MyMoneyDate()) {
       nextDate = lastDate = gsc->startDate();
       while ((nextDate < today) && (numOccurs-- != 0)) {
         lastDate = nextDate;
@@ -2096,7 +2096,7 @@ void MyMoneyGncReader::convertSchedule(const GncSchedule *gsc)
     sc.setEndDate(gsc->endDate());
     numOccurs = gsc->numOccurs().toInt();
     remOccurs = gsc->remOccurs().toInt();
-    if ((sc.endDate() == QDate()) && (remOccurs > 0)) {
+    if ((sc.endDate() == MyMoneyDate()) && (remOccurs > 0)) {
       endDate = sc.lastPayment();
       while (remOccurs-- > 0) {
         endDate = incrDate(endDate, vi[i].interval, vi[i].intervalCount);
@@ -2379,7 +2379,7 @@ QString MyMoneyGncReader::createOrphanAccount(const QString& gncName)
   acc.setName("orphan_" + gncName);
   acc.setDescription(i18n("Orphan created from unknown GnuCash account"));
 
-  QDate today = QDate::currentDate();
+  MyMoneyDate today = MyMoneyDate::currentDate();
 
   acc.setOpeningDate(today);
   acc.setLastModified(today);
@@ -2396,7 +2396,7 @@ QString MyMoneyGncReader::createOrphanAccount(const QString& gncName)
   return (acc.id());
 }
 //****************************** incrDate *********************************************
-QDate MyMoneyGncReader::incrDate(QDate lastDate, unsigned char interval, unsigned int intervalCount)
+MyMoneyDate MyMoneyGncReader::incrDate(MyMoneyDate lastDate, unsigned char interval, unsigned int intervalCount)
 {
   TRY {
     switch (interval) {
@@ -2412,7 +2412,7 @@ QDate MyMoneyGncReader::incrDate(QDate lastDate, unsigned char interval, unsigne
         return (lastDate);
     }
     throw MYMONEYEXCEPTION(i18n("Internal error - invalid interval char in incrDate"));
-    QDate r = QDate(); return (r); // to keep compiler happy
+    MyMoneyDate r = MyMoneyDate(); return (r); // to keep compiler happy
   }
   PASS
 }

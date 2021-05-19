@@ -684,7 +684,7 @@ CreditCardSchedulePage::CreditCardSchedulePage(Wizard* wizard) :
   m_mandatoryGroup->add(m_paymentAccount);
   connect(m_paymentAccount, SIGNAL(itemSelected(QString)), object(), SIGNAL(completeStateChanged()));
   connect(m_payee, SIGNAL(itemSelected(QString)), object(), SIGNAL(completeStateChanged()));
-  connect(m_date, SIGNAL(dateChanged(QDate)), object(), SIGNAL(completeStateChanged()));
+  connect(m_date, SIGNAL(dateChanged(MyMoneyDate)), object(), SIGNAL(completeStateChanged()));
 
   connect(m_payee, SIGNAL(createItem(QString,QString&)), wizard, SIGNAL(createPayee(QString,QString&)));
 
@@ -781,7 +781,7 @@ GeneralLoanInfoPage::GeneralLoanInfoPage(Wizard* wizard) :
   connect(m_recordings, SIGNAL(activated(int)), object(), SIGNAL(completeStateChanged()));
 
   connect(m_interestType, SIGNAL(activated(int)), object(),  SIGNAL(completeStateChanged()));
-  connect(m_interestChangeDateEdit, SIGNAL(dateChanged(QDate)), object(),  SIGNAL(completeStateChanged()));
+  connect(m_interestChangeDateEdit, SIGNAL(dateChanged(MyMoneyDate)), object(),  SIGNAL(completeStateChanged()));
   connect(m_openingBalance, SIGNAL(textChanged(QString)), object(),  SIGNAL(completeStateChanged()));
 
   connect(MyMoneyFile::instance(), SIGNAL(dataChanged()), this, SLOT(slotLoadWidgets()));
@@ -806,7 +806,7 @@ void GeneralLoanInfoPage::enterPage()
 {
   if (m_firstTime) {
     // setup default dates to last of this month and one year on top
-    QDate firstDay(QDate::currentDate().year(), QDate::currentDate().month(), 1);
+    MyMoneyDate firstDay(MyMoneyDate::currentDate().year(), MyMoneyDate::currentDate().month(), 1);
     m_firstPaymentDate->setDate(firstDay.addMonths(1).addDays(-1));
     m_interestChangeDateEdit->setDate(m_firstPaymentDate->date().addYears(1));;
     m_firstTime = false;
@@ -1326,7 +1326,7 @@ void LoanSchedulePage::slotCreateCategory(const QString& name, QString& id)
   id = acc.id();
 }
 
-QDate LoanSchedulePage::firstPaymentDueDate() const
+MyMoneyDate LoanSchedulePage::firstPaymentDueDate() const
 {
   if (m_firstPaymentDueDate->isEnabled())
     return m_firstPaymentDueDate->date();
@@ -1575,7 +1575,7 @@ void AccountSummaryPage::enterPage()
   m_dataList->append(i18n("Type: %1", accTypeText));
 
   m_dataList->append(i18n("Currency: %1", m_wizard->currency().name()));
-  m_dataList->append(i18n("Opening date: %1", KGlobal::locale()->formatDate(acc.openingDate())));
+  m_dataList->append(i18n("Opening date: %1", MyMoneyLocale::formatDate(acc.openingDate())));
   if (m_wizard->currency().id() != MyMoneyFile::instance()->baseCurrency().id()) {
     m_dataList->append(i18n("Conversion rate: %1", m_wizard->conversionRate().rate(QString()).formatMoney("", KMyMoneyGlobalSettings::pricePrecision())));
   }
@@ -1636,7 +1636,7 @@ void AccountSummaryPage::enterPage()
         else
           m_dataList->append(i18n("Transfer amount from %1", m_wizard->m_loanPayoutPage->m_assetAccount->currentText()));
       }
-      m_dataList->append(i18n("Payment date: %1 ", KGlobal::locale()->formatDate(m_wizard->m_loanPayoutPage->m_payoutDate->date())));
+      m_dataList->append(i18n("Payment date: %1 ", MyMoneyLocale::formatDate(m_wizard->m_loanPayoutPage->m_payoutDate->date())));
     }
   }
 
@@ -1652,13 +1652,13 @@ void AccountSummaryPage::enterPage()
       m_dataList->append(i18n("Paid from %1", paymentAccount.name()));
       m_dataList->append(i18n("Pay to %1", m_wizard->m_schedulePage->m_payee->currentText()));
       m_dataList->append(i18n("Amount: %1", MyMoneyUtils::formatMoney(m_wizard->m_schedulePage->m_amount->value(), acc, sec)));
-      m_dataList->append(i18n("First payment due on %1", KGlobal::locale()->formatDate(sch.nextDueDate())));
+      m_dataList->append(i18n("First payment due on %1", MyMoneyLocale::formatDate(sch.nextDueDate())));
       m_dataList->append(i18n("Payment method: %1", m_wizard->m_schedulePage->m_method->currentText()));
     }
     if (acc.isLoan()) {
       m_dataList->append(i18n("Occurrence: %1", m_wizard->m_generalLoanInfoPage->m_paymentFrequency->currentText()));
       m_dataList->append(i18n("Amount: %1", MyMoneyUtils::formatMoney(m_wizard->m_loanPaymentPage->basePayment() + m_wizard->m_loanPaymentPage->additionalFees(), acc, sec)));
-      m_dataList->append(i18n("First payment due on %1", KGlobal::locale()->formatDate(m_wizard->m_loanSchedulePage->firstPaymentDueDate())));
+      m_dataList->append(i18n("First payment due on %1", MyMoneyLocale::formatDate(m_wizard->m_loanSchedulePage->firstPaymentDueDate())));
     }
   }
 }

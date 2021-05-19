@@ -86,7 +86,7 @@ MyMoneyAccount::MyMoneyAccount(const QDomElement& node) :
     // to be ok for now. (ipwizard - 2008-08-14)
     QString txt = MyMoneyKeyValueContainer(node.elementsByTagName("KEYVALUEPAIRS").item(0).toElement()).value("lastStatementDate");
     if (!txt.isEmpty()) {
-      setLastReconciliationDate(QDate::fromString(txt, Qt::ISODate));
+      setLastReconciliationDate(MyMoneyDate::fromString(txt, Qt::ISODate));
     }
   }
 
@@ -165,17 +165,17 @@ void MyMoneyAccount::setInstitutionId(const QString& id)
   m_institution = id;
 }
 
-void MyMoneyAccount::setLastModified(const QDate& date)
+void MyMoneyAccount::setLastModified(const MyMoneyDate& date)
 {
   m_lastModified = date;
 }
 
-void MyMoneyAccount::setOpeningDate(const QDate& date)
+void MyMoneyAccount::setOpeningDate(const MyMoneyDate& date)
 {
   m_openingDate = date;
 }
 
-void MyMoneyAccount::setLastReconciliationDate(const QDate& date)
+void MyMoneyAccount::setLastReconciliationDate(const MyMoneyDate &date)
 {
   // FIXME: for a limited time (maybe until we delivered 1.0) we
   // keep the last reconciliation date also in the KVP for backward
@@ -320,7 +320,7 @@ void MyMoneyAccountLoan::setLoanAmount(const MyMoneyMoney& amount)
   setValue("loan-amount", amount.toString());
 }
 
-const MyMoneyMoney MyMoneyAccountLoan::interestRate(const QDate& date) const
+const MyMoneyMoney MyMoneyAccountLoan::interestRate(const MyMoneyDate& date) const
 {
   MyMoneyMoney rate;
   QString key;
@@ -351,7 +351,7 @@ const MyMoneyMoney MyMoneyAccountLoan::interestRate(const QDate& date) const
   return rate;
 }
 
-void MyMoneyAccountLoan::setInterestRate(const QDate& date, const MyMoneyMoney& value)
+void MyMoneyAccountLoan::setInterestRate(const MyMoneyDate &date, const MyMoneyMoney& value)
 {
   if (!date.isValid())
     return;
@@ -377,9 +377,9 @@ void MyMoneyAccountLoan::setInterestCalculation(const MyMoneyAccountLoan::intere
     setValue("interest-calculation", "paymentReceived");
 }
 
-const QDate MyMoneyAccountLoan::nextInterestChange() const
+const MyMoneyDate MyMoneyAccountLoan::nextInterestChange() const
 {
-  QDate rc;
+  MyMoneyDate rc;
 
   QRegExp regExp("(\\d{4})-(\\d{2})-(\\d{2})");
   if (regExp.indexIn(value("interest-nextchange")) != -1) {
@@ -388,7 +388,7 @@ const QDate MyMoneyAccountLoan::nextInterestChange() const
   return rc;
 }
 
-void MyMoneyAccountLoan::setNextInterestChange(const QDate& date)
+void MyMoneyAccountLoan::setNextInterestChange(const MyMoneyDate& date)
 {
   setValue("interest-nextchange", date.toString(Qt::ISODate));
 }
@@ -783,7 +783,7 @@ QString MyMoneyAccount::accountTypeToString(const MyMoneyAccount::accountTypeE a
   return returnString;
 }
 
-bool MyMoneyAccount::addReconciliation(const QDate& date, const MyMoneyMoney& amount)
+bool MyMoneyAccount::addReconciliation(const MyMoneyDate& date, const MyMoneyMoney& amount)
 {
   // make sure, that history has been loaded
   reconciliationHistory();
@@ -811,7 +811,7 @@ const ReconciliationHistoryMap& MyMoneyAccount::reconciliationHistory()
     QStringList entries = value("reconciliationHistory").split(';');
     foreach (const QString& entry, entries) {
       QStringList parts = entry.split(':');
-      QDate date = QDate::fromString(parts[0], Qt::ISODate);
+      MyMoneyDate date = MyMoneyDate::fromString(parts[0], Qt::ISODate);
       MyMoneyMoney amount(parts[1]);
       if (parts.count() == 2 && date.isValid()) {
         m_reconciliationHistory[date] = amount;

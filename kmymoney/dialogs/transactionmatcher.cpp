@@ -162,7 +162,7 @@ void TransactionMatcher::unmatch(const MyMoneyTransaction& _t, const MyMoneySpli
 
     // restore the postdate if modified
     if (!sm.value("kmm-orig-postdate").isEmpty()) {
-      tm.setPostDate(QDate::fromString(sm.value("kmm-orig-postdate"), Qt::ISODate));
+      tm.setPostDate(MyMoneyDate::fromString(sm.value("kmm-orig-postdate"), Qt::ISODate));
     }
 
     // restore payee if modified

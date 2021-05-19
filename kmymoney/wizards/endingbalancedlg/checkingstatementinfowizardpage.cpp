@@ -32,11 +32,11 @@
 CheckingStatementInfoWizardPage::CheckingStatementInfoWizardPage(QWidget *parent)
     : CheckingStatementInfoWizardPageDecl(parent)
 {
-  m_statementDate->setDate(QDate::currentDate());
+  m_statementDate->setDate(MyMoneyDate::currentDate());
 
   // Register the fields with the QWizard and connect the
   // appropriate signals to update the "Next" button correctly
-  registerField("statementDate", m_statementDate, "date", SIGNAL(dateChanged(QDate)));
+  registerField("statementDate", m_statementDate, "date", SIGNAL(dateChanged(MyMoneyDate)));
 
   registerField("endingBalance", m_endingBalance, "value", SIGNAL(textChanged()));
   registerField("endingBalanceValid", m_endingBalance, "valid", SIGNAL(textChanged()));

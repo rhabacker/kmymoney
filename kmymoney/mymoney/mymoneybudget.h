@@ -79,7 +79,7 @@ public:
   {
   public:
     // get functions
-    const QDate&    startDate() const {
+    const MyMoneyDate&    startDate() const {
       return m_start;
     }
     const MyMoneyMoney& amount() const {
@@ -87,7 +87,7 @@ public:
     }
 
     // set functions
-    void setStartDate(const QDate& _start)    {
+    void setStartDate(const MyMoneyDate& _start)    {
       m_start  = _start;
     }
     void setAmount(const MyMoneyMoney& _amount) {
@@ -99,7 +99,7 @@ public:
     }
 
   private:
-    QDate         m_start;
+    MyMoneyDate         m_start;
     MyMoneyMoney  m_amount;
   };
 
@@ -136,10 +136,10 @@ public:
     eBudgetLevel budgetLevel() const {
       return m_budgetlevel;
     }
-    PeriodGroup period(const QDate &_date) const {
+    PeriodGroup period(const MyMoneyDate &_date) const {
       return m_periods[_date];
     }
-    const QMap<QDate, PeriodGroup>& getPeriods() const {
+    const QMap<MyMoneyDate, PeriodGroup>& getPeriods() const {
       return m_periods;
     }
     void clearPeriods() {
@@ -148,7 +148,7 @@ public:
     MyMoneyMoney balance() const {
       MyMoneyMoney balance;
 
-      QMap<QDate, PeriodGroup>::const_iterator it;
+      QMap<MyMoneyDate, PeriodGroup>::const_iterator it;
       for (it = m_periods.begin(); it != m_periods.end(); ++it) {
         balance += (*it).amount();
       }
@@ -177,7 +177,7 @@ public:
     void setBudgetSubaccounts(bool _b) {
       m_budgetsubaccounts = _b;
     }
-    void addPeriod(const QDate& _date, PeriodGroup &period) {
+    void addPeriod(const MyMoneyDate& _date, PeriodGroup &period) {
       m_periods[_date] = period;
     }
 
@@ -200,7 +200,7 @@ public:
 
     eBudgetLevel             m_budgetlevel;
     bool                     m_budgetsubaccounts;
-    QMap<QDate, PeriodGroup> m_periods;
+    QMap<MyMoneyDate, PeriodGroup> m_periods;
   };
 
   /**
@@ -212,7 +212,7 @@ public:
   const QString& name() const {
     return m_name;
   }
-  const QDate& budgetStart() const {
+  const MyMoneyDate& budgetStart() const {
     return m_start;
   }
   QString id() const {
@@ -230,7 +230,7 @@ public:
   void setName(const QString& _name) {
     m_name = _name;
   }
-  void setBudgetStart(const QDate& _start);
+  void setBudgetStart(const MyMoneyDate& _start);
   void setAccount(const AccountGroup &_account, const QString &_id);
 
   /**
@@ -292,7 +292,7 @@ private:
   /**
     * The user-assigned year of the Budget
     */
-  QDate m_start;
+  MyMoneyDate m_start;
 
   /**
     * Map the budgeted accounts

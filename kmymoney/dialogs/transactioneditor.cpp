@@ -73,7 +73,7 @@ TransactionEditor::TransactionEditor() :
 {
 }
 
-TransactionEditor::TransactionEditor(TransactionEditorContainer* regForm, KMyMoneyRegister::Transaction* item, const KMyMoneyRegister::SelectedTransactions& list, const QDate& lastPostDate) :
+TransactionEditor::TransactionEditor(TransactionEditorContainer* regForm, KMyMoneyRegister::Transaction* item, const KMyMoneyRegister::SelectedTransactions& list, const MyMoneyDate& lastPostDate) :
     m_paymentMethod(MyMoneySchedule::STYPE_ANY),
     m_transactions(list),
     m_regForm(regForm),
@@ -640,7 +640,7 @@ bool TransactionEditor::enterTransactions(QString& newId, bool askForSchedule, b
 
         if ((*it_ts).id().isEmpty()) {
           bool enter = true;
-          if (askForSchedule && (*it_ts).postDate() > QDate::currentDate()) {
+          if (askForSchedule && (*it_ts).postDate() > MyMoneyDate::currentDate()) {
             KGuiItem enterItem;
             KGuiItem enterButton(i18n("&Enter"),
                                  KIcon("dialog-ok"),
@@ -811,7 +811,7 @@ StdTransactionEditor::StdTransactionEditor() :
 {
 }
 
-StdTransactionEditor::StdTransactionEditor(TransactionEditorContainer* regForm, KMyMoneyRegister::Transaction* item, const KMyMoneyRegister::SelectedTransactions& list, const QDate& lastPostDate) :
+StdTransactionEditor::StdTransactionEditor(TransactionEditorContainer* regForm, KMyMoneyRegister::Transaction* item, const KMyMoneyRegister::SelectedTransactions& list, const MyMoneyDate& lastPostDate) :
     TransactionEditor(regForm, item, list, lastPostDate),
     m_inUpdateVat(false)
 {
@@ -907,8 +907,8 @@ void StdTransactionEditor::createEditWidgets()
   kMyMoneyDateInput* postDate = new kMyMoneyDateInput;
   m_editWidgets["postdate"] = postDate;
   postDate->setObjectName(QLatin1String("PostDate"));
-  connect(postDate, SIGNAL(dateChanged(QDate)), this, SLOT(slotUpdateButtonState()));
-  postDate->setDate(QDate());
+  connect(postDate, SIGNAL(dateChanged(MyMoneyDate)), this, SLOT(slotUpdateButtonState()));
+  postDate->setDate(MyMoneyDate());
 
   kMyMoneyEdit* value = new kMyMoneyEdit;
   m_editWidgets["amount"] = value;
@@ -1084,7 +1084,7 @@ void StdTransactionEditor::loadEditWidgets(KMyMoneyRegister::Action action)
     else if (m_lastPostDate.isValid())
       dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"])->setDate(m_lastPostDate);
     else
-      dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"])->setDate(QDate::currentDate());
+      dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"])->setDate(MyMoneyDate::currentDate());
 
     if ((w = haveWidget("number")) != 0) {
       dynamic_cast<kMyMoneyLineEdit*>(w)->loadText(m_split.number());
@@ -1197,7 +1197,7 @@ void StdTransactionEditor::loadEditWidgets(KMyMoneyRegister::Action action)
     }
 
   } else {  //  isMultiSelection()
-    dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"])->loadDate(QDate());
+    dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"])->loadDate(MyMoneyDate());
     dynamic_cast<KMyMoneyReconcileCombo*>(m_editWidgets["status"])->setState(MyMoneySplit::Unknown);
     if (haveWidget("deposit")) {
       dynamic_cast<kMyMoneyEdit*>(m_editWidgets["deposit"])->loadText("");
@@ -1323,7 +1323,7 @@ void StdTransactionEditor::slotUpdatePayee(const QString& payeeId)
     // check if date has been altered by user
     kMyMoneyDateInput* postDate = dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"]);
     if ((m_lastPostDate.isValid() && (postDate->date() != m_lastPostDate))
-        || (!m_lastPostDate.isValid() && (postDate->date() != QDate::currentDate())))
+        || (!m_lastPostDate.isValid() && (postDate->date() != MyMoneyDate::currentDate())))
       return;
 #endif
 
@@ -1463,7 +1463,7 @@ void StdTransactionEditor::autoFill(const QString& payeeId)
       for (it = t.splits().constBegin(); it != t.splits().constEnd(); ++it) {
         MyMoneySplit s(*it);
         s.setReconcileFlag(MyMoneySplit::NotReconciled);
-        s.setReconcileDate(QDate());
+        s.setReconcileDate(MyMoneyDate());
         s.clearId();
         s.setBankID(QString());
         // older versions of KMyMoney used to set the action
@@ -1517,7 +1517,7 @@ void StdTransactionEditor::autoFill(const QString& payeeId)
       }
 
       // now setup the widgets with the new data but keep the date
-      QDate date = dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"])->date();
+      MyMoneyDate date = dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"])->date();
       loadEditWidgets(action);
       dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"])->setDate(date);
     }
@@ -1860,7 +1860,7 @@ bool StdTransactionEditor::isComplete(QString& reason) const
 
   kMyMoneyDateInput* postDate = dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"]);
   if (postDate) {
-    QDate accountOpeningDate = m_account.openingDate();
+    MyMoneyDate accountOpeningDate = m_account.openingDate();
     for (QList<MyMoneySplit>::const_iterator it_s = m_splits.constBegin(); it_s != m_splits.constEnd(); ++it_s) {
       const MyMoneyAccount& acc = MyMoneyFile::instance()->account((*it_s).accountId());
       // compute the newest opening date of all accounts involved in the transaction
@@ -2183,7 +2183,7 @@ bool StdTransactionEditor::createTransaction(MyMoneyTransaction& t, const MyMone
     s0.setReconcileFlag(status->state());
 
   if (s0.reconcileFlag() == MyMoneySplit::Reconciled && !s0.reconcileDate().isValid())
-    s0.setReconcileDate(QDate::currentDate());
+    s0.setReconcileDate(MyMoneyDate::currentDate());
 
   checkPayeeInSplit(s0, payeeId);
 

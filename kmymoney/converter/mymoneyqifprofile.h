@@ -24,7 +24,7 @@
 #include <QMap>
 #include <QObject>
 #include <QString>
-class QDate;
+class MyMoneyDate;
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -55,8 +55,8 @@ public:
   void loadProfile(const QString& name);
   void saveProfile();
 
-  const QDate date(const QString& datein) const;
-  const QString date(const QDate& datein) const;
+  const MyMoneyDate date(const QString& datein) const;
+  const QString date(const MyMoneyDate& datein) const;
 
   const MyMoneyMoney value(const QChar& def, const QString& valuein) const;
   const QString value(const QChar& def, const MyMoneyMoney& valuein) const;

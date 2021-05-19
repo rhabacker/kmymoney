@@ -374,7 +374,7 @@ public:
   KHolidays::HolidayRegion* m_holidayRegion;
 #endif
   QBitArray             m_processingDays;
-  QMap<QDate, bool>     m_holidayMap;
+  QMap<MyMoneyDate, bool>     m_holidayMap;
   QStringList           m_consistencyCheckResult;
   bool                  m_applicationIsReady;
   QPrinter*             m_printer;
@@ -1442,7 +1442,7 @@ void KMyMoneyApp::slotPerformanceTest()
   measurement[0] = measurement[1] = 0;
   if (MyMoneyFile::instance()->asset().accountCount()) {
     MyMoneyTransactionFilter filter(MyMoneyFile::instance()->asset().accountList()[0]);
-    filter.setDateFilter(QDate(), QDate::currentDate());
+    filter.setDateFilter(MyMoneyDate(), MyMoneyDate::currentDate());
     QList<MyMoneyTransaction> list;
 
     timer.start();
@@ -1461,7 +1461,7 @@ void KMyMoneyApp::slotPerformanceTest()
   measurement[0] = measurement[1] = 0;
   if (MyMoneyFile::instance()->asset().accountCount()) {
     MyMoneyTransactionFilter filter(MyMoneyFile::instance()->asset().accountList()[0]);
-    filter.setDateFilter(QDate(), QDate::currentDate());
+    filter.setDateFilter(MyMoneyDate(), MyMoneyDate::currentDate());
     QList<MyMoneyTransaction> list;
 
     timer.start();
@@ -2667,17 +2667,17 @@ void KMyMoneyApp::slotUpdateConfiguration()
         //get global config object for our app.
         KSharedConfigPtr kconfig = KGlobal::config();
         KConfigGroup grp;
-        QDate lastWarned;
+        MyMoneyDate lastWarned;
         if (kconfig) {
           grp = d->m_config->group("General Options");
-          lastWarned = grp.readEntry("LastRecoverKeyExpirationWarning", QDate());
-          if (QDate::currentDate() == lastWarned) {
+          lastWarned = grp.readEntry("LastRecoverKeyExpirationWarning", MyMoneyDate());
+          if (MyMoneyDate::currentDate() == lastWarned) {
             skipMessage = true;
           }
         }
         if (!skipMessage) {
           if (kconfig) {
-            grp.writeEntry("LastRecoverKeyExpirationWarning", QDate::currentDate());
+            grp.writeEntry("LastRecoverKeyExpirationWarning", MyMoneyDate::currentDate());
           }
           KMessageBox::information(this, i18np("You have configured KMyMoney to use GPG to protect your data and to encrypt your data also with the KMyMoney recover key. This key is about to expire in %1 day. Please update the key from a keyserver using your GPG frontend (e.g. KGPG).", "You have configured KMyMoney to use GPG to protect your data and to encrypt your data also with the KMyMoney recover key. This key is about to expire in %1 days. Please update the key from a keyserver using your GPG frontend (e.g. KGPG).", QDateTime::currentDateTime().daysTo(expirationDate)), i18n("Recover key expires soon"));
         }
@@ -2743,7 +2743,7 @@ void KMyMoneyApp::slotBackupMount()
 bool KMyMoneyApp::slotBackupWriteFile()
 {
   QFileInfo fi(d->m_fileName.fileName());
-  QString today = QDate::currentDate().toString("-yyyy-MM-dd.") + fi.suffix();
+  QString today = MyMoneyDate::currentDate().toString("-yyyy-MM-dd.") + fi.suffix();
   d->m_backupFile = d->m_mountpoint + '/' + d->m_fileName.fileName();
   KMyMoneyUtils::appendCorrectFileExt(d->m_backupFile, today);
 
@@ -3134,7 +3134,7 @@ void KMyMoneyApp::createAccount(MyMoneyAccount& newAccount, MyMoneyAccount& pare
       b.setShares(b.value());
       a.setMemo(i18n("Loan payout"));
       b.setMemo(i18n("Loan payout"));
-      t.setPostDate(QDate::fromString(acc.value("kmm-loan-payment-date"), Qt::ISODate));
+      t.setPostDate(MyMoneyDate::fromString(acc.value("kmm-loan-payment-date"), Qt::ISODate));
       newAccount.deletePair("kmm-loan-payment-acc");
       newAccount.deletePair("kmm-loan-payment-date");
       MyMoneyFile::instance()->modifyAccount(newAccount);
@@ -3954,7 +3954,7 @@ void KMyMoneyApp::slotAccountReconcileStart()
     // it make's sense for asset and liability accounts
     try {
       // check if we have overdue schedules for this account
-      QList<MyMoneySchedule> schedules = file->scheduleList(d->m_selectedAccount.id(), MyMoneySchedule::TYPE_ANY, MyMoneySchedule::OCCUR_ANY, MyMoneySchedule::STYPE_ANY, QDate(), QDate(), true);
+      QList<MyMoneySchedule> schedules = file->scheduleList(d->m_selectedAccount.id(), MyMoneySchedule::TYPE_ANY, MyMoneySchedule::OCCUR_ANY, MyMoneySchedule::STYPE_ANY, MyMoneyDate(), MyMoneyDate(), true);
       if (schedules.count() > 0) {
         if (KMessageBox::questionYesNo(this, i18n("KMyMoney has detected some overdue scheduled transactions for this account. Do you want to enter those scheduled transactions now?"), i18n("Scheduled transactions found")) == KMessageBox::Yes) {
 
@@ -3977,7 +3977,7 @@ void KMyMoneyApp::slotAccountReconcileStart()
             }
 
             // reload list (maybe this schedule needs to be added again)
-            schedules = file->scheduleList(d->m_selectedAccount.id(), MyMoneySchedule::TYPE_ANY, MyMoneySchedule::OCCUR_ANY, MyMoneySchedule::STYPE_ANY, QDate(), QDate(), true);
+            schedules = file->scheduleList(d->m_selectedAccount.id(), MyMoneySchedule::TYPE_ANY, MyMoneySchedule::OCCUR_ANY, MyMoneySchedule::STYPE_ANY, MyMoneyDate(), MyMoneyDate(), true);
           } while (processedOne);
         }
       }
@@ -3994,13 +3994,13 @@ void KMyMoneyApp::slotAccountReconcileStart()
           if (KMyMoneyGlobalSettings::autoReconciliation()) {
             MyMoneyMoney startBalance = d->m_endingBalanceDlg->previousBalance();
             MyMoneyMoney endBalance = d->m_endingBalanceDlg->endingBalance();
-            QDate endDate = d->m_endingBalanceDlg->statementDate();
+            MyMoneyDate endDate = d->m_endingBalanceDlg->statementDate();
 
             QList<QPair<MyMoneyTransaction, MyMoneySplit> > transactionList;
             MyMoneyTransactionFilter filter(account.id());
             filter.addState(MyMoneyTransactionFilter::cleared);
             filter.addState(MyMoneyTransactionFilter::notReconciled);
-            filter.setDateFilter(QDate(), endDate);
+            filter.setDateFilter(MyMoneyDate(), endDate);
             filter.setConsiderCategory(false);
             filter.setReportAllSplits(true);
             file->transactionList(transactionList, filter);
@@ -4070,7 +4070,7 @@ void KMyMoneyApp::slotAccountReconcileFinish()
     MyMoneyTransactionFilter filter(d->m_reconciliationAccount.id());
     filter.addState(MyMoneyTransactionFilter::cleared);
     filter.addState(MyMoneyTransactionFilter::notReconciled);
-    filter.setDateFilter(QDate(), d->m_endingBalanceDlg->statementDate());
+    filter.setDateFilter(MyMoneyDate(), d->m_endingBalanceDlg->statementDate());
     filter.setConsiderCategory(false);
     filter.setReportAllSplits(true);
     file->transactionList(transactionList, filter);
@@ -4105,7 +4105,7 @@ void KMyMoneyApp::slotAccountReconcileFinish()
     // only update the last statement balance here, if we haven't a newer one due
     // to download of online statements.
     if (d->m_reconciliationAccount.value("lastImportedTransactionDate").isEmpty()
-        || QDate::fromString(d->m_reconciliationAccount.value("lastImportedTransactionDate"), Qt::ISODate) < d->m_endingBalanceDlg->statementDate()) {
+        || MyMoneyDate::fromString(d->m_reconciliationAccount.value("lastImportedTransactionDate"), Qt::ISODate) < d->m_endingBalanceDlg->statementDate()) {
       d->m_reconciliationAccount.setValue("lastStatementBalance", d->m_endingBalanceDlg->endingBalance().toString());
       // in case we override the last statement balance here, we have to make sure
       // that we don't show the online balance anymore, as it might be different
@@ -4438,15 +4438,15 @@ void KMyMoneyApp::slotScheduleEdit()
                 // is at or before the lastPaymentDate
                 // If it is, ask the user whether to clear the
                 // lastPaymentDate
-                const QDate& next = sched.nextDueDate();
-                const QDate& last = sched.lastPayment();
+                const MyMoneyDate& next = sched.nextDueDate();
+                const MyMoneyDate& last = sched.lastPayment();
                 if (next.isValid() && last.isValid() && next <= last) {
                   // Entered a date effectively no later
                   // than previous payment.  Date would be
                   // updated automatically so we probably
                   // want to clear it.  Let's ask the user.
-                  if (KMessageBox::questionYesNo(this, QString("<qt>") + i18n("You have entered a scheduled transaction date of <b>%1</b>.  Because the scheduled transaction was last paid on <b>%2</b>, KMyMoney will automatically adjust the scheduled transaction date to the next date unless the last payment date is reset.  Do you want to reset the last payment date?", KGlobal::locale()->formatDate(next, KLocale::ShortDate), KGlobal::locale()->formatDate(last, KLocale::ShortDate)) + QString("</qt>"), i18n("Reset Last Payment Date"), KStandardGuiItem::yes(), KStandardGuiItem::no()) == KMessageBox::Yes) {
-                    sched.setLastPayment(QDate());
+                  if (KMessageBox::questionYesNo(this, QString("<qt>") + i18n("You have entered a scheduled transaction date of <b>%1</b>.  Because the scheduled transaction was last paid on <b>%2</b>, KMyMoney will automatically adjust the scheduled transaction date to the next date unless the last payment date is reset.  Do you want to reset the last payment date?", MyMoneyLocale::formatDate(next, KLocale::ShortDate), MyMoneyLocale::formatDate(last, KLocale::ShortDate)) + QString("</qt>"), i18n("Reset Last Payment Date"), KStandardGuiItem::yes(), KStandardGuiItem::no()) == KMessageBox::Yes) {
+                    sched.setLastPayment(MyMoneyDate());
                   }
                 }
                 MyMoneyFile::instance()->modifySchedule(sched);
@@ -4520,11 +4520,11 @@ void KMyMoneyApp::slotScheduleDuplicate()
   if (kmymoney->action("schedule_duplicate")->isEnabled()) {
     MyMoneySchedule sch = d->m_selectedSchedule;
     sch.clearId();
-    sch.setLastPayment(QDate());
+    sch.setLastPayment(MyMoneyDate());
     sch.setName(i18nc("Copy of scheduled transaction name", "Copy of %1", sch.name()));
     // make sure that we set a valid next due date if the original next due date is invalid
     if (!sch.nextDueDate().isValid())
-      sch.setNextDueDate(QDate::currentDate());
+      sch.setNextDueDate(MyMoneyDate::currentDate());
 
     MyMoneyFileTransaction ft;
     try {
@@ -4560,8 +4560,8 @@ void KMyMoneyApp::skipSchedule(MyMoneySchedule& schedule)
       schedule = MyMoneyFile::instance()->schedule(schedule.id());
       if (!schedule.isFinished()) {
         if (schedule.occurrence() != MyMoneySchedule::OCCUR_ONCE) {
-          QDate next = schedule.nextDueDate();
-          if (!schedule.isFinished() && (KMessageBox::questionYesNo(this, QString("<qt>") + i18n("Do you really want to skip the <b>%1</b> transaction scheduled for <b>%2</b>?", schedule.name(), KGlobal::locale()->formatDate(next, KLocale::ShortDate)) + QString("</qt>"))) == KMessageBox::Yes) {
+          MyMoneyDate next = schedule.nextDueDate();
+          if (!schedule.isFinished() && (KMessageBox::questionYesNo(this, QString("<qt>") + i18n("Do you really want to skip the <b>%1</b> transaction scheduled for <b>%2</b>?", schedule.name(), MyMoneyLocale::formatDate(next, KLocale::ShortDate)) + QString("</qt>"))) == KMessageBox::Yes) {
             MyMoneyFileTransaction ft;
             schedule.setLastPayment(next);
             schedule.setNextDueDate(schedule.nextPayment(next));
@@ -4602,7 +4602,7 @@ KMyMoneyUtils::EnterScheduleResultCodeE KMyMoneyApp::enterSchedule(MyMoneySchedu
     QPointer<KEnterScheduleDlg> dlg = new KEnterScheduleDlg(this, schedule);
 
     try {
-      QDate origDueDate = schedule.nextDueDate();
+      MyMoneyDate origDueDate = schedule.nextDueDate();
 
       dlg->showExtendedKeys(extendedKeys);
 
@@ -4696,7 +4696,7 @@ KMyMoneyUtils::EnterScheduleResultCodeE KMyMoneyApp::enterSchedule(MyMoneySchedu
               }
               // in case the next due date is invalid, the schedule is finished
               // we mark it as such by setting the next due date to one day past the end
-              QDate nextDueDate = schedule.nextPayment(origDueDate);
+              MyMoneyDate nextDueDate = schedule.nextPayment(origDueDate);
               if (!nextDueDate.isValid()) {
                 schedule.setNextDueDate(schedule.endDate().addDays(1));
               } else {
@@ -5348,7 +5348,7 @@ void KMyMoneyApp::slotCurrencySetBase()
 
 void KMyMoneyApp::slotBudgetNew()
 {
-  QDate date = QDate::currentDate();
+  MyMoneyDate date = MyMoneyDate::currentDate();
   date.setYMD(date.year(), 1, 1);
   QString newname = i18n("Budget <numid>%1</numid>", date.year());
 
@@ -5433,7 +5433,7 @@ void KMyMoneyApp::slotBudgetChangeYear()
     int current = 0;
     bool haveCurrent = false;
     MyMoneyBudget budget = *(d->m_selectedBudgets.begin());
-    for (int i = (QDate::currentDate().year() - 3); i < (QDate::currentDate().year() + 5); ++i) {
+    for (int i = (MyMoneyDate::currentDate().year() - 3); i < (MyMoneyDate::currentDate().year() + 5); ++i) {
       years << QString("%1").arg(i);
       if (i == budget.budgetStart().year()) {
         haveCurrent = true;
@@ -5449,7 +5449,7 @@ void KMyMoneyApp::slotBudgetChangeYear()
 
     if (ok) {
       int year = yearString.toInt(0, 0);
-      QDate newYear = QDate(year, 1, 1);
+      MyMoneyDate newYear = MyMoneyDate(year, 1, 1);
       if (newYear != budget.budgetStart()) {
         MyMoneyFileTransaction ft;
         try {
@@ -5477,10 +5477,10 @@ void KMyMoneyApp::slotBudgetForecast()
       }
 
       if (calcBudget) {
-        QDate historyStart;
-        QDate historyEnd;
-        QDate budgetStart;
-        QDate budgetEnd;
+        MyMoneyDate historyStart;
+        MyMoneyDate historyEnd;
+        MyMoneyDate budgetStart;
+        MyMoneyDate budgetEnd;
 
         budgetStart = budget.budgetStart();
         budgetEnd = budgetStart.addYears(1).addDays(-1);
@@ -5562,14 +5562,14 @@ void KMyMoneyApp::slotTransactionDuplicate()
         // wipe out any reconciliation information
         for (it_s = t.splits().begin(); it_s != t.splits().end(); ++it_s) {
           (*it_s).setReconcileFlag(MyMoneySplit::NotReconciled);
-          (*it_s).setReconcileDate(QDate());
+          (*it_s).setReconcileDate(MyMoneyDate());
           (*it_s).setBankID(QString());
         }
         // clear invalid data
-        t.setEntryDate(QDate());
+        t.setEntryDate(MyMoneyDate());
         t.clearId();
         // and set the post date to today
-        t.setPostDate(QDate::currentDate());
+        t.setPostDate(MyMoneyDate::currentDate());
 
         MyMoneyFile::instance()->addTransaction(t);
         lt = t;
@@ -6039,7 +6039,7 @@ void KMyMoneyApp::slotTransactionCreateSchedule()
     QString splitId = s.id();
     s.clearId();
     s.setReconcileFlag(MyMoneySplit::NotReconciled);
-    s.setReconcileDate(QDate());
+    s.setReconcileDate(MyMoneyDate());
     t.removeSplits();
     t.addSplit(s);
     const QList<MyMoneySplit>& splits = d->m_selectedTransactions[0].transaction().splits();
@@ -6049,7 +6049,7 @@ void KMyMoneyApp::slotTransactionCreateSchedule()
         MyMoneySplit s0 = (*it_s);
         s0.clearId();
         s0.setReconcileFlag(MyMoneySplit::NotReconciled);
-        s0.setReconcileDate(QDate());
+        s0.setReconcileDate(MyMoneyDate());
         t.addSplit(s0);
       }
     }
@@ -6116,7 +6116,7 @@ void KMyMoneyApp::slotTransactionCopySplits()
               // clear the ID and reconciliation state
               sp.clearId();
               sp.setReconcileFlag(MyMoneySplit::NotReconciled);
-              sp.setReconcileDate(QDate());
+              sp.setReconcileDate(MyMoneyDate());
 
               // in case it is a simple transaction consisting of two splits,
               // we can adjust the share and value part of the second split we
@@ -7238,7 +7238,7 @@ void KMyMoneyApp::slotCheckSchedules()
 
     KMSTATUS(i18n("Checking for overdue scheduled transactions..."));
     MyMoneyFile *file = MyMoneyFile::instance();
-    QDate checkDate = QDate::currentDate().addDays(KMyMoneyGlobalSettings::checkSchedulePreview());
+    MyMoneyDate checkDate = MyMoneyDate::currentDate().addDays(KMyMoneyGlobalSettings::checkSchedulePreview());
 
     QList<MyMoneySchedule> scheduleList =  file->scheduleList();
     QList<MyMoneySchedule>::Iterator it;
@@ -7535,7 +7535,7 @@ void KMyMoneyApp::slotAutoSave()
 void KMyMoneyApp::slotDateChanged()
 {
   QDateTime dt = QDateTime::currentDateTime();
-  QDateTime nextDay(QDate(dt.date().addDays(1)), QTime(0, 0, 0));
+  QDateTime nextDay(MyMoneyDate(dt.date().addDays(1)), QTime(0, 0, 0));
 
   // +1 is to make sure that we're already in the next day when the
   // signal is sent (this way we also avoid setting the timer to 0)
@@ -7920,7 +7920,7 @@ void KMyMoneyApp::setHolidayRegion(const QString& holidayRegion)
 #endif
 }
 
-bool KMyMoneyApp::isProcessingDate(const QDate& date) const
+bool KMyMoneyApp::isProcessingDate(const MyMoneyDate& date) const
 {
 #ifdef HAVE_KDEPIMLIBS
   if (!d->m_processingDays.testBit(date.dayOfWeek()))
@@ -7951,19 +7951,19 @@ void KMyMoneyApp::preloadHolidays()
   if (d->m_holidayRegion && d->m_holidayRegion->isValid()) {
     //load holidays for the forecast days plus 1 cycle, to be on the safe side
     int forecastDays = KMyMoneyGlobalSettings::forecastDays() + KMyMoneyGlobalSettings::forecastAccountCycle();
-    QDate endDate = QDate::currentDate().addDays(forecastDays);
+    MyMoneyDate endDate = MyMoneyDate::currentDate().addDays(forecastDays);
 
     //look for holidays for the next 2 years as a minimum. That should give a good margin for the cache
-    if (endDate < QDate::currentDate().addYears(2))
-      endDate = QDate::currentDate().addYears(2);
+    if (endDate < MyMoneyDate::currentDate().addYears(2))
+      endDate = MyMoneyDate::currentDate().addYears(2);
 
-    KHolidays::Holiday::List holidayList = d->m_holidayRegion->holidays(QDate::currentDate(), endDate);
+    KHolidays::Holiday::List holidayList = d->m_holidayRegion->holidays(MyMoneyDate::currentDate(), endDate);
     KHolidays::Holiday::List::const_iterator holiday_it;
     for (holiday_it = holidayList.constBegin(); holiday_it != holidayList.constEnd(); ++holiday_it) {
       d->m_holidayMap.insert((*holiday_it).date(), false);
     }
 
-    for (QDate date = QDate::currentDate(); date <= endDate; date = date.addDays(1)) {
+    for (MyMoneyDate date = MyMoneyDate::currentDate(); date <= endDate; date = date.addDays(1)) {
       //if it is not a processing day, set it to false
       if (!d->m_processingDays.testBit(date.dayOfWeek())) {
         d->m_holidayMap.insert(date, false);

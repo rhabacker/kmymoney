@@ -22,7 +22,7 @@ email                 : agander93@gmail.com
 // ----------------------------------------------------------------------------
 // QT Headers
 
-#include <QtCore/QDate>
+#include <QtCore/MyMoneyDate>
 #include <QtCore/QTextStream>
 #include <QtCore/QFile>
 #include <QtGui/QCloseEvent>

@@ -228,8 +228,8 @@ void KForecastView::loadListView()
   headerLabels << i18nc("Today's forecast", "Current");
 
   for (int i = 1; i <= forecast.forecastDays(); ++i) {
-    QDate forecastDate = QDate::currentDate().addDays(i);
-    headerLabels << KGlobal::locale()->formatDate(forecastDate, KLocale::LongDate);
+    MyMoneyDate forecastDate = MyMoneyDate::currentDate().addDays(i);
+    headerLabels << MyMoneyLocale::formatDate(forecastDate, KLocale::LongDate);
   }
 
   //add variation columns
@@ -276,8 +276,8 @@ void KForecastView::loadSummaryView()
 
   //if beginning of forecast is today, set the begin day to next cycle to avoid repeating the first cycle
   int daysToBeginDay;
-  if (QDate::currentDate() < forecast.beginForecastDate()) {
-    daysToBeginDay = QDate::currentDate().daysTo(forecast.beginForecastDate());
+  if (MyMoneyDate::currentDate() < forecast.beginForecastDate()) {
+    daysToBeginDay = MyMoneyDate::currentDate().daysTo(forecast.beginForecastDate());
   } else {
     daysToBeginDay = forecast.accountsCycle();
   }
@@ -465,8 +465,8 @@ void KForecastView::loadAdvancedView()
   headerLabels << i18n("Account");
 
   //if beginning of forecast is today, set the begin day to next cycle to avoid repeating the first cycle
-  if (QDate::currentDate() < forecast.beginForecastDate()) {
-    daysToBeginDay = QDate::currentDate().daysTo(forecast.beginForecastDate());
+  if (MyMoneyDate::currentDate() < forecast.beginForecastDate()) {
+    daysToBeginDay = MyMoneyDate::currentDate().daysTo(forecast.beginForecastDate());
   } else {
     daysToBeginDay = forecast.accountsCycle();
   }
@@ -508,10 +508,10 @@ void KForecastView::loadAdvancedView()
     int it_c = 1; // iterator for the columns of the listview
 
     //get minimum balance list
-    QList<QDate> minBalanceList = forecast.accountMinimumBalanceDateList(acc);
-    QList<QDate>::Iterator t_min;
+    QList<MyMoneyDate> minBalanceList = forecast.accountMinimumBalanceDateList(acc);
+    QList<MyMoneyDate>::Iterator t_min;
     for (t_min = minBalanceList.begin(); t_min != minBalanceList.end() ; ++t_min) {
-      QDate minDate = *t_min;
+      MyMoneyDate minDate = *t_min;
       amountMM = forecast.forecastBalance(acc, minDate);
 
       amount = MyMoneyUtils::formatMoney(amountMM, acc, currency);
@@ -522,7 +522,7 @@ void KForecastView::loadAdvancedView()
       }
       it_c++;
 
-      QString dateString = KGlobal::locale()->formatDate(minDate, KLocale::ShortDate);
+      QString dateString = MyMoneyLocale::formatDate(minDate, KLocale::ShortDate);
       advancedItem->setText(it_c, dateString);
       advancedItem->setTextAlignment(it_c, Qt::AlignRight | Qt::AlignVCenter);
       if (amountMM.isNegative()) {
@@ -532,10 +532,10 @@ void KForecastView::loadAdvancedView()
     }
 
     //get maximum balance list
-    QList<QDate> maxBalanceList = forecast.accountMaximumBalanceDateList(acc);
-    QList<QDate>::Iterator t_max;
+    QList<MyMoneyDate> maxBalanceList = forecast.accountMaximumBalanceDateList(acc);
+    QList<MyMoneyDate>::Iterator t_max;
     for (t_max = maxBalanceList.begin(); t_max != maxBalanceList.end() ; ++t_max) {
-      QDate maxDate = *t_max;
+      MyMoneyDate maxDate = *t_max;
       amountMM = forecast.forecastBalance(acc, maxDate);
 
       amount = MyMoneyUtils::formatMoney(amountMM, acc, currency);
@@ -546,7 +546,7 @@ void KForecastView::loadAdvancedView()
       }
       it_c++;
 
-      QString dateString = KGlobal::locale()->formatDate(maxDate, KLocale::ShortDate);
+      QString dateString = MyMoneyLocale::formatDate(maxDate, KLocale::ShortDate);
       advancedItem->setText(it_c, dateString);
       advancedItem->setTextAlignment(it_c, Qt::AlignRight | Qt::AlignVCenter);
       if (amountMM.isNegative()) {
@@ -577,10 +577,10 @@ void KForecastView::loadBudgetView()
   MyMoneyForecast forecast = KMyMoneyGlobalSettings::forecast();
 
   //get the settings from current page and calculate this year based on last year
-  QDate historyEndDate = QDate(QDate::currentDate().year() - 1, 12, 31);
-  QDate historyStartDate = historyEndDate.addDays(-m_accountsCycle->value() * m_forecastCycles->value());
-  QDate forecastStartDate = QDate(QDate::currentDate().year(), 1, 1);
-  QDate forecastEndDate = QDate::currentDate().addDays(m_forecastDays->value());
+  MyMoneyDate historyEndDate = MyMoneyDate(MyMoneyDate::currentDate().year() - 1, 12, 31);
+  MyMoneyDate historyStartDate = historyEndDate.addDays(-m_accountsCycle->value() * m_forecastCycles->value());
+  MyMoneyDate forecastStartDate = MyMoneyDate(MyMoneyDate::currentDate().year(), 1, 1);
+  MyMoneyDate forecastEndDate = MyMoneyDate::currentDate().addDays(m_forecastDays->value());
   forecast.setHistoryMethod(m_historyMethod->checkedId());
 
   MyMoneyBudget budget;
@@ -596,13 +596,13 @@ void KForecastView::loadBudgetView()
   headerLabels << i18n("Account");
 
   {
-    QDate forecastStartDate = forecast.forecastStartDate();
-    QDate forecastEndDate = forecast.forecastEndDate();
+    MyMoneyDate forecastStartDate = forecast.forecastStartDate();
+    MyMoneyDate forecastEndDate = forecast.forecastEndDate();
 
     //add cycle interval columns
-    QDate f_date = forecastStartDate;
+    MyMoneyDate f_date = forecastStartDate;
     for (; f_date <= forecastEndDate; f_date = f_date.addMonths(1)) {
-      headerLabels << QDate::longMonthName(f_date.month());
+      headerLabels << MyMoneyDate::longMonthName(f_date.month());
     }
   }
   //add total column
@@ -804,8 +804,8 @@ void KForecastView::updateSummary(QTreeWidgetItem *item)
 
   MyMoneyForecast forecast = item->data(0, ForecastRole).value<MyMoneyForecast>();
 
-  if (QDate::currentDate() < forecast.beginForecastDate()) {
-    daysToBeginDay = QDate::currentDate().daysTo(forecast.beginForecastDate());
+  if (MyMoneyDate::currentDate() < forecast.beginForecastDate()) {
+    daysToBeginDay = MyMoneyDate::currentDate().daysTo(forecast.beginForecastDate());
   } else {
     daysToBeginDay = forecast.accountsCycle();
   }
@@ -821,7 +821,7 @@ void KForecastView::updateSummary(QTreeWidgetItem *item)
 
 
   //add current balance column
-  QDate summaryDate = QDate::currentDate();
+  MyMoneyDate summaryDate = MyMoneyDate::currentDate();
   amountMM = forecast.forecastBalance(account, summaryDate);
 
   //calculate the balance in base currency for the total row
@@ -831,7 +831,7 @@ void KForecastView::updateSummary(QTreeWidgetItem *item)
   it_c++;
 
   //iterate through all other columns
-  for (QDate summaryDate = QDate::currentDate().addDays(daysToBeginDay); summaryDate <= forecast.forecastEndDate(); summaryDate = summaryDate.addDays(forecast.accountsCycle()), ++it_c) {
+  for (MyMoneyDate summaryDate = MyMoneyDate::currentDate().addDays(daysToBeginDay); summaryDate <= forecast.forecastEndDate(); summaryDate = summaryDate.addDays(forecast.accountsCycle()), ++it_c) {
     amountMM = forecast.forecastBalance(account, summaryDate);
 
     //calculate the balance in base currency for the total row
@@ -867,7 +867,7 @@ void KForecastView::updateDetailed(QTreeWidgetItem *item)
 
   MyMoneyForecast forecast = item->data(0, ForecastRole).value<MyMoneyForecast>();
 
-  for (QDate forecastDate = QDate::currentDate(); forecastDate <= forecast.forecastEndDate(); ++it_c, forecastDate = forecastDate.addDays(1)) {
+  for (MyMoneyDate forecastDate = MyMoneyDate::currentDate(); forecastDate <= forecast.forecastEndDate(); ++it_c, forecastDate = forecastDate.addDays(1)) {
     MyMoneyMoney amountMM = forecast.forecastBalance(account, forecastDate);
 
     //calculate the balance in base currency for the total row
@@ -892,7 +892,7 @@ void KForecastView::updateBudget(QTreeWidgetItem *item)
 
   MyMoneyFile* file = MyMoneyFile::instance();
   int it_c = 1; // iterator for the columns of the listview
-  QDate forecastDate = forecast.forecastStartDate();
+  MyMoneyDate forecastDate = forecast.forecastStartDate();
 
   MyMoneyAccount account = item->data(0, AccountRole).value<MyMoneyAccount>();
 
@@ -964,7 +964,7 @@ void KForecastView::adjustParentValue(QTreeWidgetItem *item, int column, const M
   adjustParentValue(item->parent(), column, value);
 }
 
-void KForecastView::setValue(QTreeWidgetItem* item, int column, const MyMoneyMoney& amount, const QDate& forecastDate)
+void KForecastView::setValue(QTreeWidgetItem* item, int column, const MyMoneyMoney& amount, const MyMoneyDate& forecastDate)
 {
   MyMoneyAccount account = item->data(0, AccountRole).value<MyMoneyAccount>();
   //calculate the balance in base currency for the total row
@@ -1024,7 +1024,7 @@ void KForecastView::loadChartView()
   reportCfg.setChartDataLabels(false);
   reportCfg.setConvertCurrency(true);
   reportCfg.setIncludingForecast(true);
-  reportCfg.setDateFilter(QDate::currentDate(), QDate::currentDate().addDays(m_forecastDays->value()));
+  reportCfg.setDateFilter(MyMoneyDate::currentDate(), MyMoneyDate::currentDate().addDays(m_forecastDays->value()));
   reports::PivotTable table(reportCfg);
 
   table.drawChart(*m_forecastChart);

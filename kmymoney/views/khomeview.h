@@ -145,7 +145,7 @@ private:
   /**
    * Calculate the forecast balance after a payment has been made
    */
-  MyMoneyMoney forecastPaymentBalance(const MyMoneyAccount& acc, const MyMoneyMoney& payment, QDate& paymentDate);
+  MyMoneyMoney forecastPaymentBalance(const MyMoneyAccount& acc, const MyMoneyMoney& payment, MyMoneyDate& paymentDate);
 };
 
 #endif

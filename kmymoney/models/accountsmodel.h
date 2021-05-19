@@ -111,7 +111,7 @@ public:
 
 public slots:
 
-  void slotReconcileAccount(const MyMoneyAccount &account, const QDate &reconciliationDate, const MyMoneyMoney &endingBalance);
+  void slotReconcileAccount(const MyMoneyAccount &account, const MyMoneyDate &reconciliationDate, const MyMoneyMoney &endingBalance);
   void slotObjectAdded(MyMoneyFile::notificationObjectT objType, const MyMoneyObject * const obj);
   void slotObjectModified(MyMoneyFile::notificationObjectT objType, const MyMoneyObject * const obj);
   void slotObjectRemoved(MyMoneyFile::notificationObjectT objType, const QString& id);

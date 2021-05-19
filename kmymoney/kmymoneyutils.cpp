@@ -501,7 +501,7 @@ MyMoneyTransaction KMyMoneyUtils::scheduledTransaction(const MyMoneySchedule& sc
   }
 
   t.clearId();
-  t.setEntryDate(QDate());
+  t.setEntryDate(MyMoneyDate());
   return t;
 }
 

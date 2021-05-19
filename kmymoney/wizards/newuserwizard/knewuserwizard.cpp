@@ -273,7 +273,7 @@ AccountPage::AccountPage(Wizard* wizard) :
   connect(m_mandatoryGroup, SIGNAL(stateChanged()), object(), SIGNAL(completeStateChanged()));
   connect(m_haveCheckingAccountButton, SIGNAL(toggled(bool)), object(), SIGNAL(completeStateChanged()));
   m_accountNameEdit->setFocus();
-  m_openingDateEdit->setDate(QDate(QDate::currentDate().year(), 1, 1));
+  m_openingDateEdit->setDate(MyMoneyDate(MyMoneyDate::currentDate().year(), 1, 1));
 }
 
 KMyMoneyWizardPage* AccountPage::nextPage() const

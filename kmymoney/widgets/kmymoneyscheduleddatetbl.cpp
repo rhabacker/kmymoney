@@ -67,19 +67,19 @@ Contains code from the KDateTable class ala kdelibs-3.1.2.  Original license:
 
 #include "mymoneyfile.h"
 
-kMyMoneyScheduledDateTbl::kMyMoneyScheduledDateTbl(QWidget *parent, QDate date_)
+kMyMoneyScheduledDateTbl::kMyMoneyScheduledDateTbl(QWidget *parent, MyMoneyDate date_)
     : kMyMoneyDateTbl(parent, date_),
     m_filterBills(false), m_filterDeposits(false), m_filterTransfers(false)
 {
-  connect(&briefWidget, SIGNAL(enterClicked(MyMoneySchedule,QDate)), this, SIGNAL(enterClicked(MyMoneySchedule,QDate)));
-  connect(&briefWidget, SIGNAL(skipClicked(MyMoneySchedule,QDate)), this, SIGNAL(skipClicked(MyMoneySchedule,QDate)));
+  connect(&briefWidget, SIGNAL(enterClicked(MyMoneySchedule,MyMoneyDate)), this, SIGNAL(enterClicked(MyMoneySchedule,MyMoneyDate)));
+  connect(&briefWidget, SIGNAL(skipClicked(MyMoneySchedule,MyMoneyDate)), this, SIGNAL(skipClicked(MyMoneySchedule,MyMoneyDate)));
 }
 
 kMyMoneyScheduledDateTbl::~kMyMoneyScheduledDateTbl()
 {
 }
 
-void kMyMoneyScheduledDateTbl::drawCellContents(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index, const QDate& theDate)
+void kMyMoneyScheduledDateTbl::drawCellContents(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index, const MyMoneyDate& theDate)
 {
   Q_UNUSED(index)
   QString text;
@@ -141,7 +141,7 @@ void kMyMoneyScheduledDateTbl::drawCellContents(QPainter* painter, const QStyleO
       bool anyOverdue = false;
       for (iter = schedules.begin(); iter != schedules.end(); ++iter) {
         MyMoneySchedule schedule = *iter;
-        if (theDate < QDate::currentDate()) {
+        if (theDate < MyMoneyDate::currentDate()) {
           if (schedule.isOverdue()) {
             anyOverdue = true;
             break; // out early
@@ -160,7 +160,7 @@ void kMyMoneyScheduledDateTbl::drawCellContents(QPainter* painter, const QStyleO
   } else if (m_type == WEEKLY) {
     text = QString::number(theDate.day());
     addDayPostfix(text);
-    style->drawItemText(painter, option.rect, Qt::AlignRight, option.palette, true, QDate::shortDayName(theDate.dayOfWeek()) + ' ' + text);
+    style->drawItemText(painter, option.rect, Qt::AlignRight, option.palette, true, MyMoneyDate::shortDayName(theDate.dayOfWeek()) + ' ' + text);
 
     QList<MyMoneySchedule> billSchedules;
     QList<MyMoneySchedule> depositSchedules;
@@ -216,7 +216,7 @@ void kMyMoneyScheduledDateTbl::drawCellContents(QPainter* painter, const QStyleO
     QList<MyMoneySchedule>::Iterator iter;
     for (iter = transferSchedules.begin(); iter != transferSchedules.end(); ++iter) {
       MyMoneySchedule schedule = *iter;
-      if (theDate < QDate::currentDate()) {
+      if (theDate < MyMoneyDate::currentDate()) {
         if (schedule.isOverdue()) {
           anyOverdue = true;
           break; // out early
@@ -227,7 +227,7 @@ void kMyMoneyScheduledDateTbl::drawCellContents(QPainter* painter, const QStyleO
     if (!anyOverdue) {
       for (iter = depositSchedules.begin(); iter != depositSchedules.end(); ++iter) {
         MyMoneySchedule schedule = *iter;
-        if (theDate < QDate::currentDate()) {
+        if (theDate < MyMoneyDate::currentDate()) {
           if (schedule.isOverdue()) {
             anyOverdue = true;
             break; // out early
@@ -238,7 +238,7 @@ void kMyMoneyScheduledDateTbl::drawCellContents(QPainter* painter, const QStyleO
       if (!anyOverdue) {
         for (iter = billSchedules.begin(); iter != billSchedules.end(); ++iter) {
           MyMoneySchedule schedule = *iter;
-          if (theDate < QDate::currentDate()) {
+          if (theDate < MyMoneyDate::currentDate()) {
             if (schedule.isOverdue()) {
               anyOverdue = true;
               break; // out early
@@ -293,7 +293,7 @@ void kMyMoneyScheduledDateTbl::mouseMoveEvent(QMouseEvent* e)
 
     int firstWeekDay = KGlobal::locale()->weekStartDay();
 
-    QDate drawDate(date);
+    MyMoneyDate drawDate(date);
     QString text;
 
     if (m_type == MONTHLY) {
@@ -322,7 +322,7 @@ void kMyMoneyScheduledDateTbl::mouseMoveEvent(QMouseEvent* e)
       }
     } else if (m_type == WEEKLY) {
       // TODO: Handle other start weekdays than Monday
-      text = QDate::shortDayName(row);
+      text = MyMoneyDate::shortDayName(row);
       text += ' ';
 
       int dayOfWeek = date.dayOfWeek();

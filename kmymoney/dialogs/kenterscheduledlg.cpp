@@ -155,13 +155,13 @@ MyMoneyTransaction KEnterScheduleDlg::transaction()
   }
 
   t.clearId();
-  t.setEntryDate(QDate());
+  t.setEntryDate(MyMoneyDate());
   return t;
 }
 
-QDate KEnterScheduleDlg::date(const QDate& _date) const
+MyMoneyDate KEnterScheduleDlg::date(const MyMoneyDate& _date) const
 {
-  QDate date(_date);
+  MyMoneyDate date(_date);
   return d->m_schedule.adjustedDate(date, d->m_schedule.weekendOption());
 }
 
@@ -194,7 +194,7 @@ int KEnterScheduleDlg::exec()
 TransactionEditor* KEnterScheduleDlg::startEdit()
 {
   KMyMoneyRegister::SelectedTransactions list(m_register);
-  TransactionEditor* editor = d->m_item->createEditor(m_form, list, QDate());
+  TransactionEditor* editor = d->m_item->createEditor(m_form, list, MyMoneyDate());
   editor->m_scheduleInfo = d->m_schedule.name();
   editor->m_paymentMethod = d->m_schedule.paymentType();
 

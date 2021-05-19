@@ -41,9 +41,9 @@ void MyMoneyAccountTest::testEmptyConstructor()
   QVERIFY(a.id().isEmpty());
   QVERIFY(a.name().isEmpty());
   QVERIFY(a.accountType() == MyMoneyAccount::UnknownAccountType);
-  QVERIFY(a.openingDate() == QDate());
-  QVERIFY(a.lastModified() == QDate());
-  QVERIFY(a.lastReconciliationDate() == QDate());
+  QVERIFY(a.openingDate() == MyMoneyDate());
+  QVERIFY(a.lastModified() == MyMoneyDate());
+  QVERIFY(a.lastReconciliationDate() == MyMoneyDate());
   QVERIFY(a.accountList().count() == 0);
   QVERIFY(a.balance().isZero());
 }
@@ -56,8 +56,8 @@ void MyMoneyAccountTest::testConstructor()
   MyMoneyAccount r;
   MyMoneySplit s;
   r.setAccountType(MyMoneyAccount::Asset);
-  r.setOpeningDate(QDate::currentDate());
-  r.setLastModified(QDate::currentDate());
+  r.setOpeningDate(MyMoneyDate::currentDate());
+  r.setLastModified(MyMoneyDate::currentDate());
   r.setDescription("Desc");
   r.setNumber("465500");
   r.setParentAccountId(parent);
@@ -72,8 +72,8 @@ void MyMoneyAccountTest::testConstructor()
   QVERIFY(a.id() == id);
   QVERIFY(a.institutionId().isEmpty());
   QVERIFY(a.accountType() == MyMoneyAccount::Asset);
-  QVERIFY(a.openingDate() == QDate::currentDate());
-  QVERIFY(a.lastModified() == QDate::currentDate());
+  QVERIFY(a.openingDate() == MyMoneyDate::currentDate());
+  QVERIFY(a.lastModified() == MyMoneyDate::currentDate());
   QVERIFY(a.number() == "465500");
   QVERIFY(a.description() == "Desc");
   QVERIFY(a.accountList().count() == 0);
@@ -90,9 +90,9 @@ void MyMoneyAccountTest::testSetFunctions()
 {
   MyMoneyAccount a;
 
-  QDate today(QDate::currentDate());
+  MyMoneyDate today(MyMoneyDate::currentDate());
   QVERIFY(a.name().isEmpty());
-  QVERIFY(a.lastModified() == QDate());
+  QVERIFY(a.lastModified() == MyMoneyDate());
   QVERIFY(a.description().isEmpty());
 
   a.setName("Account");
@@ -117,8 +117,8 @@ void MyMoneyAccountTest::testCopyConstructor()
   QString parent = "ParentAccount";
   MyMoneyAccount r;
   r.setAccountType(MyMoneyAccount::Expense);
-  r.setOpeningDate(QDate::currentDate());
-  r.setLastModified(QDate::currentDate());
+  r.setOpeningDate(MyMoneyDate::currentDate());
+  r.setLastModified(MyMoneyDate::currentDate());
   r.setName("Account");
   r.setInstitutionId("Inst1");
   r.setDescription("Desc1");
@@ -134,8 +134,8 @@ void MyMoneyAccountTest::testCopyConstructor()
   QVERIFY(b.name() == "Account");
   QVERIFY(b.institutionId() == institutionid);
   QVERIFY(b.accountType() == MyMoneyAccount::Expense);
-  QVERIFY(b.lastModified() == QDate::currentDate());
-  QVERIFY(b.openingDate() == QDate::currentDate());
+  QVERIFY(b.lastModified() == MyMoneyDate::currentDate());
+  QVERIFY(b.openingDate() == MyMoneyDate::currentDate());
   QVERIFY(b.description() == "Desc1");
   QVERIFY(b.number() == "Number");
   QVERIFY(b.parentAccountId() == "ParentAccount");
@@ -156,14 +156,14 @@ void MyMoneyAccountTest::testAssignmentConstructor()
 
   MyMoneyAccount b;
 
-  b.setLastModified(QDate::currentDate());
+  b.setLastModified(MyMoneyDate::currentDate());
 
   b = a;
 
   QVERIFY(b.name() == "Account");
   QVERIFY(b.institutionId() == "Inst1");
   QVERIFY(b.accountType() == MyMoneyAccount::Checkings);
-  QVERIFY(b.lastModified() == QDate());
+  QVERIFY(b.lastModified() == MyMoneyDate());
   QVERIFY(b.openingDate() == a.openingDate());
   QVERIFY(b.description() == "Bla");
   QVERIFY(b.number() == "assigned Number");
@@ -210,13 +210,13 @@ void MyMoneyAccountTest::testEquality()
 {
   MyMoneyAccount a;
 
-  a.setLastModified(QDate::currentDate());
+  a.setLastModified(MyMoneyDate::currentDate());
   a.setName("Name");
   a.setNumber("Number");
   a.setDescription("Desc");
   a.setInstitutionId("I-ID");
-  a.setOpeningDate(QDate::currentDate());
-  a.setLastReconciliationDate(QDate::currentDate());
+  a.setOpeningDate(MyMoneyDate::currentDate());
+  a.setLastReconciliationDate(MyMoneyDate::currentDate());
   a.setAccountType(MyMoneyAccount::Asset);
   a.setParentAccountId("P-ID");
   a.setId("A-ID");
@@ -232,7 +232,7 @@ void MyMoneyAccountTest::testEquality()
   QVERIFY(!(b == a));
   b = a;
 
-  a.setLastModified(QDate::currentDate().addDays(-1));
+  a.setLastModified(MyMoneyDate::currentDate().addDays(-1));
   QVERIFY(!(b == a));
   b = a;
 
@@ -248,11 +248,11 @@ void MyMoneyAccountTest::testEquality()
   QVERIFY(!(b == a));
   b = a;
 
-  a.setOpeningDate(QDate::currentDate().addDays(-1));
+  a.setOpeningDate(MyMoneyDate::currentDate().addDays(-1));
   QVERIFY(!(b == a));
   b = a;
 
-  a.setLastReconciliationDate(QDate::currentDate().addDays(-1));
+  a.setLastReconciliationDate(MyMoneyDate::currentDate().addDays(-1));
   QVERIFY(!(b == a));
   b = a;
 
@@ -290,8 +290,8 @@ void MyMoneyAccountTest::testWriteXML()
 
   MyMoneyAccount r;
   r.setAccountType(MyMoneyAccount::Asset);
-  r.setOpeningDate(QDate::currentDate());
-  r.setLastModified(QDate::currentDate());
+  r.setOpeningDate(MyMoneyDate::currentDate());
+  r.setLastModified(MyMoneyDate::currentDate());
   r.setDescription("Desc");
   r.setName("AccountName");
   r.setNumber("465500");
@@ -299,8 +299,8 @@ void MyMoneyAccountTest::testWriteXML()
   r.setInstitutionId(institutionid);
   r.setValue(QString("key"), "value");
   r.addAccountId("A000002");
-  r.addReconciliation(QDate(2011, 1, 1), MyMoneyMoney(123, 100));
-  r.addReconciliation(QDate(2011, 2, 1), MyMoneyMoney(456, 100));
+  r.addReconciliation(MyMoneyDate(2011, 1, 1), MyMoneyMoney(123, 100));
+  r.addReconciliation(MyMoneyDate(2011, 2, 1), MyMoneyMoney(456, 100));
 
   QCOMPARE(r.m_kvp.count(), 2);
   QCOMPARE(r.value("key"), QLatin1String("value"));
@@ -329,9 +329,9 @@ void MyMoneyAccountTest::testWriteXML()
   QCOMPARE(account.attribute("number"), QLatin1String("465500"));
   QCOMPARE(account.attribute("description"), QLatin1String("Desc"));
   QCOMPARE(account.attribute("parentaccount"), QLatin1String("Parent"));
-  QCOMPARE(account.attribute("opened"), QDate::currentDate().toString(Qt::ISODate));
+  QCOMPARE(account.attribute("opened"), MyMoneyDate::currentDate().toString(Qt::ISODate));
   QCOMPARE(account.attribute("type"), QLatin1String("9"));
-  QCOMPARE(account.attribute("lastmodified"), QDate::currentDate().toString(Qt::ISODate));
+  QCOMPARE(account.attribute("lastmodified"), MyMoneyDate::currentDate().toString(Qt::ISODate));
   QCOMPARE(account.attribute("id"), QLatin1String("A000001"));
   QCOMPARE(account.childNodes().size(), 2);
 
@@ -382,7 +382,7 @@ void MyMoneyAccountTest::testReadXML()
                      "  </KEYVALUEPAIRS>\n"
                      " </ACCOUNT>\n"
                      "</ACCOUNT-CONTAINER>\n").
-                   arg(QDate::currentDate().toString(Qt::ISODate)).arg(QDate::currentDate().toString(Qt::ISODate));
+                   arg(MyMoneyDate::currentDate().toString(Qt::ISODate)).arg(MyMoneyDate::currentDate().toString(Qt::ISODate));
 
   QString ref_false = QString(
                         "<!DOCTYPE TEST>\n"
@@ -398,7 +398,7 @@ void MyMoneyAccountTest::testReadXML()
                         "  </KEYVALUEPAIRS>\n"
                         " </KACCOUNT>\n"
                         "</ACCOUNT-CONTAINER>\n").
-                      arg(QDate::currentDate().toString(Qt::ISODate)).arg(QDate::currentDate().toString(Qt::ISODate));
+                      arg(MyMoneyDate::currentDate().toString(Qt::ISODate)).arg(MyMoneyDate::currentDate().toString(Qt::ISODate));
 
   QDomDocument doc;
   QDomElement node;
@@ -422,11 +422,11 @@ void MyMoneyAccountTest::testReadXML()
     QVERIFY(a.id() == "A000001");
     QVERIFY(a.m_name == "AccountName");
     QVERIFY(a.m_parentAccount == "Parent");
-    QVERIFY(a.m_lastModified == QDate::currentDate());
-    QVERIFY(a.m_lastReconciliationDate == QDate());
+    QVERIFY(a.m_lastModified == MyMoneyDate::currentDate());
+    QVERIFY(a.m_lastReconciliationDate == MyMoneyDate());
     QVERIFY(a.m_institution == "B000001");
     QVERIFY(a.m_number == "465500");
-    QVERIFY(a.m_openingDate == QDate::currentDate());
+    QVERIFY(a.m_openingDate == MyMoneyDate::currentDate());
     QVERIFY(a.m_accountType == MyMoneyAccount::Asset);
     QVERIFY(a.m_description == "Desc");
     QVERIFY(a.accountList().count() == 2);
@@ -437,8 +437,8 @@ void MyMoneyAccountTest::testReadXML()
     QVERIFY(a.value("Key") == "Value");
     QVERIFY(a.value("lastStatementDate").isEmpty());
     QVERIFY(a.reconciliationHistory().count() == 3);
-    QVERIFY(a.reconciliationHistory()[ReconciliationKey(QDate(2011, 1, 1))] == MyMoneyMoney(123, 100));
-    QVERIFY(a.reconciliationHistory()[ReconciliationKey(QDate(2011, 2, 1))] == MyMoneyMoney(456, 100));
+    QVERIFY(a.reconciliationHistory()[ReconciliationKey(MyMoneyDate(2011, 1, 1))] == MyMoneyMoney(123, 100));
+    QVERIFY(a.reconciliationHistory()[ReconciliationKey(MyMoneyDate(2011, 2, 1))] == MyMoneyMoney(456, 100));
     QVERIFY(a.reconciliationHistory()[ReconciliationKey("T000000000000000008")] == MyMoneyMoney(110, 10));
   } catch (const MyMoneyException &) {
     QFAIL("Unexpected exception");
@@ -645,11 +645,11 @@ void MyMoneyAccountTest::addReconciliation()
 {
   MyMoneyAccount a;
 
-  QVERIFY(a.addReconciliation(QDate(2011, 1, 2), MyMoneyMoney(123, 100)) == true);
+  QVERIFY(a.addReconciliation(MyMoneyDate(2011, 1, 2), MyMoneyMoney(123, 100)) == true);
   QVERIFY(a.reconciliationHistory().count() == 1);
-  QVERIFY(a.addReconciliation(QDate(2011, 2, 1), MyMoneyMoney(456, 100)) == true);
+  QVERIFY(a.addReconciliation(MyMoneyDate(2011, 2, 1), MyMoneyMoney(456, 100)) == true);
   QVERIFY(a.reconciliationHistory().count() == 2);
-  QVERIFY(a.addReconciliation(QDate(2011, 2, 1), MyMoneyMoney(789, 100)) == true);
+  QVERIFY(a.addReconciliation(MyMoneyDate(2011, 2, 1), MyMoneyMoney(789, 100)) == true);
   QVERIFY(a.reconciliationHistory().count() == 2);
   QVERIFY(a.reconciliationHistory().values().last() == MyMoneyMoney(789, 100));
 }
@@ -659,15 +659,15 @@ void MyMoneyAccountTest::reconciliationHistory()
   MyMoneyAccount a;
 
   QVERIFY(a.reconciliationHistory().isEmpty() == true);
-  QVERIFY(a.addReconciliation(QDate(2011, 1, 2), MyMoneyMoney(123, 100)) == true);
-  QVERIFY(a.reconciliationHistory()[QDate(2011, 1, 2)] == MyMoneyMoney(123, 100));
-  QVERIFY(a.reconciliationHistory()[QDate(2011, 1, 1)] == MyMoneyMoney());
-  QVERIFY(a.reconciliationHistory()[QDate(2011, 1, 3)] == MyMoneyMoney());
+  QVERIFY(a.addReconciliation(MyMoneyDate(2011, 1, 2), MyMoneyMoney(123, 100)) == true);
+  QVERIFY(a.reconciliationHistory()[MyMoneyDate(2011, 1, 2)] == MyMoneyMoney(123, 100));
+  QVERIFY(a.reconciliationHistory()[MyMoneyDate(2011, 1, 1)] == MyMoneyMoney());
+  QVERIFY(a.reconciliationHistory()[MyMoneyDate(2011, 1, 3)] == MyMoneyMoney());
 
-  QVERIFY(a.addReconciliation(QDate(2011, 2, 1), MyMoneyMoney(456, 100)) == true);
-  QVERIFY(a.reconciliationHistory()[QDate(2011, 1, 2)] == MyMoneyMoney(123, 100));
-  QVERIFY(a.reconciliationHistory()[QDate(2011, 1, 1)] == MyMoneyMoney());
-  QVERIFY(a.reconciliationHistory()[QDate(2011, 1, 3)] == MyMoneyMoney());
-  QVERIFY(a.reconciliationHistory()[QDate(2011, 2, 1)] == MyMoneyMoney(456, 100));
+  QVERIFY(a.addReconciliation(MyMoneyDate(2011, 2, 1), MyMoneyMoney(456, 100)) == true);
+  QVERIFY(a.reconciliationHistory()[MyMoneyDate(2011, 1, 2)] == MyMoneyMoney(123, 100));
+  QVERIFY(a.reconciliationHistory()[MyMoneyDate(2011, 1, 1)] == MyMoneyMoney());
+  QVERIFY(a.reconciliationHistory()[MyMoneyDate(2011, 1, 3)] == MyMoneyMoney());
+  QVERIFY(a.reconciliationHistory()[MyMoneyDate(2011, 2, 1)] == MyMoneyMoney(456, 100));
   QVERIFY(a.reconciliationHistory().count() == 2);
 }

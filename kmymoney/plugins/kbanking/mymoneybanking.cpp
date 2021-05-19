@@ -451,19 +451,19 @@ bool KBankingPlugin::updateAccount(const MyMoneyAccount& acc, bool moreAccounts)
         if (job) {
           int days = 0 /* TODO in AqBanking AB_JobGetTransactions_GetMaxStoreDays(job)*/;
 
-          QDate qd;
+          MyMoneyDate qd;
           if (days > 0) {
             GWEN_DATE *dt;
 
             dt=GWEN_Date_CurrentDate();
             GWEN_Date_SubDays(dt, days);
-            qd = QDate(GWEN_Date_GetYear(dt), GWEN_Date_GetMonth(dt), GWEN_Date_GetDay(dt));
+            qd = MyMoneyDate(GWEN_Date_GetYear(dt), GWEN_Date_GetMonth(dt), GWEN_Date_GetDay(dt));
             GWEN_Date_free(dt);
           }
 
           // get last statement request date from application account object
           // and start from a few days before if the date is valid
-          QDate lastUpdate = QDate::fromString(acc.value("lastImportedTransactionDate"), Qt::ISODate);
+          MyMoneyDate lastUpdate = MyMoneyDate::fromString(acc.value("lastImportedTransactionDate"), Qt::ISODate);
           if (lastUpdate.isValid())
             lastUpdate = lastUpdate.addDays(-3);
 
@@ -472,7 +472,7 @@ bool KBankingPlugin::updateAccount(const MyMoneyAccount& acc, bool moreAccounts)
             case 0: // Ask user
               break;
             case 1: // No date
-              qd = QDate();
+              qd = MyMoneyDate();
               break;
             case 2: // Last download
               qd = lastUpdate;
@@ -1256,7 +1256,7 @@ void KMyMoneyBanking::_xaToStatement(MyMoneyStatement &ks,
         startTime = ti;
     }
     */
-    kt.m_datePosted = QDate(GWEN_Date_GetYear(dt), GWEN_Date_GetMonth(dt), GWEN_Date_GetDay(dt));
+    kt.m_datePosted = MyMoneyDate(GWEN_Date_GetYear(dt), GWEN_Date_GetMonth(dt), GWEN_Date_GetDay(dt));
   } else {
     DBG_WARN(0, "No date for transaction");
   }
@@ -1292,7 +1292,7 @@ void KMyMoneyBanking::_xaToStatement(MyMoneyStatement &ks,
   }
 
   if (startDate) {
-    QDate d(QDate(GWEN_Date_GetYear(startDate), GWEN_Date_GetMonth(startDate), GWEN_Date_GetDay(startDate)));
+    MyMoneyDate d(MyMoneyDate(GWEN_Date_GetYear(startDate), GWEN_Date_GetMonth(startDate), GWEN_Date_GetDay(startDate)));
 
     if (!ks.m_dateBegin.isValid())
       ks.m_dateBegin = d;
@@ -1405,7 +1405,7 @@ bool KMyMoneyBanking::importAccountInfo(AB_IMEXPORTER_ACCOUNTINFO *ai,
     }
     const GWEN_DATE* dt = AB_Balance_GetDate(bal);
     if (dt) {
-      ks.m_dateEnd = QDate(GWEN_Date_GetYear(dt), GWEN_Date_GetMonth(dt) , GWEN_Date_GetDay(dt));
+      ks.m_dateEnd = MyMoneyDate(GWEN_Date_GetYear(dt), GWEN_Date_GetMonth(dt) , GWEN_Date_GetDay(dt));
     } else {
       DBG_WARN(0, "No date for balance");
     }

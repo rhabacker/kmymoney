@@ -63,7 +63,7 @@ public:
   KUpdateStockPriceDlg(QWidget* parent = 0);
   ~KUpdateStockPriceDlg();
 
-  const QDate date() const {
+  const MyMoneyDate date() const {
     return m_date->date();
   };
   const MyMoneyMoney price() const;

@@ -65,10 +65,10 @@ public:
   const MyMoneyPayee& user() const {
     return m_user;
   };
-  const QDate creationDate() const {
+  const MyMoneyDate creationDate() const {
     return m_creationDate;
   };
-  const QDate lastModificationDate() const {
+  const MyMoneyDate lastModificationDate() const {
     return m_lastModificationDate;
   };
   unsigned int currentFixVersion() const {
@@ -84,10 +84,10 @@ public:
     m_user = user;
     touch();
   };
-  void setCreationDate(const QDate& val) {
+  void setCreationDate(const MyMoneyDate& val) {
     m_creationDate = val; touch();
   };
-  void setLastModificationDate(const QDate& val) {
+  void setLastModificationDate(const MyMoneyDate& val) {
     m_lastModificationDate = val; m_dirty = false;
   };
   void setFileFixVersion(const unsigned int v) {
@@ -432,7 +432,7 @@ public:
     * @param date return balance for specific date
     * @return balance of the account as MyMoneyMoney object
     */
-  const MyMoneyMoney balance(const QString& id, const QDate& date = QDate()) const;
+  const MyMoneyMoney balance(const QString& id, const MyMoneyDate &date = MyMoneyDate()) const;
 
   /**
     * This method is used to return the actual balance of an account
@@ -445,7 +445,7 @@ public:
     * @param date return balance for specific date
     * @return balance of the account as MyMoneyMoney object
     */
-  const MyMoneyMoney totalBalance(const QString& id, const QDate& date = QDate()) const;
+  const MyMoneyMoney totalBalance(const QString& id, const MyMoneyDate& date = MyMoneyDate()) const;
 
   /**
     * Returns the institution of a given ID
@@ -864,9 +864,9 @@ public:
     *                  See MyMoneySchedule::paymentTypeE for details.
     *                  Default is MyMoneySchedule::STYPE_ANY
     * @param startDate only schedules with payment dates after @p startDate
-    *                  are searched for. Default is all dates (QDate()).
+    *                  are searched for. Default is all dates (MyMoneyDate()).
     * @param endDate   only schedules with payment dates ending prior to @p endDate
-    *                  are searched for. Default is all dates (QDate()).
+    *                  are searched for. Default is all dates (MyMoneyDate()).
     * @param overdue   if true, only those schedules that are overdue are
     *                  searched for. Default is false (all schedules will be returned).
     *
@@ -876,14 +876,14 @@ public:
       const MyMoneySchedule::typeE type = MyMoneySchedule::TYPE_ANY,
       const MyMoneySchedule::occurrenceE occurrence = MyMoneySchedule::OCCUR_ANY,
       const MyMoneySchedule::paymentTypeE paymentType = MyMoneySchedule::STYPE_ANY,
-      const QDate& startDate = QDate(),
-      const QDate& endDate = QDate(),
+      const MyMoneyDate &startDate = MyMoneyDate(),
+      const MyMoneyDate &endDate = MyMoneyDate(),
       const bool overdue = false) const;
 
   const QList<MyMoneySchedule> scheduleListEx(int scheduleTypes,
       int scheduleOcurrences,
       int schedulePaymentTypes,
-      QDate startDate,
+      MyMoneyDate startDate,
       const QStringList& accounts = QStringList()) const;
 
   /**
@@ -1052,9 +1052,9 @@ public:
 
   /**
     * This method retrieves a price from the price list.
-    * If @p date is inValid, QDate::currentDate() is assumed.
+    * If @p date is inValid, MyMoneyDate::currentDate() is assumed.
     */
-  MyMoneyPrice price(const QString& fromId, const QString& toId, const QDate& _date, const bool exactDate) const;
+  MyMoneyPrice price(const QString& fromId, const QString& toId, const MyMoneyDate& _date, const bool exactDate) const;
 
   /**
     * This method returns a list of all price entries.
@@ -1098,7 +1098,7 @@ protected:
     * @param date return balance for specific date
     * @return balance of the account as MyMoneyMoney object
     */
-  MyMoneyMoney calculateBalance(const QString& id, const QDate& date = QDate()) const;
+  MyMoneyMoney calculateBalance(const QString& id, const MyMoneyDate &date = MyMoneyDate()) const;
 
 private:
 
@@ -1274,13 +1274,13 @@ private:
     * object. It is set during the constructor and can only be modified using
     * the stream read operator.
     */
-  QDate m_creationDate;
+  MyMoneyDate m_creationDate;
 
   /**
     * This member variable keeps the date of the last modification of
     * the MyMoneySeqAccessMgr object.
     */
-  QDate m_lastModificationDate;
+  MyMoneyDate m_lastModificationDate;
 
   /**
     * This member variable contains the current fix level of application

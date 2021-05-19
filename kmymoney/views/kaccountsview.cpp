@@ -279,7 +279,7 @@ void KAccountsView::loadListView()
 }
 
 //FIXME: This will be deprecated once the lists use the accounts model
-void KAccountsView::slotReconcileAccount(const MyMoneyAccount& acc, const QDate& /*reconciliationDate*/, const MyMoneyMoney& /*endingBalance*/)
+void KAccountsView::slotReconcileAccount(const MyMoneyAccount& acc, const MyMoneyDate& /*reconciliationDate*/, const MyMoneyMoney& /*endingBalance*/)
 {
   //call all lists
   slotReconcileAccount(m_assetsList, acc);

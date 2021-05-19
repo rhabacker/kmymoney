@@ -74,7 +74,7 @@ public:
   void write(const QString &filename, const QString &profile,
              const QString &accountId, const bool accountData,
              const bool categoryData,
-             const QDate &startDate, const QDate &endDate);
+             const MyMoneyDate &startDate, const MyMoneyDate &endDate);
 
 private:
 
@@ -89,7 +89,7 @@ private:
     * @param startDate date from which entries are written
     * @param endDate date until which entries are written
     */
-  void writeAccountEntry(QTextStream &s, const QString &accountId, const QDate &startDate, const QDate &endDate);
+  void writeAccountEntry(QTextStream &s, const QString &accountId, const MyMoneyDate &startDate, const MyMoneyDate &endDate);
 
   /**
     * This method writes the category entries to the stream
@@ -113,7 +113,7 @@ private:
 
   void writeTransactionEntry(QTextStream &s, const MyMoneyTransaction &t, const QString &accountId);
   void writeSplitEntry(QTextStream &s, const MyMoneySplit &t);
-  void extractInvestmentEntries(QTextStream &s, const QString &accountId, const QDate &startDate, const QDate &endDate);
+  void extractInvestmentEntries(QTextStream &s, const QString &accountId, const MyMoneyDate &startDate, const MyMoneyDate &endDate);
   void writeInvestmentEntry(QTextStream &stream, const MyMoneyTransaction &t, const int count);
 
 signals:

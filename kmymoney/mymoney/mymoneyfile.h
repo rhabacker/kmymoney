@@ -624,10 +624,10 @@ public:
     * transactions are included in the balance.
     *
     * @param id id of the account in question
-    * @param date return balance for specific date (default = QDate())
+    * @param date return balance for specific date (default = MyMoneyDate())
     * @return balance of the account as MyMoneyMoney object
     */
-  const MyMoneyMoney balance(const QString& id, const QDate& date = QDate()) const;
+  const MyMoneyMoney balance(const QString& id, const MyMoneyDate &date = MyMoneyDate()) const;
 
   /**
     * This method is used to return the cleared balance of an account
@@ -639,7 +639,7 @@ public:
     * @param date return cleared balance for specific date
     * @return balance of the account as MyMoneyMoney object
     */
-  const MyMoneyMoney clearedBalance(const QString& id, const QDate& date) const;
+  const MyMoneyMoney clearedBalance(const QString& id, const MyMoneyDate& date) const;
 
 
   /**
@@ -650,10 +650,10 @@ public:
     * transactions are included in the balance.
     *
     * @param id id of the account in question
-    * @param date return balance for specific date (default = QDate())
+    * @param date return balance for specific date (default = MyMoneyDate())
     * @return balance of the account as MyMoneyMoney object
     */
-  const MyMoneyMoney totalBalance(const QString& id, const QDate& date = QDate()) const;
+  const MyMoneyMoney totalBalance(const QString& id, const MyMoneyDate& date = MyMoneyDate()) const;
 
   /**
     * This method returns the number of transactions currently known to file
@@ -1034,9 +1034,9 @@ public:
     *                  See MyMoneySchedule::paymentTypeE for details.
     *                  Default is MyMoneySchedule::STYPE_ANY
     * @param startDate only schedules with payment dates after @p startDate
-    *                  are searched for. Default is all dates (QDate()).
+    *                  are searched for. Default is all dates (MyMoneyDate()).
     * @param endDate   only schedules with payment dates ending prior to @p endDate
-    *                  are searched for. Default is all dates (QDate()).
+    *                  are searched for. Default is all dates (MyMoneyDate()).
     * @param overdue   if true, only those schedules that are overdue are
     *                  searched for. Default is false (all schedules will be returned).
     *
@@ -1046,8 +1046,8 @@ public:
       const MyMoneySchedule::typeE type = MyMoneySchedule::TYPE_ANY,
       const MyMoneySchedule::occurrenceE occurrence = MyMoneySchedule::OCCUR_ANY,
       const MyMoneySchedule::paymentTypeE paymentType = MyMoneySchedule::STYPE_ANY,
-      const QDate& startDate = QDate(),
-      const QDate& endDate = QDate(),
+      const MyMoneyDate& startDate = MyMoneyDate(),
+      const MyMoneyDate& endDate = MyMoneyDate(),
       const bool overdue = false) const;
 
   const QStringList consistencyCheck();
@@ -1088,7 +1088,7 @@ public:
   const QList<MyMoneySchedule> scheduleListEx(int scheduleTypes,
       int scheduleOcurrences,
       int schedulePaymentTypes,
-      QDate startDate,
+      MyMoneyDate startDate,
       const QStringList& accounts = QStringList()) const;
 
   /**
@@ -1250,7 +1250,7 @@ public:
     * @return price found as MyMoneyPrice object
     * @note This throws an exception when the base currency is not set and toId is empty
     */
-  MyMoneyPrice price(const QString& fromId, const QString& toId = QString(), const QDate& date = QDate::currentDate(), const bool exactDate = false) const;
+  MyMoneyPrice price(const QString& fromId, const QString& toId = QString(), const MyMoneyDate &date = MyMoneyDate::currentDate(), const bool exactDate = false) const;
 
   /**
     * This method returns a list of all prices.
@@ -1472,7 +1472,7 @@ public:
     * @retval false if there is no transaction after @p date
     * @retval true if there is a transaction after @p date
     */
-  bool hasNewerTransaction(const QString& accId, const QDate& date) const;
+  bool hasNewerTransaction(const QString& accId, const MyMoneyDate& date) const;
 
 
   /**

@@ -68,7 +68,7 @@ public:
 
   const MyMoneyMoney endingBalance() const;
   const MyMoneyMoney previousBalance() const;
-  const QDate statementDate() const {
+  const MyMoneyDate statementDate() const {
     return field("statementDate").toDate();
   };
 
@@ -84,7 +84,7 @@ public:
   int nextId() const;
 
 protected:
-  bool createTransaction(MyMoneyTransaction& t, const int sign, const MyMoneyMoney& amount, const QString& category, const QDate& date);
+  bool createTransaction(MyMoneyTransaction& t, const int sign, const MyMoneyMoney& amount, const QString& category, const MyMoneyDate& date);
   const MyMoneyMoney adjustedReturnValue(const MyMoneyMoney& v) const;
   void createCategory(const QString& txt, QString& id, const MyMoneyAccount& parent);
 

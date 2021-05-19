@@ -70,7 +70,7 @@ int beforeAfterToInt(int optionValue)
   }
 }
 
-struct icaltimetype qdateToIcalTimeType(const QDate& date) {
+struct icaltimetype qdateToIcalTimeType(const MyMoneyDate& date) {
   struct icaltimetype icalDate = icaltime_null_date();
   icalDate.year = date.year();
   icalDate.month = date.month();

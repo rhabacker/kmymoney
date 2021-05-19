@@ -81,12 +81,12 @@ void MatchFinderTest::setupAccounts()
 
   account->setName("Expenses account");
   account->setAccountType(MyMoneyAccount::Expense);
-  account->setOpeningDate(QDate(2012, 12, 01));
+  account->setOpeningDate(MyMoneyDate(2012, 12, 01));
   account->setCurrencyId(MyMoneyFile::instance()->baseCurrency().id());
 
   otherAccount->setName("Some other account");
   otherAccount->setAccountType(MyMoneyAccount::Expense);
-  otherAccount->setOpeningDate(QDate(2012, 12, 01));
+  otherAccount->setOpeningDate(MyMoneyDate(2012, 12, 01));
   otherAccount->setCurrencyId(MyMoneyFile::instance()->baseCurrency().id());
 
   MyMoneyFileTransaction ft;
@@ -107,7 +107,7 @@ MyMoneyTransaction MatchFinderTest::buildDefaultTransaction() const
   split.setShares(MyMoneyMoney(123.00));
 
   MyMoneyTransaction transaction;
-  transaction.setPostDate(QDate(2012, 12, 5));
+  transaction.setPostDate(MyMoneyDate(2012, 12, 5));
   transaction.setImported(true);
   transaction.addSplit(split);
 
@@ -136,7 +136,7 @@ QString MatchFinderTest::addTransactionToLedger(MyMoneyTransaction transaction) 
 
 MyMoneySchedule MatchFinderTest::buildNonOverdueSchedule() const
 {
-  QDate tomorrow = QDate::currentDate().addDays(1);
+  MyMoneyDate tomorrow = MyMoneyDate::currentDate().addDays(1);
 
   MyMoneyTransaction transaction = buildDefaultTransaction();
   transaction.setPostDate(tomorrow);
@@ -434,7 +434,7 @@ void MatchFinderTest::testScheduleMatch_allMatch()
 
 void MatchFinderTest::testScheduleMatch_dueDateWithinMatchWindow()
 {
-  QDate dateWithinMatchWindow = schedule.adjustedNextDueDate().addDays(MATCH_WINDOW);
+  MyMoneyDate dateWithinMatchWindow = schedule.adjustedNextDueDate().addDays(MATCH_WINDOW);
   importTransaction.setPostDate(dateWithinMatchWindow);
   addSchedule(schedule);
 
@@ -455,8 +455,8 @@ void MatchFinderTest::testScheduleMatch_amountWithinAllowedVariation()
 
 void MatchFinderTest::testScheduleMatch_overdue()
 {
-  schedule.setNextDueDate(QDate::currentDate().addDays(-MATCH_WINDOW - 1));
-  importTransaction.setPostDate(QDate::currentDate());
+  schedule.setNextDueDate(MyMoneyDate::currentDate().addDays(-MATCH_WINDOW - 1));
+  importTransaction.setPostDate(MyMoneyDate::currentDate());
   addSchedule(schedule);
 
   expectMatchWithScheduledTransaction(TransactionMatchFinder::MatchImprecise);

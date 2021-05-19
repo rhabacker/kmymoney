@@ -405,7 +405,7 @@ public:
     * @param _de The inclusive end date of the date range
     */
 
-  void setDateFilter(const QDate& _db, const QDate& _de) {
+  void setDateFilter(const MyMoneyDate& _db, const MyMoneyDate& _de) {
     MyMoneyTransactionFilter::setDateFilter(_db, _de);
   }
 
@@ -427,19 +427,19 @@ public:
   /**
     * Retrieves a VALID beginning & ending date for this report.
     *
-    * The underlying date filter can return en empty QDate() for either the
+    * The underlying date filter can return en empty MyMoneyDate() for either the
     * begin or end date or both.  This is typically unacceptable for reports,
     * which need the REAL begin and end date.
     *
     * This function gets the underlying date filter range, and if either is
-    * an empty QDate(), it determines the missing date from looking at all
+    * an empty MyMoneyDate(), it determines the missing date from looking at all
     * the transactions which match the underlying filter, and returning the
     * date of the first or last transaction (as appropriate).
     *
     * @param _db The inclusive begin date of the date range
     * @param _de The inclusive end date of the date range
     */
-  void validDateRange(QDate& _db, QDate& _de);
+  void validDateRange(MyMoneyDate &_db, MyMoneyDate &_de);
 
   /**
     * This method turns on the account group filter and adds the

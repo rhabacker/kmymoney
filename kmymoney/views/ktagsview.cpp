@@ -395,7 +395,7 @@ void KTagsView::showTransactions()
   MyMoneyTransactionFilter filter;
   filter.setConsiderCategorySplits();
   filter.addTag(m_tag.id());
-  filter.setDateFilter(KMyMoneyGlobalSettings::startDate().date(), QDate());
+  filter.setDateFilter(KMyMoneyGlobalSettings::startDate().date(), MyMoneyDate());
 
   // retrieve the list from the engine
   file->transactionList(m_transactionList, filter);

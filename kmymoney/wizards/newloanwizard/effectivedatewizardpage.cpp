@@ -35,8 +35,8 @@ EffectiveDateWizardPage::EffectiveDateWizardPage(QWidget *parent)
 {
   // Register the fields with the QWizard and connect the
   // appropriate signals to update the "Next" button correctly
-  registerField("effectiveChangeDateEdit", m_effectiveChangeDateEdit, "date", SIGNAL(dateChanged(QDate)));
-  connect(m_effectiveChangeDateEdit, SIGNAL(dateChanged(QDate)), this, SIGNAL(completeChanged()));
+  registerField("effectiveChangeDateEdit", m_effectiveChangeDateEdit, "date", SIGNAL(dateChanged(MyMoneyDate)));
+  connect(m_effectiveChangeDateEdit, SIGNAL(dateChanged(MyMoneyDate)), this, SIGNAL(completeChanged()));
 }
 
 void EffectiveDateWizardPage::initializePage()
@@ -44,7 +44,7 @@ void EffectiveDateWizardPage::initializePage()
   m_effectiveDateLabel->setText(QString("\n") + i18n(
                                   "Please enter the date from which on the following changes will be effective. "
                                   "The date entered must be later than the opening date of this account (%1), but must "
-                                  "not be in the future. The default will be today.", KGlobal::locale()->formatDate(qobject_cast<KNewLoanWizard*>(wizard())->account().openingDate())));
+                                  "not be in the future. The default will be today.", MyMoneyLocale::formatDate(qobject_cast<KNewLoanWizard*>(wizard())->account().openingDate())));
 }
 
 /**
@@ -53,6 +53,6 @@ void EffectiveDateWizardPage::initializePage()
 bool EffectiveDateWizardPage::isComplete() const
 {
   return !(m_effectiveChangeDateEdit->date() < qobject_cast<KNewLoanWizard*>(wizard())->account().openingDate()
-           || m_effectiveChangeDateEdit->date() > QDate::currentDate());
+           || m_effectiveChangeDateEdit->date() > MyMoneyDate::currentDate());
   return true;
 }

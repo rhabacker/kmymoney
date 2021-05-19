@@ -1153,8 +1153,8 @@ int CSVDialog::processQifLine(QString& iBuff)
       ++neededFieldsCount;
       txt = m_columnList[i];
       txt = txt.remove(m_textDelimiterCharacter);       //   "16/09/2009
-      QDate dat = m_convertDate->convertDate(txt);      //  Date column
-      if (dat == QDate()) {
+      MyMoneyDate dat = m_convertDate->convertDate(txt);      //  Date column
+      if (dat == MyMoneyDate()) {
         KMessageBox::sorry(this, i18n("<center>An invalid date has been detected during import.</center>"
                                       "<center><b>'%1'</b></center>"
                                       "Please check that you have set the correct date format,\n"
@@ -1431,7 +1431,7 @@ void CSVDialog::csvImportTransaction(MyMoneyStatement& st)
              "date format.", m_trData.date.toString(m_date), m_dateFormats[m_dateFormatIndex]), i18n("Invalid date format"));
     switch (rc) {
       case KMessageBox::Continue:
-        tr.m_datePosted = (QDate::currentDate());
+        tr.m_datePosted = (MyMoneyDate::currentDate());
         break;
 
       case KMessageBox::Cancel:

@@ -49,7 +49,7 @@ KBudgetValues::KBudgetValues(QWidget* parent) :
     KBudgetValuesDecl(parent),
     m_currentTab(m_monthlyButton)
 {
-  m_budgetDate = QDate(2007, 1, 1);
+  m_budgetDate = MyMoneyDate(2007, 1, 1);
 
   m_field[0] = m_amount1;
   m_field[1] = m_amount2;
@@ -257,7 +257,7 @@ void KBudgetValues::enableMonths(bool enabled)
 
 void KBudgetValues::fillMonthLabels()
 {
-  QDate date(m_budgetDate);
+  MyMoneyDate date(m_budgetDate);
   for (int i = 0; i < 12; ++i) {
     m_label[i]->setText(KGlobal::locale()->calendar()->monthName(date, KCalendarSystem::ShortName));
     date = date.addMonths(1);
@@ -268,7 +268,7 @@ void KBudgetValues::setBudgetValues(const MyMoneyBudget& budget, const MyMoneyBu
 {
   MyMoneyBudget::PeriodGroup period;
   m_budgetDate = budget.budgetStart();
-  QDate date;
+  MyMoneyDate date;
 
   // make sure all values are zero so that slotChangePeriod()
   // doesn't check for anything.
@@ -306,7 +306,7 @@ void KBudgetValues::budgetValues(const MyMoneyBudget& budget, MyMoneyBudget::Acc
   MyMoneyBudget::PeriodGroup period;
   m_budgetDate = budget.budgetStart();
   period.setStartDate(m_budgetDate);
-  QDate date;
+  MyMoneyDate date;
 
   budgetAccount.clearPeriods();
   int tab = m_periodGroup->checkedId();

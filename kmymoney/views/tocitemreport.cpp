@@ -31,10 +31,10 @@
 TocItemReport::TocItemReport(QTreeWidgetItem* parent, MyMoneyReport& report):
     TocItem(parent, QStringList() << report.name() << report.comment())
 {
-  QDate startDate,endDate;
+  MyMoneyDate startDate,endDate;
   if (report.dateFilter(startDate, endDate)) {
-    setText(2, KGlobal::locale()->formatDate(startDate, KLocale::ShortDate));
-    setText(3, KGlobal::locale()->formatDate(endDate, KLocale::ShortDate));
+    setText(2, MyMoneyLocale::formatDate(startDate, KLocale::ShortDate));
+    setText(3, MyMoneyLocale::formatDate(endDate, KLocale::ShortDate));
   }
   m_report = report;
 

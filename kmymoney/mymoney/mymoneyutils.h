@@ -73,6 +73,54 @@ public:
 
 };
 
+#define ENABLE_DATETIME_SUPPORT
+#ifdef ENABLE_DATETIME_SUPPORT
+#if 0
+class MyMoneyDate : public QDateTime
+{
+public:
+    MyMoneyDate(const QDateTime &date) : QDateTime(date) {}
+    MyMoneyDate() : QDateTime() {}
+    MyMoneyDate(int year, int month, int day) : QDateTime(MyMoneyDate(year, month, day)) {}
+    int year() const { return date().year(); }
+    int month() const { return date().month(); }
+    int day() const { return date().day(); }
+    int daysInMonth() const { return date().daysInMonth(); }
+    int dayofYear() const { return date().dayOfYear(); }
+    int weekNumber(int *year = 0) const { return date().weekNumber(year); }
+    int dayOfWeek() const { return date().dayOfWeek(); }
+    bool isValid() const { return date().isValid(); }
+    static bool isValid(int year, int month, int day) { return QDate::isValid(year, month, day); }
+    void setYMD(int year, int month, int day) { setDate(QDate(year, month, day)); }
+    static QString shortDayName(int weekDay)  { return QDate::shortDayName(weekDay); }
+    static MyMoneyDate currentDate() { return MyMoneyDate(currentDateTime()); }
+};
+#endif
+
+class MyMoneyDate : public QDate
+{
+public:
+    MyMoneyDate() {}
+    MyMoneyDate(const QDate &date) : QDate(date) {}
+    MyMoneyDate(const QDateTime &date) : QDate(date.date()), _dateTime(date) {}
+    MyMoneyDate(int year, int month, int day) : QDate(year, month, day) {}
+    static MyMoneyDate currentDate() { return MyMoneyDate(QDate::currentDate()); }
+protected:
+    QDateTime _dateTime;
+};
+
+#include <KLocale>
+
+#else
+typedef QDate MyMoneyDate;
+#endif
+
+class MyMoneyLocale : public KLocale
+{
+public:
+    static QString formatDate(const MyMoneyDate &date, KLocale::DateFormat format = KLocale::LongDate);
+};
+
 class KMM_MYMONEY_EXPORT MyMoneyTracer
 {
 public:
@@ -108,18 +156,18 @@ private:
  * @param date const reference to date to be converted
  * @return QString containing the converted date
  */
-KMM_MYMONEY_EXPORT QString dateToString(const QDate& date);
+KMM_MYMONEY_EXPORT QString dateToString(const MyMoneyDate& date);
 
 /**
- * This function returns a date as QDate object as specified by
+ * This function returns a date as MyMoneyDate object as specified by
  * the parameter @p str. @p str must be in Qt::ISODate format.
- * If @p str is empty or contains an invalid date, QDate() is
+ * If @p str is empty or contains an invalid date, MyMoneyDate() is
  * returned.
  *
  * @param str date in Qt::ISODate format
- * @return QDate object
+ * @return MyMoneyDate object
  */
-KMM_MYMONEY_EXPORT QDate stringToDate(const QString& str);
+KMM_MYMONEY_EXPORT MyMoneyDate stringToDate(const QString& str);
 
 KMM_MYMONEY_EXPORT QString QStringEmpty(const QString&);
 

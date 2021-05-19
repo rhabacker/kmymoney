@@ -74,7 +74,7 @@ protected:
     * This method adjusts @a _date according to the rules specified by
     * the schedule's weekend option.
     */
-  QDate adjustDate(const QDate& _date) const;
+  MyMoneyDate adjustDate(const MyMoneyDate& _date) const;
 
   /// Overridden for internal reasons. No API changes.
   bool focusNextPrevChild(bool next);
@@ -85,8 +85,8 @@ protected:
 private slots:
   void slotSetupSize();
   void slotRemainingChanged(int);
-  void slotEndDateChanged(const QDate& date);
-  void slotPostDateChanged(const QDate& date);
+  void slotEndDateChanged(const MyMoneyDate& date);
+  void slotPostDateChanged(const MyMoneyDate& date);
   void slotSetPaymentMethod(int);
   void slotFrequencyChanged(int item);
   void slotShowHelp();

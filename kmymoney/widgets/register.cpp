@@ -314,7 +314,7 @@ void GroupMarker::paintRegisterCell(QPainter *painter, QStyleOptionViewItemV4 &o
     cellRect.setX(m_parent->horizontalHeader()->sectionPosition(DateColumn));
     cellRect.setWidth(m_parent->horizontalHeader()->sectionSize(DateColumn));
     painter->setFont(font);
-    painter->drawText(cellRect, Qt::AlignVCenter | Qt::AlignCenter, KGlobal::locale()->formatDate(sortPostDate(), KLocale::ShortDate));
+    painter->drawText(cellRect, Qt::AlignVCenter | Qt::AlignCenter, MyMoneyLocale::formatDate(sortPostDate(), KLocale::ShortDate));
   }
 
   painter->restore();
@@ -335,14 +335,14 @@ int GroupMarker::rowHeightHint() const
   return m_bg->height();
 }
 
-StatementGroupMarker::StatementGroupMarker(Register* parent, CashFlowDirection dir, const QDate& date, const QString& txt) :
+StatementGroupMarker::StatementGroupMarker(Register* parent, CashFlowDirection dir, const MyMoneyDate& date, const QString& txt) :
     FancyDateGroupMarker(parent, date, txt),
     m_dir(dir)
 {
   m_showDate = true;
 }
 
-FancyDateGroupMarker::FancyDateGroupMarker(Register* parent, const QDate& date, const QString& txt) :
+FancyDateGroupMarker::FancyDateGroupMarker(Register* parent, const MyMoneyDate& date, const QString& txt) :
     GroupMarker(parent, txt),
     m_date(date)
 {
@@ -355,12 +355,12 @@ FancyTransactionGroupMarker::FancyTransactionGroupMarker(Register* parent, const
 {
 }
 
-FiscalYearGroupMarker::FiscalYearGroupMarker(Register* parent, const QDate& date, const QString& txt) :
+FiscalYearGroupMarker::FiscalYearGroupMarker(Register* parent, const MyMoneyDate& date, const QString& txt) :
     FancyDateGroupMarker(parent, date, txt)
 {
 }
 
-SimpleDateGroupMarker::SimpleDateGroupMarker(Register* parent, const QDate& date, const QString& txt) :
+SimpleDateGroupMarker::SimpleDateGroupMarker(Register* parent, const MyMoneyDate& date, const QString& txt) :
     FancyDateGroupMarker(parent, date, txt)
 {
 }
@@ -605,10 +605,10 @@ void Register::setupRegister(const MyMoneyAccount& account, bool showAccountColu
     case MyMoneyAccount::Stock:
       break;
     default:
-      if (primarySortKey() == PostDateSort && primarySortKeyDirection() == AscendingOrder)
+      //if (primarySortKey() == PostDateSort && primarySortKeyDirection() == AscendingOrder)
           showColumn(BalanceColumn);
-      else
-          hideColumn(BalanceColumn);
+      //else
+      //    hideColumn(BalanceColumn);
       break;
   }
 
@@ -1228,7 +1228,7 @@ int Register::minimumColumnWidth(int col)
   QFontMetrics cellFontMetrics(KMyMoneyGlobalSettings::listCellFont());
   switch (col) {
     case DateColumn:
-      minWidth = cellFontMetrics.width(KGlobal::locale()->formatDate(QDate(6999, 12, 29), KLocale::ShortDate) + "  ");
+      minWidth = cellFontMetrics.width(MyMoneyLocale::formatDate(MyMoneyDate(6999, 12, 29), KLocale::ShortDate) + "  ");
       break;
     default:
       break;
@@ -1978,20 +1978,20 @@ void Register::addGroupMarkers()
   KMyMoneyRegister::RegisterItem* p = firstItem();
   KMyMoneyRegister::Transaction* t;
   QString name;
-  QDate today;
-  QDate yesterday, thisWeek, lastWeek;
-  QDate thisMonth, lastMonth;
-  QDate thisYear;
+  MyMoneyDate today;
+  MyMoneyDate yesterday, thisWeek, lastWeek;
+  MyMoneyDate thisMonth, lastMonth;
+  MyMoneyDate thisYear;
   int weekStartOfs;
 
   switch (primarySortKey()) {
     case KMyMoneyRegister::PostDateSort:
     case KMyMoneyRegister::EntryDateSort:
-      today = QDate::currentDate();
+      today = MyMoneyDate::currentDate();
       thisMonth.setYMD(today.year(), today.month(), 1);
       lastMonth = thisMonth.addMonths(-1);
       yesterday = today.addDays(-1);
-      // a = QDate::dayOfWeek()      todays weekday (1 = Monday, 7 = Sunday)
+      // a = MyMoneyDate::dayOfWeek()      todays weekday (1 = Monday, 7 = Sunday)
       // b = KLocale::weekStartDay() first day of week (1 = Monday, 7 = Sunday)
       weekStartOfs = today.dayOfWeek() - KGlobal::locale()->weekStartDay();
       if (weekStartOfs < 0) {
@@ -2000,8 +2000,8 @@ void Register::addGroupMarkers()
       thisWeek = today.addDays(-weekStartOfs);
       lastWeek = thisWeek.addDays(-7);
       thisYear.setYMD(today.year(), 1, 1);
-      if (KMyMoneyGlobalSettings::startDate().date() != QDate(1900, 1, 1))
-        new KMyMoneyRegister::FancyDateGroupMarker(this, KMyMoneyGlobalSettings::startDate().date(), i18n("Prior transactions possibly filtered"));
+      if (KMyMoneyGlobalSettings::startDate() != MyMoneyDate(1900, 1, 1))
+        new KMyMoneyRegister::FancyDateGroupMarker(this, KMyMoneyGlobalSettings::startDate(), i18n("Prior transactions possibly filtered"));
 
       if (KMyMoneyGlobalSettings::showReconciledBalances()) {
         foreach(const ReconciliationKey &key, m_account.reconciliationHistory().keys()) {
@@ -2028,7 +2028,7 @@ void Register::addGroupMarkers()
             balance = -balance;
           QString txt = i18n("Online Statement Balance: %1", balance.formatMoney(m_account.fraction()));
 
-          KMyMoneyRegister::StatementGroupMarker *p = new KMyMoneyRegister::StatementGroupMarker(this, KMyMoneyRegister::Deposit, QDate::fromString(m_account.value("lastImportedTransactionDate"), Qt::ISODate), txt);
+          KMyMoneyRegister::StatementGroupMarker *p = new KMyMoneyRegister::StatementGroupMarker(this, KMyMoneyRegister::Deposit, MyMoneyDate::fromString(m_account.value("lastImportedTransactionDate"), Qt::ISODate), txt);
 
           p->setErroneous(!MyMoneyFile::instance()->hasMatchingOnlineBalance(m_account));
         }
@@ -2048,7 +2048,7 @@ void Register::addGroupMarkers()
         new KMyMoneyRegister::SimpleDateGroupMarker(this, today.addDays(1), i18n("Future transactions"));
       }
       if (KMyMoneyGlobalSettings::showFiscalMarker()) {
-        QDate currentFiscalYear = KMyMoneyGlobalSettings::firstFiscalDate();
+        MyMoneyDate currentFiscalYear = KMyMoneyGlobalSettings::firstFiscalDate();
         new KMyMoneyRegister::FiscalYearGroupMarker(this, currentFiscalYear, i18n("Current fiscal year"));
         new KMyMoneyRegister::FiscalYearGroupMarker(this, currentFiscalYear.addYears(-1), i18n("Previous fiscal year"));
         new KMyMoneyRegister::FiscalYearGroupMarker(this, currentFiscalYear.addYears(1), i18n("Next fiscal year"));
@@ -2159,7 +2159,7 @@ void Register::removeUnwantedGroupMarkers()
       m->markVisible(true);
       // make adjacent group marker invisible except those that show statement information
       if (lastWasGroupMarker && (dynamic_cast<KMyMoneyRegister::StatementGroupMarker*>(m) == 0)) {
-        m->markVisible(false);
+        //m->markVisible(false);
       }
       lastWasGroupMarker = true;
     } else if (q->isVisible())

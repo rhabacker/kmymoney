@@ -224,7 +224,7 @@ public slots:
    * @param endingBalance The calculated ending balance for the statement
    *                Default ist 0.
    */
-  void slotSetReconcileAccount(const MyMoneyAccount& account = MyMoneyAccount(), const QDate& reconciliationDate = QDate(), const MyMoneyMoney& endingBalance = MyMoneyMoney());
+  void slotSetReconcileAccount(const MyMoneyAccount& account = MyMoneyAccount(), const MyMoneyDate& reconciliationDate = MyMoneyDate(), const MyMoneyMoney& endingBalance = MyMoneyMoney());
 
   /**
     * Select all transactions in the ledger that are not hidden.
@@ -301,7 +301,7 @@ protected slots:
   void slotSortOptions();
   void slotToggleTransactionMark(KMyMoneyRegister::Transaction* t);
 
-  void slotKeepPostDate(const QDate&);
+  void slotKeepPostDate(const MyMoneyDate&);
   void slotEnterFilter();
   void slotClearFilter();
   void slotAboutToSelectItem(KMyMoneyRegister::RegisterItem*, bool&);
@@ -315,7 +315,7 @@ protected:
     * and is used to preset the posting date when new transactions are created.
     * This member is initialised to the current date when the program is started.
     */
-  static QDate         m_lastPostDate;
+  static MyMoneyDate         m_lastPostDate;
 
 private:
   /// \internal d-pointer class.

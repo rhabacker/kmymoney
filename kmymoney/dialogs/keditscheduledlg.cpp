@@ -150,8 +150,8 @@ KEditScheduleDlg::KEditScheduleDlg(const MyMoneySchedule& schedule, QWidget *par
 
   connect(m_RemainingEdit, SIGNAL(valueChanged(int)),
           this, SLOT(slotRemainingChanged(int)));
-  connect(m_FinalPaymentEdit, SIGNAL(dateChanged(QDate)),
-          this, SLOT(slotEndDateChanged(QDate)));
+  connect(m_FinalPaymentEdit, SIGNAL(dateChanged(MyMoneyDate)),
+          this, SLOT(slotEndDateChanged(MyMoneyDate)));
   connect(m_frequencyEdit, SIGNAL(itemSelected(int)),
           this, SLOT(slotFrequencyChanged(int)));
   connect(m_frequencyNoEdit, SIGNAL(valueChanged(int)),
@@ -179,7 +179,7 @@ void KEditScheduleDlg::slotSetupSize()
 TransactionEditor* KEditScheduleDlg::startEdit()
 {
   KMyMoneyRegister::SelectedTransactions list(m_register);
-  TransactionEditor* editor = d->m_item->createEditor(m_form, list, QDate());
+  TransactionEditor* editor = d->m_item->createEditor(m_form, list, MyMoneyDate());
 
   // check that we use the same transaction commodity in all selected transactions
   // if not, we need to update this in the editor's list. The user can also bail out
@@ -302,7 +302,7 @@ TransactionEditor* KEditScheduleDlg::startEdit()
     // connect the postdate modification signal to our update routine
     kMyMoneyDateInput* dateEdit = dynamic_cast<kMyMoneyDateInput*>(editor->haveWidget("postdate"));
     if (dateEdit)
-      connect(dateEdit, SIGNAL(dateChanged(QDate)), this, SLOT(slotPostDateChanged(QDate)));
+      connect(dateEdit, SIGNAL(dateChanged(MyMoneyDate)), this, SLOT(slotPostDateChanged(MyMoneyDate)));
 
     m_nameEdit->setFocus();
 
@@ -399,7 +399,7 @@ const MyMoneySchedule& KEditScheduleDlg::schedule() const
     if (m_endSeriesEdit->isEnabled() && m_endSeriesEdit->isChecked()) {
       d->m_schedule.setEndDate(m_FinalPaymentEdit->date());
     } else {
-      d->m_schedule.setEndDate(QDate());
+      d->m_schedule.setEndDate(MyMoneyDate());
     }
   }
   return d->m_schedule;
@@ -414,7 +414,7 @@ MyMoneyTransaction KEditScheduleDlg::transaction() const
   }
 
   t.clearId();
-  t.setEntryDate(QDate());
+  t.setEntryDate(MyMoneyDate());
   return t;
 }
 
@@ -476,7 +476,7 @@ void KEditScheduleDlg::slotRemainingChanged(int value)
   }
 }
 
-void KEditScheduleDlg::slotEndDateChanged(const QDate& date)
+void KEditScheduleDlg::slotEndDateChanged(const MyMoneyDate& date)
 {
   // Make sure the required fields are set
   kMyMoneyDateInput* dateEdit = dynamic_cast<kMyMoneyDateInput*>(d->m_editor->haveWidget("postdate"));
@@ -490,7 +490,7 @@ void KEditScheduleDlg::slotEndDateChanged(const QDate& date)
   }
 }
 
-void KEditScheduleDlg::slotPostDateChanged(const QDate& date)
+void KEditScheduleDlg::slotPostDateChanged(const MyMoneyDate& date)
 {
   if (d->m_schedule.nextDueDate() != date) {
     if (m_endOptionsFrame->isEnabled()) {

@@ -35,6 +35,7 @@
 #include "kmm_mymoney_export.h"
 #include "mymoneyunittestable.h"
 #include "mymoneyexception.h"
+#include "mymoneyutils.h"
 
 // Check for standard definitions
 #ifdef HAVE_STDINT_H
@@ -486,7 +487,7 @@ Q_DECLARE_METATYPE(MyMoneyMoney)
 QDebug operator<<(QDebug dbg, const MyMoneyMoney &a);
 QDebug operator<<(QDebug dbg, QList<MyMoneyMoney> &a);
 QDebug operator<<(QDebug dbg, QMap<QString, MyMoneyMoney> &a);
-QDebug operator<<(QDebug dbg, QMap<QDate, MyMoneyMoney> &a);
+QDebug operator<<(QDebug dbg, QMap<MyMoneyDate, MyMoneyMoney> &a);
 QDebug operator<<(QDebug dbg, QMap<int, MyMoneyMoney> &a);
 #endif
 

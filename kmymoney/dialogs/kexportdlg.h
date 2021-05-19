@@ -98,14 +98,14 @@ public:
   /**
     * This method returns the start date of the export dialog
     */
-  const QDate startDate() const {
+  const MyMoneyDate startDate() const {
     return m_kmymoneydateStart->date();
   };
 
   /**
     * This method returns the end date of the export dialog
     */
-  const QDate endDate() const {
+  const MyMoneyDate endDate() const {
     return m_kmymoneydateEnd->date();
   };
 

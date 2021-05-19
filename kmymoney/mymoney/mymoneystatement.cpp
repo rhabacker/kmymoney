@@ -130,8 +130,8 @@ bool MyMoneyStatement::read(const QDomElement& _e)
     m_strAccountNumber = _e.attribute("accountnumber");
     m_strRoutingNumber = _e.attribute("routingnumber");
     m_strCurrency = _e.attribute("currency");
-    m_dateBegin = QDate::fromString(_e.attribute("begindate"), Qt::ISODate);
-    m_dateEnd = QDate::fromString(_e.attribute("enddate"), Qt::ISODate);
+    m_dateBegin = MyMoneyDate::fromString(_e.attribute("begindate"), Qt::ISODate);
+    m_dateEnd = MyMoneyDate::fromString(_e.attribute("enddate"), Qt::ISODate);
     m_closingBalance = MyMoneyMoney(_e.attribute("closingbalance"));
     m_accountId = _e.attribute("accountid");
     m_skipCategoryMatching = _e.attribute("skipCategoryMatching").isEmpty();
@@ -147,7 +147,7 @@ bool MyMoneyStatement::read(const QDomElement& _e)
       if (c.tagName() == "TRANSACTION") {
         MyMoneyStatement::Transaction t;
 
-        t.m_datePosted = QDate::fromString(c.attribute("dateposted"), Qt::ISODate);
+        t.m_datePosted = MyMoneyDate::fromString(c.attribute("dateposted"), Qt::ISODate);
         t.m_amount = MyMoneyMoney(c.attribute("amount"));
         t.m_strMemo = c.attribute("memo");
         t.m_strNumber = c.attribute("number");
@@ -183,7 +183,7 @@ bool MyMoneyStatement::read(const QDomElement& _e)
       } else if (c.tagName() == "PRICE") {
         MyMoneyStatement::Price p;
 
-        p.m_date = QDate::fromString(c.attribute("dateposted"), Qt::ISODate);
+        p.m_date = MyMoneyDate::fromString(c.attribute("dateposted"), Qt::ISODate);
         p.m_strSecurity = c.attribute("security");
         p.m_amount = MyMoneyMoney(c.attribute("amount"));
 

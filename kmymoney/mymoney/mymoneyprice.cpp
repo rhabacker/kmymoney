@@ -49,7 +49,7 @@ MyMoneyPrice::MyMoneyPrice(const QString& from, const QString& to, const QDomEle
   m_fromSecurity = from;
   m_toSecurity = to;
 
-  m_date = QDate::fromString(node.attribute("date"), Qt::ISODate);
+  m_date = MyMoneyDate::fromString(node.attribute("date"), Qt::ISODate);
   m_rate = MyMoneyMoney(node.attribute("price"));
   m_source = node.attribute("source");
 
@@ -59,7 +59,7 @@ MyMoneyPrice::MyMoneyPrice(const QString& from, const QString& to, const QDomEle
     qDebug("Price with zero value loaded");
 }
 
-MyMoneyPrice::MyMoneyPrice(const QString& from, const QString& to, const QDate& date, const MyMoneyMoney& rate, const QString& source) :
+MyMoneyPrice::MyMoneyPrice(const QString& from, const QString& to, const MyMoneyDate &date, const MyMoneyMoney& rate, const QString& source) :
     m_fromSecurity(from),
     m_toSecurity(to),
     m_date(date),

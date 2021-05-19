@@ -78,8 +78,8 @@ public:
   }
 
 signals:
-  void enterClicked(const MyMoneySchedule&, const QDate&);
-  void skipClicked(const MyMoneySchedule&, const QDate&);
+  void enterClicked(const MyMoneySchedule&, const MyMoneyDate&);
+  void skipClicked(const MyMoneySchedule&, const MyMoneyDate&);
 
 protected slots:
   void slotSetViewBills();

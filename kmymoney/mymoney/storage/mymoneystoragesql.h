@@ -256,7 +256,7 @@ public:
     * the storage manager also needs the following read entry points
     */
   const QMap<QString, MyMoneyAccount> fetchAccounts(const QStringList& idList = QStringList(), bool forUpdate = false) const;
-  const QMap<QString, MyMoneyMoney> fetchBalance(const QStringList& id, const QDate& date) const;
+  const QMap<QString, MyMoneyMoney> fetchBalance(const QStringList& id, const MyMoneyDate &date) const;
   const QMap<QString, MyMoneyBudget> fetchBudgets(const QStringList& idList = QStringList(), bool forUpdate = false) const;
   const QMap<QString, MyMoneySecurity> fetchCurrencies(const QStringList& idList = QStringList(), bool forUpdate = false) const;
   const QMap<QString, MyMoneyInstitution> fetchInstitutions(const QStringList& idList = QStringList(), bool forUpdate = false) const;
@@ -264,7 +264,7 @@ public:
   const QMap<QString, MyMoneyTag> fetchTags(const QStringList& idList = QStringList(), bool forUpdate = false) const;
   const QMap<QString, onlineJob> fetchOnlineJobs(const QStringList& idList = QStringList(), bool forUpdate = false) const;
   const MyMoneyPriceList fetchPrices(const QStringList& fromIdList = QStringList(), const QStringList& toIdList = QStringList(), bool forUpdate = false) const;
-  MyMoneyPrice fetchSinglePrice(const QString& fromId, const QString& toId, const QDate& date_, bool exactDate, bool = false) const;
+  MyMoneyPrice fetchSinglePrice(const QString& fromId, const QString& toId, const MyMoneyDate& date_, bool exactDate, bool = false) const;
   const QMap<QString, MyMoneyReport> fetchReports(const QStringList& idList = QStringList(), bool forUpdate = false) const;
   const QMap<QString, MyMoneySchedule> fetchSchedules(const QStringList& idList = QStringList(), bool forUpdate = false) const;
   const QMap<QString, MyMoneySecurity> fetchSecurities(const QStringList& idList = QStringList(), bool forUpdate = false) const;
@@ -340,7 +340,7 @@ public:
     * This method allows to modify the start date for transaction retrieval
     * The default of the precision is Jan 1st, 1900.
     */
-  static void setStartDate(const QDate &startDate);
+  static void setStartDate(const MyMoneyDate &startDate);
 
 private:
   bool fileExists(const QString& dbName);
@@ -439,12 +439,12 @@ private:
   //void cancelCommitUnit (const QString& callingFunction);
   int splitState(const MyMoneyTransactionFilter::stateOptionE& state) const;
 
-  inline const QDate getDate(const QString& date) const {
-    return (date.isNull() ? QDate() : QDate::fromString(date, Qt::ISODate));
+  inline const MyMoneyDate getDate(const QString& date) const {
+    return (date.isNull() ? MyMoneyDate() : MyMoneyDate::fromString(date, Qt::ISODate));
   }
 
-  inline const QDateTime getDateTime(const QString& date) const {
-    return (date.isNull() ? QDateTime() : QDateTime::fromString(date, Qt::ISODate));
+  inline const MyMoneyDate getDateTime(const QString& date) const {
+    return (date.isNull() ? MyMoneyDate() : MyMoneyDate::fromString(date, Qt::ISODate));
   }
 
   // open routines
@@ -577,7 +577,7 @@ private:
     */
   QString m_logonUser;
   QDateTime m_logonAt;
-  QDate m_txPostDate; // FIXME: remove when Tom puts date into split object
+  MyMoneyDate m_txPostDate; // FIXME: remove when Tom puts date into split object
 
   //Disable copying
   MyMoneyStorageSql(const MyMoneyStorageSql& rhs);
@@ -594,7 +594,7 @@ private:
     * This member keeps the current start date used for transaction retrieval.
     * @sa setStartDate()
     */
-  static QDate m_startDate;
+  static MyMoneyDate m_startDate;
 
   /**
     *

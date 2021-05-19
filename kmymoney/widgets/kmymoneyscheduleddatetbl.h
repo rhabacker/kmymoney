@@ -47,7 +47,7 @@ class kMyMoneyScheduledDateTbl : public kMyMoneyDateTbl
   Q_OBJECT
 public:
   explicit kMyMoneyScheduledDateTbl(QWidget *parent = 0,
-                                    QDate date = QDate::currentDate());
+                                    MyMoneyDate date = MyMoneyDate::currentDate());
 
   ~kMyMoneyScheduledDateTbl();
   void refresh();
@@ -59,11 +59,11 @@ public:
   }
 
 signals:
-  void enterClicked(const MyMoneySchedule&, const QDate&);
-  void skipClicked(const MyMoneySchedule&, const QDate&);
+  void enterClicked(const MyMoneySchedule&, const MyMoneyDate&);
+  void skipClicked(const MyMoneySchedule&, const MyMoneyDate&);
 
 protected:
-  void drawCellContents(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index, const QDate& theDate);
+  void drawCellContents(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index, const MyMoneyDate& theDate);
   void addDayPostfix(QString& text);
   void mouseMoveEvent(QMouseEvent* e);
 

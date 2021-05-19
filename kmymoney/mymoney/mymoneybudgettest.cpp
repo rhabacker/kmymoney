@@ -38,10 +38,10 @@ void MyMoneyBudgetTest::addMonthlyToMonthly()
   a0.setBudgetLevel(MyMoneyBudget::AccountGroup::eMonthly);
   a1.setBudgetLevel(MyMoneyBudget::AccountGroup::eMonthly);
   MyMoneyBudget::PeriodGroup period;
-  period.setStartDate(QDate(2010, 1, 1));
+  period.setStartDate(MyMoneyDate(2010, 1, 1));
   period.setAmount(MyMoneyMoney(100, 1));
-  a0.addPeriod(QDate(2010, 1, 1), period);
-  a1.addPeriod(QDate(2010, 1, 1), period);
+  a0.addPeriod(MyMoneyDate(2010, 1, 1), period);
+  a1.addPeriod(MyMoneyDate(2010, 1, 1), period);
 
   a0 += a1;
 
@@ -59,10 +59,10 @@ void MyMoneyBudgetTest::addMonthlyToYearly()
   a0.setBudgetLevel(MyMoneyBudget::AccountGroup::eYearly);
   a1.setBudgetLevel(MyMoneyBudget::AccountGroup::eMonthly);
   MyMoneyBudget::PeriodGroup period;
-  period.setStartDate(QDate(2010, 1, 1));
+  period.setStartDate(MyMoneyDate(2010, 1, 1));
   period.setAmount(MyMoneyMoney(100, 1));
-  a0.addPeriod(QDate(2010, 1, 1), period);
-  a1.addPeriod(QDate(2010, 1, 1), period);
+  a0.addPeriod(MyMoneyDate(2010, 1, 1), period);
+  a1.addPeriod(MyMoneyDate(2010, 1, 1), period);
 
   QVERIFY(a0.totalBalance() == MyMoneyMoney(100, 1));
   QVERIFY(a1.totalBalance() == MyMoneyMoney(1200, 1));
@@ -83,10 +83,10 @@ void MyMoneyBudgetTest::addMonthlyToMonthByMonth()
   a0.setBudgetLevel(MyMoneyBudget::AccountGroup::eMonthByMonth);
   a1.setBudgetLevel(MyMoneyBudget::AccountGroup::eMonthly);
   MyMoneyBudget::PeriodGroup period;
-  period.setStartDate(QDate(2010, 1, 1));
+  period.setStartDate(MyMoneyDate(2010, 1, 1));
   period.setAmount(MyMoneyMoney(100, 1));
-  a1.addPeriod(QDate(2010, 1, 1), period);
-  QDate date(2010, 1, 1);
+  a1.addPeriod(MyMoneyDate(2010, 1, 1), period);
+  MyMoneyDate date(2010, 1, 1);
   for (int i = 0; i < 12; ++i) {
     period.setAmount(MyMoneyMoney((i + 1) * 100, 1));
     a0.addPeriod(date, period);
@@ -113,10 +113,10 @@ void MyMoneyBudgetTest::addYearlyToMonthly()
   a0.setBudgetLevel(MyMoneyBudget::AccountGroup::eYearly);
   a1.setBudgetLevel(MyMoneyBudget::AccountGroup::eMonthly);
   MyMoneyBudget::PeriodGroup period;
-  period.setStartDate(QDate(2010, 1, 1));
+  period.setStartDate(MyMoneyDate(2010, 1, 1));
   period.setAmount(MyMoneyMoney(100, 1));
-  a0.addPeriod(QDate(2010, 1, 1), period);
-  a1.addPeriod(QDate(2010, 1, 1), period);
+  a0.addPeriod(MyMoneyDate(2010, 1, 1), period);
+  a1.addPeriod(MyMoneyDate(2010, 1, 1), period);
 
   QVERIFY(a0.totalBalance() == MyMoneyMoney(100, 1));
   QVERIFY(a1.totalBalance() == MyMoneyMoney(1200, 1));
@@ -137,10 +137,10 @@ void MyMoneyBudgetTest::addYearlyToYearly()
   a0.setBudgetLevel(MyMoneyBudget::AccountGroup::eYearly);
   a1.setBudgetLevel(MyMoneyBudget::AccountGroup::eYearly);
   MyMoneyBudget::PeriodGroup period;
-  period.setStartDate(QDate(2010, 1, 1));
+  period.setStartDate(MyMoneyDate(2010, 1, 1));
   period.setAmount(MyMoneyMoney(100, 1));
-  a0.addPeriod(QDate(2010, 1, 1), period);
-  a1.addPeriod(QDate(2010, 1, 1), period);
+  a0.addPeriod(MyMoneyDate(2010, 1, 1), period);
+  a1.addPeriod(MyMoneyDate(2010, 1, 1), period);
 
   a0 += a1;
 
@@ -158,10 +158,10 @@ void MyMoneyBudgetTest::addYearlyToMonthByMonth()
   a0.setBudgetLevel(MyMoneyBudget::AccountGroup::eMonthByMonth);
   a1.setBudgetLevel(MyMoneyBudget::AccountGroup::eYearly);
   MyMoneyBudget::PeriodGroup period;
-  period.setStartDate(QDate(2010, 1, 1));
+  period.setStartDate(MyMoneyDate(2010, 1, 1));
   period.setAmount(MyMoneyMoney(100, 1));
-  a1.addPeriod(QDate(2010, 1, 1), period);
-  QDate date(2010, 1, 1);
+  a1.addPeriod(MyMoneyDate(2010, 1, 1), period);
+  MyMoneyDate date(2010, 1, 1);
   for (int i = 0; i < 12; ++i) {
     period.setAmount(MyMoneyMoney((i + 1) * 100, 1));
     a0.addPeriod(date, period);
@@ -188,10 +188,10 @@ void MyMoneyBudgetTest::addMonthByMonthToMonthly()
   a0.setBudgetLevel(MyMoneyBudget::AccountGroup::eMonthByMonth);
   a1.setBudgetLevel(MyMoneyBudget::AccountGroup::eMonthly);
   MyMoneyBudget::PeriodGroup period;
-  period.setStartDate(QDate(2010, 1, 1));
+  period.setStartDate(MyMoneyDate(2010, 1, 1));
   period.setAmount(MyMoneyMoney(100, 1));
-  a1.addPeriod(QDate(2010, 1, 1), period);
-  QDate date(2010, 1, 1);
+  a1.addPeriod(MyMoneyDate(2010, 1, 1), period);
+  MyMoneyDate date(2010, 1, 1);
   for (int i = 0; i < 12; ++i) {
     period.setAmount(MyMoneyMoney((i + 1) * 100, 1));
     a0.addPeriod(date, period);
@@ -218,10 +218,10 @@ void MyMoneyBudgetTest::addMonthByMonthToYearly()
   a0.setBudgetLevel(MyMoneyBudget::AccountGroup::eMonthByMonth);
   a1.setBudgetLevel(MyMoneyBudget::AccountGroup::eYearly);
   MyMoneyBudget::PeriodGroup period;
-  period.setStartDate(QDate(2010, 1, 1));
+  period.setStartDate(MyMoneyDate(2010, 1, 1));
   period.setAmount(MyMoneyMoney(100, 1));
-  a1.addPeriod(QDate(2010, 1, 1), period);
-  QDate date(2010, 1, 1);
+  a1.addPeriod(MyMoneyDate(2010, 1, 1), period);
+  MyMoneyDate date(2010, 1, 1);
   for (int i = 0; i < 12; ++i) {
     period.setAmount(MyMoneyMoney((i + 1) * 100, 1));
     a0.addPeriod(date, period);
@@ -248,7 +248,7 @@ void MyMoneyBudgetTest::addMonthByMonthToMonthByMonth()
   a0.setBudgetLevel(MyMoneyBudget::AccountGroup::eMonthByMonth);
   a1.setBudgetLevel(MyMoneyBudget::AccountGroup::eMonthByMonth);
   MyMoneyBudget::PeriodGroup period;
-  QDate date(2010, 1, 1);
+  MyMoneyDate date(2010, 1, 1);
   for (int i = 0; i < 12; ++i) {
     period.setStartDate(date);
     period.setAmount(MyMoneyMoney((i + 1) * 100, 1));

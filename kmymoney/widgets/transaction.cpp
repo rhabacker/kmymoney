@@ -975,7 +975,7 @@ bool StdTransaction::formCellText(QString& txt, Qt::Alignment& align, int row, i
         case ValueColumn2:
           align |= Qt::AlignRight;
           if (m_transaction != MyMoneyTransaction())
-            txt = KGlobal::locale()->formatDate(m_transaction.postDate(), KLocale::ShortDate);
+            txt = MyMoneyLocale::formatDate(m_transaction.postDate(), KLocale::ShortDate);
           break;
       }
       break;
@@ -1106,7 +1106,7 @@ void StdTransaction::registerCellText(QString& txt, Qt::Alignment& align, int ro
 
         case DateColumn:
           align |= Qt::AlignLeft;
-          txt = KGlobal::locale()->formatDate(m_transaction.postDate(), KLocale::ShortDate);
+          txt = MyMoneyLocale::formatDate(m_transaction.postDate(), KLocale::ShortDate);
           break;
 
         case DetailColumn:
@@ -1392,7 +1392,7 @@ void StdTransaction::tabOrderInRegister(QWidgetList& tabOrderWidgets) const
 
 int StdTransaction::numRowsRegister(bool expanded) const
 {
-  int numRows = 1;
+  int numRows = 2;
   if (expanded) {
     numRows = 4;
     if (!m_inEdit) {
@@ -1417,7 +1417,7 @@ int StdTransaction::numRowsRegister(bool expanded) const
   return numRows;
 }
 
-TransactionEditor* StdTransaction::createEditor(TransactionEditorContainer* regForm, const KMyMoneyRegister::SelectedTransactions& list, const QDate& lastPostDate)
+TransactionEditor* StdTransaction::createEditor(TransactionEditorContainer* regForm, const KMyMoneyRegister::SelectedTransactions& list, const MyMoneyDate& lastPostDate)
 {
 #ifndef KMM_DESIGNER
   m_inRegisterEdit = regForm == m_parent;
@@ -1554,7 +1554,7 @@ bool InvestTransaction::formCellText(QString& txt, Qt::Alignment& align, int row
           align |= Qt::AlignRight;
           fieldEditable = true;
           if (m_transaction != MyMoneyTransaction())
-            txt = KGlobal::locale()->formatDate(m_transaction.postDate(), KLocale::ShortDate);
+            txt = MyMoneyLocale::formatDate(m_transaction.postDate(), KLocale::ShortDate);
           break;
       }
       break;
@@ -1742,7 +1742,7 @@ void InvestTransaction::registerCellText(QString& txt, Qt::Alignment& align, int
       switch (col) {
         case DateColumn:
           align |= Qt::AlignLeft;
-          txt = KGlobal::locale()->formatDate(m_transaction.postDate(), KLocale::ShortDate);
+          txt = MyMoneyLocale::formatDate(m_transaction.postDate(), KLocale::ShortDate);
           break;
 
         case DetailColumn:
@@ -2240,7 +2240,7 @@ void InvestTransaction::splits(MyMoneySplit& assetAccountSplit, QList<MyMoneySpl
   feeSplits = m_feeSplits;
 }
 
-TransactionEditor* InvestTransaction::createEditor(TransactionEditorContainer* regForm, const KMyMoneyRegister::SelectedTransactions& list, const QDate& lastPostDate)
+TransactionEditor* InvestTransaction::createEditor(TransactionEditorContainer* regForm, const KMyMoneyRegister::SelectedTransactions& list, const MyMoneyDate& lastPostDate)
 {
 #ifndef KMM_DESIGNER
   m_inRegisterEdit = regForm == m_parent;

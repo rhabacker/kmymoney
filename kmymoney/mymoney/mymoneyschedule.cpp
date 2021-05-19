@@ -47,17 +47,17 @@ MyMoneySchedule::MyMoneySchedule() :
   m_fixed = false;
   m_lastDayInMonth = false;
   m_autoEnter = false;
-  m_startDate = QDate();
-  m_endDate = QDate();
-  m_lastPayment = QDate();
+  m_startDate = MyMoneyDate();
+  m_endDate = MyMoneyDate();
+  m_lastPayment = MyMoneyDate();
   m_weekendOption = MoveNothing;
 }
 
 MyMoneySchedule::MyMoneySchedule(const QString& name, typeE type,
                                  occurrenceE occurrence, int occurrenceMultiplier,
                                  paymentTypeE paymentType,
-                                 const QDate& /* startDate */,
-                                 const QDate& endDate,
+                                 const MyMoneyDate& /* startDate */,
+                                 const MyMoneyDate& endDate,
                                  bool fixed, bool autoEnter) :
     MyMoneyObject()
 {
@@ -71,9 +71,9 @@ MyMoneySchedule::MyMoneySchedule(const QString& name, typeE type,
   m_fixed = fixed;
   m_lastDayInMonth = false;
   m_autoEnter = autoEnter;
-  m_startDate = QDate();
+  m_startDate = MyMoneyDate();
   m_endDate = endDate;
-  m_lastPayment = QDate();
+  m_lastPayment = MyMoneyDate();
   m_weekendOption = MoveNothing;
 }
 
@@ -110,8 +110,8 @@ MyMoneySchedule::MyMoneySchedule(const QDomElement& node) :
   // in the schedule. So if this is the case, we deal with a very old transaction
   // and can't use the post date field as next due date. Hence, we wipe it out here
   if (m_transaction.entryDate().isValid()) {
-    m_transaction.setPostDate(QDate());
-    m_transaction.setEntryDate(QDate());
+    m_transaction.setPostDate(MyMoneyDate());
+    m_transaction.setEntryDate(MyMoneyDate());
   }
 
   // readin the recorded payments
@@ -128,7 +128,7 @@ MyMoneySchedule::MyMoneySchedule(const QDomElement& node) :
   if (!nextDueDate().isValid() && !m_lastPayment.isValid()) {
     m_transaction.setPostDate(m_startDate);
     // clear it, because the schedule has never been used
-    m_startDate = QDate();
+    m_startDate = MyMoneyDate();
   }
 
   // There are reports that lastPayment and nextDueDate are identical or
@@ -136,7 +136,7 @@ MyMoneySchedule::MyMoneySchedule(const QDomElement& node) :
   // be caused by older versions of the application. In this case, we just
   // clear out the nextDueDate and let it calculate from the lastPayment.
   if (nextDueDate().isValid() && nextDueDate() <= m_lastPayment) {
-    m_transaction.setPostDate(QDate());
+    m_transaction.setPostDate(MyMoneyDate());
   }
 
   if (!nextDueDate().isValid()) {
@@ -160,7 +160,7 @@ MyMoneySchedule::occurrenceE MyMoneySchedule::occurrence() const
   return occ;
 }
 
-void MyMoneySchedule::setStartDate(const QDate& date)
+void MyMoneySchedule::setStartDate(const MyMoneyDate& date)
 {
   m_startDate = date;
 }
@@ -238,7 +238,7 @@ void MyMoneySchedule::setTransaction(const MyMoneyTransaction& transaction, bool
   m_transaction.clearId();
 }
 
-void MyMoneySchedule::setEndDate(const QDate& date)
+void MyMoneySchedule::setEndDate(const MyMoneyDate& date)
 {
   m_endDate = date;
 }
@@ -253,32 +253,32 @@ void MyMoneySchedule::setAutoEnter(bool autoenter)
   m_autoEnter = autoenter;
 }
 
-const QDate& MyMoneySchedule::startDate() const
+const MyMoneyDate& MyMoneySchedule::startDate() const
 {
   if (m_startDate.isValid())
     return m_startDate;
   return nextDueDate();
 }
 
-const QDate& MyMoneySchedule::nextDueDate() const
+const MyMoneyDate& MyMoneySchedule::nextDueDate() const
 {
   return m_transaction.postDate();
 }
 
-QDate MyMoneySchedule::adjustedNextDueDate() const
+MyMoneyDate MyMoneySchedule::adjustedNextDueDate() const
 {
   if (isFinished())
-    return QDate();
+    return MyMoneyDate();
 
   if (lastDayInMonth()) {
-    QDate date = nextDueDate();
-    return adjustedDate(QDate(date.year(), date.month(), date.daysInMonth()), weekendOption());
+    MyMoneyDate date = nextDueDate();
+    return adjustedDate(MyMoneyDate(date.year(), date.month(), date.daysInMonth()), weekendOption());
   }
 
   return adjustedDate(nextDueDate(), weekendOption());
 }
 
-QDate MyMoneySchedule::adjustedDate(QDate date, weekendOptionE option) const
+MyMoneyDate MyMoneySchedule::adjustedDate(MyMoneyDate date, weekendOptionE option) const
 {
   if (!date.isValid() || option == MyMoneySchedule::MoveNothing || isProcessingDate(date))
     return date;
@@ -293,7 +293,7 @@ QDate MyMoneySchedule::adjustedDate(QDate date, weekendOptionE option) const
   return date;
 }
 
-void MyMoneySchedule::setNextDueDate(const QDate& date)
+void MyMoneySchedule::setNextDueDate(const MyMoneyDate& date)
 {
   if (date.isValid()) {
     m_transaction.setPostDate(date);
@@ -301,11 +301,11 @@ void MyMoneySchedule::setNextDueDate(const QDate& date)
   }
 }
 
-void MyMoneySchedule::setLastPayment(const QDate& date)
+void MyMoneySchedule::setLastPayment(const MyMoneyDate& date)
 {
   // Delete all payments older than date
-  QList<QDate>::Iterator it;
-  QList<QDate> delList;
+  QList<MyMoneyDate>::Iterator it;
+  QList<MyMoneyDate> delList;
 
   for (it = m_recordedPayments.begin(); it != m_recordedPayments.end(); ++it) {
     if (*it < date || !date.isValid())
@@ -407,31 +407,31 @@ void MyMoneySchedule::validate(bool id_check) const
   }
 }
 
-QDate MyMoneySchedule::adjustedNextPayment(const QDate& refDate) const
+MyMoneyDate MyMoneySchedule::adjustedNextPayment(const MyMoneyDate& refDate) const
 {
   return nextPaymentDate(true, refDate);
 }
 
-QDate MyMoneySchedule::nextPayment(const QDate& refDate) const
+MyMoneyDate MyMoneySchedule::nextPayment(const MyMoneyDate& refDate) const
 {
   return nextPaymentDate(false, refDate);
 }
 
-QDate MyMoneySchedule::nextPaymentDate(const bool& adjust, const QDate& refDate) const
+MyMoneyDate MyMoneySchedule::nextPaymentDate(const bool& adjust, const MyMoneyDate& refDate) const
 {
   weekendOptionE option(adjust ? weekendOption() :
                         MyMoneySchedule::MoveNothing);
 
-  QDate adjEndDate(adjustedDate(m_endDate, option));
+  MyMoneyDate adjEndDate(adjustedDate(m_endDate, option));
 
   // if the enddate is valid and it is before the reference date,
   // then there will be no more payments.
   if (adjEndDate.isValid() && adjEndDate < refDate) {
-    return QDate();
+    return MyMoneyDate();
   }
 
-  QDate dueDate(nextDueDate());
-  QDate paymentDate(adjustedDate(dueDate, option));
+  MyMoneyDate dueDate(nextDueDate());
+  MyMoneyDate paymentDate(adjustedDate(dueDate, option));
 
   if (paymentDate.isValid() &&
       (paymentDate <= refDate || m_recordedPayments.contains(dueDate))) {
@@ -440,7 +440,7 @@ QDate MyMoneySchedule::nextPaymentDate(const bool& adjust, const QDate& refDate)
         // If the lastPayment is already set or the payment should have been
         // prior to the reference date then invalidate the payment date.
         if (m_lastPayment.isValid() || paymentDate <= refDate)
-          paymentDate = QDate();
+          paymentDate = MyMoneyDate();
         break;
 
       case OCCUR_DAILY: {
@@ -496,37 +496,37 @@ QDate MyMoneySchedule::nextPaymentDate(const bool& adjust, const QDate& refDate)
 
       case OCCUR_ANY:
       default:
-        paymentDate = QDate();
+        paymentDate = MyMoneyDate();
         break;
     }
   }
   if (paymentDate.isValid() && adjEndDate.isValid() && paymentDate > adjEndDate)
-    paymentDate = QDate();
+    paymentDate = MyMoneyDate();
 
   return paymentDate;
 }
 
-QList<QDate> MyMoneySchedule::paymentDates(const QDate& _startDate, const QDate& _endDate) const
+QList<MyMoneyDate> MyMoneySchedule::paymentDates(const MyMoneyDate& _startDate, const MyMoneyDate& _endDate) const
 {
-  QDate paymentDate(nextDueDate());
-  QList<QDate> theDates;
+  MyMoneyDate paymentDate(nextDueDate());
+  QList<MyMoneyDate> theDates;
 
   weekendOptionE option(weekendOption());
 
-  QDate endDate(_endDate);
+  MyMoneyDate endDate(_endDate);
   if (willEnd() && m_endDate < endDate) {
     // consider the adjusted end date instead of the plain end date
     endDate = adjustedDate(m_endDate, option);
   }
 
-  QDate start_date(adjustedDate(startDate(), option));
+  MyMoneyDate start_date(adjustedDate(startDate(), option));
   // if the period specified by the parameters and the adjusted period
   // defined for this schedule don't overlap, then the list remains empty
   if ((willEnd() && adjustedDate(m_endDate, option) < _startDate)
       || start_date > endDate)
     return theDates;
 
-  QDate date(adjustedDate(paymentDate, option));
+  MyMoneyDate date(adjustedDate(paymentDate, option));
 
   switch (m_occurrence) {
     case OCCUR_ONCE:
@@ -620,13 +620,13 @@ int MyMoneySchedule::transactionsRemaining() const
   return transactionsRemainingUntil(adjustedDate(m_endDate, weekendOption()));
 }
 
-int MyMoneySchedule::transactionsRemainingUntil(const QDate& endDate) const
+int MyMoneySchedule::transactionsRemainingUntil(const MyMoneyDate& endDate) const
 {
   int counter = 0;
 
-  QDate startDate = m_lastPayment.isValid() ? m_lastPayment : m_startDate;
+  MyMoneyDate startDate = m_lastPayment.isValid() ? m_lastPayment : m_startDate;
   if (startDate.isValid() && endDate.isValid()) {
-    QList<QDate> dates = paymentDates(startDate, endDate);
+    QList<MyMoneyDate> dates = paymentDates(startDate, endDate);
     counter = dates.count();
   }
   return counter;
@@ -657,10 +657,10 @@ MyMoneyAccount MyMoneySchedule::account(int cnt) const
   return MyMoneyAccount();
 }
 
-QDate MyMoneySchedule::dateAfter(int transactions) const
+MyMoneyDate MyMoneySchedule::dateAfter(int transactions) const
 {
   int counter = 1;
-  QDate paymentDate(startDate());
+  MyMoneyDate paymentDate(startDate());
 
   if (transactions <= 0)
     return paymentDate;
@@ -708,7 +708,7 @@ bool MyMoneySchedule::isOverdue() const
   if (isFinished())
     return false;
 
-  if (adjustedNextDueDate() >= QDate::currentDate())
+  if (adjustedNextDueDate() >= MyMoneyDate::currentDate())
     return false;
 
   return true;
@@ -733,7 +733,7 @@ bool MyMoneySchedule::isFinished() const
   return false;
 }
 
-bool MyMoneySchedule::hasRecordedPayment(const QDate& date) const
+bool MyMoneySchedule::hasRecordedPayment(const MyMoneyDate& date) const
 {
   // m_lastPayment should always be > recordedPayments()
   if (m_lastPayment.isValid() && m_lastPayment >= date)
@@ -745,7 +745,7 @@ bool MyMoneySchedule::hasRecordedPayment(const QDate& date) const
   return false;
 }
 
-void MyMoneySchedule::recordPayment(const QDate& date)
+void MyMoneySchedule::recordPayment(const MyMoneyDate &date)
 {
   m_recordedPayments.append(date);
 }
@@ -765,13 +765,13 @@ void MyMoneySchedule::setWeekendOption(const weekendOptionE option)
   }
 }
 
-void MyMoneySchedule::fixDate(QDate& date) const
+void MyMoneySchedule::fixDate(MyMoneyDate& date) const
 {
-  QDate fixDate(m_startDate);
+  MyMoneyDate fixDate(m_startDate);
   if (fixDate.isValid()
       && date.day() != fixDate.day()
-      && QDate::isValid(date.year(), date.month(), fixDate.day())) {
-    date = QDate(date.year(), date.month(), fixDate.day());
+      && MyMoneyDate::isValid(date.year(), date.month(), fixDate.day())) {
+    date = MyMoneyDate(date.year(), date.month(), fixDate.day());
   }
 }
 
@@ -795,8 +795,8 @@ void MyMoneySchedule::writeXML(QDomDocument& document, QDomElement& parent) cons
   el.setAttribute("weekendOption", m_weekendOption);
 
   //store the payment history for this scheduled task.
-  QList<QDate> payments = recordedPayments();
-  QList<QDate>::ConstIterator it;
+  QList<MyMoneyDate> payments = recordedPayments();
+  QList<MyMoneyDate>::ConstIterator it;
   QDomElement paymentsElement = document.createElement("PAYMENTS");
   for (it = payments.constBegin(); it != payments.constEnd(); ++it) {
     QDomElement paymentEntry = document.createElement("PAYMENT");
@@ -1188,9 +1188,9 @@ int MyMoneySchedule::daysBetweenEvents(MyMoneySchedule::occurrenceE occurrence)
   return rc;
 }
 
-QDate MyMoneySchedule::addHalfMonths(QDate date, int mult) const
+MyMoneyDate MyMoneySchedule::addHalfMonths(MyMoneyDate date, int mult) const
 {
-  QDate newdate = date;
+  MyMoneyDate newdate = date;
   int d, dm;
   if (mult > 0) {
     d = newdate.day();
@@ -1371,7 +1371,7 @@ void MyMoneySchedule::setProcessingCalendar(IMyMoneyProcessingCalendar* pc)
   processingCalendarPtr = pc;
 }
 
-bool MyMoneySchedule::isProcessingDate(const QDate& date) const
+bool MyMoneySchedule::isProcessingDate(const MyMoneyDate& date) const
 {
   if (processingCalendarPtr)
     return processingCalendarPtr->isProcessingDate(date);

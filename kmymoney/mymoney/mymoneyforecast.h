@@ -81,9 +81,9 @@ public:
   static MyMoneyMoney calculateAccountTrend(const MyMoneyAccount& acc, int forecastDays);
 
   /**
-   * Returns the forecast balance trend for account @a acc for day @p QDate
+   * Returns the forecast balance trend for account @a acc for day @p MyMoneyDate
    */
-  MyMoneyMoney forecastBalance(const MyMoneyAccount& acc, const QDate &forecastDate);
+  MyMoneyMoney forecastBalance(const MyMoneyAccount& acc, const MyMoneyDate &forecastDate);
 
   /**
    * Returns the forecast balance trend for account @a acc for offset @p int
@@ -123,12 +123,12 @@ public:
   /**
    * returns a list of the dates where the account was on its lowest balance in each cycle
    */
-  QList<QDate> accountMinimumBalanceDateList(const MyMoneyAccount& acc);
+  QList<MyMoneyDate> accountMinimumBalanceDateList(const MyMoneyAccount& acc);
 
   /**
    * returns a list of the dates where the account was on its highest balance in each cycle
    */
-  QList<QDate> accountMaximumBalanceDateList(const MyMoneyAccount& acc);
+  QList<MyMoneyDate> accountMaximumBalanceDateList(const MyMoneyAccount& acc);
 
   /**
    * returns the average balance of the account within the forecast period
@@ -138,7 +138,7 @@ public:
   /**
    * creates a budget based on the history of a given timeframe
    */
-  void createBudget(MyMoneyBudget& budget, QDate historyStart, QDate historyEnd, QDate budgetStart, QDate budgetEnd, const bool returnBudget);
+  void createBudget(MyMoneyBudget& budget, MyMoneyDate historyStart, MyMoneyDate historyEnd, MyMoneyDate budgetStart, MyMoneyDate budgetEnd, const bool returnBudget);
 
   /**
    * number of days to go back in history to calculate forecast
@@ -156,7 +156,7 @@ public:
   void setForecastDays(int forecastDays)   {
     m_forecastDays = forecastDays;
   }
-  void setBeginForecastDate(const QDate &beginForecastDate) {
+  void setBeginForecastDate(const MyMoneyDate &beginForecastDate) {
     m_beginForecastDate = beginForecastDate;
   }
   void setBeginForecastDay(int beginDay)   {
@@ -165,22 +165,22 @@ public:
   void setForecastMethod(int forecastMethod) {
     m_forecastMethod = forecastMethod;
   }
-  void setHistoryStartDate(const QDate &historyStartDate) {
+  void setHistoryStartDate(const MyMoneyDate &historyStartDate) {
     m_historyStartDate = historyStartDate;
   }
-  void setHistoryEndDate(const QDate &historyEndDate) {
+  void setHistoryEndDate(const MyMoneyDate &historyEndDate) {
     m_historyEndDate = historyEndDate;
   }
   void setHistoryStartDate(int daysToStartDate) {
-    setHistoryStartDate(QDate::currentDate().addDays(-daysToStartDate));
+    setHistoryStartDate(MyMoneyDate::currentDate().addDays(-daysToStartDate));
   }
   void setHistoryEndDate(int daysToEndDate) {
-    setHistoryEndDate(QDate::currentDate().addDays(-daysToEndDate));
+    setHistoryEndDate(MyMoneyDate::currentDate().addDays(-daysToEndDate));
   }
-  void setForecastStartDate(const QDate &_startDate) {
+  void setForecastStartDate(const MyMoneyDate &_startDate) {
     m_forecastStartDate = _startDate;
   }
-  void setForecastEndDate(const QDate &_endDate) {
+  void setForecastEndDate(const MyMoneyDate &_endDate) {
     m_forecastEndDate = _endDate;
   }
   void setSkipOpeningDate(bool _skip) {
@@ -211,7 +211,7 @@ public:
   int forecastDays() const {
     return m_forecastDays;
   }
-  const QDate& beginForecastDate() const   {
+  const MyMoneyDate& beginForecastDate() const   {
     return m_beginForecastDate;
   }
   int beginForecastDay() const   {
@@ -220,16 +220,16 @@ public:
   int forecastMethod() const   {
     return m_forecastMethod;
   }
-  const QDate& historyStartDate() const {
+  const MyMoneyDate& historyStartDate() const {
     return m_historyStartDate;
   }
-  const QDate& historyEndDate() const {
+  const MyMoneyDate& historyEndDate() const {
     return m_historyEndDate;
   }
-  const QDate& forecastStartDate() const {
+  const MyMoneyDate& forecastStartDate() const {
     return m_forecastStartDate;
   }
-  const QDate& forecastEndDate() const {
+  const MyMoneyDate& forecastEndDate() const {
     return m_forecastEndDate;
   }
   bool skipOpeningDate() const {
@@ -270,7 +270,7 @@ private:
   /**
    * daily balances of an account
    */
-  typedef QMap<QDate, MyMoneyMoney> dailyBalances;
+  typedef QMap<MyMoneyDate, MyMoneyMoney> dailyBalances;
 
   /**
    * map of trends of an account
@@ -422,7 +422,7 @@ private:
   /**
    * date to start forecast
    */
-  QDate m_beginForecastDate;
+  MyMoneyDate m_beginForecastDate;
 
   /**
    * day to start forecast
@@ -442,22 +442,22 @@ private:
   /**
    * start date of history
    */
-  QDate m_historyStartDate;
+  MyMoneyDate m_historyStartDate;
 
   /**
    * end date of history
    */
-  QDate m_historyEndDate;
+  MyMoneyDate m_historyEndDate;
 
   /**
    * start date of forecast
    */
-  QDate m_forecastStartDate;
+  MyMoneyDate m_forecastStartDate;
 
   /**
    * end date of forecast
    */
-  QDate m_forecastEndDate;
+  MyMoneyDate m_forecastEndDate;
 
   /**
    * skip opening date when fetching transactions of an account
