@@ -70,6 +70,12 @@ public:
   const QDate& postDate() const {
     return m_postDate;
   };
+  const QTime& entryTime() const {
+    return m_entryTime;
+  };
+  const QTime& postTime() const {
+    return m_postTime;
+  };
   const QString& memo() const {
     return m_memo;
   };
@@ -92,6 +98,8 @@ public:
   // Simple set operations
   void setPostDate(const QDate& date);
   void setEntryDate(const QDate& date);
+  void setPostTime(const QTime &time);
+  void setEntryTime(const QTime &time);
   void setMemo(const QString& memo);
   void setCommodity(const QString& commodityId) {
     m_commodity = commodityId;
@@ -347,9 +355,20 @@ private:
   QDate m_entryDate;
 
   /**
+    * This member contains the time when the transaction was entered
+    * into the engine
+    */
+  QTime m_entryTime;
+
+  /**
     * This member contains the date the transaction was posted
     */
   QDate m_postDate;
+
+  /**
+    * This member contains the time the transaction was posted
+    */
+  QTime m_postTime;
 
   /**
     * This member keeps the memo text associated with this transaction

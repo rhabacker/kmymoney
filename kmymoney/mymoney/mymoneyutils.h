@@ -121,6 +121,26 @@ KMM_MYMONEY_EXPORT QString dateToString(const QDate& date);
  */
 KMM_MYMONEY_EXPORT QDate stringToDate(const QString& str);
 
+/**
+ * This function returns a time in "hh:mm:ss" format.
+ * If the @p time is invalid an empty string will be returned.
+ *
+ * @param time const reference to time to be converted
+ * @return QString containing the converted time
+ */
+KMM_MYMONEY_EXPORT QString timeToString(const QTime& time);
+
+/**
+ * This function returns a time as QTime object as specified by
+ * the parameter @p str. @p str must be in "hh:mm:ss" format.
+ * If @p str is empty or contains an invalid time, QTime() is
+ * returned.
+ *
+ * @param str time in "hh:mm:ss" format
+ * @return QTime object
+ */
+KMM_MYMONEY_EXPORT QTime stringToTime(const QString& str);
+
 KMM_MYMONEY_EXPORT QString QStringEmpty(const QString&);
 
 KMM_MYMONEY_EXPORT unsigned long extractId(const QString& txt);
