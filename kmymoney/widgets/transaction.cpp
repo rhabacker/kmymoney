@@ -237,6 +237,12 @@ QDate Transaction::sortPostDate() const
     return d->m_transaction.postDate();
 }
 
+QDateTime Transaction::sortPostDateTime() const
+{
+    Q_D(const Transaction);
+    return d->m_transaction.postDateTime();
+}
+
 int Transaction::sortSamePostDate() const
 {
     return 2;
@@ -246,6 +252,12 @@ QDate Transaction::sortEntryDate() const
 {
     Q_D(const Transaction);
     return d->m_transaction.entryDate();
+}
+
+QDateTime Transaction::sortEntryDateTime() const
+{
+    Q_D(const Transaction);
+    return d->m_transaction.entryDateTime();
 }
 
 const QString& Transaction::sortPayee() const

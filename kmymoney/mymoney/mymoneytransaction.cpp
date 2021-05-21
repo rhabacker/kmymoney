@@ -193,17 +193,17 @@ bool MyMoneyTransaction::operator != (const MyMoneyTransaction& r) const
 
 bool MyMoneyTransaction::operator< (const MyMoneyTransaction& r) const
 {
-    return postDate() < r.postDate();
+    return postDateTime() < r.postDateTime();
 }
 
 bool MyMoneyTransaction::operator<= (const MyMoneyTransaction& r) const
 {
-    return postDate() <= r.postDate();
+    return postDateTime() <= r.postDateTime();
 }
 
 bool MyMoneyTransaction::operator> (const MyMoneyTransaction& r) const
 {
-    return postDate() > r.postDate();
+    return postDateTime() > r.postDateTime();
 }
 
 bool MyMoneyTransaction::accountReferenced(const QString& id) const

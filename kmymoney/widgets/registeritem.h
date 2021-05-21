@@ -20,6 +20,7 @@
 // Project Includes
 
 class QDate;
+class QDateTime;
 class QPainter;
 class QPoint;
 class QRect;
@@ -72,8 +73,10 @@ public:
 
     // helper functions used for sorting
     virtual QDate sortPostDate() const;
+    virtual QDateTime sortPostDateTime() const;
     virtual int sortSamePostDate() const = 0;
     virtual QDate sortEntryDate() const;
+    virtual QDateTime sortEntryDateTime() const;
     virtual const QString& sortPayee() const;
     virtual MyMoneyMoney sortValue() const;
     virtual QString sortNumber() const;

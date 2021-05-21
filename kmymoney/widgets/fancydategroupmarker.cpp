@@ -27,10 +27,26 @@ FancyDateGroupMarker::FancyDateGroupMarker(Register* parent,
     GroupMarker(*new FancyDateGroupMarkerPrivate, parent, txt)
 {
     Q_D(FancyDateGroupMarker);
+    d->m_date = QDateTime(date);
+}
+
+FancyDateGroupMarker::FancyDateGroupMarker(Register* parent,
+        const QDateTime& date,
+        const QString& txt) :
+    GroupMarker(*new FancyDateGroupMarkerPrivate, parent, txt)
+{
+    Q_D(FancyDateGroupMarker);
     d->m_date = date;
 }
 
 FancyDateGroupMarker::FancyDateGroupMarker(FancyDateGroupMarkerPrivate &dd, Register *parent, const QDate& date, const QString& txt) :
+    GroupMarker(dd, parent, txt)
+{
+    Q_D(FancyDateGroupMarker);
+    d->m_date = QDateTime(date);
+}
+
+FancyDateGroupMarker::FancyDateGroupMarker(FancyDateGroupMarkerPrivate &dd, Register *parent, const QDateTime& date, const QString& txt) :
     GroupMarker(dd, parent, txt)
 {
     Q_D(FancyDateGroupMarker);
@@ -44,10 +60,22 @@ FancyDateGroupMarker::~FancyDateGroupMarker()
 QDate FancyDateGroupMarker::sortPostDate() const
 {
     Q_D(const FancyDateGroupMarker);
+    return d->m_date.date();
+}
+
+QDateTime FancyDateGroupMarker::sortPostDateTime() const
+{
+    Q_D(const FancyDateGroupMarker);
     return d->m_date;
 }
 
 QDate FancyDateGroupMarker::sortEntryDate() const
+{
+    Q_D(const FancyDateGroupMarker);
+    return d->m_date.date();
+}
+
+QDateTime FancyDateGroupMarker::sortEntryDateTime() const
 {
     Q_D(const FancyDateGroupMarker);
     return d->m_date;

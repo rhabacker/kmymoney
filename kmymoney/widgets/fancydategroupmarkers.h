@@ -44,6 +44,7 @@ class StatementGroupMarker : public FancyDateGroupMarker
 
 public:
     explicit StatementGroupMarker(Register* getParent, eWidgets::eRegister::CashFlowDirection dir, const QDate& date, const QString& txt);
+    explicit StatementGroupMarker(Register* getParent, eWidgets::eRegister::CashFlowDirection dir, const QDateTime& date, const QString& txt);
     ~StatementGroupMarker() override;
 
     eWidgets::eRegister::CashFlowDirection sortType() const override;

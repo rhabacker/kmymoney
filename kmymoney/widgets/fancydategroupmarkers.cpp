@@ -42,6 +42,14 @@ StatementGroupMarker::StatementGroupMarker(Register* parent, eWidgets::eRegister
     d->m_showDate = true;
 }
 
+StatementGroupMarker::StatementGroupMarker(Register* parent, eWidgets::eRegister::CashFlowDirection dir, const QDateTime& date, const QString& txt)
+    : FancyDateGroupMarker(*new StatementGroupMarkerPrivate, parent, date, txt)
+{
+    Q_D(StatementGroupMarker);
+    d->m_dir = dir;
+    d->m_showDate = true;
+}
+
 StatementGroupMarker::~StatementGroupMarker()
 {
 }

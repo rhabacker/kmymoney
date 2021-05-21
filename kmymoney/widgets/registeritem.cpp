@@ -26,6 +26,7 @@
 using namespace KMyMoneyRegister;
 
 QDate RegisterItemPrivate::nullDate;
+QDateTime RegisterItemPrivate::nullDateTime;
 QString RegisterItemPrivate::nullString;
 MyMoneyMoney RegisterItemPrivate::nullValue;
 
@@ -80,9 +81,19 @@ QDate RegisterItem::sortPostDate() const
     return KMyMoneyRegister::RegisterItemPrivate::nullDate;
 }
 
+QDateTime RegisterItem::sortPostDateTime() const
+{
+    return KMyMoneyRegister::RegisterItemPrivate::nullDateTime;
+}
+
 QDate RegisterItem::sortEntryDate() const
 {
     return KMyMoneyRegister::RegisterItemPrivate::nullDate;
+}
+
+QDateTime RegisterItem::sortEntryDateTime() const
+{
+    return KMyMoneyRegister::RegisterItemPrivate::nullDateTime;
 }
 
 const QString& RegisterItem::sortPayee() const

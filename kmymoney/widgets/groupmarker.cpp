@@ -136,7 +136,7 @@ void GroupMarker::paintRegisterCell(QPainter *painter, QStyleOptionViewItem &opt
         cellRect.setX(d->m_parent->horizontalHeader()->sectionPosition((int)eWidgets::eTransaction::Column::Date));
         cellRect.setWidth(d->m_parent->horizontalHeader()->sectionSize((int)eWidgets::eTransaction::Column::Date));
         painter->setFont(font);
-        painter->drawText(cellRect, Qt::AlignVCenter | Qt::AlignCenter, QLocale().toString(sortPostDate(), QLocale::ShortFormat));
+        painter->drawText(cellRect, Qt::AlignVCenter | Qt::AlignCenter, QLocale().toString(sortPostDateTime(), QLocale::ShortFormat));
     }
 
     painter->restore();

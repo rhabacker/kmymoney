@@ -56,11 +56,11 @@ bool ItemPtrVector::item_cmp(RegisterItem* i1, RegisterItem* i2)
         SortField sortField = static_cast<SortField>(*it);
         switch (qAbs(static_cast<int>(sortField))) {
         case (int)SortField::PostDate:
-            rc = i2->sortPostDate().daysTo(i1->sortPostDate());
+            rc = i2->sortPostDateTime().secsTo(i1->sortPostDateTime());
             break;
 
         case (int)SortField::EntryDate:
-            rc = i2->sortEntryDate().daysTo(i1->sortEntryDate());
+            rc = i2->sortEntryDateTime().secsTo(i1->sortEntryDateTime());
             break;
 
         case (int)SortField::Payee:
