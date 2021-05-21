@@ -50,12 +50,12 @@ public:
       * This member contains the date when the transaction was entered
       * into the engine
       */
-    QDate m_entryDate;
+    QDateTime m_entryDate;
 
     /**
       * This member contains the date the transaction was posted
       */
-    QDate m_postDate;
+    QDateTime m_postDate;
 
     /**
       * This member keeps the memo text associated with this transaction
