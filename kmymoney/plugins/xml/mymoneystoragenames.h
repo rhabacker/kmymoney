@@ -176,6 +176,7 @@ enum class Account {
     OpeningBalance,
     IBAN,
     BIC,
+    DateWithTime,
     // insert new entries above this line
     LastAttribute,
 };

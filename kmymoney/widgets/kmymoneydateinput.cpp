@@ -344,6 +344,7 @@ void KMyMoneyDateInput::slotDateTimeChosenRef(const QDateTime& date)
 
 void KMyMoneyDateInput::slotDateChosen(QDate date)
 {
+    d->m_dateEdit->setDisplayFormat(QLocale().dateFormat(QLocale::ShortFormat));
     if (date.isValid()) {
         // the next line implies a call to slotDateChosenRef() above
         d->m_dateEdit->setDate(date);
@@ -354,6 +355,7 @@ void KMyMoneyDateInput::slotDateChosen(QDate date)
 
 void KMyMoneyDateInput::slotDateTimeChosen(QDateTime date)
 {
+    d->m_dateEdit->setDisplayFormat(QLocale().dateTimeFormat(QLocale::ShortFormat));
     if (date.isValid()) {
         // the next line implies a call to slotDateChosenRef() above
         d->m_dateEdit->setDateTime(date);

@@ -270,6 +270,19 @@
              </widget>
             </item>
             <item row="1" column="1">
+             <widget class="QCheckBox" name="m_qcheckboxDateWithTime">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For transactions related to this account, support post and entry dates with time of day&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="text">
+               <string>Support for dates with time of day</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
              <widget class="QCheckBox" name="m_qcheckboxOpeningBalance">
               <property name="enabled">
                <bool>true</bool>

@@ -77,6 +77,18 @@ void MyMoneyTransaction::setEntryDate(const QDate& date)
     d->m_entryDate = date;
 }
 
+QDateTime MyMoneyTransaction::entryDateTime() const
+{
+    Q_D(const MyMoneyTransaction);
+    return QDateTime(d->m_entryDate);
+}
+
+void MyMoneyTransaction::setEntryDateTime(const QDateTime &date)
+{
+    Q_D(MyMoneyTransaction);
+    d->m_entryDate = date.date();
+}
+
 QDate MyMoneyTransaction::postDate() const
 {
     Q_D(const MyMoneyTransaction);
@@ -87,6 +99,18 @@ void MyMoneyTransaction::setPostDate(const QDate& date)
 {
     Q_D(MyMoneyTransaction);
     d->m_postDate = date;
+}
+
+QDateTime MyMoneyTransaction::postDateTime() const
+{
+    Q_D(const MyMoneyTransaction);
+    return QDateTime(d->m_postDate);
+}
+
+void MyMoneyTransaction::setPostDateTime(const QDateTime &date)
+{
+    Q_D(MyMoneyTransaction);
+    d->m_postDate = date.date();
 }
 
 QString MyMoneyTransaction::memo() const
