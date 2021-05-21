@@ -18,6 +18,7 @@
 
 class MyMoneyMoney;
 class QDate;
+class QDateTime;
 class QString;
 
 namespace KMyMoneyRegister {
@@ -62,6 +63,7 @@ public:
     bool                     m_visible;
 
     static QDate             nullDate;
+    static QDateTime         nullDateTime;
     static QString           nullString;
     static MyMoneyMoney      nullValue;
 

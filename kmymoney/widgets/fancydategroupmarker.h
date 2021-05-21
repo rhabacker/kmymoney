@@ -27,14 +27,18 @@ class FancyDateGroupMarker : public GroupMarker
 
 public:
     explicit FancyDateGroupMarker(Register* getParent, const QDate& date, const QString& txt);
+    explicit FancyDateGroupMarker(Register* getParent, const QDateTime& date, const QString& txt);
     ~FancyDateGroupMarker() override;
 
     QDate sortPostDate() const override;
+    QDateTime sortPostDateTime() const override;
     QDate sortEntryDate() const override;
+    QDateTime sortEntryDateTime() const override;
     const char* className() override;
 
 protected:
     FancyDateGroupMarker(FancyDateGroupMarkerPrivate &dd, Register *parent, const QDate& date, const QString& txt);
+    FancyDateGroupMarker(FancyDateGroupMarkerPrivate &dd, Register *parent, const QDateTime& date, const QString& txt);
     Q_DECLARE_PRIVATE(FancyDateGroupMarker)
 };
 } // namespace

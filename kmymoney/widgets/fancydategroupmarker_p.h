@@ -25,7 +25,7 @@ namespace KMyMoneyRegister
 class FancyDateGroupMarkerPrivate : public GroupMarkerPrivate
 {
 public:
-    QDate m_date;
+    QDateTime m_date;
 };
 }
 

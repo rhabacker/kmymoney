@@ -67,8 +67,10 @@ public:
     void setFocus(bool focus, bool updateLens = true) override;
     bool isErroneous() const override;
     QDate sortPostDate() const override;
+    QDateTime sortPostDateTime() const override;
     virtual int sortSamePostDate() const override;
     QDate sortEntryDate() const override;
+    QDateTime sortEntryDateTime() const override;
     virtual const QString& sortPayee() const override;
     virtual const QList<QString>& sortTagList() const;
     MyMoneyMoney sortValue() const override;
