@@ -809,9 +809,6 @@ void MyMoneyXmlContentHandler::writeAccount(const MyMoneyAccount &account, QDomD
     if (!account.currencyId().isEmpty())
         el.setAttribute(attributeName(Attribute::Account::Currency), account.currencyId());
 
-    if (account.value("DateWithTime") == "Yes")
-        el.setAttribute(attributeName(Attribute::Account::DateWithTime), account.value("DateWithTime"));
-
     //Add in subaccount information, if this account has subaccounts.
     if (account.accountCount()) {
         QDomElement subAccounts = document.createElement(elementName(Element::Account::SubAccounts));
