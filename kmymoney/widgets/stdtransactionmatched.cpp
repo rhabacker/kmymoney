@@ -122,7 +122,10 @@ void StdTransactionMatched::registerCellText(QString& txt, Qt::Alignment& align,
                 memo = matchedTransaction.memo();
                 memo.replace("\n\n", "\n");
                 memo.replace('\n', ", ");
-                txt = QString("%1 %2").arg(matchedTransaction.postDate().toString(Qt::ISODate)).arg(memo);
+                if (d->m_account.hasDateWithTime())
+                    txt = QString("%1 %2").arg(matchedTransaction.postDateTime().toString(Qt::ISODate)).arg(memo);
+                else
+                    txt = QString("%1 %2").arg(matchedTransaction.postDate().toString(Qt::ISODate)).arg(memo);
                 break;
 
             case (int)eWidgets::eTransaction::Column::Payment:

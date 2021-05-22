@@ -188,8 +188,12 @@ bool InvestTransaction::formCellText(QString& txt, Qt::Alignment& align, int row
         case (int)eTransactionForm::Column::Value2:
             align |= Qt::AlignRight;
             fieldEditable = true;
-            if (!d->m_transaction.id().isEmpty())
-                txt = QLocale().toString(d->m_transaction.postDate(), QLocale::ShortFormat);
+            if (!d->m_transaction.id().isEmpty()) {
+                if (d->m_account.hasDateWithTime())
+                    txt = QLocale().toString(d->m_transaction.postDateTime(), QLocale::ShortFormat);
+                else
+                    txt = QLocale().toString(d->m_transaction.postDate(), QLocale::ShortFormat);
+            }
             break;
         }
         break;
@@ -379,7 +383,10 @@ void InvestTransaction::registerCellText(QString& txt, Qt::Alignment& align, int
         switch (col) {
         case (int)eTransaction::Column::Date:
             align |= Qt::AlignLeft;
-            txt = QLocale().toString(d->m_transaction.postDate(), QLocale::ShortFormat);
+            if (d->m_account.hasDateWithTime())
+                txt = QLocale().toString(d->m_transaction.postDateTime(), QLocale::ShortFormat);
+            else
+                txt = QLocale().toString(d->m_transaction.postDate(), QLocale::ShortFormat);
             break;
 
         case (int)eTransaction::Column::Detail:
