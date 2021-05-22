@@ -534,8 +534,8 @@ void QueryTable::constructTransactionTable()
         QList<QString> tagIdListCache;
 
         qA[ctID] = qS[ctID] = (* it_transaction).id();
-        qA[ctEntryDate] = qS[ctEntryDate] = (* it_transaction).entryDate().toString(Qt::ISODate);
-        qA[ctPostDate] = qS[ctPostDate] = (* it_transaction).postDate().toString(Qt::ISODate);
+        qA[ctEntryDate] = qS[ctEntryDate] = (* it_transaction).entryDateTime().toString(Qt::ISODate);
+        qA[ctPostDate] = qS[ctPostDate] = (* it_transaction).postDateTime().toString(Qt::ISODate);
         qA[ctCommodity] = qS[ctCommodity] = (* it_transaction).commodity();
 
         pd = (* it_transaction).postDate();
@@ -1728,8 +1728,8 @@ void QueryTable::constructSplitsTable()
         QDate pd;
 
         qA[ctID] = qS[ctID] = (* it_transaction).id();
-        qA[ctEntryDate] = qS[ctEntryDate] = (* it_transaction).entryDate().toString(Qt::ISODate);
-        qA[ctPostDate] = qS[ctPostDate] = (* it_transaction).postDate().toString(Qt::ISODate);
+        qA[ctEntryDate] = qS[ctEntryDate] = (* it_transaction).entryDateTime().toString(Qt::ISODate);
+        qA[ctPostDate] = qS[ctPostDate] = (* it_transaction).postDateTime().toString(Qt::ISODate);
         qA[ctCommodity] = qS[ctCommodity] = (* it_transaction).commodity();
 
         pd = (* it_transaction).postDate();
