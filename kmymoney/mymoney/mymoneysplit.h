@@ -151,6 +151,9 @@ public:
     QDate reconcileDate() const;
     void setReconcileDate(const QDate& date);
 
+    QDateTime reconcileDateTime() const;
+    void setReconcileDateTime(const QDateTime& date);
+
     QString payeeId() const;
     void setPayeeId(const QString& payee);
 
