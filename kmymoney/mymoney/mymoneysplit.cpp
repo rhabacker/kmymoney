@@ -126,10 +126,22 @@ eMyMoney::Split::State MyMoneySplit::reconcileFlag() const
 QDate MyMoneySplit::reconcileDate() const
 {
     Q_D(const MyMoneySplit);
-    return d->m_reconcileDate;
+    return d->m_reconcileDate.date();
 }
 
 void MyMoneySplit::setReconcileDate(const QDate& date)
+{
+    Q_D(MyMoneySplit);
+    d->m_reconcileDate = QDateTime(date);
+}
+
+QDateTime MyMoneySplit::reconcileDateTime() const
+{
+    Q_D(const MyMoneySplit);
+    return d->m_reconcileDate;
+}
+
+void MyMoneySplit::setReconcileDateTime(const QDateTime& date)
 {
     Q_D(MyMoneySplit);
     d->m_reconcileDate = date;

@@ -93,7 +93,7 @@ public:
       * In case the reconciliation flag is set to Reconciled or Frozen
       * this member contains the date of the reconciliation.
       */
-    QDate          m_reconcileDate;
+    QDateTime m_reconcileDate;
 
     /**
       * The m_action member is an arbitrary string, but is intended to

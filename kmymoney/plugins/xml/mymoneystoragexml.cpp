@@ -624,7 +624,7 @@ MyMoneySplit MyMoneyXmlContentHandler::readSplit(const QDomElement &node)
         tagList << nodeList.item(i).toElement().attribute(attributeName(Attribute::Split::ID));
     split.setTagIdList(tagList);
 
-    split.setReconcileDate(QDate::fromString(node.attribute(attributeName(Attribute::Split::ReconcileDate)), Qt::ISODate));
+    split.setReconcileDateTime(QDateTime::fromString(node.attribute(attributeName(Attribute::Split::ReconcileDate)), Qt::ISODate));
     split.setAction(node.attribute(attributeName(Attribute::Split::Action)));
     split.setReconcileFlag(static_cast<eMyMoney::Split::State>(node.attribute(attributeName(Attribute::Split::ReconcileFlag)).toInt()));
     split.setMemo(node.attribute(attributeName(Attribute::Split::Memo)));
@@ -664,7 +664,7 @@ void MyMoneyXmlContentHandler::writeSplit(const MyMoneySplit &_split, QDomDocume
 
     el.setAttribute(attributeName(Attribute::Split::Payee), split.payeeId());
     //el.setAttribute(getAttrName(Split::Attribute::Tag), m_tag);
-    el.setAttribute(attributeName(Attribute::Split::ReconcileDate), split.reconcileDate().toString(Qt::ISODate));
+    el.setAttribute(attributeName(Attribute::Split::ReconcileDate), split.reconcileDateTime().toString(Qt::ISODate));
     el.setAttribute(attributeName(Attribute::Split::Action), split.action());
     el.setAttribute(attributeName(Attribute::Split::ReconcileFlag), (int)split.reconcileFlag());
     el.setAttribute(attributeName(Attribute::Split::Value), split.value().toString());
