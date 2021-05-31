@@ -160,7 +160,7 @@ public:
 
         handleOpeningBalanceCheckbox(m_account.currencyId());
 
-        ui->m_qcheckboxDateWithTime->setChecked(m_account.value("DateWithTime") == "Yes");
+        ui->m_qcheckboxDateWithTime->setChecked(m_account.hasDateWithTime());
 
         if (m_categoryEditor) {
             // get rid of the tabs that are not used for categories
@@ -722,11 +722,7 @@ void KNewAccountDlg::okClicked()
     else
         d->m_account.deletePair("OpeningBalanceAccount");
 
-    if (d->ui->m_qcheckboxDateWithTime->isChecked())
-        d->m_account.setValue("DateWithTime", "Yes");
-    else
-        d->m_account.deletePair("DateWithTime");
-
+    d->m_account.setHasDateWithTime(d->ui->m_qcheckboxDateWithTime->isChecked());
     d->m_account.deletePair("VatAccount");
     d->m_account.deletePair("VatAmount");
     d->m_account.deletePair("VatRate");

@@ -587,6 +587,7 @@ public:
       * @return @c true if account has date with time of day enabled
       */
     bool hasDateWithTime() const;
+    void setHasDateWithTime(bool state);
 
     static QString stdAccName(eMyMoney::Account::Standard stdAccID);
 

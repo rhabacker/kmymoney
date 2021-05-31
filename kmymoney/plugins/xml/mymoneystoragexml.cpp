@@ -785,8 +785,6 @@ MyMoneyAccount MyMoneyXmlContentHandler::readAccount(const QDomElement &node)
         acc.deletePair("IBAN");
     }
 
-    acc.setValue(attributeName(Attribute::Account::DateWithTime), acc.value("DateWithTime"));
-
     return acc;
 }
 

@@ -629,6 +629,15 @@ bool MyMoneyAccount::hasDateWithTime() const
     return value(strDateTime) == "Yes";
 }
 
+
+void MyMoneyAccount::setHasDateWithTime(bool state)
+{
+    const auto strDateTime = QStringLiteral("DateWithTime");
+    if (state)
+        setValue(strDateTime, "Yes");
+    else
+        deletePair(strDateTime);
+}
 QString MyMoneyAccount::stdAccName(eMyMoney::Account::Standard stdAccID)
 {
     static const QHash<eMyMoney::Account::Standard, QString> stdAccNames {
