@@ -589,6 +589,9 @@ public:
     bool hasDateWithTime() const;
     void setHasDateWithTime(bool state);
 
+    QString timeZone();
+    void setTimeZone(const QString& timeZone);
+
     static QString stdAccName(eMyMoney::Account::Standard stdAccID);
 
     QDataStream &operator<<(const MyMoneyAccount &);

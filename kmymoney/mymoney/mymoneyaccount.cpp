@@ -629,6 +629,11 @@ bool MyMoneyAccount::hasDateWithTime() const
     return value(strDateTime) == "Yes";
 }
 
+QString MyMoneyAccount::timeZone()
+{
+    const auto strTimeZone = QStringLiteral("TimeZone");
+    return value(strTimeZone);
+}
 
 void MyMoneyAccount::setHasDateWithTime(bool state)
 {
@@ -638,6 +643,13 @@ void MyMoneyAccount::setHasDateWithTime(bool state)
     else
         deletePair(strDateTime);
 }
+
+void MyMoneyAccount::setTimeZone(const QString& timeZone)
+{
+    const auto strTimeZone = QStringLiteral("TimeZone");
+    setValue(strTimeZone, timeZone);
+}
+
 QString MyMoneyAccount::stdAccName(eMyMoney::Account::Standard stdAccID)
 {
     static const QHash<eMyMoney::Account::Standard, QString> stdAccNames {

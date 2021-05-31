@@ -17,6 +17,7 @@
 #include <QTabWidget>
 #include <QRadioButton>
 #include <QList>
+#include <QTimeZone>
 
 // ----------------------------------------------------------------------------
 // KDE Headers
@@ -161,6 +162,11 @@ public:
         handleOpeningBalanceCheckbox(m_account.currencyId());
 
         ui->m_qcheckboxDateWithTime->setChecked(m_account.hasDateWithTime());
+        QList<QByteArray> ids = QTimeZone::availableTimeZoneIds();
+        foreach (QByteArray id, ids) {
+            ui->m_timeZoneComboBox->addItem(id);
+        }
+        ui->m_timeZoneComboBox->setCurrentText(m_account.timeZone());
 
         if (m_categoryEditor) {
             // get rid of the tabs that are not used for categories
@@ -723,6 +729,7 @@ void KNewAccountDlg::okClicked()
         d->m_account.deletePair("OpeningBalanceAccount");
 
     d->m_account.setHasDateWithTime(d->ui->m_qcheckboxDateWithTime->isChecked());
+    d->m_account.setTimeZone(d->ui->m_timeZoneComboBox->currentText());
     d->m_account.deletePair("VatAccount");
     d->m_account.deletePair("VatAmount");
     d->m_account.deletePair("VatRate");
