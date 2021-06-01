@@ -261,10 +261,17 @@ bool StdTransaction::formCellText(QString& txt, Qt::Alignment& align, int row, i
         case (int)eTransactionForm::Column::Value2:
             align |= Qt::AlignRight;
             if (!d->m_transaction.id().isEmpty()) {
-                if (d->m_account.hasDateWithTime())
-                    txt = QLocale().toString(d->m_transaction.postDateTime(), QLocale::ShortFormat);
-                else
-                    txt = QLocale().toString(d->m_transaction.postDate(), QLocale::ShortFormat);
+                if (KMyMoneySettings::showTransactionEntryDate()) {
+                    if (d->m_account.hasDateWithTime())
+                        txt = QLocale().toString(d->m_transaction.entryDateTime(), QLocale::ShortFormat);
+                    else
+                        txt = QLocale().toString(d->m_transaction.entryDate(), QLocale::ShortFormat);
+                } else {
+                    if (d->m_account.hasDateWithTime())
+                        txt = QLocale().toString(d->m_transaction.postDateTime(), QLocale::ShortFormat);
+                    else
+                        txt = QLocale().toString(d->m_transaction.postDate(), QLocale::ShortFormat);
+                }
             }
             break;
         }
@@ -354,10 +361,17 @@ void StdTransaction::registerCellText(QString& txt, Qt::Alignment& align, int ro
 
         case (int)eTransaction::Column::Date:
             align |= Qt::AlignLeft;
-            if (d->m_account.hasDateWithTime())
-                txt = QLocale().toString(d->m_transaction.postDateTime(), QLocale::ShortFormat);
-            else
-                txt = QLocale().toString(d->m_transaction.postDate(), QLocale::ShortFormat);
+            if (KMyMoneySettings::showTransactionEntryDate()) {
+                if (d->m_account.hasDateWithTime())
+                    txt = QLocale().toString(d->m_transaction.entryDateTime(), QLocale::ShortFormat);
+                else
+                    txt = QLocale().toString(d->m_transaction.entryDate(), QLocale::ShortFormat);
+            } else {
+                if (d->m_account.hasDateWithTime())
+                    txt = QLocale().toString(d->m_transaction.postDateTime(), QLocale::ShortFormat);
+                else
+                    txt = QLocale().toString(d->m_transaction.postDate(), QLocale::ShortFormat);
+            }
             break;
 
         case (int)eTransaction::Column::Detail:

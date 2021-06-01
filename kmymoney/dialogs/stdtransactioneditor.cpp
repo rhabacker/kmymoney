@@ -370,20 +370,34 @@ void StdTransactionEditor::loadEditWidgets(eRegister::Action action)
 
     if (!isMultiSelection()) {
         if (auto dateWidget = dynamic_cast<KMyMoneyDateInput*>(d->m_editWidgets["postdate"])) {
-            if (d->m_account.hasDateWithTime()) {
-                if (d->m_transaction.postDateTime().isValid())
-                    dateWidget->setDateTime(d->m_transaction.postDateTime());
-                else if (d->m_lastPostDate.isValid())
-                    dateWidget->setDate(d->m_lastPostDate);
-                else
-                    dateWidget->setDateTime(QDateTime::currentDateTime());
+            if (KMyMoneySettings::showTransactionEntryDate()) {
+                if (d->m_account.hasDateWithTime()) {
+                    if (d->m_transaction.entryDateTime().isValid())
+                        dateWidget->setDateTime(d->m_transaction.entryDateTime());
+                    else
+                        dateWidget->setDateTime(QDateTime::currentDateTime());
+                } else {
+                    if (d->m_transaction.entryDate().isValid())
+                        dateWidget->setDate(d->m_transaction.entryDate());
+                    else
+                        dateWidget->setDate(QDate::currentDate());
+                }
             } else {
-                if (d->m_transaction.postDate().isValid())
-                    dateWidget->setDate(d->m_transaction.postDate());
-                else if (d->m_lastPostDate.isValid())
-                    dateWidget->setDate(d->m_lastPostDate);
-                else
-                    dateWidget->setDate(QDate::currentDate());
+                if (d->m_account.hasDateWithTime()) {
+                    if (d->m_transaction.postDateTime().isValid())
+                        dateWidget->setDateTime(d->m_transaction.postDateTime());
+                    else if (d->m_lastPostDate.isValid())
+                        dateWidget->setDate(d->m_lastPostDate);
+                    else
+                        dateWidget->setDateTime(QDateTime::currentDateTime());
+                } else {
+                    if (d->m_transaction.postDate().isValid())
+                        dateWidget->setDate(d->m_transaction.postDate());
+                    else if (d->m_lastPostDate.isValid())
+                        dateWidget->setDate(d->m_lastPostDate);
+                    else
+                        dateWidget->setDate(QDate::currentDate());
+                }
             }
         }
 
@@ -1480,10 +1494,17 @@ bool StdTransactionEditor::createTransaction(MyMoneyTransaction& t, const MyMone
 
     auto postDate = dynamic_cast<KMyMoneyDateInput*>(d->m_editWidgets["postdate"]);
     if (postDate) {
-        if (d->m_account.hasDateWithTime() && postDate->dateTime().isValid())
-            t.setPostDateTime(postDate->dateTime());
-        else if (postDate->date().isValid())
-            t.setPostDate(postDate->date());
+        if (KMyMoneySettings::showTransactionEntryDate()) {
+            if (d->m_account.hasDateWithTime() && postDate->dateTime().isValid())
+                t.setEntryDateTime(postDate->dateTime());
+            else if (postDate->date().isValid())
+                t.setEntryDate(postDate->date());
+        } else {
+            if (d->m_account.hasDateWithTime() && postDate->dateTime().isValid())
+                t.setPostDateTime(postDate->dateTime());
+            else if (postDate->date().isValid())
+                t.setPostDate(postDate->date());
+        }
     }
 
     // we start with the previous values, make sure we can add them later on

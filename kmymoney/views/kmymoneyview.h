@@ -230,6 +230,14 @@ public Q_SLOTS:
     void slotShowTransactionDetail(bool detailed);
 
     /**
+      * Called when the user changes the show entry date
+      * setting of the transaction register
+      *
+      * @param state if true, the register shows the entry date
+      */
+    void slotTransactionShowEntryDate(bool state);
+
+    /**
      * Informs respective views about selected object, so they can
      * update action states and current object.
      * @param obj Account, Category, Investment, Stock, Institution

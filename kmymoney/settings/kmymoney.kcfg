@@ -260,6 +260,10 @@
    <label>Show all register entries in full detail</label>
    <default>false</default>
   </entry>
+  <entry name="ShowTransactionEntryDate" type="Bool">
+   <label>Show entry date of transactions in register</label>
+   <default>false</default>
+  </entry>
   <entry name="ShowPlannedScheduleDates" type="Bool">
    <label>Show schedules with planned date</label>
    <default>false</default>

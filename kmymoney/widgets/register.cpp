@@ -146,7 +146,6 @@ Register::Register(QWidget *parent) :
 
     // keep the following list in sync with KMyMoneyRegister::Column in transaction.h
     horizontalHeaderItem((int)eTransaction::Column::Number)->setText(i18nc("Cheque Number", "No."));
-    horizontalHeaderItem((int)eTransaction::Column::Date)->setText(i18n("Date"));
     horizontalHeaderItem((int)eTransaction::Column::Account)->setText(i18n("Account"));
     horizontalHeaderItem((int)eTransaction::Column::Security)->setText(i18n("Security"));
     horizontalHeaderItem((int)eTransaction::Column::Detail)->setText(i18n("Details"));
@@ -224,6 +223,7 @@ void Register::setupRegister(const MyMoneyAccount& account, bool showAccountColu
 
     horizontalHeaderItem((int)eTransaction::Column::Payment)->setText(i18nc("Payment made from account", "Payment"));
     horizontalHeaderItem((int)eTransaction::Column::Deposit)->setText(i18nc("Deposit into account", "Deposit"));
+    horizontalHeaderItem((int)eTransaction::Column::Date)->setText(KMyMoneySettings::showTransactionEntryDate() ? i18n("Entry date") : i18n("Post date"));
 
     if (account.id().isEmpty()) {
         setUpdatesEnabled(true);

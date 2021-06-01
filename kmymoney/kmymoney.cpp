@@ -1205,6 +1205,7 @@ KMyMoneyApp::KMyMoneyApp(QWidget* parent) :
 
     // force to show the home page if the file is closed
     connect(pActions[Action::ViewTransactionDetail], &QAction::toggled, d->m_myMoneyView, &KMyMoneyView::slotShowTransactionDetail);
+    connect(pActions[Action::ViewTransactionShowEntryDate], &QAction::toggled, d->m_myMoneyView, &KMyMoneyView::slotTransactionShowEntryDate);
 
     d->m_backupState = BACKUP_IDLE;
 
@@ -1385,6 +1386,7 @@ QHash<Action, QAction *> KMyMoneyApp::initActions()
             // The View menu
             // *************
             {Action::ViewTransactionDetail,         QStringLiteral("view_show_transaction_detail"),   i18n("Show Transaction Detail"),                    Icon::TransactionDetails},
+            {Action::ViewTransactionShowEntryDate,  QStringLiteral("view_transaction_show_entry_date"), i18n("Show Transaction Entry Date"),              Icon::TransactionDetails},
             {Action::ViewHideReconciled,            QStringLiteral("view_hide_reconciled_transactions"), i18n("Hide reconciled transactions"),            Icon::HideReconciled},
             {Action::ViewShowReconciledBalances,    QStringLiteral("view_show_reconciled_balances"),  i18n("Show reconciled balances"),                   Icon::ShowReconciledBalances},
             {Action::ViewHideCategories,            QStringLiteral("view_hide_unused_categories"),    i18n("Hide unused categories"),                     Icon::HideCategories},
@@ -1530,6 +1532,7 @@ QHash<Action, QAction *> KMyMoneyApp::initActions()
             // The View menu
             // *************
             {Action::ViewTransactionDetail,         &KMyMoneyApp::slotShowTransactionDetail},
+            {Action::ViewTransactionShowEntryDate,  &KMyMoneyApp::slotTransactionShowEntryDate},
             {Action::ViewHideReconciled,            &KMyMoneyApp::slotHideReconciledTransactions},
             {Action::ViewShowReconciledBalances,    &KMyMoneyApp::slotShowReconciledBalances},
             {Action::ViewHideCategories,            &KMyMoneyApp::slotHideUnusedCategories},
@@ -1574,7 +1577,8 @@ QHash<Action, QAction *> KMyMoneyApp::initActions()
         // Some actions are checkable,
         // so set them here
         const QVector<Action> checkableActions {
-            Action::ViewTransactionDetail, Action::ViewHideReconciled, Action::ViewHideCategories,
+            Action::ViewTransactionDetail, Action::ViewTransactionShowEntryDate,
+            Action::ViewHideReconciled, Action::ViewHideCategories,
             Action::ViewShowReconciledBalances, Action::ViewHideCategories,
 #ifdef KMM_DEBUG
             Action::DebugTraces,
@@ -1611,6 +1615,7 @@ QHash<Action, QAction *> KMyMoneyApp::initActions()
         const QVector<QPair<Action, QKeySequence>> actionShortcuts {
             {qMakePair(Action::EditFindTransaction,         Qt::CTRL + Qt::Key_F)},
             {qMakePair(Action::ViewTransactionDetail,       Qt::CTRL + Qt::Key_T)},
+            {qMakePair(Action::ViewTransactionShowEntryDate,Qt::CTRL + Qt::Key_E)},
             {qMakePair(Action::ViewHideReconciled,          Qt::CTRL + Qt::Key_R)},
             {qMakePair(Action::ViewHideCategories,          Qt::CTRL + Qt::Key_U)},
             {qMakePair(Action::ViewShowAll,                 Qt::CTRL + Qt::SHIFT + Qt::Key_A)},
@@ -1637,6 +1642,7 @@ QHash<Action, QAction *> KMyMoneyApp::initActions()
 
     // Setup transaction detail switch
     lutActions[Action::ViewTransactionDetail]->setChecked(KMyMoneySettings::showRegisterDetailed());
+    lutActions[Action::ViewTransactionShowEntryDate]->setChecked(KMyMoneySettings::showTransactionEntryDate());
     lutActions[Action::ViewHideReconciled]->setChecked(KMyMoneySettings::hideReconciledTransactions());
     lutActions[Action::ViewShowReconciledBalances]->setChecked(KMyMoneySettings::showReconciledBalances());
     lutActions[Action::ViewHideCategories]->setChecked(KMyMoneySettings::hideUnusedCategory());
@@ -2012,6 +2018,11 @@ bool KMyMoneyApp::isFileOpenedInAnotherInstance(const QUrl &url)
 }
 
 void KMyMoneyApp::slotShowTransactionDetail()
+{
+
+}
+
+void KMyMoneyApp::slotTransactionShowEntryDate()
 {
 
 }

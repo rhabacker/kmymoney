@@ -29,6 +29,7 @@
   </Menu>
   <Menu name="view" >
    <Action name="view_show_transaction_detail" />
+   <Action name="view_transaction_show_entry_date" />
    <Action name="view_hide_reconciled_transactions" />
    <Action name="view_show_reconciled_balances" />
    <Action name="view_hide_unused_categories" />
