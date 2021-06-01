@@ -73,6 +73,7 @@ template <class T> class payeeIdentifierTyped;
   * @author Łukasz Wojniłowicz 2017
   *
 **/
+typedef QMap<QDateTime, MyMoneyMoney> ReconciliationMap;
 
 class MyMoneyAccountPrivate;
 class KMM_MYMONEY_EXPORT MyMoneyAccount : public MyMoneyObject, public MyMoneyKeyValueContainer /*, public MyMoneyPayeeIdentifierContainer */
@@ -566,13 +567,16 @@ public:
       * @sa reconciliationHistory()
       */
     bool addReconciliation(const QDate& date, const MyMoneyMoney& amount);
+    bool addReconciliation(const QDateTime& date, const MyMoneyMoney& amount);
+
+    void saveReconciliationHistory();
 
     /**
       * @return QMap with the reconciliation history for the account
       *
       * @sa addReconciliation()
       */
-    QMap<QDate, MyMoneyMoney> reconciliationHistory();
+    ReconciliationMap reconciliationHistory();
 
     /**
       * @return @c true if account has an online mapping, @c false otherwise

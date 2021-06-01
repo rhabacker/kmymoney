@@ -734,8 +734,8 @@ void MyMoneyXmlContentHandlerTest::readAccount()
         QCOMPARE(a.value("Key"), QStringLiteral("Value"));
         QCOMPARE(a.pairs().contains("lastStatementDate"), false);
         QCOMPARE(a.reconciliationHistory().count(), 2);
-        QCOMPARE(a.reconciliationHistory()[QDate(2011, 1, 1)].toString(), MyMoneyMoney(123, 100).toString());
-        QCOMPARE(a.reconciliationHistory()[QDate(2011, 2, 1)].toString(), MyMoneyMoney(456, 100).toString());
+        QCOMPARE(a.reconciliationHistory()[QDateTime(QDate(2011, 1, 1))].toString(), MyMoneyMoney(123, 100).toString());
+        QCOMPARE(a.reconciliationHistory()[QDateTime(QDate(2011, 2, 1))].toString(), MyMoneyMoney(456, 100).toString());
     } catch (const MyMoneyException &) {
         QFAIL("Unexpected exception");
     }
