@@ -525,13 +525,25 @@ QString MyMoneyAccount::accountTypeToString(const Account::Type accountType)
 
 bool MyMoneyAccount::addReconciliation(const QDate& date, const MyMoneyMoney& amount)
 {
+    return addReconciliation(QDateTime(date), amount);
+}
+
+bool MyMoneyAccount::addReconciliation(const QDateTime& date, const MyMoneyMoney& amount)
+{
     Q_D(MyMoneyAccount);
     // make sure, that history has been loaded
     reconciliationHistory();
 
     d->m_reconciliationHistory[date] = amount;
+    saveReconciliationHistory();
+    return true;
+}
+
+void MyMoneyAccount::saveReconciliationHistory()
+{
+    Q_D(MyMoneyAccount);
     QString history, sep;
-    QMap<QDate, MyMoneyMoney>::const_iterator it;
+    ReconciliationMap::const_iterator it;
     for (it = d->m_reconciliationHistory.constBegin();
             it != d->m_reconciliationHistory.constEnd();
             ++it) {
@@ -542,10 +554,9 @@ bool MyMoneyAccount::addReconciliation(const QDate& date, const MyMoneyMoney& am
         sep = QLatin1Char(';');
     }
     setValue("reconciliationHistory", history);
-    return true;
 }
 
-QMap<QDate, MyMoneyMoney> MyMoneyAccount::reconciliationHistory()
+ReconciliationMap MyMoneyAccount::reconciliationHistory()
 {
     Q_D(MyMoneyAccount);
     // check if the internal history member is already loaded
@@ -553,17 +564,20 @@ QMap<QDate, MyMoneyMoney> MyMoneyAccount::reconciliationHistory()
             && !value("reconciliationHistory").isEmpty()) {
         QStringList entries = value("reconciliationHistory").split(';');
         foreach (const QString& entry, entries) {
-            QStringList parts = entry.split(':');
-            if (parts.count() == 2) {
-                QDate date = QDate::fromString(parts[0], Qt::ISODate);
-                MyMoneyMoney amount(parts[1]);
-                if (parts.count() == 2 && date.isValid()) {
-                    d->m_reconciliationHistory[date] = amount;
-                }
-            } else {
+            int pos = entry.lastIndexOf(":");
+            if (pos == -1) {
                 qDebug() << "Invalid reconciliationHistory" << entry;
+                continue;
+            }
+            QString a = entry.left(pos - 1);
+            QString b = entry.mid(pos + 1);
+            QDateTime date = QDateTime::fromString(a, Qt::ISODate);
+            MyMoneyMoney amount(b);
+            if (!b.isEmpty() && date.isValid()) {
+                d->m_reconciliationHistory[date] = amount;
             }
         }
+        saveReconciliationHistory();
     }
 
     return d->m_reconciliationHistory;

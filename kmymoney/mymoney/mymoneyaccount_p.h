@@ -129,7 +129,7 @@ public:
     /**
       * This member keeps the reconciliation history
       */
-    QMap<QDate, MyMoneyMoney> m_reconciliationHistory;
+    ReconciliationMap m_reconciliationHistory;
 
     /**
       * This member keep the state if dates have times
