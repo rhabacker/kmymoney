@@ -160,6 +160,7 @@ public:
 
         handleOpeningBalanceCheckbox(m_account.currencyId());
 
+        ui->m_qcheckboxDateWithTime->setEnabled(!m_account.hasDateWithTime());
         ui->m_qcheckboxDateWithTime->setChecked(m_account.hasDateWithTime());
 
         if (m_categoryEditor) {
