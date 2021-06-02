@@ -121,8 +121,6 @@ void TransactionSortOption::setSettings(const QString& settings)
     for (int i = static_cast<int>(SortField::PostDate);
             i < static_cast<int>(SortField::MaxFields); ++i) {
         // Never add EntryDateSort
-        if (i == static_cast<int>(SortField::EntryDate))
-            continue;
         // Only add those, that are not present in the list of selected items
         if (selectedMap.find(i) == selectedMap.end()) {
             int val = i;
