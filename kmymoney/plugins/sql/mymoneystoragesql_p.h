@@ -1050,10 +1050,10 @@ public:
             idList << a.id();
             institutionIdList << a.institutionId();
             parentIdList << a.parentAccountId();
-            if (a.lastReconciliationDate() == QDate())
-                lastReconciledList << a.lastReconciliationDate();
+            if (a.lastReconciliationDateTime() == QDateTime())
+                lastReconciledList << a.lastReconciliationDateTime();
             else
-                lastReconciledList << a.lastReconciliationDate().toString(Qt::ISODate);
+                lastReconciledList << a.lastReconciliationDateTime().toString(Qt::ISODate);
             lastModifiedList << a.lastModified();
             if (a.openingDate() == QDate())
                 openingDateList << a.openingDate();

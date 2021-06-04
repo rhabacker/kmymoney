@@ -1704,7 +1704,8 @@ void Register::addGroupMarkers()
             new KMyMoneyRegister::FancyDateGroupMarker(this, KMyMoneySettings::startDate().date(), i18n("Prior transactions possibly filtered"));
 
         if (d->m_account.lastReconciliationDate().isValid())
-            new KMyMoneyRegister::StatementGroupMarker(this, eRegister::CashFlowDirection::Deposit, d->m_account.lastReconciliationDate(), i18n("Last reconciliation"));
+            new KMyMoneyRegister::StatementGroupMarker(
+                this, eRegister::CashFlowDirection::Deposit, d->m_account.lastReconciliationDateTime(), i18n("Last reconciliation"));
 
         if (KMyMoneySettings::showReconciledBalances()) {
             foreach (const QDateTime& date, d->m_account.reconciliationHistory().keys()) {

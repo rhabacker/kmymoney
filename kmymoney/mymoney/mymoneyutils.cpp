@@ -61,6 +61,14 @@ QString MyMoneyUtils::dateToString(const QDate& date)
     return QString();
 }
 
+QString MyMoneyUtils::dateToString(const QDateTime& date)
+{
+    if (!date.isNull() && date.isValid())
+        return date.toString(Qt::ISODate);
+
+    return QString();
+}
+
 QDate MyMoneyUtils::stringToDate(const QString& str)
 {
     if (str.length()) {

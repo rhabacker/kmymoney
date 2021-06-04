@@ -16,6 +16,7 @@ class MyMoneyMoney;
 class MyMoneySecurity;
 class MyMoneyAccount;
 class QDate;
+class QDateTime;
 class QString;
 
 //class that has utility functions to use throughout the application.
@@ -53,6 +54,7 @@ KMM_MYMONEY_EXPORT QString formatMoney(const MyMoneyMoney& val,
  * @return QString containing the converted date
  */
 KMM_MYMONEY_EXPORT QString dateToString(const QDate& date);
+KMM_MYMONEY_EXPORT QString dateToString(const QDateTime& date);
 
 /**
  * This function returns a date as QDate object as specified by

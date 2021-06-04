@@ -718,7 +718,7 @@ MyMoneyAccount MyMoneyXmlContentHandler::readAccount(const QDomElement &node)
 
     acc.setParentAccountId(node.attribute(attributeName(Attribute::Account::ParentAccount)));
     acc.setLastModified(QDate::fromString(node.attribute(attributeName(Attribute::Account::LastModified)), Qt::ISODate));
-    acc.setLastReconciliationDate(QDate::fromString(node.attribute(attributeName(Attribute::Account::LastReconciled)), Qt::ISODate));
+    acc.setLastReconciliationDateTime(QDateTime::fromString(node.attribute(attributeName(Attribute::Account::LastReconciled)), Qt::ISODate));
 
     // Very old versions of KMyMoney used to store the reconciliation date in
     // the KVP as "lastStatementDate". Since we don't use it anymore, we get
@@ -796,7 +796,7 @@ void MyMoneyXmlContentHandler::writeAccount(const MyMoneyAccount &account, QDomD
     writeBaseXML(account.id(), document, el);
 
     el.setAttribute(attributeName(Attribute::Account::ParentAccount), account.parentAccountId());
-    el.setAttribute(attributeName(Attribute::Account::LastReconciled), MyMoneyUtils::dateToString(account.lastReconciliationDate()));
+    el.setAttribute(attributeName(Attribute::Account::LastReconciled), MyMoneyUtils::dateToString(account.lastReconciliationDateTime()));
     el.setAttribute(attributeName(Attribute::Account::LastModified), MyMoneyUtils::dateToString(account.lastModified()));
     el.setAttribute(attributeName(Attribute::Account::Institution), account.institutionId());
     el.setAttribute(attributeName(Attribute::Account::Opened), MyMoneyUtils::dateToString(account.openingDate()));

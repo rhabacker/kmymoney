@@ -790,7 +790,7 @@ void MyMoneyXmlContentHandlerTest::writeAccount()
     QCOMPARE(account.attribute("parentaccount"), QLatin1String("Parent"));
     QCOMPARE(account.attribute("opened"), QDate::currentDate().toString(Qt::ISODate));
     QCOMPARE(account.attribute("type"), QLatin1String("9"));
-    QCOMPARE(account.attribute("lastmodified"), QDate::currentDate().toString(Qt::ISODate));
+    QCOMPARE(account.attribute("lastmodified"), QDateTime::currentDateTime().toString(Qt::ISODate));
     QCOMPARE(account.attribute("id"), QLatin1String("A000001"));
     QCOMPARE(account.childNodes().size(), 2);
 
