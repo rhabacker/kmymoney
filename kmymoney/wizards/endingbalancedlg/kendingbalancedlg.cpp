@@ -140,7 +140,7 @@ KEndingBalanceDlg::KEndingBalanceDlg(const MyMoneyAccount& account, QWidget *par
 
     // connect the signals with the slots
     connect(MyMoneyFile::instance(), &MyMoneyFile::dataChanged, this, &KEndingBalanceDlg::slotReloadEditWidgets);
-    connect(d->ui->m_statementInfoPageCheckings->ui->m_statementDate, &KMyMoneyDateInput::dateChanged, this, &KEndingBalanceDlg::slotUpdateBalances);
+    connect(d->ui->m_statementInfoPageCheckings->ui->m_statementDate, &KMyMoneyDateInput::dateTimeChanged, this, &KEndingBalanceDlg::slotUpdateBalances);
     connect(d->ui->m_interestChargeCheckings->ui->m_interestCategoryEdit, &KMyMoneyCombo::createItem, this, &KEndingBalanceDlg::slotCreateInterestCategory);
     connect(d->ui->m_interestChargeCheckings->ui->m_chargesCategoryEdit, &KMyMoneyCombo::createItem, this, &KEndingBalanceDlg::slotCreateChargesCategory);
     connect(d->ui->m_interestChargeCheckings->ui->m_payeeEdit, &KMyMoneyMVCCombo::createItem, this, &KEndingBalanceDlg::slotNewPayee);
@@ -198,10 +198,10 @@ void KEndingBalanceDlg::slotUpdateBalances()
     MyMoneyFile::instance()->transactionList(transactionList, filter);
 
     //first retrieve the oldest not reconciled transaction
-    QDate oldestTransactionDate;
+    QDateTime oldestTransactionDate;
     it = transactionList.constBegin();
     if (it != transactionList.constEnd()) {
-        oldestTransactionDate = (*it).first.postDate();
+        oldestTransactionDate = (*it).first.postDateTime();
         d->ui->m_statementInfoPageCheckings->ui->m_oldestTransactionDate->setText(i18n("Oldest unmarked transaction: %1", QLocale().toString(oldestTransactionDate)));
     }
 
@@ -225,18 +225,30 @@ void KEndingBalanceDlg::slotUpdateBalances()
         const MyMoneySplit& split = (*it).second;
         balance -= split.shares() * factor;
         if ((*it).first.postDateTime() > field("statementDate").toDateTime()) {
-            tracer.printf("Reducing balances by %s because postdate of %s/%s(%s) is past statement date", qPrintable((split.shares() * factor).formatMoney(QString(), 2)), qPrintable((*it).first.id()), qPrintable(split.id()), qPrintable((*it).first.postDate().toString(Qt::ISODate)));
+            tracer.printf("Reducing balances by %s because postdate of %s/%s(%s) is past statement date",
+                          qPrintable((split.shares() * factor).formatMoney(QString(), 2)),
+                          qPrintable((*it).first.id()),
+                          qPrintable(split.id()),
+                          qPrintable((*it).first.postDateTime().toString(Qt::ISODate)));
             endBalance -= split.shares() * factor;
             startBalance -= split.shares() * factor;
         } else {
             switch (split.reconcileFlag()) {
             case eMyMoney::Split::State::NotReconciled:
-                tracer.printf("Reducing balances by %s because %s/%s(%s) is not reconciled", qPrintable((split.shares() * factor).formatMoney(QString(), 2)), qPrintable((*it).first.id()), qPrintable(split.id()), qPrintable((*it).first.postDate().toString(Qt::ISODate)));
+                tracer.printf("Reducing balances by %s because %s/%s(%s) is not reconciled",
+                              qPrintable((split.shares() * factor).formatMoney(QString(), 2)),
+                              qPrintable((*it).first.id()),
+                              qPrintable(split.id()),
+                              qPrintable((*it).first.postDateTime().toString(Qt::ISODate)));
                 endBalance -= split.shares() * factor;
                 startBalance -= split.shares() * factor;
                 break;
             case eMyMoney::Split::State::Cleared:
-                tracer.printf("Reducing start balance by %s because %s/%s(%s) is cleared", qPrintable((split.shares() * factor).formatMoney(QString(), 2)), qPrintable((*it).first.id()), qPrintable(split.id()), qPrintable((*it).first.postDate().toString(Qt::ISODate)));
+                tracer.printf("Reducing start balance by %s because %s/%s(%s) is cleared",
+                              qPrintable((split.shares() * factor).formatMoney(QString(), 2)),
+                              qPrintable((*it).first.id()),
+                              qPrintable(split.id()),
+                              qPrintable((*it).first.postDateTime().toString(Qt::ISODate)));
                 startBalance -= split.shares() * factor;
                 break;
             default:
@@ -257,8 +269,18 @@ void KEndingBalanceDlg::slotUpdateBalances()
 void KEndingBalanceDlg::accept()
 {
     Q_D(KEndingBalanceDlg);
-    if ((!field("interestEditValid").toBool() || createTransaction(d->m_tInterest, -1, field("interestEdit").value<MyMoneyMoney>(), field("interestCategoryEdit").toString(), field("interestDateEdit").toDate()))
-            && (!field("chargesEditValid").toBool() || createTransaction(d->m_tCharges, 1, field("chargesEdit").value<MyMoneyMoney>(), field("chargesCategoryEdit").toString(), field("chargesDateEdit").toDate())))
+    if ((!field("interestEditValid").toBool()
+         || createTransaction(d->m_tInterest,
+                              -1,
+                              field("interestEdit").value<MyMoneyMoney>(),
+                              field("interestCategoryEdit").toString(),
+                              field("interestDateEdit").toDateTime()))
+        && (!field("chargesEditValid").toBool()
+            || createTransaction(d->m_tCharges,
+                                 1,
+                                 field("chargesEdit").value<MyMoneyMoney>(),
+                                 field("chargesCategoryEdit").toString(),
+                                 field("chargesDateEdit").toDateTime())))
         QWizard::accept();
 }
 
@@ -358,7 +380,7 @@ MyMoneyTransaction KEndingBalanceDlg::chargeTransaction()
     return d->m_tCharges;
 }
 
-bool KEndingBalanceDlg::createTransaction(MyMoneyTransaction &t, const int sign, const MyMoneyMoney& amount, const QString& category, const QDate& date)
+bool KEndingBalanceDlg::createTransaction(MyMoneyTransaction& t, const int sign, const MyMoneyMoney& amount, const QString& category, const QDateTime& date)
 {
     Q_D(KEndingBalanceDlg);
     t = MyMoneyTransaction();
@@ -369,7 +391,7 @@ bool KEndingBalanceDlg::createTransaction(MyMoneyTransaction &t, const int sign,
     MyMoneySplit s1, s2;
     MyMoneyMoney val = amount * MyMoneyMoney(sign, 1);
     try {
-        t.setPostDate(date);
+        t.setPostDateTime(date);
         t.setCommodity(d->m_account.currencyId());
 
         s1.setPayeeId(field("payeeEdit").toString());

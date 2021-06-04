@@ -63,7 +63,7 @@ public:
     int nextId() const final override;
 
 protected:
-    bool createTransaction(MyMoneyTransaction& t, const int sign, const MyMoneyMoney& amount, const QString& category, const QDate& date);
+    bool createTransaction(MyMoneyTransaction& t, const int sign, const MyMoneyMoney& amount, const QString& category, const QDateTime& date);
     MyMoneyMoney adjustedReturnValue(const MyMoneyMoney& v) const;
     void createCategory(const QString& txt, QString& id, const MyMoneyAccount& parent);
 
