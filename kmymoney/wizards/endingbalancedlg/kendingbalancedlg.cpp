@@ -95,8 +95,8 @@ KEndingBalanceDlg::KEndingBalanceDlg(const MyMoneyAccount& account, QWidget *par
         // if the last statement has been entered long enough ago (more than one month),
         // then take the last statement date and add one month and use that as statement
         // date.
-        QDate lastStatementDate = account.lastReconciliationDate();
-        if (lastStatementDate.addMonths(1) < QDate::currentDate()) {
+        QDateTime lastStatementDate = account.lastReconciliationDateTime();
+        if (lastStatementDate.addMonths(1) < QDateTime::currentDateTime()) {
             setField("statementDate", lastStatementDate.addMonths(1));
         }
 
@@ -130,7 +130,7 @@ KEndingBalanceDlg::KEndingBalanceDlg(const MyMoneyAccount& account, QWidget *par
 
     value = account.value("statementDate");
     if (!value.isEmpty())
-        setField("statementDate", QDate::fromString(value, Qt::ISODate));
+        setField("statementDate", QDateTime::fromString(value, Qt::ISODate));
 
     //FIXME: port
     d->ui->m_statementInfoPageCheckings->ui->m_lastStatementDate->setText(QString());
@@ -224,7 +224,7 @@ void KEndingBalanceDlg::slotUpdateBalances()
     for (it = transactionList.constBegin(); it != transactionList.constEnd(); ++it) {
         const MyMoneySplit& split = (*it).second;
         balance -= split.shares() * factor;
-        if ((*it).first.postDate() > field("statementDate").toDate()) {
+        if ((*it).first.postDateTime() > field("statementDate").toDateTime()) {
             tracer.printf("Reducing balances by %s because postdate of %s/%s(%s) is past statement date", qPrintable((split.shares() * factor).formatMoney(QString(), 2)), qPrintable((*it).first.id()), qPrintable(split.id()), qPrintable((*it).first.postDate().toString(Qt::ISODate)));
             endBalance -= split.shares() * factor;
             startBalance -= split.shares() * factor;
@@ -250,8 +250,8 @@ void KEndingBalanceDlg::slotUpdateBalances()
     tracer.printf("total balance = %s", qPrintable(endBalance.formatMoney(QString(), 2)));
     tracer.printf("start balance = %s", qPrintable(startBalance.formatMoney(QString(), 2)));
 
-    setField("interestDateEdit", field("statementDate").toDate());
-    setField("chargesDateEdit", field("statementDate").toDate());
+    setField("interestDateEdit", field("statementDate").toDateTime());
+    setField("chargesDateEdit", field("statementDate").toDateTime());
 }
 
 void KEndingBalanceDlg::accept()
@@ -302,6 +302,11 @@ MyMoneyMoney KEndingBalanceDlg::previousBalance() const
 QDate KEndingBalanceDlg::statementDate() const
 {
     return field("statementDate").toDate();
+}
+
+QDateTime KEndingBalanceDlg::statementDateTime() const
+{
+    return field("statementDate").toDateTime();
 }
 
 MyMoneyMoney KEndingBalanceDlg::adjustedReturnValue(const MyMoneyMoney& v) const

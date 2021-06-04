@@ -637,13 +637,13 @@ void MyMoneyStorageMgrTest::testBalance()
 {
     testAddTransactions();
 
-    QVERIFY(m->balance("A000001", QDate()).isZero());
-    QCOMPARE(m->balance("A000002", QDate()),  MyMoneyMoney(1200, 100));
-    QCOMPARE(m->balance("A000003", QDate()),  MyMoneyMoney(400, 100));
-    QCOMPARE(m->totalBalance("A000001", QDate()),  MyMoneyMoney(1600, 100));
-    QCOMPARE(m->balance("A000006", QDate(2002, 5, 9)),  MyMoneyMoney(-11600, 100));
-    QCOMPARE(m->balance("A000005", QDate(2002, 5, 10)),  MyMoneyMoney(-100000, 100));
-    QCOMPARE(m->balance("A000006", QDate(2002, 5, 10)),  MyMoneyMoney(88400, 100));
+    QVERIFY(m->balance("A000001", QDateTime()).isZero());
+    QCOMPARE(m->balance("A000002", QDateTime()), MyMoneyMoney(1200, 100));
+    QCOMPARE(m->balance("A000003", QDateTime()), MyMoneyMoney(400, 100));
+    QCOMPARE(m->totalBalance("A000001", QDateTime()), MyMoneyMoney(1600, 100));
+    QCOMPARE(m->balance("A000006", QDateTime(QDate(2002, 5, 9))), MyMoneyMoney(-11600, 100));
+    QCOMPARE(m->balance("A000005", QDateTime(QDate(2002, 5, 10))), MyMoneyMoney(-100000, 100));
+    QCOMPARE(m->balance("A000006", QDateTime(QDate(2002, 5, 10))), MyMoneyMoney(88400, 100));
 }
 
 void MyMoneyStorageMgrTest::testModifyTransaction()
@@ -669,13 +669,13 @@ void MyMoneyStorageMgrTest::testModifyTransaction()
     t.modifySplit(s);
 
     try {
-        QCOMPARE(m->balance("A000004", QDate()),  MyMoneyMoney(10000, 100));
-        QCOMPARE(m->balance("A000006", QDate()),  MyMoneyMoney(100000 - 11600, 100));
-        QCOMPARE(m->totalBalance("A000001", QDate()),  MyMoneyMoney(1600, 100));
+        QCOMPARE(m->balance("A000004", QDateTime()), MyMoneyMoney(10000, 100));
+        QCOMPARE(m->balance("A000006", QDateTime()), MyMoneyMoney(100000 - 11600, 100));
+        QCOMPARE(m->totalBalance("A000001", QDateTime()), MyMoneyMoney(1600, 100));
         m->modifyTransaction(t);
-        QCOMPARE(m->balance("A000004", QDate()),  MyMoneyMoney(11000, 100));
-        QCOMPARE(m->balance("A000006", QDate()),  MyMoneyMoney(100000 - 12600, 100));
-        QCOMPARE(m->totalBalance("A000001", QDate()),  MyMoneyMoney(1600, 100));
+        QCOMPARE(m->balance("A000004", QDateTime()), MyMoneyMoney(11000, 100));
+        QCOMPARE(m->balance("A000006", QDateTime()), MyMoneyMoney(100000 - 12600, 100));
+        QCOMPARE(m->totalBalance("A000001", QDateTime()), MyMoneyMoney(1600, 100));
     } catch (const MyMoneyException &) {
         QFAIL("Unexpected exception");
     }
@@ -684,9 +684,9 @@ void MyMoneyStorageMgrTest::testModifyTransaction()
     t.setPostDate(QDate(2002, 5, 11));
     try {
         m->modifyTransaction(t);
-        QCOMPARE(m->balance("A000004", QDate()),  MyMoneyMoney(11000, 100));
-        QCOMPARE(m->balance("A000006", QDate()),  MyMoneyMoney(100000 - 12600, 100));
-        QCOMPARE(m->totalBalance("A000001", QDate()),  MyMoneyMoney(1600, 100));
+        QCOMPARE(m->balance("A000004", QDateTime()), MyMoneyMoney(11000, 100));
+        QCOMPARE(m->balance("A000006", QDateTime()), MyMoneyMoney(100000 - 12600, 100));
+        QCOMPARE(m->totalBalance("A000001", QDateTime()), MyMoneyMoney(1600, 100));
 
         QMap<QString, QString>::ConstIterator it_k;
         QMap<QString, MyMoneyTransaction>::ConstIterator it_t;

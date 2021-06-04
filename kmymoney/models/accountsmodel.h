@@ -94,7 +94,7 @@ public:
     static QString getHeaderName(const eAccountsModel::Column column);
 
 public Q_SLOTS:
-    void slotReconcileAccount(const MyMoneyAccount &account, const QDate &reconciliationDate, const MyMoneyMoney &endingBalance);
+    void slotReconcileAccount(const MyMoneyAccount& account, const QDateTime& reconciliationDate, const MyMoneyMoney& endingBalance);
     void slotObjectAdded(eMyMoney::File::Object objType, const QString &id);
     void slotObjectModified(eMyMoney::File::Object objType, const QString &id);
     void slotObjectRemoved(eMyMoney::File::Object objType, const QString& id);

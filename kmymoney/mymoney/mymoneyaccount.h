@@ -231,6 +231,7 @@ public:
       * @see setLastReconciliationDate
       */
     QDate lastReconciliationDate() const;
+    QDateTime lastReconciliationDateTime() const;
 
     /**
       * This method is used to set the date of the last reconciliation
@@ -239,6 +240,7 @@ public:
       * @see lastReconciliationDate
       */
     void setLastReconciliationDate(const QDate& date);
+    void setLastReconciliationDateTime(const QDateTime& date);
 
     /**
       * This method returns the date the account was last modified

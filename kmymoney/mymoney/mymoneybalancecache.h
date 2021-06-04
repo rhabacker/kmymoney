@@ -38,7 +38,7 @@ public:
      * end of the day
      * @param date the date for the object
      */
-    MyMoneyBalanceCacheItem(const MyMoneyMoney& balance, const QDate& date);
+    MyMoneyBalanceCacheItem(const MyMoneyMoney& balance, const QDateTime& date);
 
     /**
      * Accessor function for the balance as a MyMoneyMoney object.
@@ -52,7 +52,8 @@ public:
      *
      * @return the date in the object
      */
-    const QDate& date() const;
+    const QDate date() const;
+    const QDateTime& dateTime() const;
 
     /**
      * Check the validity of the object
@@ -63,7 +64,7 @@ public:
 
 private:
     MyMoneyMoney m_balance;
-    QDate m_date;
+    QDateTime m_date;
 };
 
 /**
@@ -90,7 +91,7 @@ public:
      * Remove all balances on or after the date associated with an account
      * from the cache
      */
-    void clear(const QString& accountId, const QDate& date);
+    void clear(const QString& accountId, const QDateTime& date);
 
     /**
      * @return true if there are no balances in the cache, otherwise false
@@ -117,7 +118,7 @@ public:
      *
      * @return the balance of the account at the end of the date given
      */
-    MyMoneyBalanceCacheItem balance(const QString& accountId, const QDate& date) const;
+    MyMoneyBalanceCacheItem balance(const QString& accountId, const QDateTime& date) const;
 
     /**
      * This function retrieves the balance from the cache having a date less
@@ -130,7 +131,7 @@ public:
      * @return the balance of the account at the end the nearest day on or
      * before the date provided
      */
-    MyMoneyBalanceCacheItem mostRecentBalance(const QString& accountId, const QDate& date) const;
+    MyMoneyBalanceCacheItem mostRecentBalance(const QString& accountId, const QDateTime& date) const;
 
     /**
      * This function inserts the balance into the cache for the account on
@@ -141,10 +142,10 @@ public:
      * @param date the date of the balance
      * @param balance the balance of the account at the end the day
      */
-    void insert(const QString& accountId, const QDate& date, const MyMoneyMoney& balance);
+    void insert(const QString& accountId, const QDateTime& date, const MyMoneyMoney& balance);
 
 private:
-    typedef QHash<QString, QMap<QDate, MyMoneyMoney> > BalanceCacheType;
+    typedef QHash<QString, QMap<QDateTime, MyMoneyMoney>> BalanceCacheType;
     BalanceCacheType m_cache;
 };
 

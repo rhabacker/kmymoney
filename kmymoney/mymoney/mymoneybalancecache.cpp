@@ -14,8 +14,9 @@
 // ----------------------------------------------------------------------------
 // Project Includes
 
-MyMoneyBalanceCacheItem::MyMoneyBalanceCacheItem(const MyMoneyMoney& balance, const QDate& date)
-    : m_balance(balance), m_date(date)
+MyMoneyBalanceCacheItem::MyMoneyBalanceCacheItem(const MyMoneyMoney& balance, const QDateTime& date)
+    : m_balance(balance)
+    , m_date(date)
 {}
 
 const MyMoneyMoney& MyMoneyBalanceCacheItem::balance() const
@@ -23,7 +24,12 @@ const MyMoneyMoney& MyMoneyBalanceCacheItem::balance() const
     return m_balance;
 }
 
-const QDate& MyMoneyBalanceCacheItem::date() const
+const QDate MyMoneyBalanceCacheItem::date() const
+{
+    return m_date.date();
+}
+
+const QDateTime& MyMoneyBalanceCacheItem::dateTime() const
 {
     return m_date;
 }
@@ -43,14 +49,14 @@ void MyMoneyBalanceCache::clear(const QString& accountId)
     m_cache.remove(accountId);
 }
 
-void MyMoneyBalanceCache::clear(const QString& accountId, const QDate& date)
+void MyMoneyBalanceCache::clear(const QString& accountId, const QDateTime& date)
 {
     BalanceCacheType::Iterator acctPos = m_cache.find(accountId);
     if (m_cache.end() == acctPos)
         return;
 
     // Always remove QDate()
-    BalanceCacheType::mapped_type::Iterator datePos = (*acctPos).find(QDate());
+    BalanceCacheType::mapped_type::Iterator datePos = (*acctPos).find(QDateTime());
     if ((*acctPos).end() != datePos) {
         datePos = (*acctPos).erase(datePos);
     }
@@ -80,30 +86,30 @@ int MyMoneyBalanceCache::size() const
     return sum;
 }
 
-void MyMoneyBalanceCache::insert(const QString& accountId, const QDate& date, const MyMoneyMoney& balance)
+void MyMoneyBalanceCache::insert(const QString& accountId, const QDateTime& date, const MyMoneyMoney& balance)
 {
     m_cache[accountId].insert(date, balance);
 }
 
-MyMoneyBalanceCacheItem MyMoneyBalanceCache::balance(const QString& accountId, const QDate& date) const
+MyMoneyBalanceCacheItem MyMoneyBalanceCache::balance(const QString& accountId, const QDateTime& date) const
 {
     BalanceCacheType::ConstIterator acctPos = m_cache.constFind(accountId);
     if (m_cache.constEnd() == acctPos)
-        return MyMoneyBalanceCacheItem(MyMoneyMoney::minValue, QDate());
+        return MyMoneyBalanceCacheItem(MyMoneyMoney::minValue, QDateTime());
 
     BalanceCacheType::mapped_type::ConstIterator datePos = (*acctPos).constFind(date);
 
     if ((*acctPos).constEnd() == datePos)
-        return MyMoneyBalanceCacheItem(MyMoneyMoney::minValue, QDate());
+        return MyMoneyBalanceCacheItem(MyMoneyMoney::minValue, QDateTime());
 
     return MyMoneyBalanceCacheItem(datePos.value(), datePos.key());
 }
 
-MyMoneyBalanceCacheItem MyMoneyBalanceCache::mostRecentBalance(const QString& accountId, const QDate& date) const
+MyMoneyBalanceCacheItem MyMoneyBalanceCache::mostRecentBalance(const QString& accountId, const QDateTime& date) const
 {
     BalanceCacheType::ConstIterator acctPos = m_cache.constFind(accountId);
     if (m_cache.constEnd() == acctPos)
-        return MyMoneyBalanceCacheItem(MyMoneyMoney::minValue, QDate());
+        return MyMoneyBalanceCacheItem(MyMoneyMoney::minValue, QDateTime());
 
     BalanceCacheType::mapped_type::ConstIterator datePos = (*acctPos).lowerBound(date);
 
@@ -112,7 +118,7 @@ MyMoneyBalanceCacheItem MyMoneyBalanceCache::mostRecentBalance(const QString& ac
     }
 
     if ((*acctPos).constBegin() == datePos && datePos.key() > date)
-        return MyMoneyBalanceCacheItem(MyMoneyMoney::minValue, QDate());
+        return MyMoneyBalanceCacheItem(MyMoneyMoney::minValue, QDateTime());
 
     return MyMoneyBalanceCacheItem(datePos.value(), datePos.key());
 }

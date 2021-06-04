@@ -158,8 +158,8 @@ public Q_SLOTS:
      * @param endingBalance The calculated ending balance for the statement
      *                Default ist 0.
      */
-    void slotSetReconcileAccount(const MyMoneyAccount& account, const QDate& reconciliationDate, const MyMoneyMoney& endingBalance);
-    void slotSetReconcileAccount(const MyMoneyAccount& account, const QDate& reconciliationDate);
+    void slotSetReconcileAccount(const MyMoneyAccount& account, const QDateTime& reconciliationDate, const MyMoneyMoney& endingBalance);
+    void slotSetReconcileAccount(const MyMoneyAccount& account, const QDateTime& reconciliationDate);
     void slotSetReconcileAccount(const MyMoneyAccount& account);
     void slotSetReconcileAccount();
     void slotShowTransactionMenu(const MyMoneySplit &sp);

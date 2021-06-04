@@ -936,7 +936,7 @@ MyMoneyTransaction MyMoneyStorageMgr::transaction(const QString& account, const 
     return transaction(list[idx].id());
 }
 
-MyMoneyMoney MyMoneyStorageMgr::balance(const QString& id, const QDate& date) const
+MyMoneyMoney MyMoneyStorageMgr::balance(const QString& id, const QDateTime& date) const
 {
     Q_D(const MyMoneyStorageMgr);
     if (!d->m_accountList.contains(id))
@@ -951,7 +951,7 @@ MyMoneyMoney MyMoneyStorageMgr::balance(const QString& id, const QDate& date) co
         return d->calculateBalance(id, date);
 }
 
-MyMoneyMoney MyMoneyStorageMgr::totalBalance(const QString& id, const QDate& date) const
+MyMoneyMoney MyMoneyStorageMgr::totalBalance(const QString& id, const QDateTime& date) const
 {
     MyMoneyMoney result(balance(id, date));
 

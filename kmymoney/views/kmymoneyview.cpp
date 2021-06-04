@@ -527,8 +527,8 @@ void KMyMoneyView::slotTagSelected(const QString& tag, const QString& account, c
 
 void KMyMoneyView::finishReconciliation(const MyMoneyAccount& /* account */)
 {
-    Models::instance()->accountsModel()->slotReconcileAccount(MyMoneyAccount(), QDate(), MyMoneyMoney());
-    static_cast<KGlobalLedgerView*>(viewBases[View::Ledgers])->slotSetReconcileAccount(MyMoneyAccount(), QDate(), MyMoneyMoney());
+    Models::instance()->accountsModel()->slotReconcileAccount(MyMoneyAccount(), QDateTime(), MyMoneyMoney());
+    static_cast<KGlobalLedgerView*>(viewBases[View::Ledgers])->slotSetReconcileAccount(MyMoneyAccount(), QDateTime(), MyMoneyMoney());
 }
 
 void KMyMoneyView::viewAccountList(const QString& /*selectAccount*/)

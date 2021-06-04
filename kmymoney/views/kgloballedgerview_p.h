@@ -565,7 +565,7 @@ public:
             // and update the sort order
             QString sortOrder;
             QString key;
-            QDate reconciliationDate = m_reconciliationDate;
+            QDateTime reconciliationDate = m_reconciliationDate;
 
             MyMoneyTransactionFilter filter(m_currentAccount.id());
             // if it's an investment account, we also take care of
@@ -625,14 +625,14 @@ public:
                 // show scheduled transactions which have a scheduled postdate
                 // within the next 'period' days. In reconciliation mode, the
                 // period starts on the statement date.
-                QDate endDate = QDate::currentDate().addDays(period);
+                QDateTime endDate = QDateTime::currentDateTime().addDays(period);
                 if (isReconciliationAccount())
                     endDate = reconciliationDate.addDays(period);
                 QList<MyMoneySchedule> scheduleList = MyMoneyFile::instance()->scheduleList(m_currentAccount.id());
                 while (!scheduleList.isEmpty()) {
                     MyMoneySchedule& s = scheduleList.first();
                     for (;;) {
-                        if (s.isFinished() || s.adjustedNextDueDate() > endDate) {
+                        if (s.isFinished() || s.adjustedNextDueDate() > endDate.date()) {
                             break;
                         }
 
@@ -787,7 +787,8 @@ public:
                     }
 
                     if (!t->isScheduled()) {
-                        if (isReconciliationAccount() && t->transaction().postDate() <= reconciliationDate && split.reconcileFlag() == eMyMoney::Split::State::Cleared) {
+                        if (isReconciliationAccount() && t->transaction().postDateTime() <= reconciliationDate
+                            && split.reconcileFlag() == eMyMoney::Split::State::Cleared) {
                             if (split.shares().isNegative()) {
                                 payments[split.accountId()]++;
                                 paymentAmount[split.accountId()] += split.shares();
@@ -1594,7 +1595,7 @@ public:
     MousePressFilter    *m_mousePressFilter;
     KMyMoneyRegister::RegisterSearchLineWidget* m_registerSearchLine;
 //  QString              m_reconciliationAccount;
-    QDate                m_reconciliationDate;
+    QDateTime m_reconciliationDate;
     MyMoneyMoney         m_endingBalance;
     int                  m_precision;
     bool                 m_recursion;

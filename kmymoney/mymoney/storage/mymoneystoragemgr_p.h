@@ -153,8 +153,7 @@ public:
         // in case of an investment we can't just add or subtract the
         // amount of the split since we don't know about stock splits.
         // so in the case of those stocks, we simply recalculate the balance from scratch
-        acc.isInvest() ? acc.setBalance(calculateBalance(acc.id(), QDate())) :
-        acc.adjustBalance(split, reverse);
+        acc.isInvest() ? acc.setBalance(calculateBalance(acc.id(), QDateTime())) : acc.adjustBalance(split, reverse);
     }
 
     /**
@@ -222,13 +221,13 @@ public:
       * @param date return balance for specific date
       * @return balance of the account as MyMoneyMoney object
       */
-    MyMoneyMoney calculateBalance(const QString& id, const QDate& date) const
+    MyMoneyMoney calculateBalance(const QString& id, const QDateTime& date) const
     {
         Q_Q(const MyMoneyStorageMgr);
         MyMoneyMoney balance;
 
         MyMoneyTransactionFilter filter;
-        filter.setDateFilter(QDate(), date);
+        filter.setDateTimeFilter(QDateTime(), date);
         filter.setReportAllSplits(false);
 
         const auto list = q->transactionList(filter);

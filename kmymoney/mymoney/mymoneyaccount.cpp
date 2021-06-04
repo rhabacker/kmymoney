@@ -151,10 +151,22 @@ void MyMoneyAccount::setOpeningDate(const QDate& date)
 QDate MyMoneyAccount::lastReconciliationDate() const
 {
     Q_D(const MyMoneyAccount);
+    return d->m_lastReconciliationDate.date();
+}
+
+QDateTime MyMoneyAccount::lastReconciliationDateTime() const
+{
+    Q_D(const MyMoneyAccount);
     return d->m_lastReconciliationDate;
 }
 
 void MyMoneyAccount::setLastReconciliationDate(const QDate& date)
+{
+    Q_D(MyMoneyAccount);
+    d->m_lastReconciliationDate = QDateTime(date);
+}
+
+void MyMoneyAccount::setLastReconciliationDateTime(const QDateTime& date)
 {
     Q_D(MyMoneyAccount);
     d->m_lastReconciliationDate = date;

@@ -25,6 +25,7 @@ class QUrl;
 class QString;
 class QStringList;
 class QDate;
+class QDateTime;
 class QBitArray;
 
 class MyMoneyObject;
@@ -442,7 +443,7 @@ public:
       * @param date return balance for specific date
       * @return balance of the account as MyMoneyMoney object
       */
-    MyMoneyMoney balance(const QString& id, const QDate& date) const;
+    MyMoneyMoney balance(const QString& id, const QDateTime& date) const;
 
     /**
       * This method is used to return the actual balance of an account
@@ -455,7 +456,7 @@ public:
       * @param date return balance for specific date
       * @return balance of the account as MyMoneyMoney object
       */
-    MyMoneyMoney totalBalance(const QString& id, const QDate& date) const;
+    MyMoneyMoney totalBalance(const QString& id, const QDateTime& date) const;
 
     /**
       * Returns the institution of a given ID

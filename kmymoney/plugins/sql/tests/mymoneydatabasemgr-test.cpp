@@ -947,9 +947,9 @@ void MyMoneyStorageMgrTest::testBalance()
     testAddTransactions();
 
     try {
-        QVERIFY(m->balance("A000001", QDate()).isZero());
-        QCOMPARE(m->balance("A000002", QDate()), MyMoneyMoney(1200, 100));
-        QCOMPARE(m->balance("A000003", QDate()), MyMoneyMoney(400, 100));
+        QVERIFY(m->balance("A000001", QDateTime()).isZero());
+        QCOMPARE(m->balance("A000002", QDateTime()), MyMoneyMoney(1200, 100));
+        QCOMPARE(m->balance("A000003", QDateTime()), MyMoneyMoney(400, 100));
         //Add a transaction to zero account A000003
         MyMoneyTransaction t1;
         MyMoneySplit s;
@@ -973,11 +973,11 @@ void MyMoneyStorageMgrTest::testBalance()
         m->addTransaction(t1);
         ft.commit();
 
-        QVERIFY(m->balance("A000003", QDate()).isZero());
-        QCOMPARE(m->totalBalance("A000001", QDate()), MyMoneyMoney(1600, 100));
-        QCOMPARE(m->balance("A000006", QDate(2002, 5, 9)), MyMoneyMoney(-11600, 100));
-        QCOMPARE(m->balance("A000005", QDate(2002, 5, 10)), MyMoneyMoney(-100000, 100));
-        QCOMPARE(m->balance("A000006", QDate(2002, 5, 10)), MyMoneyMoney(88400, 100));
+        QVERIFY(m->balance("A000003", QDateTime()).isZero());
+        QCOMPARE(m->totalBalance("A000001", QDateTime()), MyMoneyMoney(1600, 100));
+        QCOMPARE(m->balance("A000006", QDateTime(QDate(2002, 5, 9))), MyMoneyMoney(-11600, 100));
+        QCOMPARE(m->balance("A000005", QDateTime(QDate(2002, 5, 10))), MyMoneyMoney(-100000, 100));
+        QCOMPARE(m->balance("A000006", QDateTime(QDate(2002, 5, 10))), MyMoneyMoney(88400, 100));
     } catch (const MyMoneyException &e) {
         unexpectedException(e);
     }
@@ -1016,17 +1016,17 @@ void MyMoneyStorageMgrTest::testModifyTransaction()
     QVERIFY(ch.value("Key") == "Value");
 
     try {
-        QVERIFY(m->balance("A000004", QDate()) == MyMoneyMoney(10000, 100));
-        QVERIFY(m->balance("A000006", QDate()) == MyMoneyMoney(100000 - 11600, 100));
-        QVERIFY(m->totalBalance("A000001", QDate()) == MyMoneyMoney(1600, 100));
+        QVERIFY(m->balance("A000004", QDateTime()) == MyMoneyMoney(10000, 100));
+        QVERIFY(m->balance("A000006", QDateTime()) == MyMoneyMoney(100000 - 11600, 100));
+        QVERIFY(m->totalBalance("A000001", QDateTime()) == MyMoneyMoney(1600, 100));
         MyMoneyFileTransaction ft;
         m->modifyTransaction(t);
         ft.commit();
         ch = m->account("A000006");
         QVERIFY(ch.value("Key") == "Value");
-        QVERIFY(m->balance("A000004", QDate()) == MyMoneyMoney(11000, 100));
-        QVERIFY(m->balance("A000006", QDate()) == MyMoneyMoney(100000 - 12600, 100));
-        QVERIFY(m->totalBalance("A000001", QDate()) == MyMoneyMoney(1600, 100));
+        QVERIFY(m->balance("A000004", QDateTime()) == MyMoneyMoney(11000, 100));
+        QVERIFY(m->balance("A000006", QDateTime()) == MyMoneyMoney(100000 - 12600, 100));
+        QVERIFY(m->totalBalance("A000001", QDateTime()) == MyMoneyMoney(1600, 100));
     } catch (const MyMoneyException &e) {
         unexpectedException(e);
     }
@@ -1039,9 +1039,9 @@ void MyMoneyStorageMgrTest::testModifyTransaction()
         MyMoneyFileTransaction ft;
         m->modifyTransaction(t);
         ft.commit();
-        QVERIFY(m->balance("A000004", QDate()) == MyMoneyMoney(11000, 100));
-        QVERIFY(m->balance("A000006", QDate()) == MyMoneyMoney(100000 - 12600, 100));
-        QVERIFY(m->totalBalance("A000001", QDate()) == MyMoneyMoney(1600, 100));
+        QVERIFY(m->balance("A000004", QDateTime()) == MyMoneyMoney(11000, 100));
+        QVERIFY(m->balance("A000006", QDateTime()) == MyMoneyMoney(100000 - 12600, 100));
+        QVERIFY(m->totalBalance("A000001", QDateTime()) == MyMoneyMoney(1600, 100));
 
         //QMap<QString, QString>::ConstIterator it_k;
         MyMoneyTransactionFilter f;
@@ -1113,11 +1113,11 @@ void MyMoneyStorageMgrTest::testModifyTransaction()
 
     ch = m->account("A000005");
     QVERIFY(ch.balance() == MyMoneyMoney(-100000 - 10000, 100));
-    QVERIFY(m->balance("A000005", QDate()) == MyMoneyMoney(-100000 - 10000, 100));
+    QVERIFY(m->balance("A000005", QDateTime()) == MyMoneyMoney(-100000 - 10000, 100));
 
     ch = m->account("A000006");
     QVERIFY(ch.balance() == MyMoneyMoney(100000 - 12600 + 10000, 100));
-    QVERIFY(m->balance("A000006", QDate()) == MyMoneyMoney(100000 - 12600 + 10000, 100));
+    QVERIFY(m->balance("A000006", QDateTime()) == MyMoneyMoney(100000 - 12600 + 10000, 100));
 
     // Oops, the income was classified as Salary, but should have been
     // a refund from the grocery store.
@@ -1130,16 +1130,15 @@ void MyMoneyStorageMgrTest::testModifyTransaction()
     // Make sure the account balances got updated correctly.
     ch = m->account("A000004");
     QVERIFY(ch.balance() == MyMoneyMoney(11000 - 10000, 100));
-    QVERIFY(m->balance("A000004", QDate()) == MyMoneyMoney(11000 - 10000, 100));
+    QVERIFY(m->balance("A000004", QDateTime()) == MyMoneyMoney(11000 - 10000, 100));
 
     ch = m->account("A000005");
-    QVERIFY(m->balance("A000005", QDate()) == MyMoneyMoney(-100000, 100));
+    QVERIFY(m->balance("A000005", QDateTime()) == MyMoneyMoney(-100000, 100));
     QVERIFY(ch.balance() == MyMoneyMoney(-100000, 100));
 
     ch = m->account("A000006");
     QVERIFY(ch.balance() == MyMoneyMoney(100000 - 12600 + 10000, 100));
-    QVERIFY(m->balance("A000006", QDate()) == MyMoneyMoney(100000 - 12600 + 10000, 100));
-
+    QVERIFY(m->balance("A000006", QDateTime()) == MyMoneyMoney(100000 - 12600 + 10000, 100));
 }
 
 

@@ -168,6 +168,7 @@ public:
       * @param to   to date
       */
     void setDateFilter(const QDate& from, const QDate& to);
+    void setDateTimeFilter(const QDateTime& from, const QDateTime& to);
 
     void setDateFilter(eMyMoney::TransactionFilter::Date range);
 
@@ -341,6 +342,7 @@ public:
       * @return returns m_fromDate
       */
     QDate fromDate() const;
+    QDateTime fromDateTime() const;
 
     /**
       * This method returns the to date set in the filter. If
@@ -350,6 +352,7 @@ public:
       * @return returns m_toDate
       */
     QDate toDate() const;
+    QDateTime toDateTime() const;
 
     /**
       * This method is used to return information about the
@@ -404,6 +407,7 @@ public:
       * @return true if a date filter is set
       */
     bool dateFilter(QDate& from, QDate& to) const;
+    bool dateTimeFilter(QDateTime& from, QDateTime& to) const;
 
     /**
       * This method is used to return information about the

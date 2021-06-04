@@ -64,7 +64,7 @@ public:
     QHash<int, QString>      m_types;
     QHash<int, QString>      m_validity;
     QString             m_fromNr, m_toNr;
-    QDate               m_fromDate, m_toDate;
+    QDateTime m_fromDate, m_toDate;
     MyMoneyMoney        m_fromAmount, m_toAmount;
 };
 
@@ -105,8 +105,8 @@ void MyMoneyTransactionFilter::clear()
     d->m_types.clear();
     d->m_states.clear();
     d->m_validity.clear();
-    d->m_fromDate = QDate();
-    d->m_toDate = QDate();
+    d->m_fromDate = QDateTime();
+    d->m_toDate = QDateTime();
 }
 
 void MyMoneyTransactionFilter::clearAccountFilter()
@@ -167,6 +167,14 @@ void MyMoneyTransactionFilter::addCategory(const QString& id)
 }
 
 void MyMoneyTransactionFilter::setDateFilter(const QDate& from, const QDate& to)
+{
+    Q_D(MyMoneyTransactionFilter);
+    d->m_filterSet.setFlag(dateFilterActive, from.isValid() | to.isValid());
+    d->m_fromDate = QDateTime(from);
+    d->m_toDate = QDateTime(to);
+}
+
+void MyMoneyTransactionFilter::setDateTimeFilter(const QDateTime& from, const QDateTime& to)
 {
     Q_D(MyMoneyTransactionFilter);
     d->m_filterSet.setFlag(dateFilterActive, from.isValid() | to.isValid());
@@ -314,10 +322,8 @@ QVector<MyMoneySplit> MyMoneyTransactionFilter::matchingSplits(const MyMoneyTran
 
     // check the date range
     if (filter & dateFilterActive) {
-        if ((d->m_fromDate != QDate() &&
-                transaction.postDate() < d->m_fromDate) ||
-                (d->m_toDate != QDate() &&
-                 transaction.postDate() > d->m_toDate)) {
+        if ((d->m_fromDate != QDateTime() && transaction.postDateTime() < d->m_fromDate)
+            || (d->m_toDate != QDateTime() && transaction.postDateTime() > d->m_toDate)) {
             return matchingSplits;
         }
     }
@@ -523,10 +529,22 @@ QVector<MyMoneySplit> MyMoneyTransactionFilter::matchingSplits(const MyMoneyTran
 QDate MyMoneyTransactionFilter::fromDate() const
 {
     Q_D(const MyMoneyTransactionFilter);
-    return d->m_fromDate;
+    return d->m_fromDate.date();
 }
 
 QDate MyMoneyTransactionFilter::toDate() const
+{
+    Q_D(const MyMoneyTransactionFilter);
+    return d->m_toDate.date();
+}
+
+QDateTime MyMoneyTransactionFilter::fromDateTime() const
+{
+    Q_D(const MyMoneyTransactionFilter);
+    return d->m_fromDate;
+}
+
+QDateTime MyMoneyTransactionFilter::toDateTime() const
 {
     Q_D(const MyMoneyTransactionFilter);
     return d->m_toDate;
@@ -664,6 +682,14 @@ bool MyMoneyTransactionFilter::includesTag(const QString& tag) const
 }
 
 bool MyMoneyTransactionFilter::dateFilter(QDate& from, QDate& to) const
+{
+    Q_D(const MyMoneyTransactionFilter);
+    from = d->m_fromDate.date();
+    to = d->m_toDate.date();
+    return d->m_filterSet.testFlag(dateFilterActive);
+}
+
+bool MyMoneyTransactionFilter::dateTimeFilter(QDateTime& from, QDateTime& to) const
 {
     Q_D(const MyMoneyTransactionFilter);
     from = d->m_fromDate;

@@ -1076,7 +1076,7 @@ public:
             //FIXME: Using exceptions for branching always feels like a kludge.
             //       Look for a better way.
             try {
-                MyMoneyMoney bal = m_storage->balance(a.id(), QDate());
+                MyMoneyMoney bal = m_storage->balance(a.id(), QDateTime());
                 balanceList << bal.toString();
                 balanceFormattedList << bal.formatMoney("", -1, false);
             } catch (const MyMoneyException &) {

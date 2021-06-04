@@ -60,7 +60,7 @@ const QString MyMoneyFile::AccountSeparator = QChar(':');
 
 MyMoneyFile MyMoneyFile::file;
 
-typedef QList<std::pair<QString, QDate> > BalanceNotifyList;
+typedef QList<std::pair<QString, QDateTime>> BalanceNotifyList;
 typedef QMap<QString, bool> CacheNotifyList;
 
 /// @todo make this template based
@@ -161,7 +161,8 @@ public:
       * @param reload reload the object (@c true) or not (@c false). The default is @c true
       * @see attach, detach
       */
-    void addCacheNotification(const QString& id, const QDate& date) {
+    void addCacheNotification(const QString& id, const QDateTime& date)
+    {
         if (!id.isEmpty())
             m_balanceNotifyList.append(std::make_pair(id, date));
     }
@@ -540,7 +541,7 @@ void MyMoneyFile::modifyTransaction(const MyMoneyTransaction& transaction)
     // and mark all accounts that are referenced
     const auto splits2 = tr.splits();
     foreach (const auto& split, splits2)
-        d->addCacheNotification(split.accountId(), tr.postDate());
+        d->addCacheNotification(split.accountId(), tr.postDateTime());
 
     // make sure the value is rounded to the accounts precision
     fixSplitPrecision(tCopy);
@@ -551,7 +552,7 @@ void MyMoneyFile::modifyTransaction(const MyMoneyTransaction& transaction)
     // and mark all accounts that are referenced
     const auto splits3 = tCopy.splits();
     for (const auto& split : splits3)
-        d->addCacheNotification(split.accountId(), tCopy.postDate());
+        d->addCacheNotification(split.accountId(), tCopy.postDateTime());
 
     d->m_changeSet += MyMoneyNotification(File::Mode::Modify, transaction);
 }
@@ -686,7 +687,7 @@ void MyMoneyFile::removeTransaction(const MyMoneyTransaction& transaction)
         auto acc = account(split.accountId());
         if (acc.isClosed())
             throw MYMONEYEXCEPTION(QString::fromLatin1("Cannot remove transaction that references a closed account."));
-        d->addCacheNotification(split.accountId(), tr.postDate());
+        d->addCacheNotification(split.accountId(), tr.postDateTime());
         //FIXME-ALEX Do I need to add d->addCacheNotification(split.tagList()); ??
     }
 
@@ -1284,7 +1285,7 @@ void MyMoneyFile::addTransaction(MyMoneyTransaction& transaction)
     // scan the splits again to update notification list
     const auto splits2 = transaction.splits();
     for (const auto& split : splits2)
-        d->addCacheNotification(split.accountId(), transaction.postDate());
+        d->addCacheNotification(split.accountId(), transaction.postDateTime());
 
     d->m_changeSet += MyMoneyNotification(File::Mode::Add, transaction);
 }
@@ -1535,6 +1536,11 @@ unsigned int MyMoneyFile::institutionCount() const
 
 MyMoneyMoney MyMoneyFile::balance(const QString& id, const QDate& date) const
 {
+    return balance(id, QDateTime(date));
+}
+
+MyMoneyMoney MyMoneyFile::balance(const QString& id, const QDateTime& date) const
+{
     if (date.isValid()) {
         MyMoneyBalanceCacheItem bal = d->m_balanceCache.balance(id, date);
         if (bal.isValid())
@@ -1554,10 +1560,10 @@ MyMoneyMoney MyMoneyFile::balance(const QString& id, const QDate& date) const
 
 MyMoneyMoney MyMoneyFile::balance(const QString& id) const
 {
-    return balance(id, QDate());
+    return balance(id, QDateTime());
 }
 
-MyMoneyMoney MyMoneyFile::clearedBalance(const QString &id, const QDate& date) const
+MyMoneyMoney MyMoneyFile::clearedBalance(const QString& id, const QDateTime& date) const
 {
     MyMoneyMoney cleared;
     QList<MyMoneyTransaction> list;
@@ -1571,7 +1577,7 @@ MyMoneyMoney MyMoneyFile::clearedBalance(const QString &id, const QDate& date) c
 
     MyMoneyTransactionFilter filter;
     filter.addAccount(id);
-    filter.setDateFilter(QDate(), date);
+    filter.setDateTimeFilter(QDateTime(), date);
     filter.setReportAllSplits(false);
     filter.addState((int)TransactionFilter::State::NotReconciled);
     transactionList(list, filter);
@@ -1588,7 +1594,7 @@ MyMoneyMoney MyMoneyFile::clearedBalance(const QString &id, const QDate& date) c
     return cleared * factor;
 }
 
-MyMoneyMoney MyMoneyFile::totalBalance(const QString& id, const QDate& date) const
+MyMoneyMoney MyMoneyFile::totalBalance(const QString& id, const QDateTime& date) const
 {
     d->checkStorage();
 
@@ -1597,7 +1603,7 @@ MyMoneyMoney MyMoneyFile::totalBalance(const QString& id, const QDate& date) con
 
 MyMoneyMoney MyMoneyFile::totalBalance(const QString& id) const
 {
-    return totalBalance(id, QDate());
+    return totalBalance(id, QDateTime());
 }
 
 void MyMoneyFile::warningMissingRate(const QString& fromId, const QString& toId) const

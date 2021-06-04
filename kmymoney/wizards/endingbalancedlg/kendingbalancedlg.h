@@ -49,6 +49,7 @@ public:
     MyMoneyMoney endingBalance() const;
     MyMoneyMoney previousBalance() const;
     QDate statementDate() const;
+    QDateTime statementDateTime() const;
 
     MyMoneyTransaction interestTransaction();
     MyMoneyTransaction chargeTransaction();

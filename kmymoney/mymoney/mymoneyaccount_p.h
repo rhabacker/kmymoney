@@ -91,7 +91,7 @@ public:
       * This member variable keeps the date of the last
       * reconciliation of this account
       */
-    QDate m_lastReconciliationDate;
+    QDateTime m_lastReconciliationDate;
 
     /**
       * This member holds the ID's of all sub-ordinate accounts

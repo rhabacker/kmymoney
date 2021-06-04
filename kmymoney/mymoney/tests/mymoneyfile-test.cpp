@@ -1312,7 +1312,7 @@ void MyMoneyFileTest::testBalanceTotal()
         // check totalBalance() and balance() with combinations of parameters
         QCOMPARE(m->totalBalance("A000001"), MyMoneyMoney(-1000, 100));
         QCOMPARE(m->totalBalance("A000002"), MyMoneyMoney(-2000, 100));
-        QVERIFY(m->totalBalance("A000002", QDate(2002, 1, 15)).isZero());
+        QVERIFY(m->totalBalance("A000002", QDateTime(QDate(2002, 1, 15))).isZero());
 
         QCOMPARE(m->balance("A000001"), MyMoneyMoney(-1000, 100));
         QCOMPARE(m->balance("A000002"), MyMoneyMoney(-1000, 100));
@@ -2530,14 +2530,13 @@ void MyMoneyFileTest::testClearedBalance()
         QCOMPARE(m->balance("A000001", QDate(2002, 2, 4)), MyMoneyMoney(-1000, 100));
         QCOMPARE(m->balance("A000002", QDate(2002, 2, 4)), MyMoneyMoney(-3000, 100));
         // Date of last cleared transaction
-        QCOMPARE(m->clearedBalance("A000002", QDate(2002, 2, 1)), MyMoneyMoney(-1000, 100));
+        QCOMPARE(m->clearedBalance("A000002", QDateTime(QDate(2002, 2, 1))), MyMoneyMoney(-1000, 100));
 
         // Date of last transaction
-        QCOMPARE(m->balance("A000002", QDate(2002, 2, 4)), MyMoneyMoney(-3000, 100));
+        QCOMPARE(m->balance("A000002", QDateTime(QDate(2002, 2, 4))), MyMoneyMoney(-3000, 100));
 
         // Date before first transaction
-        QVERIFY(m->clearedBalance("A000002", QDate(2002, 1, 15)).isZero());
-
+        QVERIFY(m->clearedBalance("A000002", QDateTime(QDate(2002, 1, 15))).isZero());
 
     } catch (const MyMoneyException &) {
         QFAIL("Unexpected exception!");

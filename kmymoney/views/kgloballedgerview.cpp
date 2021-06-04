@@ -477,7 +477,7 @@ void KGlobalLedgerView::resizeEvent(QResizeEvent* ev)
     KMyMoneyViewBase::resizeEvent(ev);
 }
 
-void KGlobalLedgerView::slotSetReconcileAccount(const MyMoneyAccount& acc, const QDate& reconciliationDate, const MyMoneyMoney& endingBalance)
+void KGlobalLedgerView::slotSetReconcileAccount(const MyMoneyAccount& acc, const QDateTime& reconciliationDate, const MyMoneyMoney& endingBalance)
 {
     Q_D(KGlobalLedgerView);
     if(d->m_needLoad)
@@ -511,19 +511,19 @@ void KGlobalLedgerView::slotSetReconcileAccount(const MyMoneyAccount& acc, const
     }
 }
 
-void KGlobalLedgerView::slotSetReconcileAccount(const MyMoneyAccount& acc, const QDate& reconciliationDate)
+void KGlobalLedgerView::slotSetReconcileAccount(const MyMoneyAccount& acc, const QDateTime& reconciliationDate)
 {
     slotSetReconcileAccount(acc, reconciliationDate, MyMoneyMoney());
 }
 
 void KGlobalLedgerView::slotSetReconcileAccount(const MyMoneyAccount& acc)
 {
-    slotSetReconcileAccount(acc, QDate(), MyMoneyMoney());
+    slotSetReconcileAccount(acc, QDateTime(), MyMoneyMoney());
 }
 
 void KGlobalLedgerView::slotSetReconcileAccount()
 {
-    slotSetReconcileAccount(MyMoneyAccount(), QDate(), MyMoneyMoney());
+    slotSetReconcileAccount(MyMoneyAccount(), QDateTime(), MyMoneyMoney());
 }
 
 void KGlobalLedgerView::slotShowTransactionMenu(const MyMoneySplit& sp)
@@ -549,13 +549,13 @@ void KGlobalLedgerView::slotContinueReconciliation()
                 if (KMyMoneySettings::autoReconciliation()) {
                     MyMoneyMoney startBalance = d->m_endingBalanceDlg->previousBalance();
                     MyMoneyMoney endBalance = d->m_endingBalanceDlg->endingBalance();
-                    QDate endDate = d->m_endingBalanceDlg->statementDate();
+                    QDateTime endDate = d->m_endingBalanceDlg->statementDateTime();
 
                     QList<QPair<MyMoneyTransaction, MyMoneySplit> > transactionList;
                     MyMoneyTransactionFilter filter(account.id());
                     filter.addState((int)eMyMoney::TransactionFilter::State::Cleared);
                     filter.addState((int)eMyMoney::TransactionFilter::State::NotReconciled);
-                    filter.setDateFilter(QDate(), endDate);
+                    filter.setDateTimeFilter(QDateTime(), endDate);
                     filter.setConsiderCategory(false);
                     filter.setReportAllSplits(true);
                     file->transactionList(transactionList, filter);
@@ -588,8 +588,9 @@ void KGlobalLedgerView::slotContinueReconciliation()
                         account.isAssetLiability()) {
                     if (!isVisible())
                         emit customActionRequested(View::Ledgers, eView::Action::SwitchView);
-                    Models::instance()->accountsModel()->slotReconcileAccount(account, d->m_endingBalanceDlg->statementDate(), d->m_endingBalanceDlg->endingBalance());
-                    slotSetReconcileAccount(account, d->m_endingBalanceDlg->statementDate(), d->m_endingBalanceDlg->endingBalance());
+                    Models::instance()->accountsModel()->slotReconcileAccount(
+                        account, d->m_endingBalanceDlg->statementDateTime(), d->m_endingBalanceDlg->endingBalance());
+                    slotSetReconcileAccount(account, d->m_endingBalanceDlg->statementDateTime(), d->m_endingBalanceDlg->endingBalance());
 
                     // check if the user requests us to create interest
                     // or charge transactions.
@@ -1968,12 +1969,12 @@ void KGlobalLedgerView::slotFinishReconciliation()
         MyMoneyTransactionFilter filter(d->m_reconciliationAccount.id());
         filter.addState((int)eMyMoney::TransactionFilter::State::Cleared);
         filter.addState((int)eMyMoney::TransactionFilter::State::NotReconciled);
-        filter.setDateFilter(QDate(), d->m_endingBalanceDlg->statementDate());
+        filter.setDateTimeFilter(QDateTime(), d->m_endingBalanceDlg->statementDateTime());
         filter.setConsiderCategory(false);
         filter.setReportAllSplits(true);
         file->transactionList(transactionList, filter);
 
-        auto balance = MyMoneyFile::instance()->balance(d->m_reconciliationAccount.id(), d->m_endingBalanceDlg->statementDate());
+        auto balance = MyMoneyFile::instance()->balance(d->m_reconciliationAccount.id(), d->m_endingBalanceDlg->statementDateTime());
         MyMoneyMoney actBalance, clearedBalance;
         actBalance = clearedBalance = balance;
 
@@ -2004,16 +2005,17 @@ void KGlobalLedgerView::slotFinishReconciliation()
         // only update the last statement balance here, if we haven't a newer one due
         // to download of online statements.
         if (d->m_reconciliationAccount.value("lastImportedTransactionDate").isEmpty()
-                || QDate::fromString(d->m_reconciliationAccount.value("lastImportedTransactionDate"), Qt::ISODate) < d->m_endingBalanceDlg->statementDate()) {
+            || QDateTime::fromString(d->m_reconciliationAccount.value("lastImportedTransactionDate"), Qt::ISODate)
+                < d->m_endingBalanceDlg->statementDateTime()) {
             d->m_reconciliationAccount.setValue("lastStatementBalance", d->m_endingBalanceDlg->endingBalance().toString());
             // in case we override the last statement balance here, we have to make sure
             // that we don't show the online balance anymore, as it might be different
             d->m_reconciliationAccount.deletePair("lastImportedTransactionDate");
         }
-        d->m_reconciliationAccount.setLastReconciliationDate(d->m_endingBalanceDlg->statementDate());
+        d->m_reconciliationAccount.setLastReconciliationDateTime(d->m_endingBalanceDlg->statementDateTime());
 
         // keep a record of this reconciliation
-        d->m_reconciliationAccount.addReconciliation(d->m_endingBalanceDlg->statementDate(), d->m_endingBalanceDlg->endingBalance());
+        d->m_reconciliationAccount.addReconciliation(d->m_endingBalanceDlg->statementDateTime(), d->m_endingBalanceDlg->endingBalance());
 
         d->m_reconciliationAccount.deletePair("lastReconciledBalance");
         d->m_reconciliationAccount.deletePair("statementBalance");
@@ -2045,7 +2047,7 @@ void KGlobalLedgerView::slotFinishReconciliation()
                 // might have changed it already with another split
                 MyMoneyTransaction t = file->transaction((*it).first.id());
                 sp.setReconcileFlag(eMyMoney::Split::State::Reconciled);
-                sp.setReconcileDate(d->m_endingBalanceDlg->statementDate());
+                sp.setReconcileDateTime(d->m_endingBalanceDlg->statementDateTime());
                 t.modifySplit(sp);
 
                 // update the engine ...
@@ -2071,20 +2073,19 @@ void KGlobalLedgerView::slotFinishReconciliation()
               * @param transactionList reference to QList of QPair containing all
               *        transaction/split pairs processed by the reconciliation.
               */
-            emit selectByVariant(QVariantList {
-                QVariant::fromValue(d->m_reconciliationAccount),
-                QVariant::fromValue(d->m_endingBalanceDlg->statementDate()),
-                QVariant::fromValue(d->m_endingBalanceDlg->previousBalance()),
-                QVariant::fromValue(d->m_endingBalanceDlg->endingBalance()),
-                QVariant::fromValue(transactionList)
-            }, eView::Intent::AccountReconciled);
+            emit selectByVariant(QVariantList{QVariant::fromValue(d->m_reconciliationAccount),
+                                              QVariant::fromValue(d->m_endingBalanceDlg->statementDateTime()),
+                                              QVariant::fromValue(d->m_endingBalanceDlg->previousBalance()),
+                                              QVariant::fromValue(d->m_endingBalanceDlg->endingBalance()),
+                                              QVariant::fromValue(transactionList)},
+                                 eView::Intent::AccountReconciled);
 
         } catch (const MyMoneyException &) {
             qDebug("Unexpected exception when setting cleared to reconcile");
         }
         // Turn off reconciliation mode
-        Models::instance()->accountsModel()->slotReconcileAccount(MyMoneyAccount(), QDate(), MyMoneyMoney());
-        slotSetReconcileAccount(MyMoneyAccount(), QDate(), MyMoneyMoney());
+        Models::instance()->accountsModel()->slotReconcileAccount(MyMoneyAccount(), QDateTime(), MyMoneyMoney());
+        slotSetReconcileAccount(MyMoneyAccount(), QDateTime(), MyMoneyMoney());
     }
     // Turn off reconciliation mode
     d->m_reconciliationAccount = MyMoneyAccount();
@@ -2111,7 +2112,7 @@ void KGlobalLedgerView::slotPostponeReconciliation()
 
         d->m_reconciliationAccount.setValue("lastReconciledBalance", d->m_endingBalanceDlg->previousBalance().toString());
         d->m_reconciliationAccount.setValue("statementBalance", d->m_endingBalanceDlg->endingBalance().toString());
-        d->m_reconciliationAccount.setValue("statementDate", d->m_endingBalanceDlg->statementDate().toString(Qt::ISODate));
+        d->m_reconciliationAccount.setValue("statementDate", d->m_endingBalanceDlg->statementDateTime().toString(Qt::ISODate));
 
         try {
             file->modifyAccount(d->m_reconciliationAccount);
@@ -2126,8 +2127,8 @@ void KGlobalLedgerView::slotPostponeReconciliation()
             d->m_reconciliationAccount = file->account(d->m_reconciliationAccount.id());
         }
         // Turn off reconciliation mode
-        Models::instance()->accountsModel()->slotReconcileAccount(MyMoneyAccount(), QDate(), MyMoneyMoney());
-        slotSetReconcileAccount(MyMoneyAccount(), QDate(), MyMoneyMoney());
+        Models::instance()->accountsModel()->slotReconcileAccount(MyMoneyAccount(), QDateTime(), MyMoneyMoney());
+        slotSetReconcileAccount(MyMoneyAccount(), QDateTime(), MyMoneyMoney());
         d->loadView();
     }
 }

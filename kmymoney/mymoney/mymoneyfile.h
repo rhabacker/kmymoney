@@ -618,6 +618,7 @@ public:
       * @return balance of the account as MyMoneyMoney object
       */
     MyMoneyMoney balance(const QString& id, const QDate& date) const;
+    MyMoneyMoney balance(const QString& id, const QDateTime& date) const;
     MyMoneyMoney balance(const QString& id) const;
 
     /**
@@ -630,8 +631,7 @@ public:
       * @param date return cleared balance for specific date
       * @return balance of the account as MyMoneyMoney object
       */
-    MyMoneyMoney clearedBalance(const QString& id, const QDate& date) const;
-
+    MyMoneyMoney clearedBalance(const QString& id, const QDateTime& date) const;
 
     /**
       * This method is used to return the actual balance of an account
@@ -644,7 +644,7 @@ public:
       * @param date return balance for specific date (default = QDate())
       * @return balance of the account as MyMoneyMoney object
       */
-    MyMoneyMoney totalBalance(const QString& id, const QDate& date) const;
+    MyMoneyMoney totalBalance(const QString& id, const QDateTime& date) const;
     MyMoneyMoney totalBalance(const QString& id) const;
 
     /**
