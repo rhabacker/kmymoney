@@ -41,6 +41,7 @@ set(libdialogs_a_SOURCES
   stdtransactioneditor.cpp
   transactionmatcher.cpp
   ksaveasquestion.cpp
+  reconciliationentrydlg.cpp
 )
 
 set(dialogs_HEADERS
@@ -68,6 +69,7 @@ set(dialogs_UI
   ktemplateexportdlg.ui
   kupdatestockpricedlg.ui
   ksaveasquestion.ui
+  reconciliationentrydlg.ui
 )
 
 ki18n_wrap_ui(libdialogs_a_SOURCES ${dialogs_UI} )

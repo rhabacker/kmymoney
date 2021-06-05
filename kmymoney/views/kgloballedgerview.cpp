@@ -32,9 +32,11 @@
 // ----------------------------------------------------------------------------
 // Project Includes
 
+#include "amountedit.h"
 #include "mymoneyaccount.h"
 #include "mymoneyfile.h"
 #include "kmymoneyaccountcombo.h"
+#include "kmymoneydateinput.h"
 #include "kmymoneypayeecombo.h"
 #include "keditscheduledlg.h"
 #include "kendingbalancedlg.h"
@@ -51,6 +53,7 @@
 #include "mymoneytransaction.h"
 #include "mymoneytransactionfilter.h"
 #include "mymoneysplit.h"
+#include "reconciliationentrydlg.h"
 #include "transaction.h"
 #include "transactionform.h"
 #include "widgetenums.h"
@@ -80,6 +83,8 @@ KGlobalLedgerView::KGlobalLedgerView(QWidget *parent) :
         {Action::GoToAccount,               [this](){ KGlobalLedgerView::slotGoToAccount(); }},
         {Action::MatchTransaction,          [this](){ KGlobalLedgerView::slotMatchTransactions(); }},
         {Action::CombineTransactions,       [this](){ KGlobalLedgerView::slotCombineTransactions(); }},
+        {Action::AddReconciliationEntry,    [this](){ KGlobalLedgerView::slotAddReconciliationEntry(); }},
+        {Action::EditReconciliationEntry,   [this](){ KGlobalLedgerView::slotEditReconciliationEntry(); }},
         {Action::ToggleReconciliationFlag,  [this](){ KGlobalLedgerView::slotToggleReconciliationFlag(); }},
         {Action::MarkCleared,               [this](){ KGlobalLedgerView::slotMarkCleared(); }},
         {Action::MarkReconciled,            [this](){ KGlobalLedgerView::slotMarkReconciled(); }},
@@ -218,6 +223,8 @@ void KGlobalLedgerView::updateActions(const MyMoneyObject& obj)
         Action::PostponeReconciliation,
         Action::OpenAccount,
         Action::NewTransaction,
+        Action::AddReconciliationEntry,
+        Action::EditReconciliationEntry,
     };
 
     for (const auto& a : actionsToBeDisabled)
@@ -225,6 +232,9 @@ void KGlobalLedgerView::updateActions(const MyMoneyObject& obj)
 
     auto b = acc.isClosed() ? false : true;
     pMenus[Menu::MoveTransaction]->setEnabled(b);
+
+    pActions[Action::AddReconciliationEntry]->setEnabled(true);
+    pActions[Action::EditReconciliationEntry]->setEnabled(true);
 
     QString tooltip;
     pActions[Action::NewTransaction]->setEnabled(canCreateTransactions(tooltip) || !isVisible());
@@ -1586,6 +1596,65 @@ void KGlobalLedgerView::slotEnterTransaction()
             }
         }
         updateLedgerActionsInternal();
+    }
+}
+
+void KGlobalLedgerView::slotAddReconciliationEntry()
+{
+    Q_D(KGlobalLedgerView);
+    KMyMoneyRegister::SelectedTransactions list = d->m_selectedTransactions;
+    if (list.size() > 1) {
+        slotStatusMsg(i18n("Only one transaction supported"));
+        return;
+    }
+
+    const KMyMoneyRegister::SelectedTransaction& st = list.at(0);
+    MyMoneyFileTransaction ft;
+    MyMoneyFile* file = MyMoneyFile::instance();
+    MyMoneyAccount acc = file->account(st.split().accountId());
+
+    QPointer<ReconciliationEntryDlg> dlg = new ReconciliationEntryDlg(st.transaction().postDate(), MyMoneyMoney(), this);
+    if (dlg->exec() == QDialog::Accepted && dlg != 0) {
+        if (acc.reconciliationHistory().keys().contains(dlg->date())) {
+            slotStatusMsg(i18n("Balance tag is already present"));
+            return;
+        }
+        acc.addReconciliation(dlg->date(), dlg->balance());
+        file->modifyAccount(acc);
+        ft.commit();
+        slotStatusMsg(i18n("Balance tag added"));
+    }
+}
+
+void KGlobalLedgerView::slotEditReconciliationEntry()
+{
+    Q_D(KGlobalLedgerView);
+    KMyMoneyRegister::SelectedTransactions list = d->m_selectedTransactions;
+    if (list.size() > 1) {
+        slotStatusMsg(i18n("Only one transaction supported"));
+        return;
+    }
+
+    const KMyMoneyRegister::SelectedTransaction& st = list.at(0);
+    MyMoneyFileTransaction ft;
+    MyMoneyFile* file = MyMoneyFile::instance();
+    MyMoneyAccount acc = file->account(st.split().accountId());
+    QDate date = st.transaction().postDate();
+    if (!acc.reconciliationHistory().contains(date)) {
+        slotStatusMsg(i18n("No such reconciliation entry available"));
+        return;
+    }
+    MyMoneyMoney balance = acc.reconciliationHistory()[date];
+    QPointer<ReconciliationEntryDlg> dlg = new ReconciliationEntryDlg(date, balance , this);
+    if (dlg->exec() == QDialog::Accepted && dlg != 0) {
+        if (dlg->balance() == balance && dlg->date() == date) {
+            return;
+        }
+        acc.removeReconciliation(date);
+        acc.addReconciliation(dlg->date(), dlg->balance());
+        file->modifyAccount(acc);
+        ft.commit();
+        slotStatusMsg(i18n("Reconciliation entry edited"));
     }
 }
 

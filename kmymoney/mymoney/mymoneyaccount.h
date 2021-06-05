@@ -568,11 +568,26 @@ public:
     bool addReconciliation(const QDate& date, const MyMoneyMoney& amount);
 
     /**
+      * remove a history record of a reconciliation for this account on @a date.
+      *
+      *
+      * @return @p true in case entry was remove, @p false otherwise
+      *
+      * @sa reconciliationHistory()
+      */
+    bool removeReconciliation(const QDate& date);
+
+    /**
       * @return QMap with the reconciliation history for the account
       *
       * @sa addReconciliation()
       */
     QMap<QDate, MyMoneyMoney> reconciliationHistory();
+
+    /**
+     * Save reconciliation history as key/value pair
+     */
+    void  saveReconciliationHistory();
 
     /**
       * @return @c true if account has an online mapping, @c false otherwise

@@ -255,6 +255,8 @@ private Q_SLOTS:
     void slotDeleteTransaction();
     void slotDuplicateTransaction(bool reverse = false);
     void slotEnterTransaction();
+    void slotAddReconciliationEntry();
+    void slotEditReconciliationEntry();
 
     /**
       * Accept the selected transactions that are marked as 'imported' and remove the flag

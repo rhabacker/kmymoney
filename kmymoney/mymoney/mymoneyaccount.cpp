@@ -532,19 +532,21 @@ bool MyMoneyAccount::addReconciliation(const QDate& date, const MyMoneyMoney& am
     reconciliationHistory();
 
     d->m_reconciliationHistory[date] = amount;
-    QString history, sep;
-    QMap<QDate, MyMoneyMoney>::const_iterator it;
-    for (it = d->m_reconciliationHistory.constBegin();
-            it != d->m_reconciliationHistory.constEnd();
-            ++it) {
-
-        history += QString("%1%2:%3").arg(sep,
-                                          it.key().toString(Qt::ISODate),
-                                          (*it).toString());
-        sep = QLatin1Char(';');
-    }
-    setValue("reconciliationHistory", history);
+    saveReconciliationHistory();
     return true;
+}
+
+bool MyMoneyAccount::removeReconciliation(const QDate& date)
+{
+    Q_D(MyMoneyAccount);
+    // make sure, that history has been loaded
+    reconciliationHistory();
+    bool result = d->m_reconciliationHistory.contains(date);
+    if (result) {
+        d->m_reconciliationHistory.remove(date);
+        saveReconciliationHistory();
+    }
+    return result;
 }
 
 QMap<QDate, MyMoneyMoney> MyMoneyAccount::reconciliationHistory()
@@ -569,6 +571,23 @@ QMap<QDate, MyMoneyMoney> MyMoneyAccount::reconciliationHistory()
     }
 
     return d->m_reconciliationHistory;
+}
+
+void MyMoneyAccount::saveReconciliationHistory()
+{
+    Q_D(MyMoneyAccount);
+    QString history, sep;
+    QMap<QDate, MyMoneyMoney>::const_iterator it;
+    for (it = d->m_reconciliationHistory.constBegin();
+            it != d->m_reconciliationHistory.constEnd();
+            ++it) {
+
+        history += QString("%1%2:%3").arg(sep,
+                                          it.key().toString(Qt::ISODate),
+                                          (*it).toString());
+        sep = QLatin1Char(';');
+    }
+    setValue("reconciliationHistory", history);
 }
 
 /**

@@ -65,6 +65,8 @@ enum class Action {
     DuplicateTransaction, AddReversingTransaction,
     MatchTransaction, AcceptTransaction,
     EditSplits, CopySplits,
+    AddReconciliationEntry,
+    EditReconciliationEntry,
     ToggleReconciliationFlag, MarkCleared,
     MarkReconciled, MarkNotReconciled,
     SelectAllTransactions,

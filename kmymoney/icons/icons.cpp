@@ -530,6 +530,7 @@ const QHash<Icon, iconDescription> sComposedIcons {
     {Icon::TransactionEdit,             {Icon::Transaction, Icon::DocumentEdit, Qt::BottomRightCorner}},
     {Icon::TransactionMatch,            {Icon::Transaction, Icon::DocumentImport, Qt::BottomRightCorner}},
     {Icon::TransactionAccept,           {Icon::Transaction, Icon::DialogOKApply, Qt::BottomRightCorner}},
+    {Icon::ReconciliationAddEntry,      {Icon::Transaction, Icon::EditCopy, Qt::BottomRightCorner}},
     {Icon::InvestmentNew,               {Icon::Investment, Icon::ListAdd, Qt::TopRightCorner}},
     {Icon::InvestmentEdit,              {Icon::Investment, Icon::DocumentEdit, Qt::BottomRightCorner}},
     {Icon::InvestmentDelete,            {Icon::Investment, Icon::EditDelete, Qt::BottomRightCorner}},
