@@ -1646,9 +1646,11 @@ void KGlobalLedgerView::slotEditReconciliationEntry()
     foreach (QDate rdate, dates)
         if (rdate == date) {
             found = true;
+            break;
         } else if (rdate > date) {
             date = rdate;
             found = true;
+            break;
         }
     if (!found) {
         slotStatusMsg(i18n("No such reconciliation entry available"));
