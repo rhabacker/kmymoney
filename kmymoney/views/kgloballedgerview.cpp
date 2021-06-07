@@ -1640,7 +1640,15 @@ void KGlobalLedgerView::slotEditReconciliationEntry()
     MyMoneyFile* file = MyMoneyFile::instance();
     MyMoneyAccount acc = file->account(st.split().accountId());
     QDate date = st.transaction().postDate();
-    if (!acc.reconciliationHistory().contains(date)) {
+    bool found = false;
+    foreach(QDate rdate, acc.reconciliationHistory().keys())
+    if (rdate == date) {
+        found = true;
+    } else if (rdate > date) {
+        date = rdate;
+        found = true;
+    }
+    if (!found) {
         slotStatusMsg(i18n("No such reconciliation entry available"));
         return;
     }
