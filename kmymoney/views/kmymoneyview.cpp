@@ -555,6 +555,12 @@ void KMyMoneyView::slotShowTransactionDetail(bool detailed)
     slotRefreshViews();
 }
 
+void KMyMoneyView::slotTransactionShowEntryDate(bool state)
+{
+    KMyMoneySettings::setShowTransactionEntryDate(state);
+    slotRefreshViews();
+}
+
 void KMyMoneyView::slotCurrentPageChanged(const QModelIndex current, const QModelIndex previous)
 {
     // set the current page's title in the header

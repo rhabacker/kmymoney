@@ -365,12 +365,19 @@ void StdTransactionEditor::loadEditWidgets(eRegister::Action action)
 
     if (!isMultiSelection()) {
         if (auto dateWidget = dynamic_cast<KMyMoneyDateInput*>(d->m_editWidgets["postdate"])) {
-            if (d->m_transaction.postDate().isValid())
-                dateWidget->setDate(d->m_transaction.postDate());
-            else if (d->m_lastPostDate.isValid())
-                dateWidget->setDate(d->m_lastPostDate);
-            else
-                dateWidget->setDate(QDate::currentDate());
+            if (KMyMoneySettings::showTransactionEntryDate()) {
+                if (d->m_transaction.entryDate().isValid())
+                    dateWidget->setDate(d->m_transaction.entryDate());
+                else
+                    dateWidget->setDate(QDate::currentDate());
+            } else {
+                if (d->m_transaction.postDate().isValid())
+                    dateWidget->setDate(d->m_transaction.postDate());
+                else if (d->m_lastPostDate.isValid())
+                    dateWidget->setDate(d->m_lastPostDate);
+                else
+                    dateWidget->setDate(QDate::currentDate());
+            }
         }
 
         if ((w = haveWidget("number")) != 0) {
@@ -1466,7 +1473,12 @@ bool StdTransactionEditor::createTransaction(MyMoneyTransaction& t, const MyMone
 
     auto postDate = dynamic_cast<KMyMoneyDateInput*>(d->m_editWidgets["postdate"]);
     if (postDate && postDate->date().isValid()) {
-        t.setPostDate(postDate->date());
+        if (KMyMoneySettings::showTransactionEntryDate()) {
+            t.setEntryDate(postDate->date());
+            t.setPostDate(postDate->date());
+        } else {
+            t.setPostDate(postDate->date());
+        }
     }
 
     // we start with the previous values, make sure we can add them later on

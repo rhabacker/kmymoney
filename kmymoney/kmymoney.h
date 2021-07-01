@@ -431,6 +431,11 @@ public Q_SLOTS:
     void slotShowTransactionDetail();
 
     /**
+     * dummy method needed just for initialization
+     */
+    void slotTransactionShowEntryDate();
+
+    /**
       * Toggles the hide reconciled transactions setting
       */
     void slotHideReconciledTransactions();
