@@ -1386,7 +1386,7 @@ QHash<Action, QAction *> KMyMoneyApp::initActions()
             // The View menu
             // *************
             {Action::ViewTransactionDetail,         QStringLiteral("view_show_transaction_detail"),   i18n("Show Transaction Detail"),                    Icon::TransactionDetails},
-            {Action::ViewTransactionShowEntryDate,  QStringLiteral("view_transaction_show_entry_date"), i18n("Show Transaction Entry Date"),              Icon::TransactionDetails},
+            {Action::ViewTransactionShowEntryDate,  QStringLiteral("view_transaction_show_entry_date"), i18n("Show transaction entry date"),              Icon::TransactionEntryDate},
             {Action::ViewHideReconciled,            QStringLiteral("view_hide_reconciled_transactions"), i18n("Hide reconciled transactions"),            Icon::HideReconciled},
             {Action::ViewShowReconciledBalances,    QStringLiteral("view_show_reconciled_balances"),  i18n("Show reconciled balances"),                   Icon::ShowReconciledBalances},
             {Action::ViewHideCategories,            QStringLiteral("view_hide_unused_categories"),    i18n("Hide unused categories"),                     Icon::HideCategories},
