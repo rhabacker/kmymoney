@@ -598,10 +598,7 @@ void Register::setupRegister(const MyMoneyAccount& account, bool showAccountColu
     case MyMoneyAccount::Stock:
       break;
     default:
-      if ((sortOrder().size() == 1 && sortKey(0) == PostDateSort) || sortKey(1) == NoSort)
-          showColumn(BalanceColumn);
-      else
-          hideColumn(BalanceColumn);
+      showColumn(BalanceColumn);
       break;
   }
 
@@ -699,8 +696,6 @@ void Register::setSortOrder(const QString& order)
   for (it = orderList.constBegin(); it != orderList.constEnd(); ++it) {
     m_sortOrder << static_cast<TransactionSortField>((*it).toInt());
   }
-  // update balance column
-  setupRegister(m_account);
 }
 
 void Register::sortItems()
