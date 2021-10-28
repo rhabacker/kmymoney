@@ -6770,6 +6770,7 @@ void KMyMoneyApp::slotUpdateActions()
         QStringList protocols;
         (*it_p)->protocols(protocols);
         if (protocols.count() > 0) {
+          action("account_online_update")->setEnabled(true);
           action("account_online_update_all")->setEnabled(true);
           action("account_online_update_menu")->setEnabled(true);
         }
@@ -6819,6 +6820,7 @@ void KMyMoneyApp::slotUpdateActions()
               (*it_p)->protocols(protocols);
               if (protocols.count() > 0) {
                 action("account_online_update")->setEnabled(true);
+                action("account_online_update_all")->setEnabled(true);
                 action("account_online_update_menu")->setEnabled(true);
               }
             }
