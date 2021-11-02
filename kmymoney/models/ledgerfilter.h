@@ -38,6 +38,12 @@ public:
         NotReconciled,
         Cleared,
         Scheduled,
+        Reconciled,
+        NotCleared,
+        HasNumber,
+        NoNumber,
+        HasMemo,
+        NoMemo,
     };
 
     explicit LedgerFilter(QObject* parent);
