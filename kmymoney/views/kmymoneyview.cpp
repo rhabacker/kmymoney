@@ -1836,6 +1836,11 @@ void KMyMoneyView::slotShowTransactionDetail(bool detailed)
   slotRefreshViews();
 }
 
+void KMyMoneyView::slotShowTransactionEntryDate(bool toggled)
+{
+    KMyMoneyGlobalSettings::setShowTransactionEntryDate(toggled);
+    slotRefreshViews();
+}
 
 void KMyMoneyView::progressCallback(int current, int total, const QString& msg)
 {

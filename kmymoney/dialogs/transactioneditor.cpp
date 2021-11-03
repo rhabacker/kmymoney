@@ -1143,13 +1143,20 @@ void StdTransactionEditor::loadEditWidgets(KMyMoneyRegister::Action action)
   m_memoChanged = false;
 
   if (!isMultiSelection()) {
-    if (m_transaction.postDate().isValid())
-      dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"])->setDate(m_transaction.postDate());
-    else if (m_lastPostDate.isValid())
-      dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"])->setDate(m_lastPostDate);
-    else
-      dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"])->setDate(QDate::currentDate());
-
+    kMyMoneyDateInput *dateWidget = dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"]);
+    if (KMyMoneySettings::showTransactionEntryDate()) {
+        if (m_transaction.entryDate().isValid())
+            dateWidget->setDate(m_transaction.entryDate());
+        else
+            dateWidget->setDate(QDate::currentDate());
+    } else {
+        if (m_transaction.postDate().isValid())
+            dateWidget->setDate(m_transaction.postDate());
+        else if (m_lastPostDate.isValid())
+            dateWidget->setDate(m_lastPostDate);
+        else
+            dateWidget->setDate(QDate::currentDate());
+    }
     if ((w = haveWidget("number")) != 0) {
       dynamic_cast<kMyMoneyLineEdit*>(w)->loadText(m_split.number());
       if (m_transaction.id().isEmpty()                              // new transaction
@@ -2188,9 +2195,11 @@ bool StdTransactionEditor::createTransaction(MyMoneyTransaction& t, const MyMone
   t.removeSplits();
   t.setCommodity(m_account.currencyId());
 
-  kMyMoneyDateInput* postDate = dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"]);
-  if (postDate->date().isValid()) {
-    t.setPostDate(postDate->date());
+  kMyMoneyDateInput* dateWidget = dynamic_cast<kMyMoneyDateInput*>(m_editWidgets["postdate"]);
+  if (KMyMoneySettings::showTransactionEntryDate()) {
+    t.setEntryDate(dateWidget->date());
+  } else {
+    t.setPostDate(dateWidget->date());
   }
 
   // we start with the previous values, make sure we can add them later on

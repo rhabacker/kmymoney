@@ -572,6 +572,14 @@ protected slots:
   void slotShowTransactionDetail(bool detailed);
 
   /**
+    * Called when the user changes the entry date
+    * setting of the transaction register
+    *
+    * @param toogled if true, the register is shown with entry date
+   */
+  void slotShowTransactionEntryDate(bool toogled);
+
+  /**
    * eventually replace this with KMyMoneyApp::slotCurrencySetBase().
    * it contains the same code
    *
