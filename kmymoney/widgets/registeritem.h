@@ -77,6 +77,8 @@ struct RegisterFilter {
     NotCleared,
     Number,
     NoNumber,
+    Memo,
+    NoMemo,
   };
   RegisterFilter(const QString &t, ItemState s) : state(s), text(t) {
   }

@@ -647,6 +647,14 @@ bool Transaction::matches(const RegisterFilter& filter) const
         if (transaction().splitSum().isZero())
           return false;
         break;
+      case RegisterFilter::Memo:
+        if (split().memo().isEmpty())
+          return false;
+        break;
+      case RegisterFilter::NoMemo:
+        if (!split().memo().isEmpty())
+          return false;
+        break;
       case RegisterFilter::NotMarked:
         if (split().reconcileFlag() != MyMoneySplit::NotReconciled)
           return false;
