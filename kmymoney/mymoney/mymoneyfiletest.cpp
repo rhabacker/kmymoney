@@ -980,6 +980,7 @@ void MyMoneyFileTest::testAddTransaction()
 
   // construct a transaction and add it to the pool
   t.setPostDate(QDate(2002, 2, 1));
+  t.setPostTime(QTime(10, 2, 1));
   t.setMemo("Memotext");
 
   MyMoneySplit split1;
@@ -1029,7 +1030,9 @@ void MyMoneyFileTest::testAddTransaction()
 
   QCOMPARE(t.id(), QLatin1String("T000000000000000001"));
   QCOMPARE(t.postDate(), QDate(2002, 2, 1));
+  QCOMPARE(t.postTime(), QTime(10, 2, 1));
   QCOMPARE(t.entryDate(), QDate::currentDate());
+  QCOMPARE(t.entryTime(), QTime::currentTime());
   QCOMPARE(m->dirty(), true);
 
   // check the balance of the accounts

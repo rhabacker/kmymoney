@@ -451,6 +451,7 @@ KMyMoneyApp::KMyMoneyApp(QWidget* parent) :
 
   // force to show the home page if the file is closed
   connect(action("view_show_transaction_detail"), SIGNAL(toggled(bool)), d->m_myMoneyView, SLOT(slotShowTransactionDetail(bool)));
+  connect(action("view_show_transaction_entry_date"), SIGNAL(toggled(bool)), d->m_myMoneyView, SLOT(slotShowTransactionEntryDate(bool)));
 
   d->m_backupState = BACKUP_IDLE;
 
@@ -662,6 +663,11 @@ void KMyMoneyApp::initActions()
   view_show_transaction_detail->setIcon(KIcon("zoom-in"));
   view_show_transaction_detail->setText(i18n("Show Transaction Detail"));
   view_show_transaction_detail->setShortcut(KShortcut("Ctrl+T"));
+
+  KToggleAction *view_show_transaction_entry_date = actionCollection()->add<KToggleAction>("view_show_transaction_entry_date");
+  view_show_transaction_entry_date->setIcon(KIcon("zoom-in"));
+  view_show_transaction_entry_date->setText(i18n("Show Transaction Entry Date"));
+  view_show_transaction_entry_date->setShortcut(KShortcut("Ctrl+E"));
 
   KToggleAction *view_hide_reconciled_transactions = actionCollection()->add<KToggleAction>("view_hide_reconciled_transactions");
   view_hide_reconciled_transactions->setText(i18n("Hide reconciled transactions"));
@@ -1262,6 +1268,7 @@ void KMyMoneyApp::initActions()
 
   // Setup transaction detail switch
   toggleAction("view_show_transaction_detail")->setChecked(KMyMoneyGlobalSettings::showRegisterDetailed());
+  toggleAction("view_show_transaction_entry_date")->setChecked(KMyMoneyGlobalSettings::showTransactionEntryDate());
   toggleAction("view_hide_reconciled_transactions")->setChecked(KMyMoneyGlobalSettings::hideReconciledTransactions());
   toggleAction("view_show_reconciled_balances")->setChecked(KMyMoneyGlobalSettings::showReconciledBalances());
   toggleAction("view_hide_unused_categories")->setChecked(KMyMoneyGlobalSettings::hideUnusedCategory());
@@ -5672,13 +5679,15 @@ void KMyMoneyApp::slotTransactionTagBalance()
   frame->setLayout(layout);
   dialog->setMainWidget(frame);
   input->setDate(st.transaction().postDate());
+  amount->setFocus();
   if (dialog->exec() != QDialog::Accepted) {
     slotStatusMsg(i18n("Adding balance tag canceled"));
     delete dialog;
     return;
   }
 
-  if (acc.reconciliationHistory().keys().contains(input->date())) {
+  ReconciliationKey key(input->date());
+  if (acc.reconciliationHistory().keys().contains(key)) {
     slotStatusMsg(i18n("Balance tag is already present"));
     delete dialog;
     return;
@@ -6905,6 +6914,7 @@ void KMyMoneyApp::slotUpdateActions()
         QStringList protocols;
         (*it_p)->protocols(protocols);
         if (protocols.count() > 0) {
+          action("account_online_update")->setEnabled(true);
           action("account_online_update_all")->setEnabled(true);
           action("account_online_update_menu")->setEnabled(true);
         }
@@ -6954,6 +6964,7 @@ void KMyMoneyApp::slotUpdateActions()
               (*it_p)->protocols(protocols);
               if (protocols.count() > 0) {
                 action("account_online_update")->setEnabled(true);
+                action("account_online_update_all")->setEnabled(true);
                 action("account_online_update_menu")->setEnabled(true);
               }
             }

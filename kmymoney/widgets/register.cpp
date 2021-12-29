@@ -348,6 +348,13 @@ FancyDateGroupMarker::FancyDateGroupMarker(Register* parent, const QDate& date, 
 {
 }
 
+FancyTransactionGroupMarker::FancyTransactionGroupMarker(Register* parent, const QString& transactionId, const QString& txt) :
+    GroupMarker(parent, txt),
+    m_transactionID(transactionId),
+    m_transaction(MyMoneyFile::instance()->transaction(transactionId))
+{
+}
+
 FiscalYearGroupMarker::FiscalYearGroupMarker(Register* parent, const QDate& date, const QString& txt) :
     FancyDateGroupMarker(parent, date, txt)
 {
@@ -506,7 +513,6 @@ Register::Register(QWidget *parent) :
 
   // keep the following list in sync with KMyMoneyRegister::Column in transaction.h
   horizontalHeaderItem(NumberColumn)->setText(i18nc("Cheque Number", "No."));
-  horizontalHeaderItem(DateColumn)->setText(i18n("Date"));
   horizontalHeaderItem(AccountColumn)->setText(i18n("Account"));
   horizontalHeaderItem(SecurityColumn)->setText(i18n("Security"));
   horizontalHeaderItem(DetailColumn)->setText(i18n("Details"));
@@ -580,6 +586,7 @@ void Register::setupRegister(const MyMoneyAccount& account, bool showAccountColu
 
   horizontalHeaderItem(PaymentColumn)->setText(i18nc("Payment made from account", "Payment"));
   horizontalHeaderItem(DepositColumn)->setText(i18nc("Deposit into account", "Deposit"));
+  horizontalHeaderItem(DateColumn)->setText(KMyMoneySettings::showTransactionEntryDate() ? i18n("Entry date") : i18n("Post date"));
 
   if (account.id().isEmpty()) {
     setUpdatesEnabled(true);
@@ -2014,16 +2021,23 @@ void Register::addGroupMarkers()
         new KMyMoneyRegister::FancyDateGroupMarker(this, KMyMoneyGlobalSettings::startDate().date(), i18n("Prior transactions possibly filtered"));
 
       if (KMyMoneyGlobalSettings::showReconciledBalances()) {
-        foreach(const QDate &date, m_account.reconciliationHistory().keys()) {
-          QString txt = i18n("Reconciled Balance: %1", m_account.reconciliationHistory()[date].formatMoney(m_account.fraction()));
-          new KMyMoneyRegister::StatementGroupMarker(this, KMyMoneyRegister::Deposit, date, txt);
+        foreach(const ReconciliationKey &key, m_account.reconciliationHistory().keys()) {
+          if (key.hasDate()) {
+            QString txt = i18n("Reconciled Balance: %1", m_account.reconciliationHistory()[key].formatMoney(m_account.fraction()));
+            new KMyMoneyRegister::StatementGroupMarker(this, KMyMoneyRegister::Deposit, key.toDate(), txt);
+          } else {
+            QString txt = i18n("Reconciled Balance on transation %1: %2", key.toString(), m_account.reconciliationHistory()[key].formatMoney(m_account.fraction()));
+            new KMyMoneyRegister::FancyTransactionGroupMarker(this, key.toString(), txt);
+          }
         }
       }
 
-      if (KMyMoneyGlobalSettings::showFancyMarker()) {
+      if (KMyMoneyGlobalSettings::showReconciledBalances() || KMyMoneyGlobalSettings::showFancyMarker()) {
         if (m_account.lastReconciliationDate().isValid())
           new KMyMoneyRegister::StatementGroupMarker(this, KMyMoneyRegister::Deposit, m_account.lastReconciliationDate(), i18n("Last reconciliation"));
+      }
 
+      if (KMyMoneyGlobalSettings::showFancyMarker()) {
         if (!m_account.value("lastImportedTransactionDate").isEmpty()
             && !m_account.value("lastStatementBalance").isEmpty()) {
           MyMoneyMoney balance(m_account.value("lastStatementBalance"));

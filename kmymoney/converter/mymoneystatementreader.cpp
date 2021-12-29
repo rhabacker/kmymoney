@@ -74,6 +74,7 @@ public:
       transactionsAdded(0),
       transactionsMatched(0),
       transactionsDuplicate(0),
+      transactionsMemoUpdated(0),
       scannedCategories(false) {}
 
   const QString& feeId(const MyMoneyAccount& invAcc);
@@ -91,6 +92,7 @@ public:
   int                            transactionsAdded;
   int                            transactionsMatched;
   int                            transactionsDuplicate;
+  int                            transactionsMemoUpdated;
   QMap<QString, bool>            uniqIds;
   QMap<QString, MyMoneySecurity> securitiesBySymbol;
   QMap<QString, MyMoneySecurity> securitiesByName;
@@ -495,6 +497,7 @@ bool MyMoneyStatementReader::import(const MyMoneyStatement& s, QStringList& mess
   messages += i18ncp("x transactions have been added", "    %1 added", "    %1 added", d->transactionsAdded);
   messages += i18np("    %1 matched", "    %1 matched", d->transactionsMatched);
   messages += i18np("    %1 duplicate", "    %1 duplicates", d->transactionsDuplicate);
+  messages += i18np("    %1 memo update", "    %1 memo updates", d->transactionsMemoUpdated);
   messages += i18n("  Payees");
   messages += i18ncp("x transactions have been created", "    %1 created", "    %1 created", payeeCount);
   messages += QString();
@@ -1360,7 +1363,21 @@ void MyMoneyStatementReader::handleMatchingOfExistingTransaction(TransactionMatc
     case TransactionMatchFinder::MatchNotFound:
       break;
     case TransactionMatchFinder::MatchDuplicate:
-      d->transactionsDuplicate++;
+      if (matchedTransaction.splits()[0].memo().isEmpty() && !importedTransaction.splits()[0].memo().isEmpty()) {
+          d->transactionsMemoUpdated++;
+          QList<MyMoneySplit>::Iterator it_m;
+          QList<MyMoneySplit>::ConstIterator it_i;
+          for (it_m = matchedTransaction.splits().begin(),
+               it_i = importedTransaction.splits().begin(); it_m != matchedTransaction.splits().end(); ++it_m, ++it_i) {
+            (*it_m).setMemo((*it_i).memo());
+          }
+          MyMoneyFile::instance()->modifyTransaction(matchedTransaction);
+      } else {
+          if (!matchedTransaction.splits()[0].memo().isEmpty() && !importedTransaction.splits()[0].memo().isEmpty()) {
+            qDebug("id:'%s' m:'%s' i:'%s'\n", qPrintable(matchedTransaction.id()), qPrintable(matchedTransaction.splits()[0].memo()), qPrintable(importedTransaction.splits()[0].memo()));
+          }
+          d->transactionsDuplicate++;
+      }
       qDebug("Detected transaction duplicate");
       break;
     case TransactionMatchFinder::MatchImprecise:

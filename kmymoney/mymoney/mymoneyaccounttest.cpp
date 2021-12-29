@@ -378,7 +378,7 @@ void MyMoneyAccountTest::testReadXML()
                      "  <KEYVALUEPAIRS>\n"
                      "   <PAIR key=\"key\" value=\"value\" />\n"
                      "   <PAIR key=\"Key\" value=\"Value\" />\n"
-                     "   <PAIR key=\"reconciliationHistory\" value=\"2011-01-01:123/100;2011-02-01:114/25\"/>\n"
+                     "   <PAIR key=\"reconciliationHistory\" value=\"2011-01-01:123/100;2011-02-01:114/25;T000000000000000008:110/10\"/>\n"
                      "  </KEYVALUEPAIRS>\n"
                      " </ACCOUNT>\n"
                      "</ACCOUNT-CONTAINER>\n").
@@ -436,9 +436,10 @@ void MyMoneyAccountTest::testReadXML()
     QVERIFY(a.value("key") == "value");
     QVERIFY(a.value("Key") == "Value");
     QVERIFY(a.value("lastStatementDate").isEmpty());
-    QVERIFY(a.reconciliationHistory().count() == 2);
-    QVERIFY(a.reconciliationHistory()[QDate(2011, 1, 1)] == MyMoneyMoney(123, 100));
-    QVERIFY(a.reconciliationHistory()[QDate(2011, 2, 1)] == MyMoneyMoney(456, 100));
+    QVERIFY(a.reconciliationHistory().count() == 3);
+    QVERIFY(a.reconciliationHistory()[ReconciliationKey(QDate(2011, 1, 1))] == MyMoneyMoney(123, 100));
+    QVERIFY(a.reconciliationHistory()[ReconciliationKey(QDate(2011, 2, 1))] == MyMoneyMoney(456, 100));
+    QVERIFY(a.reconciliationHistory()[ReconciliationKey("T000000000000000008")] == MyMoneyMoney(110, 10));
   } catch (const MyMoneyException &) {
     QFAIL("Unexpected exception");
   }

@@ -1207,6 +1207,16 @@ void KMyMoneyBanking::_xaToStatement(MyMoneyStatement &ks,
   }
 #endif
 
+  p = AB_Transaction_GetMemo(t);
+  if (p) {
+    QString tmpMemo;
+
+    s += QString::fromUtf8(p).trimmed();
+    tmpMemo=QString::fromUtf8(p).trimmed();
+    tmpMemo.replace('\n', ' ');
+    memo.append(tmpMemo);
+  }
+
   kt.m_strMemo = memo;
 
   // calculate the hash code and start with the payee info
