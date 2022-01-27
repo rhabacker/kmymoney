@@ -111,6 +111,7 @@ public:
   bool                 m_recursion;
   bool                 m_showDetails;
   KMyMoneyRegister::Action m_action;
+  QLabel*              m_accountNotes;
 
   // models
   AccountNamesFilterProxyModel *m_filterProxyModel;
@@ -267,7 +268,9 @@ KGlobalLedgerView::KGlobalLedgerView(QWidget *parent, const char *name)
 
   // create the button frame
   m_buttonFrame = new QFrame(this);
-  QVBoxLayout* buttonLayout = new QVBoxLayout(m_buttonFrame);
+  QHBoxLayout* bottomLayout = new QHBoxLayout(m_buttonFrame);
+  QVBoxLayout* buttonLayout = new QVBoxLayout;
+  bottomLayout->addLayout(buttonLayout);
   buttonLayout->setContentsMargins(0, 0, 0, 0);
   buttonLayout->setSpacing(0);
   layout()->addWidget(m_buttonFrame);
@@ -309,6 +312,13 @@ KGlobalLedgerView::KGlobalLedgerView(QWidget *parent, const char *name)
   m_buttonbar->addAction(kmymoney->action("schedule_new"));
   m_buttonbar->addAction(kmymoney->action("schedule_delete"));
   m_buttonbar->addAction(kmymoney->action("schedule_duplicate"));
+
+  d->m_accountNotes = new QLabel;
+  QFrame *line = new QFrame;
+  line->setFrameShape(QFrame::VLine);
+  line->setFrameShadow(QFrame::Sunken);
+  bottomLayout->addWidget(line);
+  bottomLayout->addWidget(d->m_accountNotes);
 
   // create the transaction form frame
   m_formFrame = new QFrame(this);
@@ -463,6 +473,8 @@ void KGlobalLedgerView::loadView()
   setEnabled(true);
 
   m_register->setUpdatesEnabled(false);
+
+  d->m_accountNotes->setText(m_account.description());
 
   // ... and recreate it
   KMyMoneyRegister::RegisterItem* focusItem = 0;
