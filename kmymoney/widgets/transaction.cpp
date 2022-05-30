@@ -616,6 +616,17 @@ void Transaction::leaveEditMode()
 void Transaction::singleLineMemo(QString& txt, const MyMoneySplit& split) const
 {
   txt = split.memo();
+  if (!split.payeeId().isEmpty()) {
+    const MyMoneyPayee &payee = MyMoneyFile::instance()->payee(split.payeeId());
+    if (!payee.idPattern().isEmpty() && !payee.urlTemplate().isEmpty()) {
+      QRegExp rx(QString("(%1)").arg(payee.idPattern()));
+      if (rx.indexIn(txt) != -1) {
+        QString id = rx.cap(1);
+        QUrl url(payee.urlTemplate().arg(id));
+        txt.replace(rx, QString("<u>\\1</u>"));
+      }
+    }
+  }
   // remove empty lines
   txt.replace("\n\n", "\n");
   // replace '\n' with ", "

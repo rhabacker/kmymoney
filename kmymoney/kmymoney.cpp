@@ -43,6 +43,7 @@
 // ----------------------------------------------------------------------------
 // QT Includes
 
+#include <QDesktopServices>
 #include <QDir>
 #include <QPrinter>
 #include <QLayout>
@@ -1051,6 +1052,10 @@ void KMyMoneyApp::initActions()
   KAction *transaction_copy_splits = actionCollection()->addAction("transaction_copy_splits");
   transaction_copy_splits->setText(i18n("Copy splits"));
   connect(transaction_copy_splits, SIGNAL(triggered()), this, SLOT(slotTransactionCopySplits()));
+
+  KAction *transaction_open_url = actionCollection()->addAction("transaction_open_url");
+  transaction_open_url->setText(i18n("Open URL"));
+  connect(transaction_open_url, SIGNAL(triggered()), this, SLOT(slotTransactionOpenUrl()));
 
   KToggleAction *register_enter_filter = actionCollection()->add<KToggleAction>("register_enter_filter");
   register_enter_filter->setText(i18n("Enter transaction filter"));
@@ -6275,6 +6280,32 @@ void KMyMoneyApp::slotTransactionCopySplits()
   }
 }
 
+void KMyMoneyApp::slotTransactionOpenUrl()
+{
+  if (d->m_selectedTransactions.count() == 0)
+    return;
+  QList<QUrl> seenUrls;
+  foreach (const KMyMoneyRegister::SelectedTransaction& st, d->m_selectedTransactions) {
+    foreach(const MyMoneySplit& split, st.transaction().splits()) {
+      if (split.payeeId().isEmpty())
+        continue;
+      const MyMoneyPayee &payee = MyMoneyFile::instance()->payee(split.payeeId());
+      if (payee.idPattern().isEmpty() || payee.urlTemplate().isEmpty())
+        continue;
+      QString memo = split.memo();
+      QRegExp rx(payee.idPattern().contains("(") ? QString("%1").arg(payee.idPattern()) : QString("(%1)").arg(payee.idPattern()));
+      if (rx.indexIn(memo) == -1)
+        continue;
+      QString id = rx.cap(1);
+      QUrl url(payee.urlTemplate().arg(id));
+      if (seenUrls.contains(url))
+        continue;
+      QDesktopServices::openUrl(url);
+      seenUrls.append(url);
+    }
+  }
+}
+
 void KMyMoneyApp::slotMoveToAccount(const QString& id)
 {
   // close the menu, if it is still open
@@ -6755,6 +6786,7 @@ void KMyMoneyApp::slotUpdateActions()
   action("transaction_combine")->setEnabled(false);
   action("transaction_select_all")->setEnabled(false);
   action("transaction_copy_splits")->setEnabled(false);
+  action("transaction_open_url")->setEnabled(false);
 
   action("schedule_new")->setEnabled(fileOpen);
   action("schedule_edit")->setEnabled(false);
@@ -6901,6 +6933,9 @@ void KMyMoneyApp::slotUpdateActions()
       action("transaction_cancel")->setEnabled(true);
     }
   }
+
+  if (d->m_selectedTransactions.count() > 0)
+    action("transaction_open_url")->setEnabled(true);
 
   QList<MyMoneyAccount> accList;
   file->accountList(accList);

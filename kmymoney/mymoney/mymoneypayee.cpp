@@ -32,6 +32,26 @@
 
 MyMoneyPayee MyMoneyPayee::null;
 
+QString MyMoneyPayee::idPattern() const
+{
+  return m_idPattern;
+}
+
+void MyMoneyPayee::setIdPattern(const QString &idPattern)
+{
+  m_idPattern = idPattern;
+}
+
+QString MyMoneyPayee::urlTemplate() const
+{
+  return m_urlTemplate;
+}
+
+void MyMoneyPayee::setUrlTemplate(const QString &urlTemplate)
+{
+  m_urlTemplate = urlTemplate;
+}
+
 MyMoneyPayee::MyMoneyPayee() :
     m_matchingEnabled(false),
     m_usingMatchKey(false),
@@ -50,7 +70,8 @@ MyMoneyPayee::MyMoneyPayee(const QString& id, const MyMoneyPayee& payee) :
 
 MyMoneyPayee::MyMoneyPayee(const QString& name, const QString& address,
                            const QString& city, const QString& state, const QString& postcode,
-                           const QString& telephone, const QString& email) :
+                           const QString& telephone, const QString& email,
+                           const QString& idPattern, const QString& urlTemplate) :
     m_matchingEnabled(false),
     m_usingMatchKey(false),
     m_matchKeyIgnoreCase(true)
@@ -62,6 +83,8 @@ MyMoneyPayee::MyMoneyPayee(const QString& name, const QString& address,
   m_postcode  = postcode;
   m_telephone = telephone;
   m_email     = email;
+  m_idPattern = idPattern;
+  m_urlTemplate = urlTemplate;
 }
 
 MyMoneyPayee::MyMoneyPayee(const QDomElement& node)
@@ -90,6 +113,11 @@ MyMoneyPayee::MyMoneyPayee(const QDomElement& node)
 
   if (node.hasAttribute("defaultaccountid")) {
     m_defaultAccountId = node.attribute("defaultaccountid");
+  }
+
+  if (node.hasAttribute("idpattern")) {
+      m_idPattern = node.attribute("idpattern");
+      m_urlTemplate = node.attribute("urltemplate");
   }
 
   // Load Address
@@ -134,7 +162,9 @@ bool MyMoneyPayee::operator == (const MyMoneyPayee& right) const
           (m_matchKeyIgnoreCase == right.m_matchKeyIgnoreCase) &&
           ((m_matchKey.length() == 0 && right.m_matchKey.length() == 0) || m_matchKey == right.m_matchKey) &&
           ((m_reference.length() == 0 && right.m_reference.length() == 0) || (m_reference == right.m_reference)) &&
-          ((m_defaultAccountId.length() == 0 && right.m_defaultAccountId.length() == 0) || m_defaultAccountId == right.m_defaultAccountId));
+          ((m_defaultAccountId.length() == 0 && right.m_defaultAccountId.length() == 0) || m_defaultAccountId == right.m_defaultAccountId)) &&
+          ((m_idPattern.length() == 0 && right.m_idPattern.length() == 0) || (m_idPattern == right.m_idPattern)) &&
+          ((m_urlTemplate.length() == 0 && right.m_urlTemplate.length() == 0) || (m_urlTemplate == right.m_urlTemplate));
 }
 
 bool MyMoneyPayee::operator < (const MyMoneyPayee& right) const
@@ -165,6 +195,10 @@ void MyMoneyPayee::writeXML(QDomDocument& document, QDomElement& parent) const
     el.setAttribute("defaultaccountid", m_defaultAccountId);
   }
 
+  if (!m_idPattern.isEmpty() || !m_urlTemplate.isEmpty()) {
+    el.setAttribute("idpattern", m_idPattern);
+    el.setAttribute("urltemplate", m_urlTemplate);
+  }
   // Save address
   QDomElement address = document.createElement("ADDRESS");
   address.setAttribute("street", m_address);

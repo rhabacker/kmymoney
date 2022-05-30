@@ -193,6 +193,11 @@ KPayeesView::KPayeesView(QWidget *parent) :
   connect(notesEdit, SIGNAL(textChanged()), this, SLOT(slotPayeeDataChanged()));
   connect(referenceEdit, SIGNAL(textChanged(QString)), this, SLOT(slotPayeeDataChanged()));
   connect(matchKeyEditList, SIGNAL(changed()), this, SLOT(slotKeyListChanged()));
+  connect(idPatternEdit, SIGNAL(textChanged(QString)), this, SLOT(slotPayeeDataChanged()));
+  connect(idPatternEdit, SIGNAL(textChanged(QString)), this, SLOT(slotPayeeMatchingCheck()));
+  connect(urlTemplateEdit, SIGNAL(textChanged(QString)), this, SLOT(slotPayeeDataChanged()));
+  connect(urlTemplateEdit, SIGNAL(textChanged(QString)), this, SLOT(slotPayeeMatchingCheck()));
+  connect(matchingCheckEdit, SIGNAL(textChanged(QString)), this, SLOT(slotPayeeMatchingCheck()));
 
   connect(radioNoMatch, SIGNAL(toggled(bool)), this, SLOT(slotPayeeDataChanged()));
   connect(radioNameMatch, SIGNAL(toggled(bool)), this, SLOT(slotPayeeDataChanged()));
@@ -451,6 +456,8 @@ void KPayeesView::slotSelectPayee()
     emailEdit->setText(m_payee.email());
     notesEdit->setText(m_payee.notes());
     referenceEdit->setText(m_payee.reference());
+    idPatternEdit->setText(m_payee.idPattern());
+    urlTemplateEdit->setText(m_payee.urlTemplate());
 
     QStringList keys;
     bool ignorecase = false;
@@ -487,6 +494,9 @@ void KPayeesView::clearItemData()
   emailEdit->setText(QString());
   notesEdit->setText(QString());
   referenceEdit->setText(QString());
+  idPatternEdit->setText(QString());
+  urlTemplateEdit->setText(QString());
+  matchingCheckEdit->setText(QString());
   showTransactions();
 }
 
@@ -607,6 +617,10 @@ void KPayeesView::slotPayeeDataChanged()
            || (!notesEdit->toPlainText().isEmpty() && m_payee.notes() != notesEdit->toPlainText()));
     rc |= ((m_payee.reference().isEmpty() != referenceEdit->text().isEmpty())
            || (!referenceEdit->text().isEmpty() && m_payee.reference() != referenceEdit->text()));
+    rc |= ((m_payee.idPattern().isEmpty() != idPatternEdit->text().isEmpty())
+           || (!idPatternEdit->text().isEmpty() && m_payee.idPattern() != idPatternEdit->text()));
+    rc |= ((m_payee.urlTemplate().isEmpty() != urlTemplateEdit->text().isEmpty())
+           || (!urlTemplateEdit->text().isEmpty() && m_payee.urlTemplate() != urlTemplateEdit->text()));
 
     bool ignorecase = false;
     QStringList keys;
@@ -652,6 +666,20 @@ void KPayeesView::slotPayeeDataChanged()
   setDirty(rc);
 }
 
+void KPayeesView::slotPayeeMatchingCheck()
+{
+  matchingCheckLabel->setText("");
+  matchingCheckURL->setText("");
+  if (idPatternEdit->text().isEmpty() || urlTemplateEdit->text().isEmpty())
+    return;
+  QRegExp rx(idPatternEdit->text().contains("(") ? QString("%1").arg(idPatternEdit->text()) : QString("(%1)").arg(idPatternEdit->text()));
+  if (rx.indexIn(matchingCheckEdit->text()) != -1) {
+    matchingCheckLabel->setText(rx.cap(1));
+    matchingCheckURL->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    matchingCheckURL->setText(QString("<a href=\"%1\">%1</a>").arg(urlTemplateEdit->text().arg(rx.cap(1)), rx.cap(1)));
+  }
+}
+
 void KPayeesView::slotUpdatePayee()
 {
   if (isDirty()) {
@@ -665,6 +693,8 @@ void KPayeesView::slotUpdatePayee()
       m_payee.setEmail(emailEdit->text());
       m_payee.setNotes(notesEdit->toPlainText());
       m_payee.setReference(referenceEdit->text());
+      m_payee.setIdPattern(idPatternEdit->text());
+      m_payee.setUrlTemplate(urlTemplateEdit->text());
       m_payee.setMatchData(static_cast<MyMoneyPayee::payeeMatchType>(m_matchType->checkedId()), checkMatchIgnoreCase->isChecked(), matchKeyEditList->items());
       m_payee.setDefaultAccountId();
       m_payee.resetPayeeIdentifiers(payeeIdentifiers->identifiers());

@@ -121,6 +121,7 @@ protected slots:
     * This slot marks the current selected payee as modified (dirty).
     */
   void slotPayeeDataChanged();
+  void slotPayeeMatchingCheck();
   void slotKeyListChanged();
 
   /**

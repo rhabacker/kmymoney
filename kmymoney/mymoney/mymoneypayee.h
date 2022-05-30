@@ -53,6 +53,8 @@ private:
   QString m_telephone;
   QString m_email;
   QString m_notes;
+  QString m_idPattern;
+  QString m_urlTemplate;
 
   // Transaction matching fields
   bool m_matchingEnabled;      //< Whether this payee should be matched at all
@@ -94,7 +96,9 @@ public:
                         const QString& state = QString(),
                         const QString& postcode = QString(),
                         const QString& telephone = QString(),
-                        const QString& email = QString());
+                        const QString& email = QString(),
+                        const QString& idPattern = QString(),
+                        const QString& urlTemplate = QString());
   /**
     * This is the constructor for a payee that is described by a
     * QDomElement (e.g. from a file).
@@ -167,6 +171,10 @@ public:
   void setReference(const QString& ref) {
     m_reference = ref;
   }
+  QString idPattern() const;
+  void setIdPattern(const QString &idPattern);
+  QString urlTemplate() const;
+  void setUrlTemplate(const QString &urlTemplate);
 
   /**
    * Get all match data in one call

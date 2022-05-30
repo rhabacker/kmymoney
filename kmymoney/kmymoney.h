@@ -500,6 +500,8 @@ protected slots:
    */
   void slotTransactionCopySplits();
 
+  void slotTransactionOpenUrl();
+
   /**
     * Accept the selected transactions that are marked as 'imported' and remove the flag
     */
