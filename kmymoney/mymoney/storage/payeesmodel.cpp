@@ -163,6 +163,12 @@ QVariant PayeesModel::data(const QModelIndex& index, int role) const
     case eMyMoney::Model::ItemReferenceRole:
         rc = MyMoneyFile::instance()->isReferenced(payee);
         break;
+    case eMyMoney::Model::PayeeIdPatternRole:
+        rc = payee.idPattern();
+        break;
+    case eMyMoney::Model::PayeeUrlTemplateRole:
+        rc = payee.urlTemplate();
+        break;
     }
     return rc;
 }
@@ -227,6 +233,12 @@ bool PayeesModel::setData(const QModelIndex& index, const QVariant& value, int r
         break;
     case eMyMoney::Model::PayeeDefaultAccountRole:
         payee.setDefaultAccountId(value.toString());
+        break;
+    case eMyMoney::Model::PayeeIdPatternRole:
+        payee.setIdPattern(value.toString());
+        break;
+    case eMyMoney::Model::PayeeUrlTemplateRole:
+        payee.setUrlTemplate(value.toString());
         break;
     default:
         rc = false;

@@ -901,6 +901,12 @@ MyMoneyPayee MyMoneyXmlContentHandler::readPayee(const QDomElement &node)
     if (node.hasAttribute(attributeName(Attribute::Payee::DefaultAccountID)))
         payee.setDefaultAccountId(node.attribute(attributeName(Attribute::Payee::DefaultAccountID)));
 
+    // read matching links
+    if (node.hasAttribute(attributeName(Attribute::Payee::IdPattern))) {
+        payee.setIdPattern(node.attribute(attributeName(Attribute::Payee::IdPattern)));
+        payee.setUrlTemplate(node.attribute(attributeName(Attribute::Payee::UrlTemplate)));
+    }
+
     // Load Address
     QDomNodeList nodeList = node.elementsByTagName(elementName(Element::Payee::Address));
     if (nodeList.isEmpty())
@@ -984,6 +990,12 @@ void MyMoneyXmlContentHandler::writePayee(const MyMoneyPayee &payee, QDomDocumen
 
     if (!payee.defaultAccountId().isEmpty()) {
         el.setAttribute(attributeName(Attribute::Payee::DefaultAccountID), payee.defaultAccountId());
+    }
+
+    // save matching link
+    if (!payee.idPattern().isEmpty() || !payee.urlTemplate().isEmpty()) {
+        el.setAttribute(attributeName(Attribute::Payee::IdPattern), payee.idPattern());
+        el.setAttribute(attributeName(Attribute::Payee::UrlTemplate), payee.urlTemplate());
     }
 
     // Save address

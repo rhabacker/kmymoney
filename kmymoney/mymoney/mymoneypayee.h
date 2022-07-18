@@ -90,6 +90,10 @@ public:
     bool isUsingMatchKey() const;
     bool isMatchKeyIgnoreCase() const;
     QString matchKey() const;
+    QString idPattern() const;
+    void setIdPattern(const QString &idPattern);
+    QString urlTemplate() const;
+    void setUrlTemplate(const QString &urlTemplate);
 
     /**
      * Get all match data in one call

@@ -172,7 +172,7 @@ void SplitDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
                 lines << index.data(eMyMoney::Model::SplitPayeeRole).toString();
             }
         }
-        lines << index.data(eMyMoney::Model::SplitSingleLineMemoRole).toString();
+        lines << index.data(eMyMoney::Model::SplitSingleLineMemoStyledRole).toString();
         lines.removeAll(QString());
     }
 

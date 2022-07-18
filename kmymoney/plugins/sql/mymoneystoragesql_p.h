@@ -1025,6 +1025,8 @@ public:
             query.bindValue(":matchIgnoreCase", "N");
 
         query.bindValue(":matchKeys", matchKeys);
+        query.bindValue(":idPattern", p.idPattern());
+        query.bindValue(":urlTemplate", p.urlTemplate());
         if (!query.exec()) // krazy:exclude=crashy
             throw MYMONEYEXCEPTIONSQL("writing Payee"); // krazy:exclude=crashy
 

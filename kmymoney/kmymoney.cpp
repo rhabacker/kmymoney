@@ -1807,6 +1807,7 @@ QHash<Action, QAction *> KMyMoneyApp::initActions()
             {Action::MarkNotReconciled,             QStringLiteral("transaction_mark_notreconciled"), i18nc("Mark transaction not reconciled", "Not reconciled"),     Icon::Empty},
             {Action::MoveTransactionTo,             QStringLiteral("transaction_move"),               i18nc("Move transaction", "Move transaction"),      Icon::Empty},     // not directly available in UI
             {Action::ShowTransaction,               QStringLiteral("transaction_show"),               i18nc("Show transaction", "Show transaction"),      Icon::Empty},     // not directly available in UI
+            {Action::TransactionOpenURL,            QStringLiteral("transaction_open_url"),           i18nc("Open URL", "Open URL"),                      Icon::Empty},     // not directly available in UI
 
             {Action::SelectAllTransactions,         QStringLiteral("transaction_select_all"),         i18nc("Select all transactions", "Select all"),     Icon::SelectAll},
             {Action::GoToAccount,                   QStringLiteral("transaction_goto_account"),       i18n("Go to account"),                              Icon::BankAccount},
@@ -1968,6 +1969,7 @@ QHash<Action, QAction *> KMyMoneyApp::initActions()
             {Action::MatchTransaction,              &KMyMoneyApp::slotMatchTransaction},
             {Action::AcceptTransaction,             &KMyMoneyApp::slotAcceptTransaction},
             {Action::ShowTransaction,               &KMyMoneyApp::slotExecuteAction},
+            {Action::TransactionOpenURL,            &KMyMoneyApp::slotTransactionOpenURL},
 
             {Action::StartReconciliation,           &KMyMoneyApp::slotStartReconciliation},
             {Action::FinishReconciliation,          &KMyMoneyApp::slotExecuteAction},
@@ -2824,6 +2826,47 @@ void KMyMoneyApp::slotMoveTransactionTo()
         } catch (const MyMoneyException& e) {
             qDebug() << e.what();
         }
+    }
+}
+
+void KMyMoneyApp::slotTransactionOpenURL()
+{
+    auto action = qobject_cast<QAction*>(sender());
+    // const auto actionId = d->qActionToId(action);
+    const auto file = MyMoneyFile::instance();
+    const auto accountId = action->data().toString();
+    const auto journalEntryList = d->m_selections.selection(SelectedObjects::JournalEntry);
+
+    if (journalEntryList.isEmpty())
+        return;
+    MyMoneyFileTransaction ft;
+    try {
+        QList<QUrl> seenUrls;
+        for (const auto& journalId : journalEntryList) {
+            const auto journalIdx = file->journalModel()->indexById(journalId);
+            auto t = file->transaction(journalIdx.data(eMyMoney::Model::JournalTransactionIdRole).toString());
+            auto s = t.splitById(journalIdx.data(eMyMoney::Model::JournalSplitIdRole).toString());
+            const auto acc = file->accountsModel()->itemById(s.accountId());
+            for (const auto& split : t.splits()) {
+                if (split.payeeId().isEmpty())
+                    continue;
+                const MyMoneyPayee &payee = MyMoneyFile::instance()->payee(split.payeeId());
+                if (payee.idPattern().isEmpty() || payee.urlTemplate().isEmpty())
+                    continue;
+                QString memo = split.memo();
+                QRegExp rx(payee.idPattern().contains("(") ? QString("%1").arg(payee.idPattern()) : QString("(%1)").arg(payee.idPattern()));
+                if (rx.indexIn(memo) == -1)
+                    continue;
+                QString id = rx.cap(1);
+                QUrl url(payee.urlTemplate().arg(id));
+                if (seenUrls.contains(url))
+                    continue;
+                QDesktopServices::openUrl(url);
+                seenUrls.append(url);
+            }
+        }
+    } catch (const MyMoneyException& e) {
+        qDebug() << e.what();
     }
 }
 

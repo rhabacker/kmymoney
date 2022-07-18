@@ -484,6 +484,8 @@ enum Roles {
     PayeeMatchKeyRole,
     PayeeMatchCaseRole,
     PayeeDefaultAccountRole,
+    PayeeIdPatternRole,
+    PayeeUrlTemplateRole,
 
     // MyMoneyAccount
     AccountTypeRole,
@@ -571,6 +573,8 @@ enum Roles {
     SplitPayeeRole,
     SplitMemoRole,
     SplitSingleLineMemoRole,
+    SplitMemoStyledRole,
+    SplitSingleLineMemoStyledRole,
     SplitSharesRole,
     SplitSharesFormattedRole,
     SplitValueRole,

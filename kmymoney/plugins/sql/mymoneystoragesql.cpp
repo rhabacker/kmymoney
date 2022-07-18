@@ -1293,13 +1293,17 @@ QMap<QString, MyMoneyPayee> MyMoneyStorageSql::fetchPayees(const QStringList& id
     QMap<QString, MyMoneyPayee> pList;
 
     QSqlQuery query(*const_cast <MyMoneyStorageSql*>(this));
-    QString queryString = QLatin1String("SELECT kmmPayees.id AS id, kmmPayees.name AS name, kmmPayees.reference AS reference, "
-                                        " kmmPayees.email AS email, kmmPayees.addressStreet AS addressStreet, kmmPayees.addressCity AS addressCity, kmmPayees.addressZipcode AS addressZipcode, "
-                                        " kmmPayees.addressState AS addressState, kmmPayees.telephone AS  telephone, kmmPayees.notes AS notes, "
-                                        " kmmPayees.defaultAccountId AS defaultAccountId, kmmPayees.matchData AS matchData, kmmPayees.matchIgnoreCase AS matchIgnoreCase, "
-                                        " kmmPayees.matchKeys AS matchKeys, "
-                                        " kmmPayeesPayeeIdentifier.identifierId AS identId "
-                                        " FROM ( SELECT * FROM kmmPayees ");
+    QString queryString = QLatin1String(
+        "SELECT kmmPayees.id AS id, kmmPayees.name AS name, kmmPayees.reference AS reference, "
+        " kmmPayees.email AS email, kmmPayees.addressStreet AS addressStreet, kmmPayees.addressCity AS addressCity, kmmPayees.addressZipcode AS "
+        "addressZipcode, "
+        " kmmPayees.addressState AS addressState, kmmPayees.telephone AS  telephone, kmmPayees.notes AS notes, "
+        " kmmPayees.defaultAccountId AS defaultAccountId, kmmPayees.matchData AS matchData, kmmPayees.matchIgnoreCase AS matchIgnoreCase, "
+        " kmmPayees.matchKeys AS matchKeys, "
+        " kmmPayeesPayeeIdentifier.identifierId AS identId, "
+        " kmmPayees.idPattern AS idPattern, "
+        " kmmPayees.urlTemplate AS urlTemplate"
+        " FROM ( SELECT * FROM kmmPayees ");
 
     if (!idList.isEmpty()) {
         // Create WHERE clause if needed
@@ -1343,6 +1347,8 @@ QMap<QString, MyMoneyPayee> MyMoneyStorageSql::fetchPayees(const QStringList& id
     const int matchIgnoreCaseCol = record.indexOf("matchIgnoreCase");
     const int matchKeysCol = record.indexOf("matchKeys");
     const int identIdCol = record.indexOf("identId");
+    const int idPattern = record.indexOf("idPattern");
+    const int urlTemplate = record.indexOf("urlTemplate");
 
     if (query.next()) {
         while (query.isValid()) {
@@ -1379,6 +1385,8 @@ QMap<QString, MyMoneyPayee> MyMoneyStorageSql::fetchPayees(const QStringList& id
                 QList< ::payeeIdentifier > identifier = fetchPayeeIdentifiers(identifierIds).values();
                 payee.resetPayeeIdentifiers(identifier);
             }
+            payee.setIdPattern(GETSTRING(idPattern));
+            payee.setUrlTemplate(GETSTRING(urlTemplate));
 
             if (pid == "USER") {
                 // make sure it is the sole item in the model

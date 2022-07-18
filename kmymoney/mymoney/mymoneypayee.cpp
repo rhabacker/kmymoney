@@ -27,6 +27,30 @@
 /// @todo remove and replace that one occurrence with MyMoneyPayee()
 MyMoneyPayee MyMoneyPayee::null;
 
+QString MyMoneyPayee::idPattern() const
+{
+    Q_D(const MyMoneyPayee);
+    return d->m_idPattern;
+}
+
+void MyMoneyPayee::setIdPattern(const QString &idPattern)
+{
+    Q_D(MyMoneyPayee);
+    d->m_idPattern = idPattern;
+}
+
+QString MyMoneyPayee::urlTemplate() const
+{
+    Q_D(const MyMoneyPayee);
+    return d->m_urlTemplate;
+}
+
+void MyMoneyPayee::setUrlTemplate(const QString &urlTemplate)
+{
+    Q_D(MyMoneyPayee);
+    d->m_urlTemplate = urlTemplate;
+}
+
 MyMoneyPayee::MyMoneyPayee() :
     MyMoneyObject(*new MyMoneyPayeePrivate)
 {
@@ -70,7 +94,9 @@ bool MyMoneyPayee::operator == (const MyMoneyPayee& right) const
             (d->m_matchKeyIgnoreCase == d2->m_matchKeyIgnoreCase) &&
             ((d->m_matchKey.length() == 0 && d2->m_matchKey.length() == 0) || d->m_matchKey == d2->m_matchKey) &&
             ((d->m_reference.length() == 0 && d2->m_reference.length() == 0) || (d->m_reference == d2->m_reference)) &&
-            ((d->m_defaultAccountId.length() == 0 && d2->m_defaultAccountId.length() == 0) || d->m_defaultAccountId == d2->m_defaultAccountId));
+            ((d->m_defaultAccountId.length() == 0 && d2->m_defaultAccountId.length() == 0) || d->m_defaultAccountId == d2->m_defaultAccountId)) &&
+            ((d->m_idPattern.length() == 0 && d2->m_idPattern.length() == 0) || (d->m_idPattern == d2->m_idPattern)) &&
+            ((d->m_urlTemplate.length() == 0 && d2->m_urlTemplate.length() == 0) || (d->m_urlTemplate == d2->m_urlTemplate));
 }
 
 bool MyMoneyPayee::operator < (const MyMoneyPayee& right) const

@@ -282,6 +282,10 @@ void KPayeesView::slotPayeeDataChanged()
                || (!d->m_newName.isEmpty() && d->m_payee.name() != d->m_newName));
         rc |= ((d->m_payee.notes().isEmpty() != d->ui->notesEdit->toPlainText().isEmpty())
                || (!d->ui->notesEdit->toPlainText().isEmpty() && d->m_payee.notes() != d->ui->notesEdit->toPlainText()));
+        rc |= ((d->m_payee.idPattern().isEmpty() != d->ui->idPatternEdit->text().isEmpty())
+               || (!d->ui->idPatternEdit->text().isEmpty() && d->m_payee.idPattern() != d->ui->idPatternEdit->text()));
+        rc |= ((d->m_payee.urlTemplate().isEmpty() != d->ui->urlTemplateEdit->text().isEmpty())
+               || (!d->ui->urlTemplateEdit->text().isEmpty() && d->m_payee.urlTemplate() != d->ui->urlTemplateEdit->text()));
 
         bool ignorecase = false;
         QStringList keys;
@@ -328,6 +332,21 @@ void KPayeesView::slotPayeeDataChanged()
     d->setDirty(rc);
 }
 
+void KPayeesView::slotPayeeMatchingCheck()
+{
+    Q_D(KPayeesView);
+    d->ui->matchingCheckLabel->setText("");
+    d->ui->matchingCheckURL->setText("");
+    if (d->ui->idPatternEdit->text().isEmpty() || d->ui->urlTemplateEdit->text().isEmpty())
+        return;
+    QRegExp rx(d->ui->idPatternEdit->text().contains("(") ? QString("%1").arg(d->ui->idPatternEdit->text()) : QString("(%1)").arg(d->ui->idPatternEdit->text()));
+    if (rx.indexIn(d->ui->matchingCheckEdit->text()) != -1) {
+        d->ui->matchingCheckLabel->setText(rx.cap(1));
+        d->ui->matchingCheckURL->setTextInteractionFlags(Qt::TextBrowserInteraction);
+        d->ui->matchingCheckURL->setText(QString("<a href=\"%1\">%1</a>").arg(d->ui->urlTemplateEdit->text().arg(rx.cap(1)), rx.cap(1)));
+    }
+}
+
 void KPayeesView::slotUpdatePayee()
 {
     Q_D(KPayeesView);
@@ -343,6 +362,8 @@ void KPayeesView::slotUpdatePayee()
             d->m_payee.setTelephone(d->ui->telephoneEdit->text());
             d->m_payee.setEmail(d->ui->emailEdit->text());
             d->m_payee.setNotes(d->ui->notesEdit->toPlainText());
+            d->m_payee.setIdPattern(d->ui->idPatternEdit->text());
+            d->m_payee.setUrlTemplate(d->ui->urlTemplateEdit->text());
             d->m_payee.setMatchData(static_cast<eMyMoney::Payee::MatchType>(d->ui->matchTypeCombo->currentData().toUInt()), d->ui->checkMatchIgnoreCase->isChecked(), d->ui->matchKeyEditList->items());
             d->m_payee.setDefaultAccountId();
             d->m_payee.resetPayeeIdentifiers(d->ui->payeeIdentifiers->identifiers());

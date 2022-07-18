@@ -9,8 +9,9 @@
 // QT Includes
 
 #include <QDebug>
-#include <QString>
 #include <QSize>
+#include <QString>
+#include <QUrl>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -828,6 +829,29 @@ QVariant JournalModel::data(const QModelIndex& idx, int role) const
     {
         QString rc(split.memo());
         if(role == eMyMoney::Model::SplitSingleLineMemoRole) {
+            // remove empty lines
+            rc.replace("\n\n", "\n");
+            // replace '\n' with ", "
+            rc.replace('\n', ", ");
+        }
+        return rc;
+    }
+    case eMyMoney::Model::SplitSingleLineMemoStyledRole:
+    case eMyMoney::Model::SplitMemoStyledRole:
+    {
+        QString rc(split.memo());
+        if (!split.payeeId().isEmpty()) {
+            const MyMoneyPayee& payee = MyMoneyFile::instance()->payee(split.payeeId());
+            if (!payee.idPattern().isEmpty() && !payee.urlTemplate().isEmpty()) {
+                QRegExp rx(QString("(%1)").arg(payee.idPattern()));
+                if (rx.indexIn(rc) != -1) {
+                    QString id = rx.cap(1);
+                    QUrl url(payee.urlTemplate().arg(id));
+                    rc.replace(rx, QString("<\\1>"));
+                }
+            }
+        }
+        if(role == eMyMoney::Model::SplitSingleLineMemoStyledRole) {
             // remove empty lines
             rc.replace("\n\n", "\n");
             // replace '\n' with ", "

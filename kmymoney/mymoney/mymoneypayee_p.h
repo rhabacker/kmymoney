@@ -43,6 +43,8 @@ public:
     QString m_telephone;
     QString m_email;
     QString m_notes;
+    QString m_idPattern;
+    QString m_urlTemplate;
 
     // Transaction matching fields
     bool m_matchingEnabled;      //< Whether this payee should be matched at all

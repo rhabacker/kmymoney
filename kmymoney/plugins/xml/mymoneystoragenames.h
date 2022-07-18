@@ -211,6 +211,8 @@ enum class Payee {
     BankCode,
     Country,
     AccountNumber,
+    IdPattern,
+    UrlTemplate,
     // insert new entries above this line
     LastAttribute,
 };
