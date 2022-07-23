@@ -472,12 +472,14 @@ void JournalDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
             painter->save();
             // collect data for the various columns
             for (int i = 0; i < lineCount; ++i) {
+                auto font = painter->font();
+                if (displayProperties.lines[i].contains("<"))
+                    font.setUnderline(true);
                 if (i == displayProperties.italicStartLine && LedgerViewSettings::instance()->showAllSplits() && d->isMultiSplitDisplay(index)) {
-                    auto font = painter->font();
                     font.setItalic(true);
                     font.setPointSize(font.pointSize() - 2);
-                    painter->setFont(font);
                 }
+                painter->setFont(font);
                 painter->drawText(textArea.adjusted(0, lineHeight * i, 0, 0), opt.displayAlignment, displayProperties.lines[i]);
             }
             painter->restore();
