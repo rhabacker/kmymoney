@@ -64,6 +64,7 @@
 #include "mymoneyfile.h"
 #include "mymoneyinstitution.h"
 #include "mymoneymoney.h"
+#include "mymoneypayee.h"
 #include "mymoneyprice.h"
 #include "mymoneyreport.h"
 #include "mymoneyschedule.h"
@@ -365,6 +366,7 @@ void KMyMoneyView::updateActions(const SelectedObjects& selections)
     pActions[eMenu::Action::FinishReconciliation]->setEnabled(false);
     pActions[eMenu::Action::CancelReconciliation]->setEnabled(false);
     pActions[eMenu::Action::MoveToToday]->setEnabled(false);
+    pActions[eMenu::Action::TransactionOpenURL]->setEnabled(false);
 
     // update actions in all views. process the current last
     for (const auto& view : d->viewBases.keys()) {
@@ -404,6 +406,7 @@ void KMyMoneyView::updateActions(const SelectedObjects& selections)
             pActions[eMenu::Action::AddReversingTransaction]->setDisabled(true);
             pActions[eMenu::Action::CopySplits]->setDisabled(true);
             pActions[eMenu::Action::MoveToToday]->setDisabled(true);
+            pActions[eMenu::Action::TransactionOpenURL]->setDisabled(true);
         } else {
             const auto warnLevel = MyMoneyUtils::transactionWarnLevel(selections.selection(SelectedObjects::JournalEntry));
             pActions[eMenu::Action::EditTransaction]->setEnabled(true);
@@ -413,11 +416,23 @@ void KMyMoneyView::updateActions(const SelectedObjects& selections)
             pActions[eMenu::Action::AddReversingTransaction]->setEnabled(warnLevel <= OneSplitReconciled);
             pActions[eMenu::Action::CopySplits]->setDisabled(true);
             pActions[eMenu::Action::MoveToToday]->setEnabled(true);
+            // TODO: limit to transactions with a related payee
+            pActions[eMenu::Action::TransactionOpenURL]->setEnabled(true);
 
             int singleSplitTransactions(0);
             int multipleSplitTransactions(0);
             int matchedTransactions(0);
             int importedTransactions(0);
+
+            //            if (selections.selection(SelectedObjects::JournalEntry).size() == 1) {
+            //                const auto idx = file->accountsModel()->indexById(selections.firstSelection(SelectedObjects::JournalEntry));
+            //                const auto payeeName = idx.data(eMyMoney::Model::SplitPayeeRole).toString();
+            //                if (!payeeName.isEmpty()) {
+            //                    const auto payee = MyMoneyFile::instance()->payeeByName(payeeName);
+            //                    if (!payee.idPattern().isEmpty() && !payee.urlTemplate().isEmpty())
+            //                        pActions[eMenu::Action::TransactionOpenURL]->setEnabled(true);
+            //                }
+            //            }
 
             for (const auto& journalEntryId : selections.selection(SelectedObjects::JournalEntry)) {
                 const auto idx = file->journalModel()->indexById(journalEntryId);
