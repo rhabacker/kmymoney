@@ -247,6 +247,11 @@ public:
     */
   virtual bool hasReferenceTo(const QString& id) const;
 
+  QUrl payeeLink(const QString& text) const;
+  QString decorateLink(const QString& text) const;
+  static QStringList matchingLinks(const QString& idPattern, const QString& urlTemplate, const QString& text);
+  static QUrl payeeLink(const QString& idPattern, const QString& urlTemplate, const QString& text);
+
   static MyMoneyPayee null;
 };
 

@@ -22,6 +22,7 @@
 
 #include <QStringList>
 #include <QDebug> //! @todo remove QDebugs
+#include <QUrl>
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -31,26 +32,6 @@
 #include <pluginloader.h>
 
 MyMoneyPayee MyMoneyPayee::null;
-
-QString MyMoneyPayee::idPattern() const
-{
-  return m_idPattern;
-}
-
-void MyMoneyPayee::setIdPattern(const QString &idPattern)
-{
-  m_idPattern = idPattern;
-}
-
-QString MyMoneyPayee::urlTemplate() const
-{
-  return m_urlTemplate;
-}
-
-void MyMoneyPayee::setUrlTemplate(const QString &urlTemplate)
-{
-  m_urlTemplate = urlTemplate;
-}
 
 MyMoneyPayee::MyMoneyPayee() :
     m_matchingEnabled(false),
@@ -263,6 +244,67 @@ void MyMoneyPayee::setMatchData(payeeMatchType type, bool ignorecase, const QStr
 void MyMoneyPayee::setMatchData(payeeMatchType type, bool ignorecase, const QString& keys)
 {
   setMatchData(type, ignorecase, keys.split(';'));
+}
+
+QString MyMoneyPayee::idPattern() const
+{
+  return m_idPattern;
+}
+
+void MyMoneyPayee::setIdPattern(const QString& idPattern)
+{
+  m_idPattern = idPattern;
+}
+
+QString MyMoneyPayee::urlTemplate() const
+{
+  return m_urlTemplate;
+}
+
+void MyMoneyPayee::setUrlTemplate(const QString& urlTemplate)
+{
+  m_urlTemplate = urlTemplate;
+}
+
+QUrl MyMoneyPayee::payeeLink(const QString& text) const
+{
+  return payeeLink(idPattern(), urlTemplate(), text);
+}
+
+QString MyMoneyPayee::decorateLink(const QString& text) const
+{
+  QStringList matches = matchingLinks(idPattern(), urlTemplate(), text);
+  if (matches.size() == 0)
+    return text;
+  QRegExp rx(QString("(%1)").arg(matches[0]));
+
+  QString result = text;
+  result.replace(rx, "<u>\\1</u>");
+  return result;
+}
+
+QStringList MyMoneyPayee::matchingLinks(const QString& idPattern, const QString& urlTemplate, const QString& text)
+{
+  QStringList result;
+  if (idPattern.isEmpty() || urlTemplate.isEmpty())
+    return result;
+  QRegExp rx(idPattern.contains("(") ? QString("%1").arg(idPattern) : QString("(%1)").arg(idPattern));
+  if (rx.indexIn(text) == -1)
+    return result;
+  result = rx.capturedTexts();
+  return result;
+}
+
+QUrl MyMoneyPayee::payeeLink(const QString& idPattern, const QString& urlTemplate, const QString& text)
+{
+    QStringList matches = matchingLinks(idPattern, urlTemplate, text);
+    if (matches.size() == 2) {
+        return QUrl(urlTemplate.arg(matches[1]));
+    } else if (matches.size() == 3) {
+        return QUrl(urlTemplate.arg(matches[1], matches[2]));
+    } else {
+        return QUrl();
+    }
 }
 
 // vim:cin:si:ai:et:ts=2:sw=2:

@@ -672,11 +672,12 @@ void KPayeesView::slotPayeeMatchingCheck()
   matchingCheckURL->setText("");
   if (idPatternEdit->text().isEmpty() || urlTemplateEdit->text().isEmpty())
     return;
-  QRegExp rx(idPatternEdit->text().contains("(") ? QString("%1").arg(idPatternEdit->text()) : QString("(%1)").arg(idPatternEdit->text()));
-  if (rx.indexIn(matchingCheckEdit->text()) != -1) {
-    matchingCheckLabel->setText(rx.cap(1));
+  QStringList matches = MyMoneyPayee::matchingLinks(idPatternEdit->text(), urlTemplateEdit->text(), matchingCheckEdit->text());
+  if (matches.size() > 0) {
+    matchingCheckLabel->setText(matches[0]);
     matchingCheckURL->setTextInteractionFlags(Qt::TextBrowserInteraction);
-    matchingCheckURL->setText(QString("<a href=\"%1\">%1</a>").arg(urlTemplateEdit->text().arg(rx.cap(1)), rx.cap(1)));
+    QUrl url = MyMoneyPayee::payeeLink(idPatternEdit->text(), urlTemplateEdit->text(), matchingCheckEdit->text());
+    matchingCheckURL->setText(QString("<a href=\"%1\">%1</a>").arg(url.toString(), url.toString()));
   }
 }
 

@@ -6289,19 +6289,28 @@ void KMyMoneyApp::slotTransactionOpenUrl()
     foreach(const MyMoneySplit& split, st.transaction().splits()) {
       if (split.payeeId().isEmpty())
         continue;
-      const MyMoneyPayee &payee = MyMoneyFile::instance()->payee(split.payeeId());
-      if (payee.idPattern().isEmpty() || payee.urlTemplate().isEmpty())
-        continue;
-      QString memo = split.memo();
-      QRegExp rx(payee.idPattern().contains("(") ? QString("%1").arg(payee.idPattern()) : QString("(%1)").arg(payee.idPattern()));
-      if (rx.indexIn(memo) == -1)
-        continue;
-      QString id = rx.cap(1);
-      QUrl url(payee.urlTemplate().arg(id));
+      const MyMoneyPayee& payee = MyMoneyFile::instance()->payee(split.payeeId());
+      QUrl url = payee.payeeLink(split.memo());
       if (seenUrls.contains(url))
         continue;
-      QDesktopServices::openUrl(url);
-      seenUrls.append(url);
+      if (url.scheme() != QStringLiteral("file") || !url.path().contains(QStringLiteral(".*"))) {
+        QDesktopServices::openUrl(url);
+        seenUrls.append(url);
+        continue;
+      }
+      QFileInfo fi(url.toLocalFile());
+      QRegExp rx(fi.fileName());
+      QDir dir = fi.absoluteDir();
+      dir.setFilter(QDir::Files);
+      QFileInfoList list = dir.entryInfoList();
+      for (int j = 0; j < list.size(); ++j) {
+        QFileInfo fileInfo = list.at(j);
+        if (rx.indexIn(fileInfo.fileName()) != -1) {
+          QDesktopServices::openUrl(QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+          seenUrls.append(url);
+          break;
+        }
+      }
     }
   }
 }
