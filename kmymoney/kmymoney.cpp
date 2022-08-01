@@ -6290,7 +6290,7 @@ void KMyMoneyApp::slotTransactionOpenUrl()
       if (split.payeeId().isEmpty())
         continue;
       const MyMoneyPayee& payee = MyMoneyFile::instance()->payee(split.payeeId());
-      QUrl url = payee.payeeLink(split.memo());
+      QUrl url = payee.payeeLink(split, st.transaction());
       if (seenUrls.contains(url))
         continue;
       if (url.scheme() != QStringLiteral("file") || !url.path().contains(QStringLiteral(".*"))) {

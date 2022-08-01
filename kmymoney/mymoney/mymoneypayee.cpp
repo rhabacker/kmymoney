@@ -29,6 +29,8 @@
 
 #include "mymoneyutils.h"
 #include <mymoneyexception.h>
+#include <mymoneysplit.h>
+#include <mymoneytransaction.h>
 #include <pluginloader.h>
 
 MyMoneyPayee MyMoneyPayee::null;
@@ -271,6 +273,17 @@ QUrl MyMoneyPayee::payeeLink(const QString& text) const
   return payeeLink(idPattern(), urlTemplate(), text);
 }
 
+QUrl MyMoneyPayee::payeeLink(const MyMoneySplit& split, const MyMoneyTransaction &t) const
+{
+  QUrl url = payeeLink(idPattern(), urlTemplate(), split.memo());
+  if (url.scheme() == "file" && url.toString().contains("%t")) {
+    QString p = url.toLocalFile();
+    p.replace("%tyear", QString("%1").arg(t.postDate().year()));
+    url = QUrl::fromLocalFile(p);
+  }
+  return url;
+}
+
 QString MyMoneyPayee::decorateLink(const QString& text) const
 {
   QStringList matches = matchingLinks(idPattern(), urlTemplate(), text);
@@ -298,6 +311,7 @@ QStringList MyMoneyPayee::matchingLinks(const QString& idPattern, const QString&
 QUrl MyMoneyPayee::payeeLink(const QString& idPattern, const QString& urlTemplate, const QString& text)
 {
     QStringList matches = matchingLinks(idPattern, urlTemplate, text);
+    QString result;
     if (matches.size() == 2) {
         return QUrl(urlTemplate.arg(matches[1]));
     } else if (matches.size() == 3) {

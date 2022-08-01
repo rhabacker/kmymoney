@@ -26,6 +26,8 @@
 #include <QHash>
 #include <QSharedPointer>
 class QStringList;
+class MyMoneySplit;
+class MyMoneyTransaction;
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -248,6 +250,7 @@ public:
   virtual bool hasReferenceTo(const QString& id) const;
 
   QUrl payeeLink(const QString& text) const;
+  QUrl payeeLink(const MyMoneySplit& split, const MyMoneyTransaction& t) const;
   QString decorateLink(const QString& text) const;
   static QStringList matchingLinks(const QString& idPattern, const QString& urlTemplate, const QString& text);
   static QUrl payeeLink(const QString& idPattern, const QString& urlTemplate, const QString& text);
