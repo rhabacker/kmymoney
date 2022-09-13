@@ -109,6 +109,25 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>End Date</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="1">
+       <widget class="kMyMoneyDateInput" name="endDateEdit"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="endDateCheckBox">
+        <property name="text">
+         <string>Enable</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout">
      <item>
       <widget class="KPushButton" name="buttonHelp">
@@ -160,6 +179,11 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
+   <class>KTextBrowser</class>
+   <extends>QTextBrowser</extends>
+   <header>ktextbrowser.h</header>
+  </customwidget>
+  <customwidget>
    <class>KPushButton</class>
    <extends>QPushButton</extends>
    <header>kpushbutton.h</header>
@@ -186,8 +210,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>349</x>
-     <y>250</y>
+     <x>413</x>
+     <y>396</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -202,8 +226,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>414</x>
-     <y>250</y>
+     <x>503</x>
+     <y>396</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -218,12 +242,28 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>99</x>
-     <y>197</y>
+     <x>113</x>
+     <y>253</y>
     </hint>
     <hint type="destinationlabel">
-     <x>294</x>
-     <y>202</y>
+     <x>496</x>
+     <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>endDateCheckBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>endDateEdit</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>133</x>
+     <y>324</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>377</x>
+     <y>324</y>
     </hint>
    </hints>
   </connection>

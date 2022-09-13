@@ -117,6 +117,10 @@ KBPickStartDate::KBPickStartDate(KMyMoneyBanking* qb,
 
   d->ui.pickDateEdit->setDate(QDate::currentDate());
 
+  d->ui.endDateEdit->setDate(QDate::currentDate());
+  d->ui.endDateEdit->setEnabled(false);
+  d->ui.endDateCheckBox->setChecked(false);
+
   d->ui.buttonGroup->setFocus();
 }
 
@@ -128,7 +132,7 @@ KBPickStartDate::~KBPickStartDate()
 }
 
 
-QDate KBPickStartDate::date()
+QDate KBPickStartDate::startDate()
 {
   if (d->ui.noDateButton->isChecked())
     return QDate();
@@ -144,7 +148,15 @@ QDate KBPickStartDate::date()
   }
 }
 
+bool KBPickStartDate::endDateEnabled()
+{
+    return d->ui.endDateCheckBox->isChecked();
+}
 
+QDate KBPickStartDate::endDate()
+{
+    return endDateEnabled() ? d->ui.endDateEdit->date() : QDate();
+}
 
 void KBPickStartDate::slotHelpClicked()
 {

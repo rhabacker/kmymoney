@@ -46,7 +46,9 @@ public:
                   bool modal = false);
   ~KBPickStartDate();
 
-  QDate date();
+  QDate startDate();
+  bool endDateEnabled();
+  QDate endDate();
 
 public slots:
   void slotHelpClicked();

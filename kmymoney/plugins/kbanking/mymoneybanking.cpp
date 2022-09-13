@@ -482,6 +482,7 @@ bool KBankingPlugin::updateAccount(const MyMoneyAccount& acc, bool moreAccounts)
               break;
           }
 
+          QDate ed;
           // the pick start date option dialog is needed in
           // case the dateOption is 0 or the date option is > 1
           // and the qd is invalid
@@ -489,7 +490,8 @@ bool KBankingPlugin::updateAccount(const MyMoneyAccount& acc, bool moreAccounts)
             QPointer<KBPickStartDate> psd = new KBPickStartDate(m_kbanking, qd, lastUpdate, acc.name(),
                 lastUpdate.isValid() ? 2 : 3, 0, true);
             if (psd->exec() == QDialog::Accepted) {
-              qd = psd->date();
+              qd = psd->startDate();
+              ed = psd->endDate();
             } else {
               enqueJob = false;
             }
@@ -503,6 +505,11 @@ bool KBankingPlugin::updateAccount(const MyMoneyAccount& acc, bool moreAccounts)
               dt=GWEN_Date_fromGregorian(qd.year(), qd.month(), qd.day());
               AB_Transaction_SetFirstDate(job, dt);
               GWEN_Date_free(dt);
+//              if (ed.isValid()) {
+//                dt=GWEN_Date_fromGregorian(ed.year(), ed.month(), ed.day());
+//                AB_Transaction_SetLastDate(job, dt);
+//                GWEN_Date_free(dt);
+//              }
             }
 
             rv = m_kbanking->enqueueJob(job);
