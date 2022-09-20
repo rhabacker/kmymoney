@@ -39,6 +39,7 @@ class MyMoneyXmlContentHandler;
 
 #define VERSION_0_60_XML  0x10000010    // Version 0.5 file version info
 #define VERSION_0_61_XML  0x10000011    // use 8 bytes for MyMoneyMoney objects
+#define VERSION_1_XML     0x00000001    // use 8 bytes for MyMoneyMoney objects
 
 class MyMoneyStorageXML : public IMyMoneyStorageFormat
 {

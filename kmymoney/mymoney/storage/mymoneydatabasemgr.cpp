@@ -71,6 +71,16 @@ unsigned int MyMoneyDatabaseMgr::fileFixVersion() const
   return m_fileFixVersion;
 }
 
+unsigned int MyMoneyDatabaseMgr::fileVersion() const
+{
+    return m_fileVersion;
+}
+
+void MyMoneyDatabaseMgr::setFileVersion(unsigned int fileVersion)
+{
+    m_fileVersion = fileVersion;
+}
+
 // general set functions
 void MyMoneyDatabaseMgr::setUser(const MyMoneyPayee& user)
 {
@@ -2260,6 +2270,16 @@ void MyMoneyDatabaseMgr::rebuildAccountBalances()
   m_sql->modifyAccountList(aList);
 
   commitTransaction();
+}
+
+unsigned int MyMoneyDatabaseMgr::currentVersion() const
+{
+    return m_currentVersion;
+}
+
+void MyMoneyDatabaseMgr::setCurrentVersion(unsigned int currentVersion)
+{
+    m_currentVersion = currentVersion;
 }
 
 void MyMoneyDatabaseMgr::removeReferences(const QString& id)

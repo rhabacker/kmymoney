@@ -77,7 +77,12 @@ public:
   unsigned int fileFixVersion() const {
     return m_fileFixVersion;
   };
-
+  unsigned int fileVersion() const {
+      return m_fileVersion;
+  }
+  unsigned int currentVersion() const {
+      return m_currentVersion;
+  }
 
   // general set functions
   void setUser(const MyMoneyPayee& user) {
@@ -93,6 +98,13 @@ public:
   void setFileFixVersion(const unsigned int v) {
     m_fileFixVersion = v;
   };
+  void setFileVersion(const unsigned int v) {
+    m_fileVersion = v;
+  };
+  void setCurrentVersion(unsigned int v) {
+      m_currentVersion = v;
+  }
+
   /**
     * This method is used to get a SQL reader for subsequent database access
     */
@@ -1310,6 +1322,16 @@ private:
    *  presently open data file. (see kmymoneyview.cpp)
    */
   unsigned int m_fileFixVersion;
+  /**
+    * This member variable contains the current version of application
+    * data files. (see kmymoneyview.cpp)
+    */
+  unsigned int m_currentVersion;
+  /**
+   * This member variable contains the current version of the
+   *  presently open data file. (see kmymoneyview.cpp)
+   */
+  unsigned int m_fileVersion;
   /**
     * This method is used to get the next valid ID for a institution
     * @return id for a institution

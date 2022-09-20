@@ -95,6 +95,7 @@ MyMoneySeqAccessMgr::MyMoneySeqAccessMgr()
   // initialize for file fixes (see kmymoneyview.cpp)
   m_currentFixVersion = 4;
   m_fileFixVersion = 0; // default value if no fix-version in file
+  m_fileVersion = 0; // default value if no fix-version in file
   m_transactionListFull = false;
 }
 

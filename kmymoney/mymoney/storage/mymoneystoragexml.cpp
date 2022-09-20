@@ -607,6 +607,8 @@ bool MyMoneyStorageXML::readFileInformation(const QDomElement& fileInfo)
   //       We now use increments
   if (fileVersionRead == VERSION_0_60_XML)
     fileVersionRead = 1;
+  m_storage->setFileVersion(fileVersionRead);
+  m_storage->setCurrentVersion(VERSION_1_XML);
   signalProgress(3, 0);
 
   return rc;
@@ -624,7 +626,7 @@ void MyMoneyStorageXML::writeFileInformation(QDomElement& fileInfo)
 
   QDomElement version = m_doc->createElement("VERSION");
 
-  version.setAttribute("id", "1");
+  version.setAttribute("id", m_storage->currentVersion());
   fileInfo.appendChild(version);
 
   QDomElement fixVersion = m_doc->createElement("FIXVERSION");

@@ -3145,6 +3145,7 @@ void MyMoneyStorageSql::deleteKeyValuePairs(const QString& kvpType, const QVaria
 #define GETDATE(a) getDate(GETSTRING(a))
 #define GETDATETIME(a) getDateTime(GETSTRING(a))
 #define GETINT(a) q.value(a).toInt()
+#define GETUINT(a) q.value(a).toUInt()
 #define GETULL(a) q.value(a).toULongLong()
 
 void MyMoneyStorageSql::readFileInfo()
@@ -3157,7 +3158,7 @@ void MyMoneyStorageSql::readFileInfo()
   q.prepare(
     "SELECT "
     "  created, lastModified, "
-    "  encryptData, logonUser, logonAt, "
+    "  encryptData, logonUser, logonAt, version "
     "  (SELECT count(*) FROM kmmInstitutions) AS institutions, "
     "  (SELECT count(*) from kmmAccounts) AS accounts, "
     "  (SELECT count(*) FROM kmmCurrencies) AS currencies, "
@@ -3205,7 +3206,8 @@ void MyMoneyStorageSql::readFileInfo()
   m_encryptData = GETSTRING(rec.indexOf("encryptData"));
   m_logonUser = GETSTRING(rec.indexOf("logonUser"));
   m_logonAt = GETDATETIME(rec.indexOf("logonAt"));
-
+  m_storage->setFileVersion(GETUINT(rec.indexOf("version")));
+  m_storage->setCurrentVersion(m_db.currentVersion());
   signalProgress(1, 0);
   m_storage->setPairs(readKeyValuePairs("STORAGE", QString("")).pairs());
 }

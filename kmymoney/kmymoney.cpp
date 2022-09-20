@@ -1794,6 +1794,8 @@ void KMyMoneyApp::slotFileOpenRecent(const KUrl& url)
         } catch (const MyMoneyException &e) {
           KMessageBox::sorry(this, i18n("Cannot open file as requested. Error was: %1", e.what()));
         }
+        if (MyMoneyFile::instance()->storage()->currentVersion() < MyMoneyFile::instance()->storage()->fileVersion())
+            KMessageBox::warningContinueCancel(this, i18n("File has been created with a newer version ... - saving has been disabled"));
         updateCaption();
         emit fileLoaded(d->m_fileName);
       } else {

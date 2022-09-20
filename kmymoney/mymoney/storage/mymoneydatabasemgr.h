@@ -57,10 +57,14 @@ public:
   virtual const QDate lastModificationDate() const;
   virtual unsigned int currentFixVersion() const;
   virtual unsigned int fileFixVersion() const;
+  virtual unsigned int fileVersion() const;
+  virtual unsigned int currentVersion() const;
 
   // general set functions
   virtual void setUser(const MyMoneyPayee& user);
   virtual void setFileFixVersion(const unsigned int v);
+  virtual void setFileVersion(unsigned int fileVersion);
+  virtual void setCurrentVersion(unsigned int currentVersion);
 
   // methods provided by MyMoneyKeyValueContainer
   virtual void setValue(const QString& key, const QString& value);
@@ -1042,6 +1046,18 @@ private:
    *  presently open data file. (see kmymoneyview.cpp)
    */
   unsigned int m_fileFixVersion;
+
+  /**
+   * This member variable contains the version of the
+   *  presently open data file. (see kmymoneyview.cpp)
+   */
+  unsigned int m_fileVersion;
+
+  /**
+   * This member variable contains the current version of the
+   *  presently open data file. (see kmymoneyview.cpp)
+   */
+  unsigned int m_currentVersion;
 
   /**
     * This member variable keeps the date of the last modification of
