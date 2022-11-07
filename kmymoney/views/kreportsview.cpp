@@ -1211,6 +1211,9 @@ void KReportsView::slotListContextMenu(const QPoint & p)
   contextmenu->addAction(i18nc("To print a report", "&Print"),
                          this, SLOT(slotPrintFromList()));
 
+  contextmenu->addAction(i18nc("To save reports", "&Save as PDF"),
+                         this, SLOT(slotSaveAsPDFFromList()));
+
   if (tocItems.size() == 1) {
     TocItem* tocItem = dynamic_cast<TocItem*>(tocItems.at(0));
 
@@ -1258,6 +1261,33 @@ void KReportsView::slotPrintFromList()
     if (tocItem && tocItem->isReport()) {
       slotItemDoubleClicked(tocItem, 0);
       slotPrintView();
+    }
+  }
+}
+
+void KReportsView::slotSaveAsPDFFromList()
+{
+  QList<QTreeWidgetItem*> items = m_tocTreeWidget->selectedItems();
+  if (items.isEmpty())
+    return;
+
+  QString rootDir = QFileDialog::getExistingDirectory(this, i18n("Directory for saving pdf reports"),
+                                                      QDir::homePath(),
+                                                      QFileDialog::ShowDirsOnly);
+  if (rootDir.isEmpty())
+    return;
+
+  foreach(QTreeWidgetItem *item, items) {
+    TocItem* tocItem = dynamic_cast<TocItem*>(item);
+    if (tocItem && tocItem->isReport()) {
+      TocItemReport* reportTocItem = dynamic_cast<TocItemReport*>(tocItem);
+      MyMoneyReport& report = reportTocItem->getReport();
+      QFileInfo fi(rootDir + QDir::separator() + report.name() + ".pdf");
+      slotItemDoubleClicked(tocItem, 0);
+      KReportTab* tab = dynamic_cast<KReportTab*>(m_reportTabWidget->currentWidget());
+      if (!tab)
+        continue;
+      tab->printToFile(fi.absoluteFilePath());
     }
   }
 }
