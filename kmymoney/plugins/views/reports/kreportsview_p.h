@@ -339,6 +339,13 @@ void KReportTab::saveAs(const QString& filename, const QString& selectedMimeType
 {
     QFile file(filename);
 
+    if (selectedMimeType == QStringLiteral("application/pdf")) {
+        QPrinter printer(QPrinter::HighResolution);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName(filename);
+        m_tableView->print(&printer);
+        return;
+    }
     if (file.open(QIODevice::WriteOnly)) {
         if (selectedMimeType == QStringLiteral("text/csv")) {
             QTextStream(&file) << m_table->renderReport(QLatin1String("csv"), m_encoding, QString());
