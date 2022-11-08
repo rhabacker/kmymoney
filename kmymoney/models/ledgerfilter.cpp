@@ -75,8 +75,14 @@ void LedgerFilter::setComboBox(QComboBox* filterBox)
     filterBox->insertItem(static_cast<int>(State::Erroneous), Icons::get(Icon::TransactionStateErroneous), i18n("Erroneous"));
     filterBox->insertItem(static_cast<int>(State::Scheduled), Icons::get(Icon::TransactionStateScheduled), i18n("Scheduled"));
     filterBox->insertItem(static_cast<int>(State::NotMarked), Icons::get(Icon::TransactionStateNotMarked), i18n("Not marked"));
+    filterBox->insertItem(static_cast<int>(State::Reconciled), Icons::get(Icon::TransactionStateReconciled), i18n("Reconciled"));
     filterBox->insertItem(static_cast<int>(State::NotReconciled), Icons::get(Icon::TransactionStateNotReconciled), i18n("Not reconciled"));
     filterBox->insertItem(static_cast<int>(State::Cleared), Icons::get(Icon::TransactionStateCleared), i18nc("Reconciliation state 'Cleared'", "Cleared"));
+    filterBox->insertItem(static_cast<int>(State::NotCleared), Icons::get(Icon::TransactionStateNotCleared), i18n("Not cleared"));
+    filterBox->insertItem(static_cast<int>(State::HasNumber), Icons::get(Icon::TransactionStateHasNumber), i18n("Has number"));
+    filterBox->insertItem(static_cast<int>(State::NoNumber), Icons::get(Icon::TransactionStateNoNumber), i18n("Empty Number"));
+    filterBox->insertItem(static_cast<int>(State::HasMemo), Icons::get(Icon::TransactionStateHasMemo), i18n("Has memo"));
+    filterBox->insertItem(static_cast<int>(State::NoMemo), Icons::get(Icon::TransactionStateNoMemo), i18n("Empty memo"));
     filterBox->setCurrentIndex(static_cast<int>(d->state));
 
     // connect(d->ui->m_filterBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, &RegisterSearchLine::slotStatusChanged);
@@ -155,8 +161,40 @@ bool LedgerFilter::filterAcceptsRow(int source_row, const QModelIndex& source_pa
                 break;
 
             case State::Scheduled:
-                return false;
-
+                if (!idx.data(eMyMoney::Model::TransactionScheduleRole).toBool()) {
+                    return false;
+                }
+                break;
+            case State::Reconciled:
+                if ((splitState != eMyMoney::Split::State::Reconciled)) {
+                    return false;
+                }
+                break;
+            case State::NotCleared:
+                if (splitState == eMyMoney::Split::State::Cleared || splitState == eMyMoney::Split::State::Reconciled) {
+                    return false;
+                }
+                break;
+            case State::HasNumber:
+                if (!idx.data(eMyMoney::Model::SplitNumberRole).toString().isEmpty()) {
+                    return false;
+                }
+                break;
+            case State::NoNumber:
+                if (idx.data(eMyMoney::Model::SplitNumberRole).toString().isEmpty()) {
+                    return false;
+                }
+                break;
+            case State::HasMemo:
+                if (!idx.data(eMyMoney::Model::SplitMemoRole).toString().isEmpty()) {
+                    return false;
+                }
+                break;
+            case State::NoMemo:
+                if (idx.data(eMyMoney::Model::SplitMemoRole).toString().isEmpty()) {
+                    return false;
+                }
+                break;
             default:
                 break;
             }

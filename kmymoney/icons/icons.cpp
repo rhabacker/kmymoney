@@ -204,6 +204,11 @@ KMM_ICONS_EXPORT QIcon get(Icon icon)
         {Icon::TransactionStateNotReconciled, QStringLiteral("view-financial-transfer-unreconciled")},
         {Icon::TransactionStateNotMarked, QStringLiteral("view-financial-transfer-notmarked")},
         {Icon::TransactionStateCleared, QStringLiteral("view-financial-transfer-cleared")},
+        //     {Icon::TransactionStateNotCleared, QStringLiteral("view-financial-transfer-cleared")},
+        //     {Icon::TransactionStateHasNumber, QStringLiteral("view-financial-transfer-cleared")},
+        //     {Icon::TransactionStateNoNumber, QStringLiteral("view-financial-transfer-cleared")},
+        //     {Icon::TransactionStateHasMemo, QStringLiteral("view-financial-transfer-cleared")},
+        //     {Icon::TransactionStateNoMemo, QStringLiteral("view-financial-transfer-cleared")},
         {Icon::Unlink, QStringLiteral("remove-link")},
         {Icon::Vault, QStringLiteral("plasmavault")},
     };
