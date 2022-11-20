@@ -954,6 +954,11 @@ public slots:
   void slotHideReconciledTransactions();
 
   /**
+    * Toggles the lock reconciled transactions setting
+    */
+  void slotLockReconciledTransactions();
+
+  /**
     * Toggles the show reconciled balances setting
     */
   void slotShowReconciledBalances();

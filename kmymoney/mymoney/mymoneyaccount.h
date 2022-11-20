@@ -638,6 +638,11 @@ public:
   void saveReconciliationHistory();
 
   /**
+    * get the latest date from the reconciliation history
+    */
+  const QDate latestReconcilationDate();
+
+  /**
     * @return @c true if account has an online mapping, @c false otherwise
     */
   bool hasOnlineMapping() const;

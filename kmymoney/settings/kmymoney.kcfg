@@ -212,6 +212,10 @@
    <label>Hide reconciled transactions</label>
    <default>false</default>
   </entry>
+  <entry name="LockReconciledTransactions" type="Bool">
+   <label>Lock reconciled transactions</label>
+   <default>false</default>
+  </entry>
   <entry name="ShowReconciledBalances" type="Bool">
    <label>Show reconciled balances</label>
    <default>true</default>

@@ -839,6 +839,21 @@ void MyMoneyAccount::saveReconciliationHistory()
   setValue("reconciliationHistory", history);
 }
 
+const QDate MyMoneyAccount::latestReconcilationDate()
+{
+  reconciliationHistory();
+  QDate latestDate;
+  foreach(ReconciliationKey key, m_reconciliationHistory.keys()) {
+    if (!key.hasDate())
+      continue;
+    if (!latestDate.isValid())
+      latestDate = key.toDate();
+    else if(latestDate < key.toDate())
+      latestDate = key.toDate();
+  }
+  return latestDate;
+}
+
 /**
  * @todo Improve setting of country for nationalAccount
  */

@@ -1956,6 +1956,16 @@ bool StdTransactionEditor::isComplete(QString& reason) const
     postDate->setToolTip("");
   }
 
+  if (KMyMoneyGlobalSettings::lockReconciledTransactions() && postDate->date().isValid()) {
+    MyMoneyAccount acc(m_account);
+    QDate d = acc.latestReconcilationDate();
+    if (d.isValid() && postDate->date() <= d) {
+      postDate->markAsBadDate(true, KMyMoneyGlobalSettings::listNegativeValueColor());
+      reason = i18n("Cannot enter transaction with postdate prior to latest reconciliation date.");
+      postDate->setToolTip(reason);
+      return false;
+    }
+  }
   for (it_w = m_editWidgets.begin(); it_w != m_editWidgets.end(); ++it_w) {
     KMyMoneyPayeeCombo* payee = dynamic_cast<KMyMoneyPayeeCombo*>(*it_w);
     KTagContainer* tagContainer = dynamic_cast<KTagContainer*>(*it_w);

@@ -697,6 +697,12 @@ void KMyMoneyApp::initActions()
   view_show_all_accounts->setShortcut(KShortcut("Ctrl+Shift+A"));
   connect(view_show_all_accounts, SIGNAL(triggered()), this, SLOT(slotShowAllAccounts()));
 
+  KToggleAction *view_lock_reconciled_transactions = actionCollection()->add<KToggleAction>("view_lock_reconciled_transactions");
+  view_lock_reconciled_transactions->setText(i18n("Lock reconciled balances"));
+  view_lock_reconciled_transactions->setIcon(KMyMoneyUtils::overlayIcon("lock", "merge"));
+  view_lock_reconciled_transactions->setShortcut(KShortcut("Ctrl+Shift+L"));
+  connect(view_lock_reconciled_transactions, SIGNAL(triggered()), this, SLOT(slotLockReconciledTransactions()));
+
   // *********************
   // The institutions menu
   // *********************
@@ -2134,6 +2140,12 @@ void KMyMoneyApp::slotFileQuit()
 void KMyMoneyApp::slotHideReconciledTransactions()
 {
   KMyMoneyGlobalSettings::setHideReconciledTransactions(toggleAction("view_hide_reconciled_transactions")->isChecked());
+  d->m_myMoneyView->slotRefreshViews();
+}
+
+void KMyMoneyApp::slotLockReconciledTransactions()
+{
+  KMyMoneyGlobalSettings::setLockReconciledTransactions(toggleAction("view_lock_reconciled_transactions")->isChecked());
   d->m_myMoneyView->slotRefreshViews();
 }
 
