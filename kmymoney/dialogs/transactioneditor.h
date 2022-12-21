@@ -197,6 +197,8 @@ protected slots:
   void slotUpdateAccount();
   void slotNumberChanged(const QString&);
 
+  void updateMemoLink();
+
 signals:
   /**
     * This signal is sent out by the destructor to inform other entities

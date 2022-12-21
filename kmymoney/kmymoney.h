@@ -507,6 +507,8 @@ protected slots:
 
   void slotTransactionOpenUrl();
 
+  bool openUrl(const QUrl& url);
+
   /**
     * Accept the selected transactions that are marked as 'imported' and remove the flag
     */

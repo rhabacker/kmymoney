@@ -153,6 +153,7 @@ void TransactionEditor::setup(QWidgetList& tabOrderWidgets, const MyMoneyAccount
   }
   loadEditWidgets(action);
 
+  updateMemoLink();
   // remove all unused widgets and don't forget to remove them
   // from the tab order list as well
   m_editWidgets.removeOrphans();
@@ -351,6 +352,33 @@ void TransactionEditor::slotUpdateMemoState()
   if (memo) {
     m_memoChanged = (memo->toPlainText() != m_memoText);
   }
+  updateMemoLink();
+}
+
+void TransactionEditor::updateMemoLink()
+{
+  QLabel* urlLabel = dynamic_cast<QLabel*>(m_editWidgets["url-label"]);
+  if (!urlLabel)
+    return;
+
+  KTextEdit* memo = dynamic_cast<KTextEdit*>(m_editWidgets["memo"]);
+  KMyMoneyPayeeCombo* payee = dynamic_cast<KMyMoneyPayeeCombo*>(m_editWidgets["payee"]);
+  if (!memo || !payee) {
+    urlLabel->setText(QString("%1").arg(i18n("Link")));
+    return;
+  }
+
+  const MyMoneyPayee& payeeObj = MyMoneyFile::instance()->payee(payee->selectedItem());
+  QUrl url = payeeObj.payeeLink(memo->toPlainText());
+  if (url.isEmpty()) {
+    urlLabel->setText(QString("%1").arg(i18n("Link")));
+    return;
+  }
+  urlLabel->setTextFormat(Qt::RichText);
+  urlLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
+  urlLabel->setOpenExternalLinks(true);
+  urlLabel->setText(QString("<a href=\"%1\">%2</a>").arg(url.toString()).arg(i18n("Link")));
+  qDebug() << url;
 }
 
 void TransactionEditor::slotUpdateButtonState()
@@ -1038,6 +1066,9 @@ void StdTransactionEditor::createEditWidgets()
   label->setAlignment(Qt::AlignVCenter);
 
   m_editWidgets["status-label"] = label = new QLabel(i18n("Status"));
+  label->setAlignment(Qt::AlignVCenter);
+
+  m_editWidgets["url-label"] = label = new QLabel(i18n("Link"));
   label->setAlignment(Qt::AlignVCenter);
 
   // create a copy of tabbar above the form (if we are created for a form)

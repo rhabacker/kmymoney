@@ -1291,6 +1291,7 @@ void StdTransaction::arrangeWidgetsInForm(QMap<QString, QWidget*>& editWidgets)
   arrangeWidget(m_form, 3, ValueColumn1, editWidgets["tag"]);
   arrangeWidget(m_form, 4, LabelColumn1, editWidgets["memo-label"]);
   arrangeWidget(m_form, 4, ValueColumn1, editWidgets["memo"]);
+  arrangeWidget(m_form, 4, LabelColumn1, editWidgets["url-label"]);
   if (haveNumberField()) {
     arrangeWidget(m_form, 1, LabelColumn2, editWidgets["number-label"]);
     arrangeWidget(m_form, 1, ValueColumn2, editWidgets["number"]);
@@ -1385,6 +1386,7 @@ void StdTransaction::arrangeWidgetsInRegister(QMap<QString, QWidget*>& editWidge
   arrangeWidget(m_parent, m_startRow + 1, DetailColumn, editWidgets["category"]->parentWidget());
   arrangeWidget(m_parent, m_startRow + 2, DetailColumn, editWidgets["tag"]);
   arrangeWidget(m_parent, m_startRow + 3, DetailColumn, editWidgets["memo"]);
+  arrangeWidget(m_parent, m_startRow + 3, DateColumn, editWidgets["url-label"]);
   arrangeWidget(m_parent, m_startRow + 0, PaymentColumn, editWidgets["payment"]);
   arrangeWidget(m_parent, m_startRow + 0, DepositColumn, editWidgets["deposit"]);
 
@@ -2019,6 +2021,7 @@ void InvestTransaction::arrangeWidgetsInForm(QMap<QString, QWidget*>& editWidget
   arrangeWidget(m_form, 4, LabelColumn1, editWidgets["interest-label"]);
   arrangeWidget(m_form, 4, LabelColumn2, editWidgets["interest-amount-label"]);
   arrangeWidget(m_form, 5, LabelColumn1, editWidgets["memo-label"]);
+  arrangeWidget(m_form, 4, LabelColumn1, editWidgets["url-label"]);
   arrangeWidget(m_form, 5, LabelColumn2, editWidgets["total-label"]);
   arrangeWidget(m_form, 6, LabelColumn2, editWidgets["status-label"]);
 

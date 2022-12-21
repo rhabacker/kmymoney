@@ -349,6 +349,9 @@ void InvestTransactionEditor::createEditWidgets()
   m_editWidgets["status-label"] = label = new QLabel(i18n("Status"));
   label->setAlignment(Qt::AlignVCenter);
 
+  m_editWidgets["url-label"] = label = new QLabel(i18n("Link"));
+  label->setAlignment(Qt::AlignVCenter);
+
   // if we don't have more than 1 selected transaction, we don't need
   // the "don't change" item in some of the combo widgets
   if (m_transactions.count() < 2) {

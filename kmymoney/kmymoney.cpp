@@ -6311,26 +6311,31 @@ void KMyMoneyApp::slotTransactionOpenUrl()
       QUrl url = payee.payeeLink(split, st.transaction());
       if (seenUrls.contains(url))
         continue;
-      if (url.scheme() != QStringLiteral("file") || !url.path().contains(QStringLiteral(".*"))) {
-        QDesktopServices::openUrl(url);
+      if (openUrl(url))
         seenUrls.append(url);
-        continue;
-      }
-      QFileInfo fi(url.toLocalFile());
-      QRegExp rx(fi.fileName());
-      QDir dir = fi.absoluteDir();
-      dir.setFilter(QDir::Files);
-      QFileInfoList list = dir.entryInfoList();
-      for (int j = 0; j < list.size(); ++j) {
-        QFileInfo fileInfo = list.at(j);
-        if (rx.indexIn(fileInfo.fileName()) != -1) {
-          QDesktopServices::openUrl(QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
-          seenUrls.append(url);
-          break;
-        }
-      }
     }
   }
+}
+
+bool KMyMoneyApp::openUrl(const QUrl& url)
+{
+  if (url.scheme() != QStringLiteral("file") || !url.path().contains(QStringLiteral(".*"))) {
+    QDesktopServices::openUrl(url);
+    return true;;
+  }
+  QFileInfo fi(url.toLocalFile());
+  QRegExp rx(fi.fileName());
+  QDir dir = fi.absoluteDir();
+  dir.setFilter(QDir::Files);
+  QFileInfoList list = dir.entryInfoList();
+  for (int j = 0; j < list.size(); ++j) {
+    QFileInfo fileInfo = list.at(j);
+    if (rx.indexIn(fileInfo.fileName()) != -1) {
+      QDesktopServices::openUrl(QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+      return true;
+    }
+  }
+  return false;
 }
 
 void KMyMoneyApp::slotMoveToAccount(const QString& id)
