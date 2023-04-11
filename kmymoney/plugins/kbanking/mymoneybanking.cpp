@@ -1435,7 +1435,7 @@ bool KMyMoneyBanking::importAccountInfo(AB_IMEXPORTER_ACCOUNTINFO *ai,
 
   // get all transactions
   const AB_TRANSACTION* t = AB_ImExporterAccountInfo_GetFirstTransaction(ai, AB_Transaction_TypeStatement, 0);
-  while (t) {
+  while (t && AB_Transaction_GetStatus(t) != AB_Transaction_StatusPending) {
     _xaToStatement(ks, kacc, t);
     t = AB_Transaction_List_FindNextByType(t, AB_Transaction_TypeStatement, 0);
   }
