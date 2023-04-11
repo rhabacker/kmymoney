@@ -1,3 +1,10 @@
+if(SIZEOF_LONG EQUAL 8 AND NOT MINGW)
+    set(LIB lib64)
+else()
+    set(LIB lib)
+endif()
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${LIB}/kde4)
+
 add_subdirectory( onlinetasks )
 
 add_subdirectory( ibanbicdata )
