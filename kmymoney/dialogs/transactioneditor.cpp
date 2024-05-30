@@ -329,6 +329,10 @@ void TransactionEditor::slotNumberChanged(const QString& txt)
   if (!m_scheduleInfo.isEmpty()) {
     schedInfo = i18n("<center>Processing schedule for %1.</center>", m_scheduleInfo);
   }
+#if 1
+  number->loadText(txt);
+  return;
+#else
 
   while (MyMoneyFile::instance()->checkNoUsed(m_account.id(), next)) {
     QString dontShowAgain = QLatin1String("DuplicatedNumber");
@@ -344,6 +348,7 @@ void TransactionEditor::slotNumberChanged(const QString& txt)
       break;
     }
   }
+#endif
 }
 
 void TransactionEditor::slotUpdateMemoState()
