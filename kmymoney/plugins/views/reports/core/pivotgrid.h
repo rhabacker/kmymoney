@@ -22,35 +22,40 @@
 #include "reportaccount.h"
 #include "mymoneymoney.h"
 
-namespace reports
-{
+class AlkDomDocument;
+class AlkDomElement;
+
+namespace reports {
+Q_NAMESPACE
 
 enum ERowType {eActual, eBudget, eBudgetDiff, eForecast, eAverage, ePrice };
 
+Q_ENUM_NS(ERowType)
+
 /**
-  * The fundamental data construct of this class is a 'grid'.  It is organized as follows:
-  *
-  * A 'Row' is a row of money values, each column is a month.  The first month corresponds to
-  * m_beginDate.
-  *
-  * A 'Row Pair' is two rows of money values.  Each column is the SAME month.  One row is the
-  * 'actual' values for the period, the other row is the 'budgetted' values for the same
-  * period.  For ease of implementation, a Row Pair is implemented as a Row which contains
-  * another Row.  The inherited Row is the 'actual', the contained row is the 'Budget'.
-  *
-  * An 'Inner Group' contains a rows for each subordinate account within a single top-level
-  * account.  It also contains a mapping from the account descriptor for the subordinate account
-  * to its row data.  So if we have an Expense account called "Computers", with sub-accounts called
-  * "Hardware", "Software", and "Peripherals", there will be one Inner Group for "Computers"
-  * which contains three Rows.
-  *
-  * An 'Outer Group' contains Inner Row Groups for all the top-level accounts in a given
-  * account class.  Account classes are Expense, Income, Asset, Liability.  In the case above,
-  * the "Computers" Inner Group is contained within the "Expense" Outer Group.
-  *
-  * A 'Grid' is the set of all Outer Groups contained in this report.
-  *
-  */
+ * The fundamental data construct of this class is a 'grid'.  It is organized as follows:
+ *
+ * A 'Row' is a row of money values, each column is a month.  The first month corresponds to
+ * m_beginDate.
+ *
+ * A 'Row Pair' is two rows of money values.  Each column is the SAME month.  One row is the
+ * 'actual' values for the period, the other row is the 'budgetted' values for the same
+ * period.  For ease of implementation, a Row Pair is implemented as a Row which contains
+ * another Row.  The inherited Row is the 'actual', the contained row is the 'Budget'.
+ *
+ * An 'Inner Group' contains a rows for each subordinate account within a single top-level
+ * account.  It also contains a mapping from the account descriptor for the subordinate account
+ * to its row data.  So if we have an Expense account called "Computers", with sub-accounts called
+ * "Hardware", "Software", and "Peripherals", there will be one Inner Group for "Computers"
+ * which contains three Rows.
+ *
+ * An 'Outer Group' contains Inner Row Groups for all the top-level accounts in a given
+ * account class.  Account classes are Expense, Income, Asset, Liability.  In the case above,
+ * the "Computers" Inner Group is contained within the "Expense" Outer Group.
+ *
+ * A 'Grid' is the set of all Outer Groups contained in this report.
+ *
+ */
 class PivotCell: public MyMoneyMoney
 {
     KMM_MYMONEY_UNIT_TESTABLE
@@ -69,6 +74,8 @@ public:
     bool isUsed() const {
         return m_cellUsed;
     }
+    bool saveToXml(AlkDomDocument& doc, AlkDomElement& parent) const;
+
 private:
     MyMoneyMoney m_stockSplit;
     MyMoneyMoney m_postSplit;
@@ -83,12 +90,14 @@ public:
             append(PivotCell());
     }
     MyMoneyMoney m_total;
+    bool saveToXml(AlkDomDocument& doc, AlkDomElement& parent) const;
 };
 
 class PivotGridRowSet: public QMap<ERowType, PivotGridRow>
 {
 public:
     explicit PivotGridRowSet(unsigned _numcolumns = 0);
+    bool saveToXml(AlkDomDocument& doc, AlkDomElement& parent) const;
 };
 
 class PivotInnerGroup: public QMap<ReportAccount, PivotGridRowSet>
@@ -97,6 +106,7 @@ public:
     explicit PivotInnerGroup(unsigned _numcolumns = 0): m_total(_numcolumns) {}
 
     PivotGridRowSet m_total;
+    bool saveToXml(AlkDomDocument& doc, AlkDomElement& parent) const;
 };
 
 class PivotOuterGroup: public QMap<QString, PivotInnerGroup>
@@ -109,6 +119,9 @@ public:
         else
             return m_displayName < _right.m_displayName;
     }
+
+    bool saveToXml(AlkDomDocument& doc, AlkDomElement& parent) const;
+
     PivotGridRowSet m_total;
 
     // An inverted outergroup means that all values placed in subordinate rows
@@ -135,6 +148,7 @@ public:
     PivotGridRowSet rowSet(QString id);
 
     PivotGridRowSet m_total;
+    bool saveToXml(AlkDomDocument& doc, AlkDomElement& parent) const;
 };
 
 }

@@ -3,6 +3,7 @@ if(BUILD_TESTING)
 endif()
 
 set (libreports_a_SOURCES
+  alkdom.cpp
   cashflowlist.cpp
   kreportchartview.cpp
   reportaccount.cpp

@@ -21,6 +21,7 @@
 
 // ----------------------------------------------------------------------------
 // Project Includes
+#include "alkdom.h"
 #include "journalmodel.h"
 #include "kmymoneysettings.h"
 #include "kmymoneyutils.h"
@@ -1999,6 +2000,27 @@ void PivotTable::dump(const QString& file, const QString& /* context */) const
     g.open(QIODevice::WriteOnly);
     QTextStream(&g) << renderHTML();
     g.close();
+}
+
+bool PivotTable::saveToXml(const QString& file)
+{
+    QFile out(file);
+    if (!out.open(QIODevice::WriteOnly))
+        return false;
+    QTextStream stream(&out);
+    stream << toXml();
+    return true;
+}
+
+QString PivotTable::toXml() const
+{
+    AlkDomDocument doc;
+    AlkDomElement el = doc.createElement("PivotTable");
+    QString name = m_config.name();
+    el.setAttribute("name", name);
+    m_grid.saveToXml(doc, el);
+    doc.appendChild(el);
+    return doc.toString();
 }
 
 void PivotTable::drawChart(KReportChartView& chartView) const

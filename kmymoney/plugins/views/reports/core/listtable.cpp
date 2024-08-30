@@ -24,6 +24,7 @@
 // ----------------------------------------------------------------------------
 // Project Includes
 
+#include "alkdom.h"
 #include "kmymoneysettings.h"
 #include "mymoneyaccount.h"
 #include "mymoneyenums.h"
@@ -34,6 +35,7 @@
 #include "mymoneysplit.h"
 #include "mymoneytransaction.h"
 #include "mymoneyutils.h"
+#include "qmetaobject.h"
 
 namespace reports
 {
@@ -461,6 +463,37 @@ void ListTable::dump(const QString& file, const QString& context) const
     else
         QTextStream(&g) << renderHTML();
     g.close();
+}
+
+bool ListTable::saveToXml(const QString& file)
+{
+    QFile out(file);
+    if (!out.open(QIODevice::WriteOnly))
+        return false;
+    QTextStream stream(&out);
+    stream << toXml();
+    return true;
+}
+
+QString ListTable::toXml() const
+{
+    AlkDomDocument doc;
+    AlkDomElement el = doc.createElement("ListTable");
+    QString name = m_config.name();
+    el.setAttribute("name", name);
+
+    for (const ListTable::TableRow& row : m_rows) {
+        AlkDomElement r = doc.createElement("TableRow");
+        QList<cellTypeE> keys = row.keys();
+        for (const cellTypeE& key : keys) {
+            QMetaEnum metaEnum = QMetaEnum::fromType<cellTypeE>();
+            QString attrName = metaEnum.valueToKey(key);
+            r.setAttribute(attrName, row[key]);
+        }
+        el.appendChild(r);
+    }
+    doc.appendChild(el);
+    return doc.toString();
 }
 
 void ListTable::includeInvestmentSubAccounts()
