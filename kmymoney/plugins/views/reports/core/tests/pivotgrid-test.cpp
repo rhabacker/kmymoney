@@ -10,6 +10,8 @@
 
 #include <QTest>
 
+#include <alkimia/alkdom.h>
+
 #include "tests/testutilities.h"
 
 #include "pivotgrid.h"
@@ -166,4 +168,77 @@ void PivotGridTest::testCellRunningSum()
     QVERIFY(a.formatMoney("", 2) == MyMoneyMoney(1865, 100).formatMoney("", 2));
     QVERIFY(a.m_stockSplit == MyMoneyMoney::ONE);
     QVERIFY(a.m_postSplit == MyMoneyMoney());
+}
+
+void PivotGridTest::testToXml()
+{
+    PivotCell cell;
+    PivotGridRow gridRow;
+    gridRow.append(cell);
+    PivotGridRowSet gridRowSet;
+    gridRowSet[eActual] = gridRow;
+    ReportAccount account(acAsset);
+    PivotInnerGroup innerGroup;
+    innerGroup[account] = gridRowSet;
+    PivotOuterGroup outerGroup;
+    outerGroup["test"] = innerGroup;
+    PivotGrid grid;
+    grid["test"] = outerGroup;
+
+    AlkDomDocument doc;
+    AlkDomElement el = doc.createElement("root");
+    QVERIFY(grid.saveToXml(doc, el));
+    doc.appendChild(el);
+    QCOMPARE(
+        doc.toString(false),
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<root>\n<PivotGrid>\n<PivotGridMap>\n<PivotGridMapEntry>\n<PivotGridMapKey>\n<String id=\"test\" "
+        "/>\n</PivotGridMapKey>\n<PivotGridMapValue>\n<PivotOuterGroup displayName=\"\" inverted=\"0\" "
+        "sortOrder=\"100\">\n<PivotGridRowSet>\n<PivotGridRowSetMap>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType id=\"eActual\" "
+        "/>\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"eBudget\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"eBudgetDiff\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"eForecast\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"eAverage\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"ePrice\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n</PivotGridRowSetMap>\n</"
+        "PivotGridRowSet>\n<PivotOuterGroupMap>\n<PivotOuterGroupMapEntry>\n<PivotOuterGroupMapKey>\n<String id=\"test\" "
+        "/>\n</"
+        "PivotOuterGroupMapKey>\n<PivotOuterGroupMapValue>\n<PivotInnerGroup>\n<PivotGridRowSet>\n<PivotGridRowSetMap>\n<PivotGridRowSetMapEntry>\n<"
+        "PivotGridRowSetMapKey>\n<ERowType id=\"eActual\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow "
+        "total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"eBudget\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"eBudgetDiff\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"eForecast\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"eAverage\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"ePrice\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n</PivotGridRowSetMap>\n</"
+        "PivotGridRowSet>\n<PivotInnerGroupMap>\n<PivotInnerGroupMapEntry>\n<PivotInnerGroupMapKey>\n<ReportAccount id=\"AStd::Asset\" "
+        "/>\n</"
+        "PivotInnerGroupMapKey>\n<PivotInnerGroupMapValue>\n<PivotGridRowSet>\n<PivotGridRowSetMap>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<"
+        "ERowType id=\"eActual\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList>\n<PivotCell "
+        "isUsed=\"0\" postSplit=\"0/1\" stockSplit=\"1/1\" value=\"0/1\" "
+        "/>\n</PivotGridRowList>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</"
+        "PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType id=\"eBudget\" "
+        "/>\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"eBudgetDiff\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"eForecast\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"eAverage\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n<PivotGridRowSetMapEntry>\n<PivotGridRowSetMapKey>\n<ERowType "
+        "id=\"ePrice\" />\n</PivotGridRowSetMapKey>\n<PivotGridRowSetMapValue>\n<PivotGridRow total=\"0/1\">\n<PivotGridRowList "
+        "/>\n</PivotGridRow>\n</PivotGridRowSetMapValue>\n</PivotGridRowSetMapEntry>\n</PivotGridRowSetMap>\n</PivotGridRowSet>\n</PivotInnerGroupMapValue>\n</"
+        "PivotInnerGroupMapEntry>\n</PivotInnerGroupMap>\n</PivotInnerGroup>\n</PivotOuterGroupMapValue>\n</PivotOuterGroupMapEntry>\n</PivotOuterGroupMap>\n</"
+        "PivotOuterGroup>\n</PivotGridMapValue>\n</PivotGridMapEntry>\n</PivotGridMap>\n</PivotGrid>\n</root>\n");
 }

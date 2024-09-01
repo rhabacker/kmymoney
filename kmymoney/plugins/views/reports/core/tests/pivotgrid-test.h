@@ -35,6 +35,7 @@ private Q_SLOTS:
     void testCellAddValue();
     void testCellAddCell();
     void testCellRunningSum();
+    void testToXml();
 };
 
 }
