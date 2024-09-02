@@ -25,3 +25,5 @@ target_link_libraries(reports-chart-test
   Qt::Gui
   Qt::Test
 )
+
+add_subdirectory(data)
