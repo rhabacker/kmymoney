@@ -65,6 +65,21 @@ void writeTabletoCSV(const PivotTable& table, const QString& _filename = QString
     g.close();
 }
 
+void writeTabletoXML(const PivotTable& table, const QString& _filename = QString())
+{
+    static unsigned filenumber = 1;
+    QString filename = _filename;
+    if (filename.isEmpty()) {
+        filename = QString::fromLatin1("report-%1.xml").arg(filenumber, 2, 10, QLatin1Char('0'));
+        ++filenumber;
+    }
+
+    QFile g(filename);
+    g.open(QIODevice::WriteOnly);
+    QTextStream(&g) << table.toXml();
+    g.close();
+}
+
 void PivotTableTest::setup()
 {
 }
@@ -534,6 +549,7 @@ void PivotTableTest::testMultipleCurrencies()
     PivotTable spending_f(filter);
 
     writeTabletoCSV(spending_f);
+    writeTabletoXML(spending_f);
 
     // test single foreign currency
     QVERIFY(spending_f.m_grid["Expense"]["Foreign"][ReportAccount(canCash)][eActual][1] == (moCanTransaction * moCanPrice));
