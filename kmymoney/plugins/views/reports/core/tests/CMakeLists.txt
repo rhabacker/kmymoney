@@ -26,4 +26,10 @@ target_link_libraries(reports-chart-test
   Qt::Test
 )
 
+set_tests_properties(reports-pivottable-test
+  PROPERTIES
+    ENVIRONMENT QT_LOGGING_RULES=kf.i18n.warning=false
+)
+
+
 add_subdirectory(data)
