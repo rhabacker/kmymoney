@@ -9,6 +9,7 @@ set(querytable_test_files
   test-469195.xml
   test-buchungen.xml
   test-eigenkapital.xml
+  test-382245.xml
 )
 
 set(pivottable_test_files
