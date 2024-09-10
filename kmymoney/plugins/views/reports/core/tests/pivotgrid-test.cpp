@@ -6,6 +6,8 @@
 
 #include "pivotgrid-test.h"
 
+#include <KLocalizedString>
+
 #include <QTest>
 #include <alkdom.h>
 
@@ -24,6 +26,8 @@ QTEST_GUILESS_MAIN(PivotGridTest)
 
 void PivotGridTest::init()
 {
+    KLocalizedString::setApplicationDomain(QByteArrayLiteral("kmymoney"));
+
     file = MyMoneyFile::instance();
 
     MyMoneyFileTransaction ft;
