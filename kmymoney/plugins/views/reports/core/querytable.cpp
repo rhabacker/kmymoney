@@ -597,6 +597,8 @@ void QueryTable::constructTransactionTable()
         bool foundTaxAccount = false;
         for (it_split = splits.constBegin(), myBegin = splits.constEnd(); it_split != splits.constEnd(); ++it_split) {
             ReportAccount splitAcc((* it_split).accountId());
+
+            qDebug() << __LINE__ << it_split->accountId() << it_split->shares().toDouble();
             // always put split with a "stock" account if it exists
             if (splitAcc.isInvest())
                 break;
@@ -677,6 +679,7 @@ void QueryTable::constructTransactionTable()
             if (it_split == myBegin)
                 myBeginCurrency = splitCurrency;
 
+            qDebug() << __LINE__ << baseCurrency << splitCurrency << myBeginCurrency;
             //get fraction for account
             int fraction = splitAcc.currency().smallestAccountFraction();
 
@@ -718,6 +721,7 @@ void QueryTable::constructTransactionTable()
                 }
                 xr = MyMoneyMoney::ONE;
             }
+            qDebug() << __LINE__ << xr.toDouble();
 
             qA[ctTag] = (*it_split).tagIdList().join(tagSeparator);
 
@@ -780,6 +784,7 @@ void QueryTable::constructTransactionTable()
                                     xrMap.insert(splitCurrency, MyMoneyMoney::ONE / (*it_split).price());
                                 } else
                                     xr = (*it_split).price();
+                                qDebug() << __LINE__ << xr.toDouble();
                                 break;
                             }
                         }
@@ -807,6 +812,7 @@ void QueryTable::constructTransactionTable()
                 qA[ctMemo] = a_memo;
 
                 qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
+                qDebug() << __LINE__ << qA[ctValue];
 
                 qS[ctReconcileDate] = qA[ctReconcileDate];
                 qS[ctReconcileFlag] = qA[ctReconcileFlag];
@@ -822,6 +828,7 @@ void QueryTable::constructTransactionTable()
 
                         // put the principal amount in the "value" column and convert to lowest fraction
                         qA[ctValue] = (-(*it_split).shares() * xr).convert(fraction).toString();
+                        qDebug() << __LINE__ << (-(*it_split).shares() * xr).convert(fraction).toDouble();
 
                         qA[ctRank] = QLatin1Char('1');
                         qA[ctSplit].clear();
@@ -849,9 +856,11 @@ void QueryTable::constructTransactionTable()
                             case eMyMoney::Report::RowType::Payee:
                                 if (splitAcc.isAssetLiability()) {
                                     qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString(); // needed for category reports, in case of multicurrency transaction it breaks it
+                                    qDebug() << __LINE__ << ((*it_split).shares() * xr).convert(fraction).toDouble();
                                     // make sure we use the right currency of the category
                                     // (will be ignored when converting to base currency)
                                     qA[ctCurrency] = splitAcc.currencyId();
+                                    qDebug() << __LINE__ << qA[ctCurrency];
                                 }
                                 break;
                             default:
@@ -921,17 +930,18 @@ void QueryTable::constructTransactionTable()
                                 if (splitAcc.isIncomeExpense()) {
                                     // if the currency of the split is different from the currency of the main split,
                                     // then convert to the currency of the main split
+                                    MyMoneyMoney ieXr(xr);
                                     if (!m_config.isConvertCurrency() && splitAcc.currency().id() != myBeginCurrency) {
-                                        MyMoneyMoney ieXr(xr);
                                         ieXr = (xr * splitAcc.foreignCurrencyPrice(myBeginCurrency, (*it_transaction).postDate())).reduce();
-                                        qA[ctValue] = ((-(*it_split).shares()) * ieXr).convert(fraction).toString();
                                         qA[ctCurrency] = file->account((*myBegin).accountId()).currencyId();
                                     } else {
-                                        qA[ctValue] = (-(*it_split).shares() * xr).convert(fraction).toString();
                                         // make sure we use the right currency of the category
                                         // (will be ignored when converting to base currency)
                                         qA[ctCurrency] = splitAcc.currencyId();
                                     }
+                                    qA[ctValue] = ((-(*it_split).shares()) * ieXr).convert(fraction).toString();
+                                    qDebug() << __LINE__ << (-(*it_split).shares() * ieXr).convert(fraction).toDouble();
+                                    qDebug() << __LINE__ << qA[ctCurrency];
                                 }
                                 break;
                             default:
@@ -1929,6 +1939,7 @@ void QueryTable::constructSplitsTable()
                 // this is the sub-total of the split detail
                 // convert to lowest fraction
                 qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
+                qDebug() << __LINE__ << qA[ctValue];
                 qA[ctRank] = QLatin1Char('1');
 
                 //fill in account information
