@@ -912,11 +912,11 @@ void QueryTable::constructTransactionTable()
                     }
                     //--- default case includes all transaction details
                     else {
-                        // this is when the splits are going to be shown as children of the main split
+                        //this is when the splits are going to be shown as children of the main split
                         if ((splits.count() > 2) && use_summary) {
                             qA[ctValue].clear();
 
-                            // convert to lowest fraction
+                            //convert to lowest fraction
                             qA[ctSplit] = (-(*it_split).shares() * xr).convert(fraction).toString();
                             qA[ctRank] = QLatin1Char('2');
                         } else {
@@ -928,13 +928,20 @@ void QueryTable::constructTransactionTable()
                             case eMyMoney::Report::RowType::Tag:
                             case eMyMoney::Report::RowType::Payee:
                                 if (splitAcc.isIncomeExpense()) {
-                                    qA[ctValue] = (-(*it_split).shares() * xr)
-                                                      .convert(fraction)
-                                                      .toString(); // needed for category reports, in case of multicurrency transaction it breaks it
-
-                                    // make sure we use the right currency of the category
-                                    // (will be ignored when converting to base currency)
-                                    qA[ctCurrency] = splitAcc.currencyId();
+                                    // if the currency of the split is different from the currency of the main split,
+                                    // then convert to the currency of the main split
+                                    MyMoneyMoney ieXr(xr);
+                                    if (!m_config.isConvertCurrency() && splitAcc.currency().id() != myBeginCurrency) {
+                                        ieXr = (xr * splitAcc.foreignCurrencyPrice(myBeginCurrency, (*it_transaction).postDate())).reduce();
+                                        qA[ctCurrency] = file->account((*myBegin).accountId()).currencyId();
+                                    } else {
+                                        // make sure we use the right currency of the category
+                                        // (will be ignored when converting to base currency)
+                                        qA[ctCurrency] = splitAcc.currencyId();
+                                    }
+                                    qA[ctValue] = ((-(*it_split).shares()) * ieXr).convert(fraction).toString();
+                                    qDebug() << __LINE__ << (-(*it_split).shares() * ieXr).convert(fraction).toDouble();
+                                    qDebug() << __LINE__ << qA[ctCurrency];
                                 }
                                 break;
                             default:
