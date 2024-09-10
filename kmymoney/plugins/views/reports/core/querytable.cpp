@@ -358,6 +358,7 @@ void QueryTable::constructTotalRows()
             while (currencyGrp != totalCurrency.end()) {
                 if (!MyMoneyMoney((*currencyGrp).at(i + 1).value(ctRowsCount)).isZero()) {    // if no rows summed up, then no totals row
                     TableRow totalsRow;
+                    totalsRow[ctDebug] = QString("%1").arg(__LINE__);
                     // sum all subtotal values for higher groups (excluding grand total) and reset lowest group values
                     QMap<cellTypeE, MyMoneyMoney>::iterator upperGrp = (*currencyGrp)[i].begin();
                     QMap<cellTypeE, MyMoneyMoney>::iterator lowerGrp = (*currencyGrp)[i + 1].begin();
@@ -426,6 +427,7 @@ void QueryTable::constructTotalRows()
             QMap<QString, QList<QMap<cellTypeE, MyMoneyMoney>>>::iterator currencyGrp = totalCurrency.begin();
             while (currencyGrp != totalCurrency.end()) {
                 TableRow totalsRow;
+                totalsRow[ctDebug] = QString("%1").arg(__LINE__);
                 QMap<cellTypeE, MyMoneyMoney>::const_iterator grandTotalGrp = (*currencyGrp)[0].constBegin();
                 while(grandTotalGrp != (*currencyGrp)[0].constEnd()) {
                     totalsRow[grandTotalGrp.key()] = grandTotalGrp.value().toString();
@@ -813,6 +815,7 @@ void QueryTable::constructTransactionTable()
 
                 qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
                 qDebug() << __LINE__ << qA[ctValue];
+                qA[ctDebug] = QString("%1").arg(__LINE__);
 
                 qS[ctReconcileDate] = qA[ctReconcileDate];
                 qS[ctReconcileFlag] = qA[ctReconcileFlag];
@@ -829,7 +832,7 @@ void QueryTable::constructTransactionTable()
                         // put the principal amount in the "value" column and convert to lowest fraction
                         qA[ctValue] = (-(*it_split).shares() * xr).convert(fraction).toString();
                         qDebug() << __LINE__ << (-(*it_split).shares() * xr).convert(fraction).toDouble();
-
+                        qA[ctDebug] = QString("%1").arg(__LINE__);
                         qA[ctRank] = QLatin1Char('1');
                         qA[ctSplit].clear();
 
@@ -861,6 +864,7 @@ void QueryTable::constructTransactionTable()
                                     // (will be ignored when converting to base currency)
                                     qA[ctCurrency] = splitAcc.currencyId();
                                     qDebug() << __LINE__ << qA[ctCurrency];
+                                    qA[ctDebug] = QString("%1").arg(__LINE__);
                                 }
                                 break;
                             default:
@@ -942,6 +946,8 @@ void QueryTable::constructTransactionTable()
                                     qA[ctValue] = ((-(*it_split).shares()) * ieXr).convert(fraction).toString();
                                     qDebug() << __LINE__ << (-(*it_split).shares() * ieXr).convert(fraction).toDouble();
                                     qDebug() << __LINE__ << qA[ctCurrency];
+                                    qA[ctDebug] =
+                                        QString("%1 %2 %3 %4").arg(__LINE__).arg(m_config.isConvertCurrency()).arg(splitAcc.currency().id(), myBeginCurrency);
                                 }
                                 break;
                             default:
@@ -1000,6 +1006,7 @@ void QueryTable::constructTransactionTable()
                     if (! splitAcc.isIncomeExpense()) {
                         //multiply by currency and convert to lowest fraction
                         qS[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
+                        qA[ctDebug] = QString("%1").arg(__LINE__);
 
                         qS[ctRank] = QLatin1Char('1');
 
@@ -1688,6 +1695,7 @@ void QueryTable::constructAccountTable()
                 int pricePrecision = file->security(account.currencyId()).pricePrecision();
                 qaccountrow[ctPrice] = netprice.convertPrecision(pricePrecision).toString();
                 qaccountrow[ctValue] = (netprice * shares).convert(fraction).toString();
+                qaccountrow[ctDebug] = QString("%1").arg(__LINE__);
                 qaccountrow[ctShares] = shares.toString();
 
                 const auto iid = account.institutionId();
@@ -1940,6 +1948,7 @@ void QueryTable::constructSplitsTable()
                 // convert to lowest fraction
                 qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
                 qDebug() << __LINE__ << qA[ctValue];
+                qA[ctDebug] = QString("%1").arg(__LINE__);
                 qA[ctRank] = QLatin1Char('1');
 
                 //fill in account information
