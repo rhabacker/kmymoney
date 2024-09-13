@@ -16,9 +16,8 @@
 
 #include "kmmtextbrowser.h"
 
-KMMTextBrowser::KMMTextBrowser(bool enablePrintStyle, QWidget* parent)
+KMMTextBrowser::KMMTextBrowser(QWidget* parent)
     : QTextBrowser(parent)
-    , m_enablePrintStyle(enablePrintStyle)
 {
 }
 /*
@@ -37,9 +36,7 @@ void KMMTextBrowser::print(QPagedPaintDevice* printer)
 void KMMTextBrowser::setHtml(const QString& text)
 {
     m_html = text;
-    m_html.replace("@media screen", "@media _screen");
-    if (m_enablePrintStyle)
-        m_html.replace("@media print", "@media screen");
+    m_html.replace("@media screen", "@media _screen").replace("@media print", "@media screen");
     if (m_content != text) {
         m_content = text;
         QTextBrowser::setHtml(m_content);

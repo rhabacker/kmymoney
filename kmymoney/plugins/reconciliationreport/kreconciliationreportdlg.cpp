@@ -22,8 +22,8 @@ KReportDlg::KReportDlg(QWidget* parent, const QString& summaryReportHTML, const 
 {
     setupUi(this);
 
-    m_summaryHTMLPart = new KMMTextBrowser(true, m_summaryTab);
-    m_detailsHTMLPart = new KMMTextBrowser(true, m_detailsTab);
+    m_summaryHTMLPart = new KMMTextBrowser(m_summaryTab);
+    m_detailsHTMLPart = new KMMTextBrowser(m_detailsTab);
 
     m_summaryLayout->addWidget(m_summaryHTMLPart);
     m_detailsLayout->addWidget(m_detailsHTMLPart);
