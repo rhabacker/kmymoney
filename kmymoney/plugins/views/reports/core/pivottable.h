@@ -100,6 +100,9 @@ public:
     void dump(const QString& file, const QString& context = QString()) const final override;
 
     bool saveToXml(const QString& file) override;
+
+    bool saveToXml(AlkDomDocument& doc, AlkDomElement& el);
+
     QString toXml() const override;
 
     /**

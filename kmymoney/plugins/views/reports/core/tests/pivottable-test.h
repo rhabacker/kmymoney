@@ -51,6 +51,7 @@ private Q_SLOTS:
     void testInvestment();
     void testBudget();
     void testHtmlEncoding();
+    void testToXml();
 };
 
 }

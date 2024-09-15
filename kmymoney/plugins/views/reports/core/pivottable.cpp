@@ -2017,6 +2017,14 @@ bool PivotTable::saveToXml(const QString& file)
     return true;
 }
 
+bool PivotTable::saveToXml(AlkDomDocument& doc, AlkDomElement& parent)
+{
+    AlkDomElement el2 = doc.createElement("PivotTable");
+    m_grid.saveToXml(doc, el2);
+    parent.appendChild(el2);
+    return true;
+}
+
 QString PivotTable::toXml() const
 {
     AlkDomDocument doc;
