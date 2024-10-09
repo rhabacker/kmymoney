@@ -12,6 +12,7 @@ set(libmodels_a_SOURCES
     ledgersortorder.cpp
     ledgersortproxymodel.cpp
     onlinebankingaccountsfilterproxymodel.cpp
+    onlinebalancehistoryproxymodel.cpp
     onlinebalanceproxymodel.cpp
     payeeidentifiercontainermodel.cpp
     scheduleproxymodel.cpp

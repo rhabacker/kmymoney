@@ -653,6 +653,13 @@ public:
      */
     QMap<QDate, MyMoneyMoney> reconciliationHistory() const;
 
+    typedef QMap<QDate, MyMoneyMoney> StatementBalanceHistoryMap;
+
+    bool addStatementBalance(const QDate& date, const MyMoneyMoney& amount);
+    QMap<QDate, MyMoneyMoney> statementBalanceHistory();
+    QMap<QDate, MyMoneyMoney> statementBalanceHistory() const;
+    void saveStatementBalanceHistory();
+
     MyMoneyMoney balanceFactor() const;
 
     /**

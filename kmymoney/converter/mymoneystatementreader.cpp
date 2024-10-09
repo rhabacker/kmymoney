@@ -469,6 +469,7 @@ bool MyMoneyStatementReader::import(const MyMoneyStatement& s, QStringList& mess
     if ((previousStatementBalance != statementBalance) || (previousStatementEndDate != statementEndDate)) {
         // we only update if we have a valid statement date and the previous statement date is empty or older
         if (statementEndDate.isValid() && (!previousStatementEndDate.isValid() || (statementEndDate >= previousStatementEndDate))) {
+            d->m_account.addStatementBalance(statementEndDate, statementBalance);
             d->m_account.setValue("lastImportedTransactionDate", statementEndDate.toString(Qt::ISODate));
             if (!statementBalance.isAutoCalc()) {
                 d->m_account.setValue("lastStatementBalance", statementBalance.toString());

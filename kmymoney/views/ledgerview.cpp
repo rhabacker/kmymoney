@@ -32,6 +32,7 @@
 #include <KMessageBox>
 #include <KMessageWidget>
 #include <KStandardGuiItem>
+#include <onlinebalancehistorydelegate.h>
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -82,6 +83,7 @@ public:
         : q(qq)
         , journalDelegate(new JournalDelegate(q))
         , onlineBalanceDelegate(new OnlineBalanceDelegate(q))
+        , onlineBalanceHistoryDelegate(new OnlineBalanceHistoryDelegate(q))
         , specialDatesDelegate(new SpecialDateDelegate(q))
         , reconciliationDelegate(new ReconciliationDelegate(q))
         , securityAccuntNameDelegate(new SecurityAccountNameDelegate(q))
@@ -100,6 +102,7 @@ public:
 
         delegateProxy->addDelegate(eMyMoney::Delegates::Types::JournalDelegate, journalDelegate);
         delegateProxy->addDelegate(eMyMoney::Delegates::Types::OnlineBalanceDelegate, onlineBalanceDelegate);
+        delegateProxy->addDelegate(eMyMoney::Delegates::Types::OnlineBalanceHistoryDelegate, onlineBalanceHistoryDelegate);
         delegateProxy->addDelegate(eMyMoney::Delegates::Types::SpecialDateDelegate, specialDatesDelegate);
         delegateProxy->addDelegate(eMyMoney::Delegates::Types::SchedulesDelegate, journalDelegate);
         delegateProxy->addDelegate(eMyMoney::Delegates::Types::ReconciliationDelegate, reconciliationDelegate);
@@ -518,6 +521,7 @@ public:
     LedgerView* q;
     JournalDelegate* journalDelegate;
     OnlineBalanceDelegate* onlineBalanceDelegate;
+    OnlineBalanceHistoryDelegate* onlineBalanceHistoryDelegate;
     SpecialDateDelegate* specialDatesDelegate;
     ReconciliationDelegate* reconciliationDelegate;
     SecurityAccountNameDelegate* securityAccuntNameDelegate;

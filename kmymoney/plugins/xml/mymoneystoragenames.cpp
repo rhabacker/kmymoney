@@ -161,6 +161,11 @@ qHashSeedType qHash(const Reconciliation key, qHashSeedType seed)
     Q_UNUSED(seed);
     return ::qHash(static_cast<uint>(key), 0);
 }
+qHashSeedType qHash(const StatementBalance key, qHashSeedType seed)
+{
+    Q_UNUSED(seed);
+    return ::qHash(static_cast<uint>(key), 0);
+}
 }
 
 QString elementName(Element::General elementID)
@@ -274,6 +279,8 @@ QString elementName(Element::Account elementID)
         {Element::Account::OnlineBanking,           QStringLiteral("ONLINEBANKING")},
         {Element::Account::ReconciliationHistory,   QStringLiteral("RECONCILIATIONS")},
         {Element::Account::ReconciliationEntry,     QStringLiteral("RECONCILIATION")},
+        {Element::Account::StatementBalanceHistory, QStringLiteral("STATEMENTBALANCES")},
+        {Element::Account::StatementBalanceEntry,   QStringLiteral("STATEMENTBALANCE")},
     };
     // clang-format on
     return elementNames.value(elementID);
@@ -306,6 +313,15 @@ QString attributeName(Attribute::Reconciliation attributeID)
     static const QHash<Attribute::Reconciliation, QString> attributeNames{
         {Attribute::Reconciliation::Date, QStringLiteral("date")},
         {Attribute::Reconciliation::Amount, QStringLiteral("value")},
+    };
+    return attributeNames.value(attributeID);
+}
+
+QString attributeName(Attribute::StatementBalance attributeID)
+{
+    static const QHash<Attribute::StatementBalance, QString> attributeNames{
+        {Attribute::StatementBalance::Date, QStringLiteral("date")},
+        {Attribute::StatementBalance::Amount, QStringLiteral("value")},
     };
     return attributeNames.value(attributeID);
 }

@@ -24,6 +24,7 @@
 #include "mymoneyenums.h"
 #include "mymoneyfile.h"
 #include "mymoneymoney.h"
+#include "onlinebalancehistoryproxymodel.h"
 #include "onlinebalanceproxymodel.h"
 #include "reconciliationmodel.h"
 #include "schedulesjournalmodel.h"
@@ -46,6 +47,7 @@ public:
     }
 
     OnlineBalanceProxyModel*    onlinebalanceproxymodel;
+    OnlineBalanceHistoryProxyModel* onlinebalancehistoryproxymodel;
     SecurityAccountsProxyModel* securityAccountsProxyModel;
 
     MyMoneyAccount              account;
@@ -60,17 +62,23 @@ LedgerAccountFilter::LedgerAccountFilter(QObject* parent, QVector<QAbstractItemM
     setObjectName("LedgerAccountFilter");
 
     d->onlinebalanceproxymodel = new OnlineBalanceProxyModel(parent);
+    d->onlinebalancehistoryproxymodel = new OnlineBalanceHistoryProxyModel(parent);
     d->securityAccountsProxyModel = new SecurityAccountsProxyModel(parent);
 
     const auto accountsModel = MyMoneyFile::instance()->flatAccountsModel();
     d->onlinebalanceproxymodel->setObjectName("OnlineBalanceProxyModel");
     d->onlinebalanceproxymodel->setSourceModel(accountsModel);
+
+    d->onlinebalancehistoryproxymodel->setObjectName("OnlineBalanceHistoryProxyModel");
+    d->onlinebalancehistoryproxymodel->setSourceModel(accountsModel);
+
     d->securityAccountsProxyModel->setObjectName("SecurityAccountsProxyModel");
     d->securityAccountsProxyModel->setSourceModel(accountsModel);
 
     d->concatModel->setObjectName("LedgerView concatModel");
     d->concatModel->addSourceModel(MyMoneyFile::instance()->journalModel());
     d->concatModel->addSourceModel(d->onlinebalanceproxymodel);
+    d->concatModel->addSourceModel(d->onlinebalancehistoryproxymodel);
     d->concatModel->addSourceModel(d->securityAccountsProxyModel);
 
     for (const auto model : specialJournalModels) {
