@@ -7,6 +7,11 @@ project(KMyMoney)
 # Automoc all sources
 set(CMAKE_AUTOMOC TRUE)
 
+# where to place created binaries
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 # cmake 2.6 proposed to add this policy
 if(COMMAND cmake_policy)
   if(POLICY CMP0017)
