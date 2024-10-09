@@ -380,10 +380,10 @@ bool MyMoneyStatementReader::import(const MyMoneyStatement& s, QStringList& mess
       m_userAbort = ! selectOrCreateAccount(Select, m_account);
   }
 
-  m_account.addStatementBalance(s.m_dateEnd, s.m_closingBalance);
   // see if we need to update some values stored with the account
   if (m_account.value("lastStatementBalance") != s.m_closingBalance.toString()
       || m_account.value("lastImportedTransactionDate") != s.m_dateEnd.toString(Qt::ISODate)) {
+    m_account.addStatementBalance(s.m_dateEnd, s.m_closingBalance);
     if (s.m_closingBalance != MyMoneyMoney::autoCalc) {
       m_account.setValue("lastStatementBalance", s.m_closingBalance.toString());
       if (s.m_dateEnd.isValid()) {
