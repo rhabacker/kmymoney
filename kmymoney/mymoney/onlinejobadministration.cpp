@@ -285,7 +285,7 @@ bool onlineJobAdministration::canSendAnyTask()
 {
   QList<MyMoneyAccount> accounts;
   MyMoneyFile::instance()->accountList(accounts, QStringList(), true);
-  foreach (MyMoneyAccount account, accounts) {
+  for (const MyMoneyAccount& account : accounts) {
     if (account.hasOnlineMapping()) {
       // Check if any plugin supports a loaded online task
       foreach (KMyMoneyPlugin::OnlinePluginExtended* plugin, m_onlinePlugins) {
@@ -303,7 +303,7 @@ bool onlineJobAdministration::canSendCreditTransfer()
 {
   QList<MyMoneyAccount> accounts;
   MyMoneyFile::instance()->accountList(accounts, QStringList(), true);
-  foreach(MyMoneyAccount account, accounts) {
+  for (const MyMoneyAccount& account : accounts) {
     if (account.hasOnlineMapping()) {
       foreach (onlineTask* task, m_onlineTasks) {
         // Check if a online task has the correct type

@@ -355,8 +355,8 @@ AB_ACCOUNT_SPEC* KBankingPlugin::aqbAccount(const MyMoneyAccount& acc) const
 
 AB_ACCOUNT_SPEC* KBankingPlugin::aqbAccount(const QString& accountId) const
 {
-  MyMoneyAccount account = MyMoneyFile::instance()->account(accountId);
-  return aqbAccount(account);
+  const MyMoneyAccount& acc = MyMoneyFile::instance()->account(accountId);
+  return aqbAccount(acc);
 }
 
 
