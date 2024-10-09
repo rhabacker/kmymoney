@@ -5709,13 +5709,13 @@ void KMyMoneyApp::slotTransactionTagBalance()
     return;
   }
 
-  ReconciliationKey key(input->date());
-  if (acc.reconciliationHistory().keys().contains(key)) {
+  StatementBalanceKey key(input->date());
+  if (acc.statementBalanceHistory().keys().contains(key)) {
     slotStatusMsg(i18n("Balance tag is already present"));
     delete dialog;
     return;
   }
-  acc.addReconciliation(input->date(), amount->value());
+  acc.addStatementBalance(input->date(), amount->value());
   file->modifyAccount(acc);
   ft.commit();
   slotStatusMsg(i18n("Balance tag added"));
