@@ -61,6 +61,9 @@ public:
 
 typedef QMap<ReconciliationKey, MyMoneyMoney> ReconciliationHistoryMap;
 
+typedef ReconciliationKey StatementBalanceKey;
+typedef QMap<StatementBalanceKey, MyMoneyMoney> StatementBalanceHistoryMap;
+
 /**
   * A representation of an account.
   * This object represents any type of account, those held at an
@@ -643,6 +646,30 @@ public:
   const QDate latestReconcilationDate();
 
   /**
+    * keeps a history record of a statement balance for this account on @a date
+    * with @a amount.
+    *
+    * @return @p true in case entry was added, @p false otherwise
+    *
+    * @sa statementBalanceHistory()
+    */
+  bool addStatementBalance(const QDate &date, const MyMoneyMoney &amount);
+
+  /**
+    * @return QMap with the statement balance history for the account
+    *
+    * @sa addStatementBalance()
+    */
+  const StatementBalanceHistoryMap &statementBalanceHistory();
+
+  /**
+    * save the statement balance history to account
+    *
+    * @sa addStatementBalance()
+    */
+  void saveStatementBalanceHistory();
+
+  /**
     * @return @c true if account has an online mapping, @c false otherwise
     */
   bool hasOnlineMapping() const;
@@ -738,6 +765,11 @@ private:
     * This member keeps the reconciliation history
     */
   ReconciliationHistoryMap m_reconciliationHistory;
+
+  /**
+    * This member keeps the statement balance history
+    */
+  StatementBalanceHistoryMap m_statementBalanceHistory;
 };
 
 /**

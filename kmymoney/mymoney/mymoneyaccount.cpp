@@ -854,6 +854,51 @@ const QDate MyMoneyAccount::latestReconcilationDate()
   return latestDate;
 }
 
+const StatementBalanceHistoryMap &MyMoneyAccount::statementBalanceHistory()
+{
+  // check if the internal history member is already loaded
+  if (m_statementBalanceHistory.count() == 0
+      && !value("statementBalanceHistory").isEmpty()) {
+    QStringList entries = value("statementBalanceHistory").split(';');
+    foreach (const QString& entry, entries) {
+      QStringList parts = entry.split(':');
+      QDate date = QDate::fromString(parts[0], Qt::ISODate);
+      MyMoneyMoney amount(parts[1]);
+      if (parts.count() == 2 && date.isValid()) {
+        m_statementBalanceHistory[date] = amount;
+      } else if (parts.count() == 2) {
+        m_statementBalanceHistory[parts[0]] = amount;
+      }
+    }
+  }
+
+  return m_statementBalanceHistory;
+}
+
+bool MyMoneyAccount::addStatementBalance(const QDate& date, const MyMoneyMoney& amount)
+{
+  // make sure, that history has been loaded
+  statementBalanceHistory();
+
+  m_statementBalanceHistory[StatementBalanceKey(date)] = amount;
+  saveStatementBalanceHistory();
+  return true;
+}
+
+void MyMoneyAccount::saveStatementBalanceHistory()
+{
+  QString history, sep;
+  StatementBalanceHistoryMap::const_iterator it;
+  for (it = m_statementBalanceHistory.constBegin();
+       it != m_statementBalanceHistory.constEnd();
+       ++it) {
+
+    history += QString("%1%2:%3").arg(sep, it.key().toString(), (*it).toString());
+    sep = QLatin1Char(';');
+  }
+  setValue("statementBalanceHistory", history);
+}
+
 /**
  * @todo Improve setting of country for nationalAccount
  */

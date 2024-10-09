@@ -2032,6 +2032,16 @@ void Register::addGroupMarkers()
         }
       }
 
+      if (true) {
+        for (const StatementBalanceKey &key : m_account.statementBalanceHistory().keys()) {
+            MyMoneyMoney balance = m_account.statementBalanceHistory()[key];
+            if (m_account.accountGroup() == MyMoneyAccount::Liability)
+              balance = -balance;
+            QString txt = i18n("Online Statement Balance: %1", balance.formatMoney(m_account.fraction()));
+            new KMyMoneyRegister::StatementGroupMarker(this, KMyMoneyRegister::Deposit, key.toDate(), txt);
+        }
+      }
+
       if (KMyMoneyGlobalSettings::showReconciledBalances() || KMyMoneyGlobalSettings::showFancyMarker()) {
         if (m_account.lastReconciliationDate().isValid())
           new KMyMoneyRegister::StatementGroupMarker(this, KMyMoneyRegister::Deposit, m_account.lastReconciliationDate(), i18n("Last reconciliation"));
