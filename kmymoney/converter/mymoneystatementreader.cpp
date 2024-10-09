@@ -465,6 +465,15 @@ bool MyMoneyStatementReader::import(const MyMoneyStatement& s, QStringList& mess
     const auto previousStatementEndDate = QDate::fromString(d->m_account.value("lastImportedTransactionDate"), Qt::ISODate);
     const auto previousStatementBalance = MyMoneyMoney(d->m_account.value("lastStatementBalance"));
 
+    // Update statement balance history
+    if (d->m_account.addStatementBalance(statementEndDate, statementBalance)) {
+        try {
+            MyMoneyFile::instance()->modifyAccount(d->m_account);
+        } catch (const MyMoneyException&) {
+            qDebug("Updating account in MyMoneyStatementReader::startImport failed");
+        }
+    }
+
     // in case balance or date differs
     if ((previousStatementBalance != statementBalance) || (previousStatementEndDate != statementEndDate)) {
         // we only update if we have a valid statement date and the previous statement date is empty or older

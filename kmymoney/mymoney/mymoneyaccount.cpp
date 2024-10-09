@@ -625,6 +625,63 @@ QMap<QDate, MyMoneyMoney> MyMoneyAccount::reconciliationHistory() const
     return d->m_reconciliationHistory;
 }
 
+QMap<QDate, MyMoneyMoney> MyMoneyAccount::statementBalanceHistory()
+{
+    Q_D(MyMoneyAccount);
+
+    // check if the internal history member is already loaded
+    if (d->m_statementBalanceHistory.count() == 0 && !value("statementBalanceHistory").isEmpty()) {
+        const QStringList entries = value("statementBalanceHistory").split(';');
+        for (const auto& entry : qAsConst(entries)) {
+            const auto parts = entry.split(':');
+            if (parts.count() == 2) {
+                const auto date = QDate::fromString(parts[0], Qt::ISODate);
+                MyMoneyMoney amount(parts[1]);
+                if (parts.count() == 2 && date.isValid()) {
+                    d->m_statementBalanceHistory[date] = amount;
+                }
+            } else {
+                qDebug() << "Invalid statementBalanceHistory" << entry;
+            }
+        }
+    }
+
+    return d->m_statementBalanceHistory;
+}
+
+QMap<QDate, MyMoneyMoney> MyMoneyAccount::statementBalanceHistory() const
+{
+    Q_D(const MyMoneyAccount);
+    return d->m_statementBalanceHistory;
+}
+
+bool MyMoneyAccount::addStatementBalance(const QDate& date, const MyMoneyMoney& amount)
+{
+    Q_D(MyMoneyAccount);
+    // make sure, that history has been loaded
+    statementBalanceHistory();
+
+    if (!d->m_statementBalanceHistory.contains(date) || d->m_statementBalanceHistory[date] != amount) {
+        d->m_statementBalanceHistory[date] = amount;
+        saveStatementBalanceHistory();
+        return true;
+    } else
+        return false;
+}
+
+void MyMoneyAccount::saveStatementBalanceHistory()
+{
+    Q_D(MyMoneyAccount);
+
+    QString history, sep;
+    StatementBalanceHistoryMap::const_iterator it;
+    for (it = d->m_statementBalanceHistory.constBegin(); it != d->m_statementBalanceHistory.constEnd(); ++it) {
+        history += QString("%1%2:%3").arg(sep, it.key().toString(Qt::ISODate), (*it).toString());
+        sep = QLatin1Char(';');
+    }
+    setValue("statementBalanceHistory", history);
+}
+
 /**
  * @todo Improve setting of country for nationalAccount
  */

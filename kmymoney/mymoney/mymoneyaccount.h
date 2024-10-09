@@ -653,6 +653,54 @@ public:
      */
     QMap<QDate, MyMoneyMoney> reconciliationHistory() const;
 
+    typedef QMap<QDate, MyMoneyMoney> StatementBalanceHistoryMap;
+
+    /**
+     * keeps a history record of a statement balance for this account on @a date
+     * with @a amount.
+     *
+     * @return @p true in case entry was added, @p false otherwise
+     *
+     * @sa statementBalanceHistory()
+     */
+    bool addStatementBalance(const QDate& date, const MyMoneyMoney& amount);
+
+    /**
+     * Return the information about stored statement balance of the
+     * account.
+     *
+     * @return QMap with the statement balance history for the account
+     *
+     * @sa addStatementBalance()
+     *
+     * @note If the internal map is empty, the values will be
+     * loaded from the KVP with key "statementBalanceHistory".
+     *
+     * @deprecated Use the const version instead.
+     */
+    QMap<QDate, MyMoneyMoney> statementBalanceHistory();
+
+    /**
+     * Return the information about stored statement balance of the
+     * account.
+     *
+     * @return QMap with the statement balance history for the account
+     *
+     * @sa addStatementBalance()
+     *
+     * @note If the internal map is empty, the values will be
+     * loaded from the KVP with key "statementBalanceHistory".
+     */
+    QMap<QDate, MyMoneyMoney> statementBalanceHistory() const;
+
+    /**
+     * Save the information about stored statement balances of the
+     * account.
+     *
+     * @note The values will be saved into the KVP with key "statementBalanceHistory".
+     */
+    void saveStatementBalanceHistory();
+
     MyMoneyMoney balanceFactor() const;
 
     /**

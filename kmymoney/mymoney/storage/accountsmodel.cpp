@@ -1226,6 +1226,10 @@ void AccountsModel::doModifyItem(const MyMoneyAccount& before, const MyMoneyAcco
         if (before.reconciliationHistory() != after.reconciliationHistory()) {
             Q_EMIT reconciliationInfoChanged();
         }
+
+        if (before.statementBalanceHistory() != after.statementBalanceHistory()) {
+            Q_EMIT statementBalanceInfoChanged();
+        }
         // MyMoneyModel::doModifyItem already sents this out, so maybe we can skip it here
         // Q_EMIT dataChanged(idx, index(idx.row(), columnCount(idx.parent())-1));
     }

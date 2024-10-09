@@ -366,6 +366,21 @@ void MyMoneyXmlWriterPrivate::writeAccount(const MyMoneyAccount& account)
         m_writer->writeEndElement();
     }
 
+    // Write statement balance history
+    const auto statementBalanceHistory(account.statementBalanceHistory());
+    if (!statementBalanceHistory.isEmpty()) {
+        m_writer->writeStartElement(elementName(Element::Account::StatementBalanceHistory));
+
+        for (auto it = statementBalanceHistory.cbegin(); it != statementBalanceHistory.cend(); ++it) {
+            m_writer->writeStartElement(elementName(Element::Account::StatementBalanceEntry));
+            m_writer->writeAttribute(attributeName(Attribute::StatementBalance::Date), MyMoneyUtils::dateToIsoString(it.key()));
+            m_writer->writeAttribute(attributeName(Attribute::StatementBalance::Amount), it.value().toString());
+            m_writer->writeEndElement();
+        }
+
+        m_writer->writeEndElement();
+    }
+
     // Add in Key-Value Pairs for accounts.
     writeKeyValueContainer(m_writer, account);
 

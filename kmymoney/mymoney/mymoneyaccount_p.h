@@ -68,6 +68,7 @@ public:
         m_onlineBankingSettings = right.m_onlineBankingSettings;
         m_fraction = right.m_fraction;
         m_reconciliationHistory = right.m_reconciliationHistory;
+        m_statementBalanceHistory = right.m_statementBalanceHistory;
         return *this;
     }
 
@@ -174,6 +175,7 @@ public:
       */
     QMap<QDate, MyMoneyMoney> m_reconciliationHistory;
 
+    QMap<QDate, MyMoneyMoney> m_statementBalanceHistory;
 };
 
 #endif

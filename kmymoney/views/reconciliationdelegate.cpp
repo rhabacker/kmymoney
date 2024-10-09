@@ -27,6 +27,7 @@
 #include "journalmodel.h"
 #include "mymoneyfile.h"
 #include "mymoneyutils.h"
+#include "reconciliationmodel.h"
 
 class ReconciliationDelegate::Private
 {
@@ -83,10 +84,12 @@ void ReconciliationDelegate::paint(QPainter* painter, const QStyleOptionViewItem
 
     const auto reconciliationDate = index.data(eMyMoney::Model::TransactionPostDateRole).toDate();
     const auto reconciliationBalanceValue = index.data(eMyMoney::Model::ReconciliationAmountRole).value<MyMoneyMoney>();
-    const auto accountBalance = MyMoneyFile::instance()->balance(index.data(eMyMoney::Model::SplitAccountIdRole).toString(), reconciliationDate);
-
-    KColorScheme::BackgroundRole role = (accountBalance == reconciliationBalanceValue) ? KColorScheme::PositiveBackground : KColorScheme::NegativeBackground;
-
+    const auto reconciliationType = index.data(eMyMoney::Model::ReconciliationTypeRole).value<ReconciliationEntry::Type>();
+    KColorScheme::BackgroundRole role = KColorScheme::PositiveBackground;
+    if (reconciliationType == ReconciliationEntry::Type::Default) {
+        const auto accountBalance = MyMoneyFile::instance()->balance(index.data(eMyMoney::Model::SplitAccountIdRole).toString(), reconciliationDate);
+        role = (accountBalance == reconciliationBalanceValue) ? KColorScheme::PositiveBackground : KColorScheme::NegativeBackground;
+    }
     KColorScheme::adjustBackground(opt.palette, role, QPalette::Base, KColorScheme::View, KSharedConfigPtr());
     // opt.rect.setHeight(lineHeight);
     opt.backgroundBrush = opt.palette.base();
@@ -104,7 +107,11 @@ void ReconciliationDelegate::paint(QPainter* painter, const QStyleOptionViewItem
             opt.rect.setWidth(view->viewport()->width());
         }
         painter->setPen(opt.palette.color(QPalette::Normal, QPalette::Text));
-        painter->drawText(opt.rect, Qt::AlignCenter, i18nc("Ledger marker showing a reconciliation entry", "Reconciliation"));
+        if (reconciliationType == ReconciliationEntry::Type::StatementBalance) {
+            painter->drawText(opt.rect, Qt::AlignCenter, i18nc("Ledger marker showing a statement balance entry", "Statement balance"));
+        } else {
+            painter->drawText(opt.rect, Qt::AlignCenter, i18nc("Ledger marker showing a reconciliation entry", "Reconciliation"));
+        }
         break;
     case JournalModel::Column::Date:
         painter->setPen(opt.palette.color(QPalette::Normal, QPalette::Text));

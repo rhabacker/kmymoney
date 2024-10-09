@@ -25,6 +25,11 @@
 class /* no export here on purpose */ ReconciliationEntry
 {
 public:
+    enum class Type {
+        Default,
+        StatementBalance,
+    };
+
     explicit ReconciliationEntry()
     {
     }
@@ -34,6 +39,7 @@ public:
         , m_amount(other.m_amount)
         , m_date(other.m_date)
         , m_filterHint(other.m_filterHint)
+        , m_type(other.m_type)
     {
     }
 
@@ -41,12 +47,14 @@ public:
                         const QString& accountId,
                         const QDate& date,
                         const MyMoneyMoney& amount,
-                        eMyMoney::Model::ReconciliationFilterHint filterHint)
+                        eMyMoney::Model::ReconciliationFilterHint filterHint,
+                        Type type = Type::Default)
         : m_id(id)
         , m_accountId(accountId)
         , m_amount(amount)
         , m_date(date)
         , m_filterHint(filterHint)
+        , m_type(type)
     {
     }
 
@@ -61,6 +69,10 @@ public:
     inline const MyMoneyMoney& amount() const
     {
         return m_amount;
+    }
+    inline const Type& type() const
+    {
+        return m_type;
     }
     inline const QDate& date() const
     {
@@ -89,7 +101,9 @@ private:
     MyMoneyMoney m_amount;
     QDate m_date;
     eMyMoney::Model::ReconciliationFilterHint m_filterHint;
+    Type m_type;
 };
+Q_DECLARE_METATYPE(ReconciliationEntry::Type);
 
 class QUndoStack;
 /**

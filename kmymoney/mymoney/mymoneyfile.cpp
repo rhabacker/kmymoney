@@ -213,6 +213,7 @@ public:
         qq->connect(&schedulesModel, &SchedulesModel::modelReset, &schedulesJournalModel, &SchedulesJournalModel::updateData);
         qq->connect(&schedulesModel, &SchedulesModel::rowsAboutToBeRemoved, &schedulesJournalModel, &SchedulesJournalModel::updateData);
         qq->connect(&accountsModel, &AccountsModel::reconciliationInfoChanged, &reconciliationModel, &ReconciliationModel::updateData);
+        qq->connect(&accountsModel, &AccountsModel::statementBalanceInfoChanged, &reconciliationModel, &ReconciliationModel::updateData);
         qq->connect(&accountsModel, &AccountsModel::reparentAccountRequest, qq, &MyMoneyFile::reparentAccountByIds);
     }
 

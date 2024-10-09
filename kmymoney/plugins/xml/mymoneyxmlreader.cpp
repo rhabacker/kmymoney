@@ -605,6 +605,20 @@ public:
         }
     }
 
+    void readStatementBalanceHistory()
+    {
+        Q_ASSERT(m_reader->isStartElement() && (m_reader->name() == elementName(Element::Account::StatementBalanceHistory)));
+
+        while (m_reader->readNextStartElement()) {
+            if (m_reader->name() == elementName(Element::Account::StatementBalanceEntry)) {
+                const auto date = readDateAttribute(attributeName(Attribute::StatementBalance::Date));
+                const auto balance = MyMoneyMoney(readStringAttribute(attributeName(Attribute::StatementBalance::Amount)));
+                m_account.addStatementBalance(date, balance);
+            }
+            m_reader->skipCurrentElement();
+        }
+    }
+
     void readOnlineBanking()
     {
         Q_ASSERT(m_reader->isStartElement() && (m_reader->name() == elementName(Element::Account::OnlineBanking)));
@@ -660,6 +674,7 @@ public:
         }
 
         bool haveNewReconciliationHistory = false;
+        bool haveNewStatementBalanceHistory = false;
         while (m_reader->readNextStartElement()) {
             const auto tag = m_reader->name();
             if (tag == elementName(Element::Account::SubAccounts)) {
@@ -684,6 +699,10 @@ public:
                 haveNewReconciliationHistory = true;
                 readReconciliationHistory();
 
+            } else if (tag == elementName(Element::Account::StatementBalanceHistory)) {
+                haveNewStatementBalanceHistory = true;
+                readStatementBalanceHistory();
+
             } else {
                 m_reader->skipCurrentElement();
             }
@@ -695,6 +714,14 @@ public:
             /// history is not stored in the KVP anymore
             // force loading map in any case
             m_account.reconciliationHistory();
+        }
+
+        if (!haveNewStatementBalanceHistory) {
+            /// @todo remove old statement history storage method
+            /// this part can be removed when the statement balance
+            /// history is not stored in the KVP anymore
+            // force loading map in any case
+            m_account.statementBalanceHistory();
         }
 
         // Up to and including version 4.6.6 the new account dialog stored the iban in the kvp-key "IBAN".
