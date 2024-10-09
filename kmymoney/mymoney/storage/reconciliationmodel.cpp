@@ -107,20 +107,40 @@ void ReconciliationModel::doLoad()
 
     m_nextId = 0;
     for (auto& account : accountList) {
-        const auto history = account.reconciliationHistory();
-        if (!history.isEmpty()) {
+        const auto reconciliationHistory = account.reconciliationHistory();
+        if (!reconciliationHistory.isEmpty()) {
             const auto& accountId = account.id();
-            const auto rows = history.count();
+            const auto rows = reconciliationHistory.count();
             insertRows(0, rows);
 
             int row = 0;
             QMap<QDate, MyMoneyMoney>::const_iterator it;
-            for (it = history.constBegin(); it != history.constEnd(); ++it) {
+            for (it = reconciliationHistory.constBegin(); it != reconciliationHistory.constEnd(); ++it) {
                 ReconciliationEntry entry(nextId(),
                                           accountId,
                                           it.key(),
                                           *it,
                                           ((row + 1) < rows) ? eMyMoney::Model::StdFilter : eMyMoney::Model::DontFilterLast);
+                static_cast<TreeItem<ReconciliationEntry>*>(index(row, 0).internalPointer())->dataRef() = entry;
+                ++row;
+            }
+        }
+
+        const auto statementBalanceHistory = account.statementBalanceHistory();
+        if (!statementBalanceHistory.isEmpty()) {
+            const auto& accountId = account.id();
+            const auto rows = statementBalanceHistory.count();
+            insertRows(0, rows);
+
+            int row = 0;
+            QMap<QDate, MyMoneyMoney>::const_iterator it;
+            for (it = statementBalanceHistory.constBegin(); it != statementBalanceHistory.constEnd(); ++it) {
+                ReconciliationEntry entry(nextId(),
+                                          accountId,
+                                          it.key(),
+                                          *it,
+                                          ((row + 1) < rows) ? eMyMoney::Model::StdFilter : eMyMoney::Model::DontFilterLast,
+                                          ReconciliationEntry::Type::StatementBalance);
                 static_cast<TreeItem<ReconciliationEntry>*>(index(row, 0).internalPointer())->dataRef() = entry;
                 ++row;
             }
@@ -214,6 +234,9 @@ QVariant ReconciliationModel::data(const QModelIndex& idx, int role) const
 
     case eMyMoney::Model::ReconciliationAmountRole:
         return QVariant::fromValue(reconciliationEntry.amount());
+
+    case eMyMoney::Model::ReconciliationTypeRole:
+        return QVariant::fromValue(reconciliationEntry.type());
 
     case eMyMoney::Model::ReconciliationBalanceRole:
         return d->formatValue(reconciliationEntry.accountId(), reconciliationEntry.amount());

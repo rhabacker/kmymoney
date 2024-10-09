@@ -1236,7 +1236,7 @@ void AccountsModel::doModifyItem(const MyMoneyAccount& before, const MyMoneyAcco
         }
 
         if (before.statementBalanceHistory() != after.statementBalanceHistory()) {
-            Q_EMIT statementBalanceInfoChanged();
+            Q_EMIT statementBalanceHistoryInfoChanged();
         }
         // MyMoneyModel::doModifyItem already sents this out, so maybe we can skip it here
         // Q_EMIT dataChanged(idx, index(idx.row(), columnCount(idx.parent())-1));

@@ -631,7 +631,7 @@ QMap<QDate, MyMoneyMoney> MyMoneyAccount::statementBalanceHistory()
 
     // check if the internal history member is already loaded
     if (d->m_statementBalanceHistory.count() == 0 && !value("statementBalanceHistory").isEmpty()) {
-        const QStringList entries = value("reconciliationHistory").split(';');
+        const QStringList entries = value("statementBalanceHistory").split(';');
         for (const auto& entry : qAsConst(entries)) {
             const auto parts = entry.split(':');
             if (parts.count() == 2) {
@@ -641,7 +641,7 @@ QMap<QDate, MyMoneyMoney> MyMoneyAccount::statementBalanceHistory()
                     d->m_statementBalanceHistory[date] = amount;
                 }
             } else {
-                qDebug() << "Invalid reconciliationHistory" << entry;
+                qDebug() << "Invalid statementBalanceHistory" << entry;
             }
         }
     }
@@ -673,7 +673,7 @@ void MyMoneyAccount::saveStatementBalanceHistory()
     QString history, sep;
     StatementBalanceHistoryMap::const_iterator it;
     for (it = d->m_statementBalanceHistory.constBegin(); it != d->m_statementBalanceHistory.constEnd(); ++it) {
-        history += QString("%1%2:%3").arg(sep, it.key().toString(), (*it).toString());
+        history += QString("%1%2:%3").arg(sep, it.key().toString(Qt::ISODate), (*it).toString());
         sep = QLatin1Char(';');
     }
     setValue("statementBalanceHistory", history);
