@@ -104,6 +104,10 @@ bool LedgerSortProxyModel::lessThan(const QModelIndex& left, const QModelIndex& 
                         return falseValue;
                     } else if (d->isReconciliationModel(right)) {
                         return trueValue;
+                    } else if (d->isStatementBalanceModel(left)) {
+                        return trueValue;
+                    } else if (d->isStatementBalanceModel(right)) {
+                        return trueValue;
                     }
                     // if we get here, both are transaction entries
                 }

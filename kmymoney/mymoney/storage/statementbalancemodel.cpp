@@ -54,7 +54,7 @@ struct StatementBalanceModel::Private {
 };
 
 StatementBalanceModel::StatementBalanceModel(QObject* parent, QUndoStack* undoStack)
-    : MyMoneyModel<StatementBalanceEntry>(parent, QStringLiteral("RD"), StatementBalanceModel::ID_SIZE, undoStack)
+    : MyMoneyModel<StatementBalanceEntry>(parent, QStringLiteral("SB"), StatementBalanceModel::ID_SIZE, undoStack)
     , d(new Private(this))
 {
     setObjectName(QLatin1String("StatementBalanceModel"));
@@ -107,7 +107,7 @@ void StatementBalanceModel::doLoad()
 
     m_nextId = 0;
     for (auto& account : accountList) {
-        const auto history = account.reconciliationHistory();
+        const auto history = account.statementBalanceHistory();
         if (!history.isEmpty()) {
             const auto& accountId = account.id();
             const auto rows = history.count();
@@ -125,6 +125,7 @@ void StatementBalanceModel::doLoad()
                 ++row;
             }
         }
+#if 0
         // in active reconciliation, the lastReconciledBalance is empty,
         // statementBalance and statementDate are not empty
         // see also
@@ -139,6 +140,7 @@ void StatementBalanceModel::doLoad()
             insertRows(0, 1);
             static_cast<TreeItem<StatementBalanceEntry>*>(index(0, 0).internalPointer())->dataRef() = entry;
         }
+#endif
     }
 
     endResetModel();
@@ -160,7 +162,7 @@ QVariant StatementBalanceModel::data(const QModelIndex& idx, int role) const
     if (idx.column() < 0 || idx.column() >= JournalModel::Column::MaxColumns)
         return {};
 
-    const StatementBalanceEntry& StatementBalanceEntry = static_cast<TreeItem<StatementBalanceEntry>*>(idx.internalPointer())->constDataRef();
+    const StatementBalanceEntry& statementBalanceEntry = static_cast<TreeItem<StatementBalanceEntry>*>(idx.internalPointer())->constDataRef();
 
     switch (role) {
     case Qt::DisplayRole:
@@ -168,10 +170,10 @@ QVariant StatementBalanceModel::data(const QModelIndex& idx, int role) const
         switch (idx.column()) {
         case JournalModel::Column::EntryDate:
         case JournalModel::Column::Date:
-            return StatementBalanceEntry.date();
+            return statementBalanceEntry.date();
 
         case JournalModel::Column::Balance:
-            return d->formatValue(StatementBalanceEntry.accountId(), StatementBalanceEntry.amount());
+            return d->formatValue(statementBalanceEntry.accountId(), statementBalanceEntry.amount());
         }
         break;
 
@@ -201,17 +203,18 @@ QVariant StatementBalanceModel::data(const QModelIndex& idx, int role) const
         return QVariant(Qt::AlignLeft | Qt::AlignVCenter);
 
     case eMyMoney::Model::IdRole:
-        return StatementBalanceEntry.id();
+        return statementBalanceEntry.id();
 
     case eMyMoney::Model::TransactionEntryDateRole:
     case eMyMoney::Model::TransactionPostDateRole:
     case eMyMoney::Model::SplitReconcileDateRole:
-        return StatementBalanceEntry.date();
+        return statementBalanceEntry.date();
 
     case eMyMoney::Model::SplitAccountIdRole:
     case eMyMoney::Model::JournalSplitAccountIdRole:
-        return StatementBalanceEntry.accountId();
+        return statementBalanceEntry.accountId();
 
+#if 0
     case eMyMoney::Model::ReconciliationAmountRole:
         return QVariant::fromValue(StatementBalanceEntry.amount());
 
@@ -221,12 +224,12 @@ QVariant StatementBalanceModel::data(const QModelIndex& idx, int role) const
     case eMyMoney::Model::SplitReconcileFlagRole:
         // the reconciliation entries should not be shown during reconciliation
         return QVariant::fromValue<eMyMoney::Split::State>(eMyMoney::Split::State::Reconciled);
-
+#endif
     case eMyMoney::Model::DelegateRole:
-        return static_cast<int>(eMyMoney::Delegates::Types::ReconciliationDelegate);
+        return static_cast<int>(eMyMoney::Delegates::Types::OnlineBalanceHistoryDelegate);
 
-    case eMyMoney::Model::ReconciliationFilterHintRole:
-        return QVariant::fromValue<eMyMoney::Model::ReconciliationFilterHint>(StatementBalanceEntry.filterHint());
+    case eMyMoney::Model::StatementBalanceFilterHintRole:
+        return QVariant::fromValue<eMyMoney::Model::StatementBalanceFilterHint>(statementBalanceEntry.filterHint());
 
     default:
         break;

@@ -41,7 +41,7 @@ public:
                           const QString& accountId,
                           const QDate& date,
                           const MyMoneyMoney& amount,
-                          eMyMoney::Model::ReconciliationFilterHint filterHint)
+                          eMyMoney::Model::StatementBalanceFilterHint filterHint)
         : m_id(id)
         , m_accountId(accountId)
         , m_amount(amount)
@@ -88,7 +88,7 @@ private:
     QString m_accountId;
     MyMoneyMoney m_amount;
     QDate m_date;
-    eMyMoney::Model::ReconciliationFilterHint m_filterHint;
+    eMyMoney::Model::StatementBalanceFilterHint m_filterHint;
 };
 
 class QUndoStack;
@@ -126,4 +126,4 @@ private:
     QScopedPointer<Private> d;
 };
 
-#endif // StatementBalanceModel_H
+#endif // STATEMENTBALANCEMODEL_H

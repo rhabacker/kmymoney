@@ -30,7 +30,6 @@
 #include "mymoneymodelbase.h"
 #include "mymoneymoney.h"
 #include "mymoneytag.h"
-#include "reconciliationmodel.h"
 #include "schedulesjournalmodel.h"
 
 using namespace Icons;

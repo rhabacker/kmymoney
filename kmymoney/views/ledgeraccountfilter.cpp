@@ -142,6 +142,9 @@ bool LedgerAccountFilter::filterAcceptsRow(int source_row, const QModelIndex& so
         if (rc) {
             rc = !d->isReconciliationModel(idx);
         }
+        if (rc) {
+            rc = !d->isStatementBalanceModel(idx);
+        }
     }
     return rc;
 }

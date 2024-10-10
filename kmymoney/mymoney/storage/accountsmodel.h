@@ -202,6 +202,7 @@ Q_SIGNALS:
     void netWorthChanged(const MyMoneyMoney& amount, bool approximate);
     void profitLossChanged(const MyMoneyMoney& amount, bool approximate);
     void reconciliationInfoChanged();
+    void statementBalanceInfoChanged();
     void reparentAccountRequest(const QString& accountId, const QString& newParentId);
 
 private:

@@ -65,6 +65,11 @@ public:
         return idx.data(eMyMoney::Model::BaseModelRole).value<eMyMoney::Model::Roles>() == eMyMoney::Model::SecurityAccountNameEntryRole;
     }
 
+    inline bool isStatementBalanceModel(const QModelIndex& idx) const
+    {
+        return idx.data(eMyMoney::Model::BaseModelRole).value<eMyMoney::Model::Roles>() == eMyMoney::Model::StatementBalanceEntryRole;
+    }
+
     int columnToSortRole(int column) const
     {
         const QHash<int, int> columnToRole = {

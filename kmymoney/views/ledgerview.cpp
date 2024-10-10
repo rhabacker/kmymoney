@@ -56,7 +56,6 @@
 #include "mymoneyutils.h"
 #include "onlinebalancedelegate.h"
 #include "reconciliationdelegate.h"
-#include "reconciliationmodel.h"
 #include "schedulesjournalmodel.h"
 #include "securityaccountnamedelegate.h"
 #include "securityaccountsproxymodel.h"
