@@ -170,8 +170,11 @@ void KTransactionFilter::slotUpdateSelections()
 
     //Show a warning about transfers if Categories are filtered - bug #1523508
     if (!d->ui->m_categoriesView->allItemsSelected()) {
-        d->ui->m_transferWarning->setText(i18n("Warning: Filtering by Category will exclude all transfers from the results."));
+        QString transferWarning = i18n("Warning: Filtering by Category will exclude all transfers from the results.");
+        d->m_filter.filterWarnings()[MyMoneyTransactionFilter::WarningFlag::CategoryExcludesTransfer] = transferWarning;
+        d->ui->m_transferWarning->setText(transferWarning);
     } else {
+        // d->m_filter.filterWarnings().remove(MyMoneyTransactionFilter::WarningFlag::CategoryExcludesTransfer);
         d->ui->m_transferWarning->setText(QString());
     }
 
@@ -570,4 +573,10 @@ DateRangeDlg* KTransactionFilter::dateRange()
 {
     Q_D(KTransactionFilter);
     return d->m_dateRange;
+}
+
+QString KTransactionFilter::warnings()
+{
+    Q_D(KTransactionFilter);
+    return d->m_warnings;
 }

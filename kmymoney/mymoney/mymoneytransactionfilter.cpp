@@ -72,6 +72,7 @@ public:
     QDate m_toDate;
     MyMoneyMoney m_fromAmount;
     MyMoneyMoney m_toAmount;
+    QMap<MyMoneyTransactionFilter::WarningFlag, QString> m_warnings;
 };
 
 MyMoneyTransactionFilter::MyMoneyTransactionFilter() :
@@ -114,6 +115,7 @@ void MyMoneyTransactionFilter::clear()
     d->m_validity.clear();
     d->m_fromDate = QDate();
     d->m_toDate = QDate();
+    // d->m_warnings.clear();
 }
 
 void MyMoneyTransactionFilter::clearAccountFilter()
@@ -1078,4 +1080,10 @@ void MyMoneyTransactionFilter::removeReference(const QString& id)
         qDebug("%s", qPrintable(QString("Remove tag '%1' from report").arg(id)));
         d->m_tags.remove(id);
     }
+}
+
+QMap<MyMoneyTransactionFilter::WarningFlag, QString>& MyMoneyTransactionFilter::filterWarnings()
+{
+    Q_D(MyMoneyTransactionFilter);
+    return d->m_warnings;
 }

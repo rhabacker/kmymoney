@@ -48,6 +48,7 @@ public:
     void resetFilter(MyMoneyReport& rep);
     KMyMoneyAccountSelector* categoriesView();
     DateRangeDlg* dateRange();
+    QString warnings();
 
     /**
       * This slot opens the detailed help page in khelpcenter. The

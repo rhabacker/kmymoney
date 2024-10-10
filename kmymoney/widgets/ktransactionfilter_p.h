@@ -395,6 +395,7 @@ public:
 
     DateRangeDlg                    *m_dateRange;
 
+    QString m_warnings;
 };
 
 #endif

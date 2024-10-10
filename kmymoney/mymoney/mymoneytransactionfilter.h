@@ -68,6 +68,10 @@ public:
     };
     Q_DECLARE_FLAGS(FilterSet, FilterFlags)
 
+    enum WarningFlag {
+        CategoryExcludesTransfer = 1,
+    };
+
     /**
       * This is the standard constructor for a transaction filter.
       * It creates the object and calls setReportAllSplits() to
@@ -561,6 +565,11 @@ public:
       * to remove objects which are about to be removed from the engine.
       */
     void removeReference(const QString& id);
+
+    /**
+     *
+     */
+    QMap<WarningFlag, QString>& filterWarnings();
 
 private:
     /**

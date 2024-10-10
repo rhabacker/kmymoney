@@ -115,6 +115,11 @@ QString reports::ReportTable::renderReport(const QString& type, const QByteArray
                                                   "<div class=\"gap\">&nbsp;</div>\n")
                                   .arg(i18n("The results of this report may be incorrect if categories are included")));
 
+            for (auto warning : m_config.filterWarnings().values()) {
+                result.append(QString::fromLatin1("<div class=\"subtitle\">%1</div>\n"
+                                                  "<div class=\"gap\">&nbsp;</div>\n")
+                                  .arg(warning));
+            }
             //this method is implemented by each concrete class
             result.append(renderHTML());
         } catch (const MyMoneyException &e) {
