@@ -497,7 +497,6 @@ namespace Delegates {
 enum class Types {
     JournalDelegate,
     OnlineBalanceDelegate,
-    OnlineBalanceHistoryDelegate,
     SpecialDateDelegate,
     ReconciliationDelegate,
     SecurityAccountNameDelegate,
@@ -548,8 +547,6 @@ enum Roles {
     AccountInstitutionIdRole,
     AccountOnlineBalanceDateRole,
     AccountOnlineBalanceValueRole,
-    AccountOnlineBalanceHistoryDateRole,
-    AccountOnlineBalanceHistoryValueRole,
     AccountIsFavoriteIndexRole,
     AccountIsIncomeExpenseRole,
     AccountIsAssetLiabilityRole,
@@ -682,8 +679,6 @@ enum Roles {
     ReconciliationFilterHintRole, // filtering hint for the entry
     ReconciliationTypeRole, // the reconciliation type
 
-    StatementBalanceFilterHintRole, // filtering hint for the entry
-
     // General state
     ClosedRole,
     IsDirtyRole,
@@ -719,8 +714,6 @@ enum Roles {
     BaseModelRole,
     JournalEntryRole, // true if entry is a journal record
     OnlineBalanceEntryRole, // true if entry is an online balance record
-    OnlineBalanceHistoryEntryRole, // true if entry is an online balance history record
-    StatementBalanceEntryRole, // true if entry is a statement balance record
     SecurityAccountNameEntryRole, // true if entry is a security account name record
     SpecialDatesEntryRole, // true if entry is a special dates record
     ReconciliationEntryRole, // true if entry is a reconciliation record
@@ -732,8 +725,6 @@ typedef enum {
     DontFilterLast, // Don't filter, this is the latest entry
     StdFilter, // No special filter handling
 } ReconciliationFilterHint;
-
-typedef ReconciliationFilterHint StatementBalanceFilterHint;
 
 } // namespace Model
 } // namespace eMyMoney

@@ -20,7 +20,6 @@ set(storage_HEADERS
   onlinejobsmodel.h
   reportsmodel.h
   reconciliationmodel.h
-  statementbalancemodel.h
   )
 
 ########### install files ###############

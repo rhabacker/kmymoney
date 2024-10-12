@@ -57,8 +57,7 @@ set(kmm_mymoney_LIB_SRCS
     ./storage/specialdatesmodel.cpp
     ./storage/schedulesjournalmodel.cpp
     ./storage/templatesmodel.cpp
-    ./storage/statementbalancemodel.cpp
-  )
+    )
 
   set(onlineTask_a_SOURCES
   ./onlinetasks/sepa/sepaonlinetransferimpl.cpp

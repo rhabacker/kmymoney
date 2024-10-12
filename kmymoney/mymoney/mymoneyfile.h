@@ -152,7 +152,6 @@ class ParametersModel;
 class OnlineJobsModel;
 class ReportsModel;
 class MyMoneyModelBase;
-class StatementBalanceModel;
 
 // non permanent models
 class ReconciliationModel;
@@ -1002,8 +1001,6 @@ public:
      * The reconciliation entry model
      */
     ReconciliationModel* reconciliationModel() const;
-
-    StatementBalanceModel* statementBalanceModel() const;
 
     /// @note add new models here
 

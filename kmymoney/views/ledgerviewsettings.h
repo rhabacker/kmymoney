@@ -42,12 +42,6 @@ public:
         ShowAllReconciliationHeader,
     } ReconciliationHeader;
 
-    typedef enum {
-        DontShowStatementBalanceHeader,
-        ShowLastStatementBalanceHeader,
-        ShowAllStatementBalanceHeader,
-    } StatementBalanceHeader;
-
     static LedgerViewSettings* instance();
     ~LedgerViewSettings();
 

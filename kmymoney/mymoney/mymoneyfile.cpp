@@ -32,7 +32,6 @@
 
 #include <KDescendantsProxyModel>
 #include <KLocalizedString>
-#include <statementbalancemodel.h>
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -413,9 +412,8 @@ public:
     ReportsModel        reportsModel;
     SpecialDatesModel   specialDatesModel;
     SchedulesJournalModel schedulesJournalModel;
-    StatusModel statusModel;
+    StatusModel         statusModel;
     ReconciliationModel reconciliationModel;
-    StatementBalanceModel statementBalanceModel;
     /// @note add new models here
 
     /**
@@ -485,7 +483,6 @@ void MyMoneyFile::finalizeFileOpen()
 {
     d->institutionsModel.slotLoadAccountsWithoutInstitutions(d->accountsModel.accountsWithoutInstitutions());
     d->reconciliationModel.updateData();
-    d->statementBalanceModel.updateData();
 
     // remove any undo activities generated during loading
     d->undoStack.clear();
@@ -511,7 +508,6 @@ void MyMoneyFile::unload()
     // specialdatesmodel not unloaded here on purpose
     d->schedulesJournalModel.unload();
     d->reconciliationModel.unload();
-    d->statementBalanceModel.unload();
     /// @note add new models here
     d->m_baseCurrency = MyMoneySecurity();
     d->m_balanceCache.clear();
@@ -1845,11 +1841,6 @@ StatusModel* MyMoneyFile::statusModel() const
 ReconciliationModel* MyMoneyFile::reconciliationModel() const
 {
     return &d->reconciliationModel;
-}
-
-StatementBalanceModel* MyMoneyFile::statementBalanceModel() const
-{
-    return &d->statementBalanceModel;
 }
 
 /// @note add new models here

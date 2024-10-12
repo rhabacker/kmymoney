@@ -314,68 +314,6 @@ public:
             return true;
         }
 
-        case eMyMoney::Model::StatementBalanceEntryRole: {
-            // Don't show them if view is not sorted by date
-            if (!isSortingByDate()) {
-                return false;
-            }
-            // Depending on the setting we only show a subset
-            if (showStatementBalanceEntries != LedgerViewSettings::ShowAllStatementBalanceHeader) {
-                const auto filterHint = idx.data(eMyMoney::Model::StatementBalanceFilterHintRole).value<eMyMoney::Model::ReconciliationFilterHint>();
-                switch (showStatementBalanceEntries) {
-                case LedgerViewSettings::DontShowStatementBalanceHeader:
-                    if (filterHint != eMyMoney::Model::DontFilter) {
-                        return false;
-                    }
-                    break;
-
-                case LedgerViewSettings::ShowLastStatementBalanceHeader:
-                    if (filterHint == eMyMoney::Model::StdFilter) {
-                        return false;
-                    }
-                    // intentional fall through
-
-                case LedgerViewSettings::ShowAllStatementBalanceHeader:
-                    break;
-                }
-            }
-
-            // in case the source model is not sorting, we
-            // can assume that the item is visible. Once it
-            // is sorted, it is early enough to perform the
-            // other checks for reconciliation entries.
-            // Not suppressing this this on an unsorted model
-            // may cause a hug performance penalty (looks like
-            // the application hung up in certain scenarios)
-            if (!sourceModel->inSorting()) {
-                return true;
-            }
-
-            // in case we get here recursively, we simply assume
-            // that this entry will be shown, so the actual one
-            // that is checked will be hidden
-            if (lastWasStatementBalanceEntry) {
-                return true;
-            }
-
-            // make sure we only show reconciliation entries that are not followed by
-            // another reconciliation entry. Only inspect visible items
-            lastWasStatementBalanceEntry = true;
-            int row = idx.row() + 1;
-            while (row < rowCount) {
-                const auto testIdx = q->sourceModel()->index(row, 0, source_parent);
-                if (filterAcceptsRow(testIdx, source_parent, rowCount)) {
-                    lastWasStatementBalanceEntry = false;
-                    if (isStatementBalanceModel(testIdx)) {
-                        return false;
-                    }
-                    return true;
-                }
-                ++row;
-            }
-            return true;
-        }
-
         default:
             break;
         }
@@ -392,10 +330,8 @@ public:
     LedgerSortProxyModel* sourceModel;
     QTimer updateDelayTimer;
     LedgerViewSettings::ReconciliationHeader showReconciliationEntries;
-    LedgerViewSettings::StatementBalanceHeader showStatementBalanceEntries;
     SpecialLedgerItemFilter::FilterBalanceMode filterBalanceMode;
     bool lastWasReconciliationEntry;
-    bool lastWasStatementBalanceEntry;
 };
 
 SpecialLedgerItemFilter::SpecialLedgerItemFilter(QObject* parent)

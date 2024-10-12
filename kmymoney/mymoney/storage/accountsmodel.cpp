@@ -324,8 +324,8 @@ struct AccountsModel::Private
 
     bool hasOnlineBalance(const MyMoneyAccount& account)
     {
-        return !(account.value("lastImportedTransactionDate").isEmpty() || account.value("lastStatementBalance").isEmpty()
-                 || account.statementBalanceHistory().isEmpty());
+        return !(account.value("lastImportedTransactionDate").isEmpty()
+                 || account.value("lastStatementBalance").isEmpty());
     }
 
     QString formatIban(const MyMoneyAccount& account)
@@ -807,15 +807,7 @@ QVariant AccountsModel::data(const QModelIndex& idx, int role) const
             return QVariant::fromValue(balance);
         }
         break;
-#if 0
-    case eMyMoney::Model::AccountOnlineBalanceHistoryDateRole:
-        if (!account.statementBalanceHistory().isEmpty()) {
-            return QDate::fromString(account.statementBalanceHistory()[account.value("lastImportedTransactionDate"), Qt::ISODate);
-        }
-        break;
 
-    case eMyMoney::Model::AccountOnlineBalanceHistoryValueRole:
-#endif
     case eMyMoney::Model::AccountIsFavoriteIndexRole:
         return false;
 
@@ -1238,6 +1230,7 @@ void AccountsModel::doModifyItem(const MyMoneyAccount& before, const MyMoneyAcco
         if (before.statementBalanceHistory() != after.statementBalanceHistory()) {
             Q_EMIT statementBalanceHistoryInfoChanged();
         }
+
         // MyMoneyModel::doModifyItem already sents this out, so maybe we can skip it here
         // Q_EMIT dataChanged(idx, index(idx.row(), columnCount(idx.parent())-1));
     }
