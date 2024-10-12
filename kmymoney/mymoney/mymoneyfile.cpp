@@ -77,7 +77,6 @@
 #include "tagsmodel.h"
 /// @note add new models here
 
-#include "onlinetasks/sepa/sepaonlinetransferimpl.h"
 #include "payeeidentifier/ibanbic/ibanbic.h"
 #include "payeeidentifier/nationalaccount/nationalaccount.h"
 #include "payeeidentifiertyped.h"
