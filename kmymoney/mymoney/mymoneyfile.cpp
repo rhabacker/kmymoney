@@ -413,7 +413,7 @@ public:
     ReportsModel        reportsModel;
     SpecialDatesModel   specialDatesModel;
     SchedulesJournalModel schedulesJournalModel;
-    StatusModel         statusModel;
+    StatusModel statusModel;
     ReconciliationModel reconciliationModel;
     StatementBalanceModel statementBalanceModel;
     /// @note add new models here
