@@ -95,6 +95,7 @@ macro(add_report_tests)
             -Dreport=${rn}
             -Doutfilename=${CMAKE_CURRENT_BINARY_DIR}/${file_name}.${format}
             -Dreffilename=${CMAKE_CURRENT_SOURCE_DIR}/${file_name}.${format}
+            -Dcreate_ref_file=1
             -Dworkingdir=${CMAKE_CURRENT_BINARY_DIR}
             -P ${CMAKE_CURRENT_SOURCE_DIR}/compare.cmake
         )
