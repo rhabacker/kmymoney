@@ -9,7 +9,6 @@ set(querytable_test_files
   test-469195.xml
   test-buchungen.xml
   test-eigenkapital.xml
-  test-382245.xml
 )
 
 set(pivottable_test_files
@@ -112,3 +111,5 @@ endmacro()
 add_report_tests(TYPE infotable FILES ${infotable_test_files} FORMATS csv)
 add_report_tests(TYPE querytable FILES ${querytable_test_files} FORMATS csv)
 add_report_tests(TYPE pivottable FILES ${pivottable_test_files} FORMATS csv)
+
+add_report_tests(TYPE querytable FILES test-382245.xml FORMATS xml)
