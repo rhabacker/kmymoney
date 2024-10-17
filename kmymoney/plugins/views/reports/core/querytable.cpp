@@ -585,6 +585,7 @@ void QueryTable::constructTransactionTable()
             qA[ctCurrency] = qS[ctCurrency] = file->baseCurrency().id();
         else
             qA[ctCurrency] = qS[ctCurrency] = (*it_transaction).commodity();
+        qA[ctCurrencySourceLine] = QString("%1").arg(__LINE__);
 
         // to handle splits, we decide on which account to base the split
         // (a reference point or point of view so to speak). here we take the
@@ -712,6 +713,7 @@ void QueryTable::constructTransactionTable()
                         qA[ctCurrency] = qS[ctCurrency] = baseCurrency;
                     } else
                         qA[ctCurrency] = qS[ctCurrency] = myBeginCurrency;             // ...and set information about non-baseCurrency
+                    qA[ctCurrencySourceLine] = QString("%1").arg(__LINE__);
                 }
             } else if (splitAcc.isInvest())
                 xr = (*it_split).price();
@@ -722,6 +724,7 @@ void QueryTable::constructTransactionTable()
                 // commodity. see bug #469195
                 if (myBegin == it_split) {
                     qA[ctCurrency] = qS[ctCurrency] = splitCurrency;
+                    qA[ctCurrencySourceLine] = QString("%1").arg(__LINE__);
                 }
                 xr = MyMoneyMoney::ONE;
             }
@@ -778,6 +781,7 @@ void QueryTable::constructTransactionTable()
                                             qA[ctCurrency] = qS[ctCurrency] = baseCurrency;
                                         } else
                                             qA[ctCurrency] = qS[ctCurrency] = myBeginCurrency;
+                                        qA[ctCurrencySourceLine] = QString("%1").arg(__LINE__);
                                     } else
                                         xr = MyMoneyMoney::ONE;
 
@@ -859,6 +863,7 @@ void QueryTable::constructTransactionTable()
                                     // make sure we use the right currency of the category
                                     // (will be ignored when converting to base currency)
                                     qA[ctCurrency] = splitAcc.currencyId();
+                                    qA[ctCurrencySourceLine] = QString("%1").arg(__LINE__);
                                 }
                                 break;
                             default:
@@ -937,6 +942,7 @@ void QueryTable::constructTransactionTable()
                                         // (will be ignored when converting to base currency)
                                         qA[ctCurrency] = splitAcc.currencyId();
                                     }
+                                    qA[ctCurrencySourceLine] = QString("%1").arg(__LINE__);
                                     qA[ctValue] = ((-(*it_split).shares()) * ieXr).convert(fraction).toString();
                                     qA[ctValueSourceLine] = QString("%1").arg(__LINE__);
                                 }
@@ -1152,6 +1158,7 @@ void QueryTable::constructTransactionTable()
             qA[ctCurrency] = file->baseCurrency().id();
         else
             qA[ctCurrency] = account.currency().id();
+        qA[ctCurrencySourceLine] = QString("%1").arg(__LINE__);
 
         qA[ctAccountID] = account.id();
         qA[ctAccount] = account.name();
@@ -1786,6 +1793,7 @@ void QueryTable::constructSplitsTable()
             qA[ctCurrency] = qS[ctCurrency] = file->baseCurrency().id();
         else
             qA[ctCurrency] = qS[ctCurrency] = (*it_transaction).commodity();
+        qA[ctCurrencySourceLine] = QString("%1").arg(__LINE__);
 
         // to handle splits, we decide on which account to base the split
         // (a reference point or point of view so to speak). here we take the
@@ -2074,6 +2082,7 @@ void QueryTable::constructSplitsTable()
             qA[ctCurrency] = file->baseCurrency().id();
         else
             qA[ctCurrency] = account.currency().id();
+        qA[ctCurrencySourceLine] = QString("%1").arg(__LINE__);
 
         qA[ctAccountID] = account.id();
         qA[ctAccount] = account.name();
