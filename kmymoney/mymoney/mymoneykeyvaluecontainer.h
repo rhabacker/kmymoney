@@ -113,9 +113,9 @@ public:
      * convenience method for integral types (except bool)
      */
     template<typename T>
-    void setValue(const QString& key, T value, T defaultValue)
+    void setValue(const QString& key, T _value, T defaultValue)
     {
-        return setValue_int(key, static_cast<int>(value), static_cast<int>(defaultValue));
+        return setValue_int(key, static_cast<int>(_value), static_cast<int>(defaultValue));
     }
 
     /**
