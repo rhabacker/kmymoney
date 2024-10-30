@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QFont>
 #include <QString>
+#include <kmymoneysettings.h>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -246,7 +247,10 @@ QVariant ReconciliationModel::data(const QModelIndex& idx, int role) const
         return QVariant::fromValue<eMyMoney::Split::State>(eMyMoney::Split::State::Reconciled);
 
     case eMyMoney::Model::DelegateRole:
-        return static_cast<int>(eMyMoney::Delegates::Types::ReconciliationDelegate);
+        if (reconciliationEntry.type() == ReconciliationEntry::Type::Default)
+            return static_cast<int>(eMyMoney::Delegates::Types::ReconciliationDelegate);
+        else if (KMyMoneySettings::showAccountBalanceHistory())
+            return static_cast<int>(eMyMoney::Delegates::Types::OnlineBalanceDelegate);
 
     case eMyMoney::Model::ReconciliationFilterHintRole:
         return QVariant::fromValue<eMyMoney::Model::ReconciliationFilterHint>(reconciliationEntry.filterHint());

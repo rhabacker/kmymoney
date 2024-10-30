@@ -24,12 +24,13 @@
 // ----------------------------------------------------------------------------
 // Project Includes
 
+#include "journalmodel.h"
+#include "ledgerview.h"
 #include "mymoneyfile.h"
 #include "mymoneyutils.h"
-#include "ledgerview.h"
-#include "journalmodel.h"
-#include "payeesmodel.h"
 #include "newtransactioneditor.h"
+#include "payeesmodel.h"
+#include "reconciliationmodel.h"
 
 QColor OnlineBalanceDelegate::m_erroneousColor = QColor(Qt::red);
 QColor OnlineBalanceDelegate::m_importedColor = QColor(Qt::yellow);
@@ -142,19 +143,29 @@ void OnlineBalanceDelegate::paint(QPainter* painter, const QStyleOptionViewItem&
 
     QString onlineBalanceValueTxt(i18nc("text for online balance value if not available", "n/a"));
     QString onlineBalanceDateTxt(i18nc("text for online balance date if not available", "n/a"));
-    const auto onlineBalanceDate = index.data(eMyMoney::Model::AccountOnlineBalanceDateRole).toDate();
-    if (onlineBalanceDate.isValid()) {
-        onlineBalanceDateTxt = MyMoneyUtils::formatDate(onlineBalanceDate);
-    }
-    const auto onlineBalanceValue = index.data(eMyMoney::Model::AccountOnlineBalanceValueRole).value<MyMoneyMoney>();
-    const auto accountId(index.data(eMyMoney::Model::IdRole).toString());
-    auto accountBalance(onlineBalanceValue);
-    if (!accountId.isEmpty()) {
-        accountBalance = MyMoneyFile::instance()->balance(accountId, onlineBalanceDate);
-        onlineBalanceValueTxt = onlineBalanceValue.formatMoney(index.data(eMyMoney::Model::AccountFractionRole).toInt());
-    }
 
-    KColorScheme::BackgroundRole role = (accountBalance == onlineBalanceValue) ? KColorScheme::PositiveBackground : KColorScheme::NegativeBackground;
+    const auto reconciliationType = index.data(eMyMoney::Model::ReconciliationTypeRole).value<ReconciliationEntry::Type>();
+    KColorScheme::BackgroundRole role;
+    if (reconciliationType == ReconciliationEntry::Type::StatementBalance) {
+        const auto reconciliationDate = index.data(eMyMoney::Model::TransactionPostDateRole).toDate();
+        const auto reconciliationBalanceValue = index.data(eMyMoney::Model::ReconciliationAmountRole).value<MyMoneyMoney>();
+        onlineBalanceDateTxt = MyMoneyUtils::formatDate(reconciliationDate);
+        onlineBalanceValueTxt = index.data(eMyMoney::Model::ReconciliationBalanceRole).toString();
+        role = KColorScheme::PositiveBackground;
+    } else {
+        const auto onlineBalanceDate = index.data(eMyMoney::Model::AccountOnlineBalanceDateRole).toDate();
+        if (onlineBalanceDate.isValid()) {
+            onlineBalanceDateTxt = MyMoneyUtils::formatDate(onlineBalanceDate);
+        }
+        const auto onlineBalanceValue = index.data(eMyMoney::Model::AccountOnlineBalanceValueRole).value<MyMoneyMoney>();
+        const auto accountId(index.data(eMyMoney::Model::IdRole).toString());
+        auto accountBalance(onlineBalanceValue);
+        if (!accountId.isEmpty()) {
+            accountBalance = MyMoneyFile::instance()->balance(accountId, onlineBalanceDate);
+            onlineBalanceValueTxt = onlineBalanceValue.formatMoney(index.data(eMyMoney::Model::AccountFractionRole).toInt());
+        }
+        role = (accountBalance == onlineBalanceValue) ? KColorScheme::PositiveBackground : KColorScheme::NegativeBackground;
+    }
 
     KColorScheme::adjustBackground(opt.palette, role, QPalette::Base, KColorScheme::View, KSharedConfigPtr());
     opt.backgroundBrush = opt.palette.base();
@@ -172,7 +183,10 @@ void OnlineBalanceDelegate::paint(QPainter* painter, const QStyleOptionViewItem&
             opt.rect.setWidth(view->viewport()->width());
         }
         painter->setPen(opt.palette.color(QPalette::Normal, QPalette::Text));
-        painter->drawText(opt.rect, Qt::AlignCenter, i18nc("Label in ledger for online balance row", "Online Balance"));
+        if (reconciliationType == ReconciliationEntry::Type::StatementBalance)
+            painter->drawText(opt.rect, Qt::AlignCenter, i18nc("Ledger marker showing an account balance entry", "Account balance"));
+        else
+            painter->drawText(opt.rect, Qt::AlignCenter, i18nc("Label in ledger for online balance row", "Online Balance"));
         break;
     case JournalModel::Column::Date:
         painter->setPen(opt.palette.color(QPalette::Normal, QPalette::Text));
