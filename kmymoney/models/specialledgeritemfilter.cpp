@@ -20,8 +20,6 @@
 #include "ledgerfilter.h"
 #include "ledgersortproxymodel_p.h"
 #include "mymoneyfile.h"
-#include "reconciliationmodel.h"
-#include "specialdatesmodel.h"
 
 using namespace eMyMoney;
 

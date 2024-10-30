@@ -42,6 +42,12 @@ public:
         ShowAllReconciliationHeader,
     } ReconciliationHeader;
 
+    typedef enum {
+        DontShowAccountBalanceHeader,
+        ShowLastAccountBalanceHeader,
+        ShowAllAccountBalanceHeader,
+    } AccountBalanceHeader;
+
     static LedgerViewSettings* instance();
     ~LedgerViewSettings();
 
@@ -51,6 +57,7 @@ public:
     ReconciliationHeader showReconciliationEntries() const;
     bool hideReconciledTransactions() const;
     QDate hideTransactionsBefore() const;
+    AccountBalanceHeader showAccountBalanceHeader() const;
     LedgerSortOrder sortOrder(SortOrderType type) const;
     void flushChanges();
 
@@ -79,6 +86,11 @@ public Q_SLOTS:
      * Controls visibility of the reconciliation entries in the ledgers
      */
     void setShowReconciliationEntries(LedgerViewSettings::ReconciliationHeader showHeader);
+
+    /**
+     * Controls visibility of the account balance entries in the ledgers
+     */
+    void setShowAccountBalanceHeader(LedgerViewSettings::AccountBalanceHeader showHeader);
 
     void setSortOrder(LedgerViewSettings::SortOrderType type, const QString& sortOrder);
 

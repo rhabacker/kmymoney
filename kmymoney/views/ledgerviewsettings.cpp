@@ -29,6 +29,7 @@ public:
         , m_showAllSplits(false)
         , m_hideReconciledTransactions(false)
         , m_showReconciliationEntries(LedgerViewSettings::DontShowReconciliationHeader)
+        , m_showAccountBalanceHeader(LedgerViewSettings::ShowLastAccountBalanceHeader)
     {
         m_settingsChangedTimer.setSingleShot(true);
         m_settingsChangedTimer.setInterval(20);
@@ -47,6 +48,7 @@ public:
     bool m_showAllSplits;
     bool m_hideReconciledTransactions;
     LedgerViewSettings::ReconciliationHeader m_showReconciliationEntries;
+    LedgerViewSettings::AccountBalanceHeader m_showAccountBalanceHeader;
 };
 
 LedgerViewSettings* LedgerViewSettings::instance()
@@ -147,6 +149,19 @@ void LedgerViewSettings::setShowReconciliationEntries(ReconciliationHeader showH
 {
     if (d->m_showReconciliationEntries != showHeader) {
         d->m_showReconciliationEntries = showHeader;
+        d->settingsChanged();
+    }
+}
+
+LedgerViewSettings::AccountBalanceHeader LedgerViewSettings::showAccountBalanceHeader() const
+{
+    return d->m_showAccountBalanceHeader;
+}
+
+void LedgerViewSettings::setShowAccountBalanceHeader(AccountBalanceHeader showHeader)
+{
+    if (d->m_showAccountBalanceHeader != showHeader) {
+        d->m_showAccountBalanceHeader = showHeader;
         d->settingsChanged();
     }
 }

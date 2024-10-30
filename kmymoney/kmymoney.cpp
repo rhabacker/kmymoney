@@ -1424,7 +1424,19 @@ public:
             return LedgerViewSettings::ShowAllReconciliationHeader;
         }
     }
-
+#if 0
+    LedgerViewSettings::AccountBalanceHeader showAccountBalanceMarker() const
+    {
+        switch (KMyMoneySettings::showAccountBalanceHistory()) {
+        case KMyMoneySettings::Off:
+            return LedgerViewSettings::DontShowAccountBalanceHeader;
+        case KMyMoneySettings::Last:
+            return LedgerViewSettings::ShowLastAccountBalanceHeader;
+        default:
+            return LedgerViewSettings::ShowAllAccountBalanceHeader;
+        }
+    }
+#endif
     /**
      * Create a new stock account as a copy of @a sourceStockAccountId in
      * the invesment account identified by @a parentInvestAccount.
@@ -3492,6 +3504,7 @@ void KMyMoneyApp::slotShowAllAccounts()
 void KMyMoneyApp::slotViewAccountBalanceHistory()
 {
     KMyMoneySettings::setShowAccountBalanceHistory(pActions[Action::ViewShowAccountBalanceHistory]->isChecked());
+    // LedgerViewSettings::instance()->setShowAccountBalanceHeader(KMyMoneySettings::showAccountBalanceHistory());
     d->m_myMoneyView->slotSettingsChanged();
 }
 
@@ -3795,6 +3808,7 @@ void KMyMoneyApp::slotUpdateConfiguration(const QString &dialogName)
     ledgerViewSettings->setSortOrder(LedgerViewSettings::SortOrderReconcileInvest, KMyMoneySettings::sortReconcileView());
     ledgerViewSettings->setSortOrder(LedgerViewSettings::SortOrderSearch, KMyMoneySettings::sortSearchView());
     ledgerViewSettings->setShowReconciliationEntries(d->showReconciliationMarker());
+    // ledgerViewSettings->setShowAccountBalanceHeader(d->showAccountBalanceMarker());
     ledgerViewSettings->flushChanges();
 
     MyMoneyFile::instance()->journalModel()->resetRowHeightInformation();
