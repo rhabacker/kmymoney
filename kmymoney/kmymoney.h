@@ -474,6 +474,10 @@ public Q_SLOTS:
       */
     void slotShowAllAccounts();
 
+    /**
+     * Toggles the show account balance history setting
+     */
+    void slotViewAccountBalanceHistory();
 
     /**
       * changes the statusbar contents for the standard label permanently,

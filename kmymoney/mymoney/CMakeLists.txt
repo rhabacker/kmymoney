@@ -126,6 +126,7 @@ target_link_libraries(kmm_mymoney
                       Alkimia::alkimia
                       kmm_payeeidentifier
                       kmm_plugin
+                      kmm_settings
                       # TODO: fix this
                       KF5::XmlGui
                       PRIVATE
