@@ -4707,6 +4707,8 @@ bool KMyMoneyApp::slotFileNew()
         return false;
     }
 
+    KMyMoneyPrinter::setFileName(d->m_storageInfo.url);
+
     if (wizard.startSettingsAfterFinished())
         slotSettings();
     return true;
@@ -4801,6 +4803,7 @@ bool KMyMoneyApp::slotFileOpenRecent(const QUrl &url)
         return false;
     }
 
+    KMyMoneyPrinter::setFileName(d->m_storageInfo.url);
     d->fileAction(eKMyMoney::FileAction::Opened);
     return true;
 }

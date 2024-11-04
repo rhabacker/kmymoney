@@ -127,6 +127,8 @@ target_link_libraries( kmm_url
 
 target_link_libraries( kmm_textbrowser
   PUBLIC
+  kmm_printer
+  Qt5::GuiPrivate
   Qt::Core
   Qt::Widgets
 )

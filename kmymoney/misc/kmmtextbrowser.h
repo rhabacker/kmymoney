@@ -10,6 +10,7 @@
 // ----------------------------------------------------------------------------
 // QT Includes
 
+#include <QPrinter>
 #include <QTextBrowser>
 class QString;
 
@@ -17,7 +18,7 @@ class KMMTextBrowser : public QTextBrowser
 {
 public:
     explicit KMMTextBrowser(QWidget* parent = nullptr);
-    void print(QPagedPaintDevice* printer);
+    void print(QPrinter* printer);
     void setHtml(const QString& text);
 
 private:

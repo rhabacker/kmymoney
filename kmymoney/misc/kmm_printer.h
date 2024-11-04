@@ -9,6 +9,7 @@
 #include <QPrinter>
 #include <kmm_printer_export.h>
 
+class QUrl;
 class QPrintDialog;
 
 class KMM_PRINTER_EXPORT KMyMoneyPrinter
@@ -20,6 +21,8 @@ protected:
 public:
     static QPrinter* instance(QPrinter::PrinterMode mode = QPrinter::ScreenResolution);
     static QPrinter* startPrint(QPrinter::PrinterMode mode = QPrinter::ScreenResolution);
+    static QUrl fileName();
+    static void setFileName(const QUrl& url);
     static void cleanup();
 };
 

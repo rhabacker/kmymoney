@@ -5,13 +5,15 @@
 
 #include "kmm_printer.h"
 
-#include <QPrinter>
 #include <QPointer>
 #include <QPrintDialog>
+#include <QPrinter>
 #include <QScopedPointer>
-#include <QDebug>
+#include <QUrl>
 
 // Q_LOGGING_CATEGORY(Print, "Printing")
+
+static QUrl s_fileName;
 
 KMyMoneyPrinter::KMyMoneyPrinter()
 {
@@ -54,4 +56,14 @@ void KMyMoneyPrinter::cleanup()
 
     delete dlg;
     delete printer;
+}
+
+QUrl KMyMoneyPrinter::fileName()
+{
+    return s_fileName;
+}
+
+void KMyMoneyPrinter::setFileName(const QUrl& url)
+{
+    s_fileName = url;
 }

@@ -301,8 +301,7 @@ void KReportTab::print()
                 painter.setFont(font);
                 painter.drawText(0, 0, MyMoneyUtils::formatDate(QDate::currentDate()));
 
-                /// @todo extract url from KMyMoneyApp
-                QUrl file;
+                QUrl file = KMyMoneyPrinter::fileName();
                 if (file.isValid()) {
                     painter.drawText(0, painter.window().height(), file.toLocalFile());
                 }
