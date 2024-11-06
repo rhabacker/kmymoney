@@ -1,0 +1,1911 @@
+make: Entering directory '/mnt/ci-build-kf6-native'
+Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+-- Checking for module 'sqlcipher'
+--   Package 'sqlcipher' not found
+-- Found KF6: success (found suitable version "6.7.0", minimum required is "6.1") found components: Archive CoreAddons Config ConfigWidgets I18n Completion KCMUtils ItemModels ItemViews Service XmlGui TextWidgets Notifications KIO
+-- Found KF6: success (found suitable version "6.7.0", minimum required is "6.1") found components: DocTools Holidays Contacts
+CMake Error at CMakeLists.txt:187 (find_package):
+  Could not find a configuration file for package "LibAlkimia6" that is
+  compatible with requested version "8.1.90".
+
+  The following configuration files were considered but not accepted:
+
+    /usr/lib64/cmake/LibAlkimia6-8.1/LibAlkimia6Config.cmake, version: 8.1.80
+    /lib64/cmake/LibAlkimia6-8.1/LibAlkimia6Config.cmake, version: 8.1.80
+
+
+
+-- Configuring incomplete, errors occurred!
+[  0%] Generating ts...
+[  0%] Generating mo...
+[  0%] Generating po/ca/docs/kmymoney/index.cache.bz2
+[  0%] Generating po/nl/docs/kmymoney/index.cache.bz2
+[  0%] Built target po-de-docs-kmymoney-index-cache-bz2
+[  0%] Built target po-it-docs-kmymoney-index-cache-bz2
+[  0%] Built target po-de-docs-kmymoney-kmymoney-1
+-- copying... /mnt/po/ko/scripts/kmymoney.js DESTINATION /mnt/ci-build-kf6-native/locale/ko/LC_SCRIPTS
+[  0%] Built target po-ca-docs-kmymoney-kmymoney-1
+[  0%] Built target po-it-docs-kmymoney-kmymoney-1
+[  0%] Built target po-pt-docs-kmymoney-kmymoney-1
+[  0%] Generating po/uk/docs/kmymoney/index.cache.bz2
+[  0%] Built target po-nl-docs-kmymoney-kmymoney-1
+[  0%] Built target po-pt-BR-docs-kmymoney-kmymoney-1
+[  0%] Built target po-sv-docs-kmymoney-kmymoney-1
+[  0%] Built target po-uk-docs-kmymoney-kmymoney-1
+[  1%] Built target po-sv-docs-kmymoney-index-cache-bz2
+[  1%] Built target kmm_payeeidentifier_autogen_timestamp_deps
+[  1%] Built target kmm_icons_autogen_timestamp_deps
+Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switchedDetected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switchedDetected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+[  1%] Built target tsfiles-cd46ccfefc16f9c7b5a91626d436b1ca
+ to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+ to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+[  1%] Built target kmm_menuactionexchanger_autogen_timestamp_deps
+[  1%] Built target kmm_keychain_autogen_timestamp_deps
+[  1%] Built target kmm_utils_platformtools_autogen_timestamp_deps
+[  1%] Built target kmm_url_autogen_timestamp_deps
+[  1%] Built target kmm_settings_autogen_timestamp_deps
+[  1%] Built target kmm_plugin_autogen_timestamp_deps
+[  1%] Built target kmm_printer_autogen_timestamp_deps
+[  1%] Built target kmm_yesno_autogen_timestamp_deps
+[  1%] Built target kmm_selections_autogen_timestamp_deps
+[  1%] Built target kmm_textbrowser_autogen_timestamp_deps
+[  1%] Built target kmm_gpgfile_autogen_timestamp_deps
+[  1%] Built target kmm_utils_validators_autogen_timestamp_deps
+[  1%] Built target kmm_menus_autogen_timestamp_deps
+[  1%] Built target csvimporter_settings_static_autogen_timestamp_deps
+[  1%] Automatic MOC for target kmm_icons
+[  1%] Automatic MOC for target kmm_payeeidentifier
+[  1%] Built target kmm_kcmodule_autogen_timestamp_deps
+[  1%] Generating index.cache.bz2
+[  1%] Built target icalendar_settings_static_autogen_timestamp_deps
+Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+[  1%] Built target checkprinting_settings_static_autogen_timestamp_deps
+[  1%] Built target forecast_settings_static_autogen_timestamp_deps
+[  1%] Built target woob_dialogs_autogen_timestamp_deps
+[  1%] Built target woob_interface_autogen_timestamp_deps
+[  1%] Built target kmm_icons_autogen
+[  1%] Built target kmm_payeeidentifier_autogen
+[  1%] Automatic MOC for target kmm_plugin
+[  1%] Automatic MOC for target kmm_keychain
+[  2%] Automatic MOC for target kmm_menuactionexchanger
+[  2%] Automatic MOC for target kmm_settings
+[  2%] Automatic MOC for target kmm_menus
+[  3%] Automatic MOC for target kmm_url
+[  3%] Automatic MOC for target kmm_utils_platformtools
+[  3%] Automatic MOC for target kmm_selections
+[  3%] Automatic MOC for target kmm_yesno
+[  3%] Automatic MOC for target kmm_textbrowser
+[  3%] Automatic MOC for target kmm_printer
+[  3%] Automatic MOC for target kmm_gpgfile
+[  3%] Automatic MOC for target kmm_utils_validators
+[  3%] Built target kmm_plugin_autogen
+[  3%] Built target kmm_keychain_autogen
+[  3%] Built target kmm_url_autogen
+[  3%] Automatic MOC for target icalendar_settings_static
+[  3%] Built target kmm_menus_autogen
+[  3%] Built target kmm_menuactionexchanger_autogen
+[  3%] Built target kmm_settings_autogen
+[  3%] Automatic MOC for target csvimporter_settings_static
+[  3%] Built target kmm_utils_platformtools_autogen
+[  3%] Built target kmm_selections_autogen
+[  3%] Built target kmm_yesno_autogen
+[  3%] Built target kmm_gpgfile_autogen
+[  3%] Built target kmm_printer_autogen
+[  3%] Built target kmm_textbrowser_autogen
+[  3%] Built target icalendar_settings_static_autogen
+[  3%] Built target kmm_utils_validators_autogen
+[  3%] Automatic MOC for target checkprinting_settings_static
+[  3%] Built target csvimporter_settings_static_autogen
+[  3%] Automatic MOC for target kmm_kcmodule
+[  3%] Automatic MOC for target forecast_settings_static
+[  3%] Built target checkprinting_settings_static_autogen
+[  3%] Automatic MOC for target woob_interface
+[  3%] Building CXX object kmymoney/mymoney/payeeidentifier/CMakeFiles/kmm_payeeidentifier.dir/payeeidentifier.cpp.o
+[  3%] Automatic MOC for target woob_dialogs
+[  3%] Built target kmm_icons
+[  3%] Built target forecast_settings_static_autogen
+[  3%] Built target kmm_keychain
+[  3%] Built target kmm_menuactionexchanger
+[  4%] Built target kmm_plugin
+[  4%] Built target kmm_kcmodule_autogen
+[  4%] Built target woob_dialogs_autogen
+[  4%] Built target woob_interface_autogen
+[  5%] Built target kmm_settings
+[  5%] Built target kmm_utils_platformtools
+[  5%] Built target kmm_url
+[  5%] Building CXX object kmymoney/menus/CMakeFiles/kmm_menus.dir/menuenums.cpp.o
+[  5%] Built target kmm_yesno
+[  5%] Built target kmm_selections
+[  6%] Built target kmm_gpgfile
+[  6%] Building CXX object kmymoney/misc/CMakeFiles/kmm_textbrowser.dir/kmmtextbrowser.cpp.o
+[  6%] Building CXX object kmymoney/misc/CMakeFiles/kmm_printer.dir/kmm_printer.cpp.o
+[  7%] Built target csvimporter_settings_static
+[  7%] Built target kmm_utils_validators
+[  7%] Built target qifimporter_autogen_timestamp_deps
+[  8%] Built target icalendar_settings_static
+[  8%] Built target checkprinting_settings_static
+[  9%] Built target kmm_kcmodule
+[  9%] Built target forecast_settings_static
+[  9%] Built target kcm_xmlstorage_autogen_timestamp_deps
+[  9%] Building CXX object kmymoney/plugins/woob/dialogs/CMakeFiles/woob_dialogs.dir/mapaccountwizard.cpp.o
+[ 10%] Built target woob_interface
+[ 10%] Built target kmm_base_dialogs_autogen_timestamp_deps
+[ 10%] Built target konlinetasks_sepa_autogen_timestamp_deps
+[ 10%] Built target kcm_csvimporter_autogen_timestamp_deps
+[ 10%] Built target kcm_checkprinting_autogen_timestamp_deps
+[ 10%] Automatic MOC for target konlinetasks_sepa
+[ 10%] Automatic MOC for target qifimporter
+[ 10%] Built target kcm_icalendarexporter_autogen_timestamp_deps
+[ 10%] Automatic MOC for target kmm_base_dialogs
+[ 10%] Built target kcm_forecastview_autogen_timestamp_deps
+[ 10%] Automatic MOC for target kcm_xmlstorage
+[ 10%] Automatic MOC for target kcm_csvimporter
+[ 10%] Built target pofiles-cd46ccfefc16f9c7b5a91626d436b1ca
+[ 10%] Automatic MOC for target kcm_icalendarexporter
+[ 10%] Automatic MOC for target kcm_forecastview
+[ 10%] Automatic MOC for target kcm_checkprinting
+[ 10%] Built target kcm_icalendarexporter_autogen
+[ 10%] Building CXX object kmymoney/plugins/icalendar/export/CMakeFiles/kcm_icalendarexporter.dir/kcm_icalendarexporter.cpp.o
+[ 10%] Built target kcm_csvimporter_autogen
+[ 10%] Built target kcm_xmlstorage_autogen
+[ 11%] Building CXX object kmymoney/plugins/xml/CMakeFiles/kcm_xmlstorage.dir/kcm_xmlstorage_autogen/mocs_compilation.cpp.o
+[ 11%] Building CXX object kmymoney/plugins/xml/CMakeFiles/kcm_xmlstorage.dir/kcm_xmlstorage.cpp.o
+[ 11%] Building CXX object kmymoney/plugins/csv/import/CMakeFiles/kcm_csvimporter.dir/kcm_csvimporter.cpp.o
+[ 11%] Built target kcm_forecastview_autogen
+[ 11%] Built target kcm_checkprinting_autogen
+[ 11%] Building CXX object kmymoney/plugins/views/forecast/CMakeFiles/kcm_forecastview.dir/kcm_forecastview_autogen/mocs_compilation.cpp.o
+[ 11%] Built target konlinetasks_sepa_autogen
+[ 11%] Building CXX object kmymoney/plugins/views/forecast/CMakeFiles/kcm_forecastview.dir/kcm_forecastview.cpp.o
+[ 11%] Building CXX object kmymoney/plugins/checkprinting/CMakeFiles/kcm_checkprinting.dir/kcm_checkprinting_autogen/mocs_compilation.cpp.o
+[ 11%] Building CXX object kmymoney/plugins/checkprinting/CMakeFiles/kcm_checkprinting.dir/kcm_checkprinting.cpp.o
+[ 11%] Built target qifimporter_autogen
+[ 11%] Linking CXX shared library ../../lib/libkmm_menus.so
+[ 11%] Built target kmm_base_dialogs_autogen
+[ 11%] Built target kmm_menus
+[ 11%] Linking CXX shared library ../../lib/libkmm_printer.so
+[ 11%] Built target doc-index-cache-bz2
+[ 11%] Built target po-nl-docs-kmymoney-index-cache-bz2
+[ 12%] Built target kmm_printer
+[ 12%] Built target po-uk-docs-kmymoney-index-cache-bz2
+[ 12%] Built target po-ca-docs-kmymoney-index-cache-bz2
+[ 12%] Linking CXX shared library ../../../lib/libkmm_payeeidentifier.so
+[ 12%] Built target kmm_payeeidentifier
+[ 12%] Built target onlinetask_interfaces_autogen_timestamp_deps
+[ 12%] Built target onlinetask_interfaces_autogen
+[ 12%] Linking CXX static library ../../lib/libkmm_textbrowser.a
+[ 13%] Built target onlinetask_interfaces
+[ 13%] Built target kmm_mymoney_autogen_timestamp_deps
+[ 13%] Built target interfaces_autogen_timestamp_deps
+[ 13%] Built target kmm_textbrowser
+[ 13%] Automatic MOC for target kmm_mymoney
+[ 13%] Automatic MOC for target interfaces
+[ 13%] Built target interfaces_autogen
+[ 13%] Building CXX object kmymoney/plugins/plugin-interfaces/CMakeFiles/interfaces.dir/kmmappinterface.cpp.o
+[ 13%] Building CXX object kmymoney/plugins/plugin-interfaces/CMakeFiles/interfaces.dir/kmmstatementinterface.cpp.o
+In file included from /usr/include/qt6/QtCore/qfuture.h:13,
+                 from /usr/include/qt6/QtCore/qfuturewatcher.h:7,
+                 from /usr/include/qt6/QtCore/QFutureWatcher:1,
+                 from /mnt/kmymoney/plugins/woob/dialogs/mapaccountwizard.cpp:16:
+/usr/include/qt6/QtCore/qfuture_impl.h: In instantiation of 'struct QtPrivate::ArgResolver<WoobInterface*>':
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:189:64:   required from 'struct QtConcurrent::PromiseTaskResolver<WoobInterface*, QList<WoobInterface::Backend> (WoobInterface::*)()>'
+  189 |     static_assert(QtPrivate::ArgResolver<Function>::IsPromise::value,
+      |                                                                ^~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:211:8:   required from 'struct QtConcurrent::TaskResolverHelper<std::integral_constant<bool, false>, WoobInterface*, QList<WoobInterface::Backend> (WoobInterface::*)()>'
+  211 | struct TaskResolverHelper<std::false_type, Function, Args...>
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:217:8:   required from 'struct QtConcurrent::TaskResolver<WoobInterface*, QList<WoobInterface::Backend> (WoobInterface::*)()>'
+  217 | struct TaskResolver : public TaskResolverHelper<typename std::is_invocable<std::decay_t<Function>,
+      |        ^~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:47:76:   required from 'auto QtConcurrent::run(QThreadPool*, Function&&, Args&& ...) [with Function = WoobInterface*; Args = {QList<WoobInterface::Backend> (WoobInterface::*)()}]'
+   47 |     return TaskResolver<std::decay_t<Function>, std::decay_t<Args>...>::run(
+      |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+   48 |                 std::move(tuple), TaskStartParameters { pool });
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~             
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:64:15:   required from 'auto QtConcurrent::run(Function&&, Args&& ...) [with Function = WoobInterface*; Args = {QList<WoobInterface::Backend> (WoobInterface::*)()}]'
+   64 |     return run(QThreadPool::globalInstance(), std::forward<Function>(f),
+      |            ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   65 |                std::forward<Args>(args)...);
+      |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/woob/dialogs/mapaccountwizard.cpp:133:55:   required from here
+  133 |         d->backendsWatcher.setFuture(QtConcurrent::run(&d->m_woob, &WoobInterface::getBackends));
+      |                                      ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qfuture_impl.h:179:43: error: 'operator()' is not a member of 'std::decay<WoobInterface*>::type' {aka 'WoobInterface*'}
+  179 | struct ArgResolver : ArgResolver<decltype(&std::decay_t<F>::operator())>
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/qt6/QtConcurrent/qtconcurrentrun.h:16,
+                 from /usr/include/qt6/QtConcurrent/QtConcurrentRun:1,
+                 from /mnt/kmymoney/plugins/woob/dialogs/mapaccountwizard.cpp:18:
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h: In instantiation of 'struct QtConcurrent::PromiseTaskResolver<WoobInterface*, QList<WoobInterface::Backend> (WoobInterface::*)()>':
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:211:8:   required from 'struct QtConcurrent::TaskResolverHelper<std::integral_constant<bool, false>, WoobInterface*, QList<WoobInterface::Backend> (WoobInterface::*)()>'
+  211 | struct TaskResolverHelper<std::false_type, Function, Args...>
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:217:8:   required from 'struct QtConcurrent::TaskResolver<WoobInterface*, QList<WoobInterface::Backend> (WoobInterface::*)()>'
+  217 | struct TaskResolver : public TaskResolverHelper<typename std::is_invocable<std::decay_t<Function>,
+      |        ^~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:47:76:   required from 'auto QtConcurrent::run(QThreadPool*, Function&&, Args&& ...) [with Function = WoobInterface*; Args = {QList<WoobInterface::Backend> (WoobInterface::*)()}]'
+   47 |     return TaskResolver<std::decay_t<Function>, std::decay_t<Args>...>::run(
+      |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+   48 |                 std::move(tuple), TaskStartParameters { pool });
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~             
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:64:15:   required from 'auto QtConcurrent::run(Function&&, Args&& ...) [with Function = WoobInterface*; Args = {QList<WoobInterface::Backend> (WoobInterface::*)()}]'
+   64 |     return run(QThreadPool::globalInstance(), std::forward<Function>(f),
+      |            ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   65 |                std::forward<Args>(args)...);
+      |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/woob/dialogs/mapaccountwizard.cpp:133:55:   required from here
+  133 |         d->backendsWatcher.setFuture(QtConcurrent::run(&d->m_woob, &WoobInterface::getBackends));
+      |                                      ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:189:64: error: no type named 'IsPromise' in 'struct QtPrivate::ArgResolver<WoobInterface*>'
+  189 |     static_assert(QtPrivate::ArgResolver<Function>::IsPromise::value,
+      |                                                                ^~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h: In instantiation of 'static auto QtConcurrent::PromiseTaskResolver<Function, Args ...>::run(TaskWithArgs&&, const QtConcurrent::TaskStartParameters&) [with Function = WoobInterface*; Args = {QList<WoobInterface::Backend> (WoobInterface::*)()}; TaskWithArgs = std::tuple<WoobInterface*, QList<WoobInterface::Backend> (WoobInterface::*)()>]':
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:47:76:   required from 'auto QtConcurrent::run(QThreadPool*, Function&&, Args&& ...) [with Function = WoobInterface*; Args = {QList<WoobInterface::Backend> (WoobInterface::*)()}]'
+   47 |     return TaskResolver<std::decay_t<Function>, std::decay_t<Args>...>::run(
+      |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+   48 |                 std::move(tuple), TaskStartParameters { pool });
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~             
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:64:15:   required from 'auto QtConcurrent::run(Function&&, Args&& ...) [with Function = WoobInterface*; Args = {QList<WoobInterface::Backend> (WoobInterface::*)()}]'
+   64 |     return run(QThreadPool::globalInstance(), std::forward<Function>(f),
+      |            ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   65 |                std::forward<Args>(args)...);
+      |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/woob/dialogs/mapaccountwizard.cpp:133:55:   required from here
+  133 |         d->backendsWatcher.setFuture(QtConcurrent::run(&d->m_woob, &WoobInterface::getBackends));
+      |                                      ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:195:15: error: no type named 'PromiseType' in 'struct QtPrivate::ArgResolver<WoobInterface*>'
+  195 |         using PromiseType = typename QtPrivate::ArgResolver<Function>::PromiseType;
+      |               ^~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:196:17: error: no type named 'PromiseType' in 'struct QtPrivate::ArgResolver<WoobInterface*>'
+  196 |         return (new StoredFunctionCallWithPromise<Function, PromiseType, Args...>(std::move(args)))
+      |                ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h: In instantiation of 'struct QtConcurrent::PromiseTaskResolver<WoobInterface*, QList<WoobInterface::Account> (WoobInterface::*)(QString), QString>':
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:211:8:   required from 'struct QtConcurrent::TaskResolverHelper<std::integral_constant<bool, false>, WoobInterface*, QList<WoobInterface::Account> (WoobInterface::*)(QString), QString>'
+  211 | struct TaskResolverHelper<std::false_type, Function, Args...>
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:217:8:   required from 'struct QtConcurrent::TaskResolver<WoobInterface*, QList<WoobInterface::Account> (WoobInterface::*)(QString), QString>'
+  217 | struct TaskResolver : public TaskResolverHelper<typename std::is_invocable<std::decay_t<Function>,
+      |        ^~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:47:76:   required from 'auto QtConcurrent::run(QThreadPool*, Function&&, Args&& ...) [with Function = WoobInterface*; Args = {QList<WoobInterface::Account> (WoobInterface::*)(QString), QString}]'
+   47 |     return TaskResolver<std::decay_t<Function>, std::decay_t<Args>...>::run(
+      |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+   48 |                 std::move(tuple), TaskStartParameters { pool });
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~             
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:64:15:   required from 'auto QtConcurrent::run(Function&&, Args&& ...) [with Function = WoobInterface*; Args = {QList<WoobInterface::Account> (WoobInterface::*)(QString), QString}]'
+   64 |     return run(QThreadPool::globalInstance(), std::forward<Function>(f),
+      |            ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   65 |                std::forward<Args>(args)...);
+      |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/woob/dialogs/mapaccountwizard.cpp:143:55:   required from here
+  143 |         d->accountsWatcher.setFuture(QtConcurrent::run(&d->m_woob, &WoobInterface::getAccounts, d->ui->backendsList->currentItem()->text(0)));
+      |                                      ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:189:64: error: no type named 'IsPromise' in 'struct QtPrivate::ArgResolver<WoobInterface*>'
+  189 |     static_assert(QtPrivate::ArgResolver<Function>::IsPromise::value,
+      |                                                                ^~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h: In instantiation of 'static auto QtConcurrent::PromiseTaskResolver<Function, Args ...>::run(TaskWithArgs&&, const QtConcurrent::TaskStartParameters&) [with Function = WoobInterface*; Args = {QList<WoobInterface::Account> (WoobInterface::*)(QString), QString}; TaskWithArgs = std::tuple<WoobInterface*, QList<WoobInterface::Account> (WoobInterface::*)(QString), QString>]':
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:47:76:   required from 'auto QtConcurrent::run(QThreadPool*, Function&&, Args&& ...) [with Function = WoobInterface*; Args = {QList<WoobInterface::Account> (WoobInterface::*)(QString), QString}]'
+   47 |     return TaskResolver<std::decay_t<Function>, std::decay_t<Args>...>::run(
+      |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+   48 |                 std::move(tuple), TaskStartParameters { pool });
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~             
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:64:15:   required from 'auto QtConcurrent::run(Function&&, Args&& ...) [with Function = WoobInterface*; Args = {QList<WoobInterface::Account> (WoobInterface::*)(QString), QString}]'
+   64 |     return run(QThreadPool::globalInstance(), std::forward<Function>(f),
+      |            ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   65 |                std::forward<Args>(args)...);
+      |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/woob/dialogs/mapaccountwizard.cpp:143:55:   required from here
+  143 |         d->accountsWatcher.setFuture(QtConcurrent::run(&d->m_woob, &WoobInterface::getAccounts, d->ui->backendsList->currentItem()->text(0)));
+      |                                      ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:195:15: error: no type named 'PromiseType' in 'struct QtPrivate::ArgResolver<WoobInterface*>'
+  195 |         using PromiseType = typename QtPrivate::ArgResolver<Function>::PromiseType;
+      |               ^~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:196:17: error: no type named 'PromiseType' in 'struct QtPrivate::ArgResolver<WoobInterface*>'
+  196 |         return (new StoredFunctionCallWithPromise<Function, PromiseType, Args...>(std::move(args)))
+      |                ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[ 13%] Linking CXX static library ../../../../lib/libwoob_dialogs.a
+/usr/bin/ar: CMakeFiles/woob_dialogs.dir/mapaccountwizard.cpp.o: No such file or directory
+[ 14%] Built target woob_dialogs
+In file included from /usr/include/KF6/KCoreAddons/KPluginFactory:1,
+                 from /mnt/kmymoney/plugins/icalendar/export/kcm_icalendarexporter.cpp:16:
+/usr/include/KF6/KCoreAddons/kpluginfactory.h: In instantiation of 'static QObject* KPluginFactory::createInstance(QWidget*, QObject*, const KPluginMetaData&, const QVariantList&) [with impl = KCMiCalendarExporter; ParentType = QObject; QVariantList = QList<QVariant>]':
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:495:20:   required from 'QObject* (* KPluginFactory::InheritanceChecker<impl>::createInstanceFunction(...))(QWidget*, QObject*, const KPluginMetaData&, const QVariantList&) [with impl = KCMiCalendarExporter; KPluginFactory::CreateInstanceWithMetaDataFunction = QObject* (*)(QWidget*, QObject*, const KPluginMetaData&, const QList<QVariant>&)]'
+  495 |             return &createInstance<impl, QObject>;
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:524:109:   required from 'void KPluginFactory::registerPlugin() [with T = KCMiCalendarExporter; typename std::enable_if<InheritanceChecker<impl>::enabled, int>::type <anonymous> = 0]'
+  524 |         CreateInstanceWithMetaDataFunction instanceFunction = InheritanceChecker<T>().createInstanceFunction(static_cast<T *>(nullptr));
+      |                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/icalendar/export/kcm_icalendarexporter.cpp:57:1:   required from here
+   57 | K_PLUGIN_CLASS(KCMiCalendarExporter)
+      | ^~~~~~~~~~~~~~
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:593:29: error: invalid conversion from 'QObject*' to 'QWidget*' [-fpermissive]
+  593 |             return new impl(p);
+      |                             ^
+      |                             |
+      |                             QObject*
+/mnt/kmymoney/plugins/icalendar/export/kcm_icalendarexporter.cpp:42:53: note:   initializing argument 1 of 'KCMiCalendarExporter::KCMiCalendarExporter(QWidget*, const QVariantList&)'
+   42 | KCMiCalendarExporter::KCMiCalendarExporter(QWidget* parent, const QVariantList& args)
+      |                                            ~~~~~~~~~^~~~~~
+In file included from /usr/include/KF6/KCoreAddons/KPluginFactory:1,
+                 from /mnt/kmymoney/plugins/csv/import/kcm_csvimporter.cpp:20:
+/usr/include/KF6/KCoreAddons/kpluginfactory.h: In instantiation of 'static QObject* KPluginFactory::createInstance(QWidget*, QObject*, const KPluginMetaData&, const QVariantList&) [with impl = KCMCSVImporter; ParentType = QObject; QVariantList = QList<QVariant>]':
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:495:20:   required from 'QObject* (* KPluginFactory::InheritanceChecker<impl>::createInstanceFunction(...))(QWidget*, QObject*, const KPluginMetaData&, const QVariantList&) [with impl = KCMCSVImporter; KPluginFactory::CreateInstanceWithMetaDataFunction = QObject* (*)(QWidget*, QObject*, const KPluginMetaData&, const QList<QVariant>&)]'
+  495 |             return &createInstance<impl, QObject>;
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:524:109:   required from 'void KPluginFactory::registerPlugin() [with T = KCMCSVImporter; typename std::enable_if<InheritanceChecker<impl>::enabled, int>::type <anonymous> = 0]'
+  524 |         CreateInstanceWithMetaDataFunction instanceFunction = InheritanceChecker<T>().createInstanceFunction(static_cast<T *>(nullptr));
+      |                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/csv/import/kcm_csvimporter.cpp:129:1:   required from here
+  129 | K_PLUGIN_CLASS(KCMCSVImporter)
+      | ^~~~~~~~~~~~~~
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:593:20: error: no matching function for call to 'KCMCSVImporter::KCMCSVImporter(QObject*&)'
+  593 |             return new impl(p);
+      |                    ^~~~~~~~~~~
+/mnt/kmymoney/plugins/csv/import/kcm_csvimporter.cpp:87:1: note: candidate: 'KCMCSVImporter::KCMCSVImporter(QWidget*, const QVariantList&)'
+   87 | KCMCSVImporter::KCMCSVImporter(QWidget* parent, const QVariantList& args)
+      | ^~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/csv/import/kcm_csvimporter.cpp:87:1: note:   candidate expects 2 arguments, 1 provided
+[ 15%] Linking CXX shared module ../../../../lib/kmymoney_plugins/kcms/kcm_icalendarexporter.so
+/usr/lib64/gcc/x86_64-suse-linux/14/../../../../x86_64-suse-linux/bin/ld: cannot find CMakeFiles/kcm_icalendarexporter.dir/kcm_icalendarexporter.cpp.o: No such file or directory
+collect2: error: ld returned 1 exit status
+In file included from /usr/include/KF6/KCoreAddons/KPluginFactory:1,
+                 from /mnt/kmymoney/plugins/xml/kcm_xmlstorage.cpp:18:
+/usr/include/KF6/KCoreAddons/kpluginfactory.h: In instantiation of 'static QObject* KPluginFactory::createInstance(QWidget*, QObject*, const KPluginMetaData&, const QVariantList&) [with impl = KCMXMLStorage; ParentType = QObject; QVariantList = QList<QVariant>]':
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:495:20:   required from 'QObject* (* KPluginFactory::InheritanceChecker<impl>::createInstanceFunction(...))(QWidget*, QObject*, const KPluginMetaData&, const QVariantList&) [with impl = KCMXMLStorage; KPluginFactory::CreateInstanceWithMetaDataFunction = QObject* (*)(QWidget*, QObject*, const KPluginMetaData&, const QList<QVariant>&)]'
+  495 |             return &createInstance<impl, QObject>;
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:524:109:   required from 'void KPluginFactory::registerPlugin() [with T = KCMXMLStorage; typename std::enable_if<InheritanceChecker<impl>::enabled, int>::type <anonymous> = 0]'
+  524 |         CreateInstanceWithMetaDataFunction instanceFunction = InheritanceChecker<T>().createInstanceFunction(static_cast<T *>(nullptr));
+      |                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/xml/kcm_xmlstorage.cpp:258:1:   required from here
+  258 | K_PLUGIN_CLASS(KCMXMLStorage)
+      | ^~~~~~~~~~~~~~
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:593:20: error: no matching function for call to 'KCMXMLStorage::KCMXMLStorage(QObject*&)'
+  593 |             return new impl(p);
+      |                    ^~~~~~~~~~~
+/mnt/kmymoney/plugins/xml/kcm_xmlstorage.cpp:242:1: note: candidate: 'KCMXMLStorage::KCMXMLStorage(QWidget*, const QVariantList&)'
+  242 | KCMXMLStorage::KCMXMLStorage(QWidget* parent, const QVariantList& args)
+      | ^~~~~~~~~~~~~
+/mnt/kmymoney/plugins/xml/kcm_xmlstorage.cpp:242:1: note:   candidate expects 2 arguments, 1 provided
+[ 15%] Built target kcm_icalendarexporter
+[ 15%] Linking CXX shared module ../../../../lib/kmymoney_plugins/kcms/kcm_csvimporter.so
+/usr/lib64/gcc/x86_64-suse-linux/14/../../../../x86_64-suse-linux/bin/ld: cannot find CMakeFiles/kcm_csvimporter.dir/kcm_csvimporter.cpp.o: No such file or directory
+[ 15%] Linking CXX shared module ../../../lib/kmymoney_plugins/kcms/kcm_xmlstorage.so
+collect2: error: ld returned 1 exit status
+[ 15%] Built target kcm_csvimporter
+/usr/lib64/gcc/x86_64-suse-linux/14/../../../../x86_64-suse-linux/bin/ld: cannot find CMakeFiles/kcm_xmlstorage.dir/kcm_xmlstorage.cpp.o: No such file or directory
+In file included from /usr/include/KF6/KCoreAddons/KPluginFactory:1,
+                 from /mnt/kmymoney/plugins/views/forecast/kcm_forecastview.cpp:13:
+/usr/include/KF6/KCoreAddons/kpluginfactory.h: In instantiation of 'static QObject* KPluginFactory::createInstance(QWidget*, QObject*, const KPluginMetaData&, const QVariantList&) [with impl = KCMForecastView; ParentType = QObject; QVariantList = QList<QVariant>]':
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:495:20:   required from 'QObject* (* KPluginFactory::InheritanceChecker<impl>::createInstanceFunction(...))(QWidget*, QObject*, const KPluginMetaData&, const QVariantList&) [with impl = KCMForecastView; KPluginFactory::CreateInstanceWithMetaDataFunction = QObject* (*)(QWidget*, QObject*, const KPluginMetaData&, const QList<QVariant>&)]'
+  495 |             return &createInstance<impl, QObject>;
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:524:109:   required from 'void KPluginFactory::registerPlugin() [with T = KCMForecastView; typename std::enable_if<InheritanceChecker<impl>::enabled, int>::type <anonymous> = 0]'
+  524 |         CreateInstanceWithMetaDataFunction instanceFunction = InheritanceChecker<T>().createInstanceFunction(static_cast<T *>(nullptr));
+      |                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/views/forecast/kcm_forecastview.cpp:38:1:   required from here
+   38 | K_PLUGIN_CLASS(KCMForecastView)
+      | ^~~~~~~~~~~~~~
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:593:20: error: no matching function for call to 'KCMForecastView::KCMForecastView(QObject*&)'
+  593 |             return new impl(p);
+      |                    ^~~~~~~~~~~
+/mnt/kmymoney/plugins/views/forecast/kcm_forecastview.cpp:21:1: note: candidate: 'KCMForecastView::KCMForecastView(QWidget*, const QVariantList&)'
+   21 | KCMForecastView::KCMForecastView(QWidget* parent, const QVariantList& args)
+      | ^~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/views/forecast/kcm_forecastview.cpp:21:1: note:   candidate expects 2 arguments, 1 provided
+collect2: error: ld returned 1 exit status
+[ 15%] Built target kcm_xmlstorage
+[ 15%] Linking CXX shared module ../../../../lib/kmymoney_plugins/kcms/kcm_forecastview.so
+/usr/lib64/gcc/x86_64-suse-linux/14/../../../../x86_64-suse-linux/bin/ld: cannot find CMakeFiles/kcm_forecastview.dir/kcm_forecastview.cpp.o: No such file or directory
+collect2: error: ld returned 1 exit status
+[ 16%] Built target kcm_forecastview
+[ 16%] Built target kmm_mymoney_autogen
+[ 16%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneytransactionfilter.cpp.o
+[ 16%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneymoney.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneyfile.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneysplit.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneyutils.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneysecurity.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/kmm_mymoney_autogen/mocs_compilation.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneytransaction.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneyschedule.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneyaccount.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneypayee.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneyaccountloan.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneyreport.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneystatement.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneybudget.cpp.o
+[ 17%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneyforecast.cpp.o
+In file included from /usr/include/KF6/KCoreAddons/KPluginFactory:1,
+                 from /mnt/kmymoney/plugins/checkprinting/kcm_checkprinting.cpp:15:
+/usr/include/KF6/KCoreAddons/kpluginfactory.h: In instantiation of 'static QObject* KPluginFactory::createInstance(QWidget*, QObject*, const KPluginMetaData&, const QVariantList&) [with impl = KCMCheckPrinting; ParentType = QObject; QVariantList = QList<QVariant>]':
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:495:20:   required from 'QObject* (* KPluginFactory::InheritanceChecker<impl>::createInstanceFunction(...))(QWidget*, QObject*, const KPluginMetaData&, const QVariantList&) [with impl = KCMCheckPrinting; KPluginFactory::CreateInstanceWithMetaDataFunction = QObject* (*)(QWidget*, QObject*, const KPluginMetaData&, const QList<QVariant>&)]'
+  495 |             return &createInstance<impl, QObject>;
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:524:109:   required from 'void KPluginFactory::registerPlugin() [with T = KCMCheckPrinting; typename std::enable_if<InheritanceChecker<impl>::enabled, int>::type <anonymous> = 0]'
+  524 |         CreateInstanceWithMetaDataFunction instanceFunction = InheritanceChecker<T>().createInstanceFunction(static_cast<T *>(nullptr));
+      |                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/checkprinting/kcm_checkprinting.cpp:123:1:   required from here
+  123 | K_PLUGIN_CLASS(KCMCheckPrinting)
+      | ^~~~~~~~~~~~~~
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:593:20: error: no matching function for call to 'KCMCheckPrinting::KCMCheckPrinting(QObject*&)'
+  593 |             return new impl(p);
+      |                    ^~~~~~~~~~~
+/mnt/kmymoney/plugins/checkprinting/kcm_checkprinting.cpp:106:1: note: candidate: 'KCMCheckPrinting::KCMCheckPrinting(QWidget*, const QVariantList&)'
+  106 | KCMCheckPrinting::KCMCheckPrinting(QWidget* parent, const QVariantList& args)
+      | ^~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/checkprinting/kcm_checkprinting.cpp:106:1: note:   candidate expects 2 arguments, 1 provided
+[ 18%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/mymoneyqifprofile.cpp.o
+[ 18%] Linking CXX shared module ../../../lib/kmymoney_plugins/kcms/kcm_checkprinting.so
+/usr/lib64/gcc/x86_64-suse-linux/14/../../../../x86_64-suse-linux/bin/ld: cannot find CMakeFiles/kcm_checkprinting.dir/kcm_checkprinting.cpp.o: No such file or directory
+collect2: error: ld returned 1 exit status
+[ 19%] Built target kcm_checkprinting
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/onlinejob.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/onlinejobadministration.cpp.o
+[ 19%] Linking CXX static library ../../../lib/libinterfaces.a
+[ 19%] Built target interfaces
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/onlinejobmessage.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/onlinepricemodel.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/payeeidentifiermodel.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/statusmodel.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/splitmodel.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/mymoneymodelbase.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/costcentermodel.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/payeesmodel.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/schedulesmodel.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/tagsmodel.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/securitiesmodel.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/budgetsmodel.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/accountsmodel.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/institutionsmodel.cpp.o
+[ 19%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/journalmodel.cpp.o
+[ 20%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/pricemodel.cpp.o
+[ 20%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/parametersmodel.cpp.o
+[ 20%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/onlinejobsmodel.cpp.o
+[ 20%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/reportsmodel.cpp.o
+[ 20%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/reconciliationmodel.cpp.o
+[ 20%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/specialdatesmodel.cpp.o
+[ 20%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/schedulesjournalmodel.cpp.o
+[ 20%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/storage/templatesmodel.cpp.o
+[ 20%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/onlinetasks/sepa/sepaonlinetransferimpl.cpp.o
+[ 21%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/payeeidentifier/ibanbic/ibanbic.cpp.o
+[ 21%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/payeeidentifier/nationalaccount/nationalaccount.cpp.o
+[ 21%] Building CXX object kmymoney/mymoney/CMakeFiles/kmm_mymoney.dir/xmlhelper/xmlstoragehelper.cpp.o
+[ 21%] Linking CXX shared library ../../lib/libkmm_mymoney.so
+[ 23%] Built target kmm_mymoney
+[ 23%] Built target kcm_qif_autogen_timestamp_deps
+[ 23%] Built target kmm_csvimportercore_autogen_timestamp_deps
+[ 23%] Built target kmm_testutils_autogen_timestamp_deps
+[ 23%] Built target xmlstoragehelper_autogen_timestamp_deps
+[ 23%] Built target xea2kmt_autogen_timestamp_deps
+[ 23%] Built target icalendarexporter_autogen_timestamp_deps
+[ 23%] Built target checkprinting_autogen_timestamp_deps
+[ 23%] Built target testwidgets_autogen_timestamp_deps
+[ 23%] Built target payeeidentifier-test_autogen_timestamp_deps
+[ 23%] Built target csvimport_testcommon_autogen_timestamp_deps
+[ 23%] Automatic MOC for target kmm_csvimportercore
+[ 23%] Built target kmm_testutils_autogen
+[ 24%] Built target xea2kmt_autogen
+[ 24%] Automatic MOC for target xmlstoragehelper
+[ 24%] Built target csvimport_testcommon_autogen
+[ 24%] Built target payeeidentifier-test_autogen
+[ 24%] Built target testwidgets_autogen
+[ 25%] Automatic MOC for target icalendarexporter
+[ 25%] Automatic MOC for target checkprinting
+[ 25%] Building CXX object kmymoney/plugins/qif/import/CMakeFiles/qifimporter.dir/qifimporter_autogen/mocs_compilation.cpp.o
+[ 25%] Building CXX object kmymoney/plugins/qif/import/CMakeFiles/qifimporter.dir/qifimporter.cpp.o
+[ 25%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/kmm_testutils.dir/mymoneytestutils.cpp.o
+[ 25%] Building CXX object kmymoney/plugins/qif/import/CMakeFiles/qifimporter.dir/mymoneyqifreader.cpp.o
+[ 25%] Building CXX object tools/CMakeFiles/xea2kmt.dir/xea2kmt.cpp.o
+[ 25%] Built target kmm_csvimportercore_autogen
+[ 25%] Building CXX object kmymoney/plugins/qif/import/CMakeFiles/qifimporter.dir/kimportdlg.cpp.o
+[ 25%] Automatic MOC for target kcm_qif
+[ 25%] Building CXX object kmymoney/plugins/csv/import/core/tests/CMakeFiles/csvimport_testcommon.dir/csvimporttestcommon.cpp.o
+[ 26%] Built target payeeidentifier-test
+[ 26%] Building CXX object kmymoney/widgets/tests/CMakeFiles/testwidgets.dir/__/amountvalidator.cpp.o
+[ 26%] Built target xmlstoragehelper_autogen
+[ 26%] Building CXX object kmymoney/plugins/csv/import/core/CMakeFiles/kmm_csvimportercore.dir/csvimportercore.cpp.o
+[ 26%] Building CXX object kmymoney/mymoney/xmlhelper/CMakeFiles/xmlstoragehelper.dir/xmlstoragehelper.cpp.o
+[ 26%] Built target icalendarexporter_autogen
+[ 26%] Building CXX object kmymoney/plugins/icalendar/export/CMakeFiles/icalendarexporter.dir/schedulestoicalendar.cpp.o
+[ 26%] Building CXX object kmymoney/plugins/icalendar/export/CMakeFiles/icalendarexporter.dir/icalendarexporter.cpp.o
+[ 26%] Built target kcm_qif_autogen
+[ 26%] Building CXX object kmymoney/plugins/qif/config/CMakeFiles/kcm_qif.dir/kcm_qif.cpp.o
+[ 26%] Built target checkprinting_autogen
+[ 26%] Building CXX object kmymoney/plugins/checkprinting/CMakeFiles/checkprinting.dir/checkprinting.cpp.o
+[ 26%] Linking CXX static library ../../../lib/libtestwidgets.a
+[ 27%] Built target testwidgets
+[ 28%] Linking CXX static library ../../../lib/libkmm_testutils.a
+[ 28%] Built target amountvalidator-test_autogen_timestamp_deps
+[ 28%] Built target amountvalidator-test_autogen
+[ 28%] Built target kmm_testutils
+[ 28%] Linking CXX executable ../../../bin/amountvalidator-test
+[ 28%] Built target mymoneymap-test_autogen_timestamp_deps
+[ 28%] Built target mymoneymap-test_autogen
+[ 28%] Linking CXX static library ../../../../../../lib/libcsvimport_testcommon.a
+[ 28%] Linking CXX executable ../../../../bin/mymoneymap-test
+[ 29%] Built target csvimport_testcommon
+[ 30%] Built target mymoneymap-test
+/mnt/kmymoney/plugins/icalendar/export/icalendarexporter.cpp: In member function 'void iCalendarExporter::slotFirstExport()':
+/mnt/kmymoney/plugins/icalendar/export/icalendarexporter.cpp:92:27: error: variable 'QPointer<QFileDialog> fileDialog' has initializer but incomplete type
+   92 |     QPointer<QFileDialog> fileDialog =
+      |                           ^~~~~~~~~~
+/mnt/kmymoney/plugins/icalendar/export/icalendarexporter.cpp:93:50: warning: 'T QAction::parentWidget() const [with T = QWidget*]' is deprecated: Use parent() with qobject_cast() instead [-Wdeprecated-declarations]
+   93 |         new QFileDialog(d->m_action->parentWidget(), QString(), QString(), QString("%1|%2\n").arg("*.ics", i18nc("ICS (Filefilter)", "iCalendar files")));
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~^~
+In file included from /usr/include/qt6/QtWidgets/qwidget.h:12,
+                 from /usr/include/qt6/QtWidgets/qdialog.h:8,
+                 from /usr/include/qt6/QtWidgets/qfiledialog.h:11,
+                 from /usr/include/qt6/QtWidgets/QFileDialog:1,
+                 from /mnt/kmymoney/plugins/icalendar/export/icalendarexporter.cpp:12:
+/usr/include/qt6/QtGui/qaction.h:88:7: note: declared here
+   88 |     T parentWidget() const
+      |       ^~~~~~~~~~~~
+/mnt/kmymoney/plugins/icalendar/export/icalendarexporter.cpp:110:5: error: type '<type error>' argument given to 'delete', expected pointer
+  110 |     delete fileDialog;
+      |     ^~~~~~~~~~~~~~~~~
+[ 30%] Built target amountvalidator-test
+/mnt/kmymoney/plugins/qif/import/mymoneyqifreader.cpp: In member function 'void MyMoneyQifReader::Private::finishStatement()':
+/mnt/kmymoney/plugins/qif/import/mymoneyqifreader.cpp:128:33: warning: format '%d' expects argument of type 'int', but argument 3 has type 'qsizetype' {aka 'long long int'} [-Wformat=]
+  128 |         qDebug("Statement with %d transactions, %d prices and %d securities added to the statement list",
+      |                                ~^
+      |                                 |
+      |                                 int
+      |                                %lld
+  129 |                st.m_listTransactions.count(), st.m_listPrices.count(), st.m_listSecurities.count());
+      |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                           |
+      |                                           qsizetype {aka long long int}
+/mnt/kmymoney/plugins/qif/import/mymoneyqifreader.cpp:128:50: warning: format '%d' expects argument of type 'int', but argument 4 has type 'qsizetype' {aka 'long long int'} [-Wformat=]
+  128 |         qDebug("Statement with %d transactions, %d prices and %d securities added to the statement list",
+      |                                                 ~^
+      |                                                  |
+      |                                                  int
+      |                                                 %lld
+  129 |                st.m_listTransactions.count(), st.m_listPrices.count(), st.m_listSecurities.count());
+      |                                               ~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                                    |
+      |                                                                    qsizetype {aka long long int}
+/mnt/kmymoney/plugins/qif/import/mymoneyqifreader.cpp:128:64: warning: format '%d' expects argument of type 'int', but argument 5 has type 'qsizetype' {aka 'long long int'} [-Wformat=]
+  128 |         qDebug("Statement with %d transactions, %d prices and %d securities added to the statement list",
+      |                                                               ~^
+      |                                                                |
+      |                                                                int
+      |                                                               %lld
+  129 |                st.m_listTransactions.count(), st.m_listPrices.count(), st.m_listSecurities.count());
+      |                                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                                                                 |
+      |                                                                                                 qsizetype {aka long long int}
+/mnt/kmymoney/plugins/qif/import/mymoneyqifreader.cpp: In member function 'bool MyMoneyQifReader::startImport()':
+/mnt/kmymoney/plugins/qif/import/mymoneyqifreader.cpp:428:14: error: 'FileCopyJob' is not a member of 'KIO'
+  428 |         KIO::FileCopyJob *job = KIO::file_copy(m_url, QUrl::fromUserInput(m_filename), -1, KIO::Overwrite);
+      |              ^~~~~~~~~~~
+/mnt/kmymoney/plugins/qif/import/mymoneyqifreader.cpp:428:27: error: 'job' was not declared in this scope
+  428 |         KIO::FileCopyJob *job = KIO::file_copy(m_url, QUrl::fromUserInput(m_filename), -1, KIO::Overwrite);
+      |                           ^~~
+/mnt/kmymoney/plugins/qif/import/mymoneyqifreader.cpp:428:38: error: 'file_copy' is not a member of 'KIO'
+  428 |         KIO::FileCopyJob *job = KIO::file_copy(m_url, QUrl::fromUserInput(m_filename), -1, KIO::Overwrite);
+      |                                      ^~~~~~~~~
+/mnt/kmymoney/plugins/csv/import/core/csvimportercore.cpp: In member function 'void CSVFile::readFile(CSVProfile*)':
+/mnt/kmymoney/plugins/csv/import/core/csvimportercore.cpp:1829:17: warning: unused variable 'codec' [-Wunused-variable]
+ 1829 |     QTextCodec* codec = QTextCodec::codecForMib(profile->m_encodingMIBEnum);
+      |                 ^~~~~
+/mnt/kmymoney/plugins/qif/import/kimportdlg.cpp: In member function 'void KImportDlg::slotFileTextChanged(const QString&)':
+/mnt/kmymoney/plugins/qif/import/kimportdlg.cpp:132:29: error: 'statDetails' is not a member of 'KIO'; did you mean 'StatDetails'?
+  132 |         auto statjob = KIO::statDetails(file(), KIO::StatJob::SourceSide, KIO::StatNoDetails);
+      |                             ^~~~~~~~~~~
+      |                             StatDetails
+In file included from /usr/include/KF6/KCoreAddons/KPluginFactory:1,
+                 from /mnt/kmymoney/plugins/qif/config/kcm_qif.cpp:12:
+/usr/include/KF6/KCoreAddons/kpluginfactory.h: In instantiation of 'static QObject* KPluginFactory::createInstance(QWidget*, QObject*, const KPluginMetaData&, const QVariantList&) [with impl = KCMqif; ParentType = QObject; QVariantList = QList<QVariant>]':
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:495:20:   required from 'QObject* (* KPluginFactory::InheritanceChecker<impl>::createInstanceFunction(...))(QWidget*, QObject*, const KPluginMetaData&, const QVariantList&) [with impl = KCMqif; KPluginFactory::CreateInstanceWithMetaDataFunction = QObject* (*)(QWidget*, QObject*, const KPluginMetaData&, const QList<QVariant>&)]'
+  495 |             return &createInstance<impl, QObject>;
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:524:109:   required from 'void KPluginFactory::registerPlugin() [with T = KCMqif; typename std::enable_if<InheritanceChecker<impl>::enabled, int>::type <anonymous> = 0]'
+  524 |         CreateInstanceWithMetaDataFunction instanceFunction = InheritanceChecker<T>().createInstanceFunction(static_cast<T *>(nullptr));
+      |                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/qif/config/kcm_qif.cpp:27:1:   required from here
+   27 | K_PLUGIN_CLASS(KCMqif)
+      | ^~~~~~~~~~~~~~
+/usr/include/KF6/KCoreAddons/kpluginfactory.h:593:20: error: no matching function for call to 'KCMqif::KCMqif(QObject*&)'
+  593 |             return new impl(p);
+      |                    ^~~~~~~~~~~
+/mnt/kmymoney/plugins/qif/config/kcm_qif.cpp:16:1: note: candidate: 'KCMqif::KCMqif(QWidget*, const QVariantList&)'
+   16 | KCMqif::KCMqif(QWidget* parent, const QVariantList& args)
+      | ^~~~~~
+/mnt/kmymoney/plugins/qif/config/kcm_qif.cpp:16:1: note:   candidate expects 2 arguments, 1 provided
+[ 30%] Linking CXX shared module ../../../../lib/kmymoney_plugins/kcms/kcm_qif.so
+/usr/lib64/gcc/x86_64-suse-linux/14/../../../../x86_64-suse-linux/bin/ld: cannot find CMakeFiles/kcm_qif.dir/kcm_qif.cpp.o: No such file or directory
+collect2: error: ld returned 1 exit status
+[ 30%] Built target kcm_qif
+[ 30%] Linking CXX shared module ../../../../lib/kmymoney_plugins/icalendarexporter.so
+/usr/lib64/gcc/x86_64-suse-linux/14/../../../../x86_64-suse-linux/bin/ld: cannot find CMakeFiles/icalendarexporter.dir/icalendarexporter.cpp.o: No such file or directory
+[ 31%] Linking CXX shared module ../../../../lib/kmymoney_plugins/qifimporter.so
+/usr/lib64/gcc/x86_64-suse-linux/14/../../../../x86_64-suse-linux/bin/ld: cannot find CMakeFiles/qifimporter.dir/mymoneyqifreader.cpp.o: No such file or directory
+/usr/lib64/gcc/x86_64-suse-linux/14/../../../../x86_64-suse-linux/bin/ld: cannot find CMakeFiles/qifimporter.dir/kimportdlg.cpp.o: No such file or directory
+collect2: error: ld returned 1 exit status
+[ 31%] Built target icalendarexporter
+collect2: error: ld returned 1 exit status
+[ 31%] Built target qifimporter
+[ 31%] Linking CXX shared module ../../../lib/kmymoney_plugins/checkprinting.so
+[ 32%] Built target checkprinting
+[ 32%] Linking CXX executable ../bin/xea2kmt
+[ 32%] Built target xea2kmt
+[ 32%] Linking CXX static library ../../../lib/libxmlstoragehelper.a
+[ 32%] Built target xmlstoragehelper
+[ 32%] Built target mymoneystoragexml_autogen_timestamp_deps
+[ 32%] Automatic MOC for target mymoneystoragexml
+[ 32%] Built target mymoneystoragexml_autogen
+[ 32%] Building CXX object kmymoney/plugins/xml/tests/CMakeFiles/mymoneystoragexml.dir/__/mymoneystoragenames.cpp.o
+[ 32%] Building CXX object kmymoney/plugins/xml/tests/CMakeFiles/mymoneystoragexml.dir/__/mymoneyxmlreader.cpp.o
+[ 32%] Linking CXX shared library ../../../../../lib/libkmm_csvimportercore.so
+[ 32%] Built target kmm_csvimportercore
+[ 32%] Built target csvdate-test_autogen_timestamp_deps
+[ 32%] Built target csvimportercore-test_autogen_timestamp_deps
+[ 32%] Built target symbol-test_autogen_timestamp_deps
+[ 32%] Built target kmm_webconnect_autogen_timestamp_deps
+[ 32%] Built target parsedata-test_autogen_timestamp_deps
+[ 32%] Built target csvdate-test_autogen
+[ 32%] Built target symbol-test_autogen
+[ 32%] Built target csvimportercore-test_autogen
+[ 32%] Built target parsedata-test_autogen
+[ 32%] Automatic MOC for target kmm_webconnect
+[ 32%] Linking CXX executable ../../../../../../bin/symbol-test
+[ 33%] Linking CXX executable ../../../../../../bin/csvdate-test
+[ 33%] Linking CXX executable ../../../../../../bin/parsedata-test
+[ 33%] Building CXX object kmymoney/plugins/csv/import/core/tests/CMakeFiles/csvimportercore-test.dir/csvimportercore-test.cpp.o
+[ 33%] Built target kmm_webconnect_autogen
+[ 34%] Built target kmm_webconnect
+[ 34%] Built target newinvestmentwizard_autogen_timestamp_deps
+[ 34%] Built target kmymoney_common_autogen_timestamp_deps
+[ 34%] Automatic MOC for target kmymoney_common
+[ 34%] Automatic MOC for target newinvestmentwizard
+[ 34%] Built target kmymoney_common_autogen
+[ 34%] Building CXX object kmymoney/CMakeFiles/kmymoney_common.dir/kmymoneyutils.cpp.o
+[ 34%] Built target newinvestmentwizard_autogen
+[ 34%] Building CXX object kmymoney/wizards/newinvestmentwizard/CMakeFiles/newinvestmentwizard.dir/newinvestmentwizard_autogen/mocs_compilation.cpp.o
+[ 34%] Building CXX object kmymoney/wizards/newinvestmentwizard/CMakeFiles/newinvestmentwizard.dir/knewinvestmentwizard.cpp.o
+[ 34%] Building CXX object kmymoney/wizards/newinvestmentwizard/CMakeFiles/newinvestmentwizard.dir/kinvestmentdetailswizardpage.cpp.o
+[ 34%] Building CXX object kmymoney/wizards/newinvestmentwizard/CMakeFiles/newinvestmentwizard.dir/kinvestmenttypewizardpage.cpp.o
+[ 34%] Built target csvdate-test
+[ 34%] Built target parsedata-test
+[ 34%] Built target symbol-test
+/mnt/kmymoney/kmymoneyutils.cpp: In static member function 'static bool KMyMoneyUtils::fileExists(const QUrl&)':
+/mnt/kmymoney/kmymoneyutils.cpp:529:33: error: 'statDetails' is not a member of 'KIO'; did you mean 'StatDetails'?
+  529 |             auto statjob = KIO::statDetails(url, KIO::StatJob::SourceSide, KIO::StatNoDetails);
+      |                                 ^~~~~~~~~~~
+      |                                 StatDetails
+[ 34%] Linking CXX static library ../lib/libkmymoney_common.a
+/usr/bin/ar: CMakeFiles/kmymoney_common.dir/kmymoneyutils.cpp.o: No such file or directory
+[ 35%] Built target kmymoney_common
+[ 35%] Built target kmm_models_autogen_timestamp_deps
+[ 35%] Built target xmlstorage_autogen_timestamp_deps
+[ 35%] Built target reconciliationreport_autogen_timestamp_deps
+[ 35%] Built target kmymoneyutils-test_autogen_timestamp_deps
+[ 35%] Built target xmlstorage_static_autogen_timestamp_deps
+[ 35%] Built target kmymoneyutils-test_autogen
+[ 35%] Automatic MOC for target kmm_models
+[ 35%] Automatic MOC for target reconciliationreport
+[ 35%] Automatic MOC for target xmlstorage_static
+[ 35%] Automatic MOC for target xmlstorage
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'bin/kmymoneyutils-test'.  Stop.
+[ 35%] Built target kmymoneyutils-test
+[ 35%] Linking CXX static library ../../../lib/libnewinvestmentwizard.a
+[ 36%] Built target newinvestmentwizard
+[ 36%] Built target xmlstorage_autogen
+[ 36%] Building CXX object kmymoney/plugins/xml/CMakeFiles/xmlstorage.dir/mymoneyxmlreader.cpp.o
+[ 37%] Building CXX object kmymoney/plugins/xml/CMakeFiles/xmlstorage.dir/mymoneyxmlwriter.cpp.o
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/kmymoney_plugins/xmlstorage.so'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 37%] Building CXX object kmymoney/plugins/xml/CMakeFiles/xmlstorage.dir/mymoneystoragenames.cpp.o
+[ 37%] Building CXX object kmymoney/plugins/xml/CMakeFiles/xmlstorage.dir/xmlstorage.cpp.o
+[ 37%] Building CXX object kmymoney/plugins/xml/CMakeFiles/xmlstorage.dir/mymoneyanonwriter.cpp.o
+[ 37%] Built target reconciliationreport_autogen
+[ 37%] Built target xmlstorage_static_autogen
+[ 37%] Building CXX object kmymoney/plugins/reconciliationreport/CMakeFiles/reconciliationreport.dir/reconciliationreport_autogen/mocs_compilation.cpp.o
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/kmymoney_plugins/reconciliationreport.so'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 37%] Building CXX object kmymoney/plugins/reconciliationreport/CMakeFiles/reconciliationreport.dir/kreconciliationreportdlg.cpp.o
+[ 37%] Building CXX object kmymoney/plugins/reconciliationreport/CMakeFiles/reconciliationreport.dir/reconciliationreport.cpp.o
+[ 37%] Building CXX object kmymoney/plugins/xml/CMakeFiles/xmlstorage_static.dir/mymoneyxmlreader.cpp.o
+[ 38%] Building CXX object kmymoney/plugins/xml/CMakeFiles/xmlstorage_static.dir/mymoneyxmlwriter.cpp.o
+[ 38%] Building CXX object kmymoney/plugins/xml/CMakeFiles/xmlstorage_static.dir/mymoneyanonwriter.cpp.o
+[ 38%] Building CXX object kmymoney/plugins/xml/CMakeFiles/xmlstorage_static.dir/mymoneystoragenames.cpp.o
+[ 38%] Building CXX object kmymoney/plugins/xml/CMakeFiles/xmlstorage_static.dir/xmlstorage.cpp.o
+[ 38%] Built target kmm_models_autogen
+[ 38%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/kmm_models_autogen/mocs_compilation.cpp.o
+[ 38%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/accountsproxymodel.cpp.o
+[ 38%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/comboboxmodels.cpp.o
+[ 38%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/delegateproxy.cpp.o
+[ 39%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/equitiesmodel.cpp.o
+[ 39%] Linking CXX executable ../../../../../../bin/csvimportercore-test
+/mnt/kmymoney/plugins/xml/xmlstorage.cpp: In member function 'virtual bool XMLStorage::saveAs()':
+/mnt/kmymoney/plugins/xml/xmlstorage.cpp:325:39: error: variable 'QPointer<KGpgKeySelectionDlg> dlg' has initializer but incomplete type
+  325 |         QPointer<KGpgKeySelectionDlg> dlg = new KGpgKeySelectionDlg(nullptr);
+      |                                       ^~~
+/mnt/kmymoney/plugins/xml/xmlstorage.cpp:333:9: error: type '<type error>' argument given to 'delete', expected pointer
+  333 |         delete dlg;
+      |         ^~~~~~~~~~
+/mnt/kmymoney/plugins/xml/xmlstorage.cpp:344:27: error: variable 'QPointer<QFileDialog> dlg' has initializer but incomplete type
+  344 |     QPointer<QFileDialog> dlg =
+      |                           ^~~
+/mnt/kmymoney/plugins/xml/xmlstorage.cpp:414:5: error: type '<type error>' argument given to 'delete', expected pointer
+  414 |     delete dlg;
+      |     ^~~~~~~~~~
+[ 39%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/idfilter.cpp.o
+[ 39%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/institutionsproxymodel.cpp.o
+/mnt/kmymoney/plugins/xml/xmlstorage.cpp: In member function 'virtual bool XMLStorage::saveAs()':
+/mnt/kmymoney/plugins/xml/xmlstorage.cpp:325:39: error: variable 'QPointer<KGpgKeySelectionDlg> dlg' has initializer but incomplete type
+  325 |         QPointer<KGpgKeySelectionDlg> dlg = new KGpgKeySelectionDlg(nullptr);
+      |                                       ^~~
+/mnt/kmymoney/plugins/xml/xmlstorage.cpp:333:9: error: type '<type error>' argument given to 'delete', expected pointer
+  333 |         delete dlg;
+      |         ^~~~~~~~~~
+/mnt/kmymoney/plugins/xml/xmlstorage.cpp:344:27: error: variable 'QPointer<QFileDialog> dlg' has initializer but incomplete type
+  344 |     QPointer<QFileDialog> dlg =
+      |                           ^~~
+/mnt/kmymoney/plugins/xml/xmlstorage.cpp:414:5: error: type '<type error>' argument given to 'delete', expected pointer
+  414 |     delete dlg;
+      |     ^~~~~~~~~~
+[ 39%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/itemrenameproxymodel.cpp.o
+[ 39%] Built target csvimportercore-test
+[ 39%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/ledgerfilter.cpp.o
+[ 39%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/ledgerfilterbase.cpp.o
+[ 39%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/ledgersortorder.cpp.o
+[ 39%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/ledgersortproxymodel.cpp.o
+[ 39%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/onlinebankingaccountsfilterproxymodel.cpp.o
+[ 39%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/onlinebalanceproxymodel.cpp.o
+[ 39%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/payeeidentifiercontainermodel.cpp.o
+[ 39%] Linking CXX static library ../../../../lib/libmymoneystoragexml.a
+[ 39%] Built target mymoneystoragexml
+[ 39%] Built target kmm_testutilities_autogen_timestamp_deps
+[ 39%] Built target kmm_testutilities_autogen
+[ 39%] Building CXX object kmymoney/tests/CMakeFiles/kmm_testutilities.dir/testutilities.cpp.o
+[ 40%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/scheduleproxymodel.cpp.o
+[ 40%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/securitiesfilterproxymodel.cpp.o
+[ 40%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/securityaccountsproxymodel.cpp.o
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/libkmm_models.so.5.1.80'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 40%] Building CXX object kmymoney/models/CMakeFiles/kmm_models.dir/specialledgeritemfilter.cpp.o
+[ 40%] Built target reconciliationreport
+[ 40%] Linking CXX static library ../../lib/libkmm_testutilities.a
+[ 40%] Built target kmm_testutilities
+[ 40%] Built target mymoneyaccount-test_autogen_timestamp_deps
+[ 40%] Built target mymoneyforecast-test_autogen_timestamp_deps
+[ 40%] Built target mymoneyinstitution-test_autogen_timestamp_deps
+[ 40%] Built target mymoneybalancecache-test_autogen_timestamp_deps
+[ 40%] Built target mymoneyfinancialcalculator-test_autogen_timestamp_deps
+[ 40%] Built target mymoneymoney-test_autogen_timestamp_deps
+[ 40%] Built target mymoneyexception-test_autogen_timestamp_deps
+[ 40%] Built target mymoneybudget-test_autogen_timestamp_deps
+[ 40%] Built target mymoneyobject-test_autogen_timestamp_deps
+[ 40%] Built target mymoneypayee-test_autogen_timestamp_deps
+[ 40%] Built target mymoneyreport-test_autogen_timestamp_deps
+[ 40%] Built target mymoneyprice-test_autogen_timestamp_deps
+[ 40%] Built target mymoneyschedule-test_autogen_timestamp_deps
+[ 40%] Built target mymoneykeyvaluecontainer-test_autogen_timestamp_deps
+[ 40%] Built target mymoneyfile-test_autogen_timestamp_deps
+[ 40%] Built target mymoneysecurity-test_autogen_timestamp_deps
+[ 40%] Built target mymoneysplit-test_autogen_timestamp_deps
+[ 40%] Built target mymoneytransactionfilter-test_autogen_timestamp_deps
+[ 40%] Built target mymoneyutils-test_autogen_timestamp_deps
+[ 40%] Built target mymoneystoragenames-test_autogen_timestamp_deps
+[ 40%] Built target onlinejob-test_autogen_timestamp_deps
+[ 40%] Built target onlinejobadministration-test_autogen_timestamp_deps
+[ 40%] Built target mymoneytransaction-test_autogen_timestamp_deps
+[ 40%] Built target onlinejobtyped-test_autogen_timestamp_deps
+[ 40%] Built target mymoneyxmlreader-test_autogen_timestamp_deps
+[ 40%] Built target mymoneyaccount-test_autogen
+[ 40%] Built target mymoneybalancecache-test_autogen
+[ 40%] Built target mymoneybudget-test_autogen
+[ 40%] Built target mymoneyexception-test_autogen
+[ 40%] Built target mymoneyfile-test_autogen
+[ 40%] Built target mymoneyfinancialcalculator-test_autogen
+[ 40%] Built target mymoneymoney-test_autogen
+[ 40%] Built target mymoneyobject-test_autogen
+[ 40%] Built target mymoneykeyvaluecontainer-test_autogen
+[ 40%] Built target mymoneyforecast-test_autogen
+[ 40%] Built target mymoneyinstitution-test_autogen
+[ 40%] Built target mymoneypayee-test_autogen
+[ 41%] Built target mymoneyprice-test_autogen
+[ 41%] Built target mymoneyreport-test_autogen
+[ 41%] Built target mymoneysplit-test_autogen
+[ 41%] Built target mymoneyschedule-test_autogen
+[ 41%] Built target mymoneytransaction-test_autogen
+[ 41%] Built target mymoneysecurity-test_autogen
+[ 41%] Built target mymoneytransactionfilter-test_autogen
+[ 42%] Built target mymoneyutils-test_autogen
+[ 42%] Automatic MOC for target mymoneyxmlreader-test
+[ 42%] Built target onlinejob-test_autogen
+[ 42%] Automatic MOC for target mymoneystoragenames-test
+[ 42%] Built target onlinejobtyped-test_autogen
+[ 43%] Built target onlinejobadministration-test_autogen
+[ 44%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/mymoneybudget-test.dir/mymoneybudget-test.cpp.o
+[ 44%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/mymoneyaccount-test.dir/mymoneyaccount-test.cpp.o
+[ 44%] Linking CXX executable ../../../bin/mymoneybalancecache-test
+[ 44%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/mymoneyfile-test.dir/mymoneyfile-test.cpp.o
+[ 44%] Linking CXX executable ../../../bin/mymoneyfinancialcalculator-test
+[ 44%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/mymoneyforecast-test.dir/mymoneyforecast-test.cpp.o
+[ 44%] Linking CXX executable ../../../bin/mymoneyexception-test
+[ 44%] Linking CXX executable ../../../bin/mymoneyinstitution-test
+[ 45%] Linking CXX executable ../../../bin/mymoneyobject-test
+[ 45%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/mymoneymoney-test.dir/mymoneymoney-test.cpp.o
+[ 45%] Linking CXX executable ../../../bin/mymoneykeyvaluecontainer-test
+[ 45%] Linking CXX executable ../../../bin/mymoneyprice-test
+[ 45%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/mymoneypayee-test.dir/mymoneypayee-test.cpp.o
+[ 45%] Built target mymoneyxmlreader-test_autogen
+[ 45%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/mymoneyreport-test.dir/mymoneyreport-test.cpp.o
+[ 45%] Built target mymoneystoragenames-test_autogen
+[ 45%] Built target mymoneyexception-test
+[ 45%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/mymoneyschedule-test.dir/mymoneyschedule-test.cpp.o
+[ 45%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/mymoneysecurity-test.dir/mymoneysecurity-test.cpp.o
+[ 45%] Built target mymoneyfinancialcalculator-test
+[ 45%] Built target mymoneyprice-test
+[ 45%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/mymoneysplit-test.dir/mymoneysplit-test.cpp.o
+[ 45%] Built target mymoneykeyvaluecontainer-test
+[ 46%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/mymoneytransaction-test.dir/mymoneytransaction-test.cpp.o
+[ 46%] Built target mymoneyobject-test
+[ 46%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/mymoneytransactionfilter-test.dir/mymoneytransactionfilter-test.cpp.o
+[ 46%] Built target mymoneybalancecache-test
+[ 46%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/mymoneyutils-test.dir/mymoneyutils-test.cpp.o
+[ 47%] Built target mymoneyinstitution-test
+[ 47%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/onlinejob-test.dir/onlinejob-test.cpp.o
+[ 47%] Building CXX object kmymoney/mymoney/tests/CMakeFiles/onlinejobadministration-test.dir/onlinejobadministration-test.cpp.o
+[ 47%] Built target kmm_models
+[ 47%] Linking CXX executable ../../../bin/onlinejobtyped-test
+[ 47%] Built target gncimporter_autogen_timestamp_deps
+[ 47%] Building CXX object kmymoney/plugins/xml/tests/CMakeFiles/mymoneystoragenames-test.dir/mymoneystoragenames-test_autogen/mocs_compilation.cpp.o
+[ 47%] Built target onlinejobtyped-test
+[ 47%] Building CXX object kmymoney/plugins/xml/tests/CMakeFiles/mymoneyxmlreader-test.dir/mymoneyxmlreader-test_autogen/mocs_compilation.cpp.o
+[ 47%] Linking CXX static library ../../../lib/libxmlstorage_static.a
+/usr/bin/ar: CMakeFiles/xmlstorage_static.dir/xmlstorage.cpp.o: No such file or directory
+[ 47%] Built target xmlstorage_static
+[ 47%] Built target kmm_base_widgets_autogen_timestamp_deps
+[ 47%] Automatic MOC for target gncimporter
+[ 47%] Built target gncimporter_autogen
+[ 47%] Automatic MOC for target kmm_base_widgets
+[ 47%] Building CXX object kmymoney/plugins/gnc/import/CMakeFiles/gncimporter.dir/gncimporter_autogen/mocs_compilation.cpp.o
+[ 47%] Linking CXX executable ../../../bin/mymoneyreport-test
+[ 47%] Linking CXX executable ../../../bin/mymoneypayee-test
+[ 48%] Building CXX object kmymoney/plugins/xml/tests/CMakeFiles/mymoneystoragenames-test.dir/mymoneystoragenames-test.cpp.o
+[ 48%] Building CXX object kmymoney/plugins/xml/tests/CMakeFiles/mymoneyxmlreader-test.dir/mymoneyxmlreader-test.cpp.o
+[ 48%] Built target mymoneyreport-test
+[ 48%] Building CXX object kmymoney/plugins/gnc/import/CMakeFiles/gncimporter.dir/gncimporter.cpp.o
+[ 48%] Linking CXX executable ../../../bin/mymoneybudget-test
+[ 48%] Linking CXX executable ../../../bin/onlinejob-test
+[ 48%] Built target xmlstorage
+[ 48%] Linking CXX executable ../../../bin/mymoneyutils-test
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/kmymoney_plugins/gncimporter.so'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 48%] Building CXX object kmymoney/plugins/gnc/import/CMakeFiles/gncimporter.dir/mymoneygncreader.cpp.o
+[ 48%] Built target mymoneypayee-test
+[ 48%] Built target mymoneybudget-test
+[ 48%] Linking CXX executable ../../../bin/mymoneysecurity-test
+[ 48%] Linking CXX executable ../../../bin/onlinejobadministration-test
+[ 48%] Built target mymoneyutils-test
+[ 48%] Built target onlinejob-test
+[ 48%] Built target onlinejobadministration-test
+[ 48%] Linking CXX executable ../../../bin/mymoneysplit-test
+[ 48%] Linking CXX executable ../../../bin/mymoneyaccount-test
+[ 49%] Built target mymoneysecurity-test
+[ 49%] Built target kmm_base_widgets_autogen
+[ 49%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/kmm_base_widgets_autogen/mocs_compilation.cpp.o
+[ 49%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/amountedit.cpp.o
+[ 49%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/amountvalidator.cpp.o
+[ 49%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/columnselector.cpp.o
+[ 50%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/kaccounttemplateselector.cpp.o
+[ 50%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/kmymoneyaccountcompletion.cpp.o
+[ 50%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/kmymoneyaccountcombo.cpp.o
+[ 50%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/kmymoneyaccountselector.cpp.o
+[ 51%] Built target mymoneyaccount-test
+[ 51%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/kmymoneyaccounttreeview.cpp.o
+[ 51%] Built target mymoneysplit-test
+[ 51%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/kmymoneyactivitycombo.cpp.o
+[ 51%] Linking CXX executable ../../../bin/mymoneymoney-test
+[ 51%] Linking CXX executable ../../../bin/mymoneyforecast-test
+[ 51%] Linking CXX executable ../../../bin/mymoneytransactionfilter-test
+[ 51%] Linking CXX executable ../../../bin/mymoneyschedule-test
+[ 51%] Linking CXX executable ../../../bin/mymoneytransaction-test
+[ 51%] Built target mymoneyforecast-test
+[ 51%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/kmymoneyfrequencycombo.cpp.o
+[ 51%] Built target mymoneymoney-test
+[ 51%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/kmymoneyoccurrencecombo.cpp.o
+[ 51%] Built target mymoneyschedule-test
+[ 51%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/kmymoneyoccurrenceperiodcombo.cpp.o
+/mnt/kmymoney/plugins/gnc/import/mymoneygncreader.cpp: In member function 'bool XmlReader::characters(const QString&)':
+/mnt/kmymoney/plugins/gnc/import/mymoneygncreader.cpp:1264:55: warning: format '%d' expects argument of type 'int', but argument 3 has type 'qsizetype' {aka 'long long int'} [-Wformat=]
+ 1264 |     if (pMain->xmldebug) qDebug("XML Data received - %d bytes", data.length());
+      |                                                      ~^         ~~~~~~~~~~~~~
+      |                                                       |                    |
+      |                                                       int                  qsizetype {aka long long int}
+      |                                                      %lld
+[ 51%] Built target mymoneytransaction-test
+[ 51%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/kmymoneypayeecombo.cpp.o
+[ 51%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/kmymoneyperiodcombo.cpp.o
+[ 51%] Built target mymoneytransactionfilter-test
+[ 52%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/kmymoneyreconcilecombo.cpp.o
+[ 52%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/ktagcontainer.cpp.o
+/mnt/kmymoney/widgets/amountedit.cpp: In member function 'virtual void AmountEdit::keyPressEvent(QKeyEvent*)':
+/mnt/kmymoney/widgets/amountedit.cpp:552:18: error: 'QKeyEvent& QKeyEvent::operator=(const QKeyEvent&)' is protected within this context
+  552 |         *event = newEvent;
+      |                  ^~~~~~~~
+In file included from /usr/include/qt6/QtGui/qevent.h:13,
+                 from /usr/include/qt6/QtGui/QKeyEvent:1,
+                 from /mnt/kmymoney/widgets/amountedit.cpp:14:
+/usr/include/qt6/QtGui/qevent.h:425:5: note: declared protected here
+  425 |     Q_DECL_EVENT_COMMON(QKeyEvent)
+      |     ^~~~~~~~~~~~~~~~~~~
+[ 52%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/payeeidentifier/nationalaccount/nationalaccountdelegate.cpp.o
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/libkmm_base_widgets.so.5.1.80'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 52%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_base_widgets.dir/payeeidentifier/ibanbic/ibanbicitemdelegate.cpp.o
+[ 53%] Linking CXX executable ../../../bin/mymoneyfile-test
+[ 53%] Built target mymoneyfile-test
+[ 53%] Linking CXX executable ../../../../bin/mymoneyxmlreader-test
+[ 53%] Built target mymoneyxmlreader-test
+[ 57%] Built target kmm_base_widgets
+[ 57%] Built target kmm_wizard_autogen_timestamp_deps
+[ 57%] Built target csvimporter_autogen_timestamp_deps
+[ 57%] Built target endingbalancedlg_autogen_timestamp_deps
+[ 57%] Built target csvexporter_autogen_timestamp_deps
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/konlinetasks_sepa.so'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 58%] Building CXX object kmymoney/plugins/onlinetasks/sepa/CMakeFiles/konlinetasks_sepa.dir/konlinetasks_sepa_autogen/mocs_compilation.cpp.o
+[ 58%] Automatic MOC for target endingbalancedlg
+[ 58%] Building CXX object kmymoney/plugins/onlinetasks/sepa/CMakeFiles/konlinetasks_sepa.dir/ui/sepacredittransferedit.cpp.o
+[ 58%] Automatic MOC for target kmm_wizard
+[ 58%] Building CXX object kmymoney/plugins/onlinetasks/sepa/CMakeFiles/konlinetasks_sepa.dir/sepaonlinetasksloader.cpp.o
+[ 58%] Automatic MOC for target csvimporter
+[ 58%] Automatic MOC for target csvexporter
+[ 58%] Built target csvexporter_autogen
+[ 58%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/kmm_base_dialogs_autogen/mocs_compilation.cpp.o
+[ 58%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/accountcreator.cpp.o
+[ 58%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/amounteditcurrencyhelper.cpp.o
+[ 58%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/kaccountselectdlg.cpp.o
+[ 59%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/kcategoryreassigndlg.cpp.o
+[ 59%] Building CXX object kmymoney/plugins/csv/export/CMakeFiles/csvexporter.dir/csvexporter.cpp.o
+[ 59%] Building CXX object kmymoney/plugins/csv/export/CMakeFiles/csvexporter.dir/csvwriter.cpp.o
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/kmymoney_plugins/csvexporter.so'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 59%] Building CXX object kmymoney/plugins/csv/export/CMakeFiles/csvexporter.dir/csvexportdlg.cpp.o
+[ 59%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/kconfirmmanualenterdlg.cpp.o
+[ 59%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/kcurrencyeditdlg.cpp.o
+[ 59%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/kcurrencycalculator.cpp.o
+[ 59%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/kmymoneyfileinfodlg.cpp.o
+[ 59%] Built target csvimporter_autogen
+[ 59%] Generating ui_csvwizard.h
+Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+[ 59%] Built target kmm_wizard_autogen
+[ 59%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/knewaccountdlg.cpp.o
+[ 59%] Built target endingbalancedlg_autogen
+[ 59%] Building CXX object kmymoney/plugins/csv/import/CMakeFiles/csvimporter.dir/csvimporter_autogen/mocs_compilation.cpp.o
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/libkmm_wizard.so.5.1.80'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 60%] Building CXX object kmymoney/wizards/CMakeFiles/kmm_wizard.dir/kmm_wizard_autogen/mocs_compilation.cpp.o
+/mnt/kmymoney/plugins/csv/export/csvexporter.cpp: In member function 'bool CSVExporter::okToWriteFile(const QUrl&)':
+/mnt/kmymoney/plugins/csv/export/csvexporter.cpp:90:29: error: 'statDetails' is not a member of 'KIO'; did you mean 'StatDetails'?
+   90 |         auto statjob = KIO::statDetails(url, KIO::StatJob::SourceSide, KIO::StatNoDetails);
+      |                             ^~~~~~~~~~~
+      |                             StatDetails
+[ 60%] Built target kmm_wizard
+[ 60%] Building CXX object kmymoney/wizards/endingbalancedlg/CMakeFiles/endingbalancedlg.dir/endingbalancedlg_autogen/mocs_compilation.cpp.o
+[ 61%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/kpayeereassigndlg.cpp.o
+[ 61%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/ktagreassigndlg.cpp.o
+[ 61%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/payeecreator.cpp.o
+[ 61%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/tagcreator.cpp.o
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/libkmm_base_dialogs.so.5.1.80'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 61%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_base_dialogs.dir/transactionmatcher.cpp.o
+[ 62%] Built target gncimporter
+[ 62%] Building CXX object kmymoney/plugins/csv/import/CMakeFiles/csvimporter.dir/csvimporter.cpp.o
+[ 62%] Built target newaccountwizard_autogen_timestamp_deps
+[ 62%] Automatic MOC for target newaccountwizard
+[ 62%] Building CXX object kmymoney/plugins/csv/import/CMakeFiles/csvimporter.dir/csvwizard.cpp.o
+[ 62%] Building CXX object kmymoney/plugins/csv/import/CMakeFiles/csvimporter.dir/bankingwizardpage.cpp.o
+[ 63%] Building CXX object kmymoney/plugins/csv/import/CMakeFiles/csvimporter.dir/investmentwizardpage.cpp.o
+[ 63%] Building CXX object kmymoney/plugins/csv/import/CMakeFiles/csvimporter.dir/priceswizardpage.cpp.o
+[ 63%] Built target newaccountwizard_autogen
+[ 63%] Building CXX object kmymoney/wizards/newaccountwizard/CMakeFiles/newaccountwizard.dir/newaccountwizard_autogen/mocs_compilation.cpp.o
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/kmymoney_plugins/csvimporter.so'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 63%] Building CXX object kmymoney/plugins/csv/import/CMakeFiles/csvimporter.dir/transactiondlg.cpp.o
+[ 63%] Building CXX object kmymoney/wizards/newaccountwizard/CMakeFiles/newaccountwizard.dir/knewaccountwizard.cpp.o
+[ 63%] Building CXX object kmymoney/wizards/newaccountwizard/CMakeFiles/newaccountwizard.dir/kaccountsummarypage.cpp.o
+[ 63%] Building CXX object kmymoney/wizards/endingbalancedlg/CMakeFiles/endingbalancedlg.dir/kendingbalancedlg.cpp.o
+[ 64%] Built target konlinetasks_sepa
+[ 64%] Building CXX object kmymoney/wizards/newaccountwizard/CMakeFiles/newaccountwizard.dir/kaccounttypepage.cpp.o
+[ 65%] Building CXX object kmymoney/wizards/newaccountwizard/CMakeFiles/newaccountwizard.dir/kcreditcardschedulepage.cpp.o
+[ 65%] Building CXX object kmymoney/wizards/newaccountwizard/CMakeFiles/newaccountwizard.dir/kgeneralloaninfopage.cpp.o
+[ 65%] Built target csvexporter
+[ 65%] Building CXX object kmymoney/wizards/newaccountwizard/CMakeFiles/newaccountwizard.dir/khierarchypage.cpp.o
+[ 65%] Building CXX object kmymoney/wizards/newaccountwizard/CMakeFiles/newaccountwizard.dir/kloandetailspage.cpp.o
+[ 65%] Building CXX object kmymoney/wizards/newaccountwizard/CMakeFiles/newaccountwizard.dir/kloanpaymentpage.cpp.o
+[ 65%] Building CXX object kmymoney/wizards/newaccountwizard/CMakeFiles/newaccountwizard.dir/kloanpayoutpage.cpp.o
+[ 65%] Building CXX object kmymoney/wizards/newaccountwizard/CMakeFiles/newaccountwizard.dir/kloanschedulepage.cpp.o
+[ 67%] Built target kmm_base_dialogs
+[ 67%] Linking CXX static library ../../../lib/libendingbalancedlg.a
+[ 68%] Built target endingbalancedlg
+[ 68%] Linking CXX static library ../../../lib/libnewaccountwizard.a
+[ 69%] Built target newaccountwizard
+[ 69%] Built target converter_autogen_timestamp_deps
+[ 69%] Built target newloanwizard_autogen_timestamp_deps
+[ 69%] Automatic MOC for target converter
+[ 69%] Automatic MOC for target newloanwizard
+[ 69%] Built target newloanwizard_autogen
+[ 69%] Building CXX object kmymoney/wizards/newloanwizard/CMakeFiles/newloanwizard.dir/durationwizardpage.cpp.o
+[ 69%] Building CXX object kmymoney/wizards/newloanwizard/CMakeFiles/newloanwizard.dir/additionalfeeswizardpage.cpp.o
+[ 69%] Building CXX object kmymoney/wizards/newloanwizard/CMakeFiles/newloanwizard.dir/effectivedatewizardpage.cpp.o
+[ 69%] Building CXX object kmymoney/wizards/newloanwizard/CMakeFiles/newloanwizard.dir/paymentfrequencywizardpage.cpp.o
+[ 69%] Building CXX object kmymoney/wizards/newloanwizard/CMakeFiles/newloanwizard.dir/interestcategorywizardpage.cpp.o
+[ 69%] Building CXX object kmymoney/wizards/newloanwizard/CMakeFiles/newloanwizard.dir/keditloanwizard.cpp.o
+[ 69%] Building CXX object kmymoney/wizards/newloanwizard/CMakeFiles/newloanwizard.dir/summaryeditwizardpage.cpp.o
+[ 69%] Building CXX object kmymoney/wizards/newloanwizard/CMakeFiles/newloanwizard.dir/summarywizardpage.cpp.o
+[ 69%] Building CXX object kmymoney/wizards/newloanwizard/CMakeFiles/newloanwizard.dir/knewloanwizard.cpp.o
+[ 69%] Built target converter_autogen
+[ 70%] Building CXX object kmymoney/converter/CMakeFiles/converter.dir/converter_autogen/mocs_compilation.cpp.o
+[ 70%] Building CXX object kmymoney/converter/CMakeFiles/converter.dir/mymoneystatementreader.cpp.o
+[ 70%] Building CXX object kmymoney/converter/CMakeFiles/converter.dir/transactionmatchfinder.cpp.o
+[ 71%] Built target csvimporter
+[ 71%] Linking CXX executable ../../../../bin/mymoneystoragenames-test
+[ 71%] Built target mymoneystoragenames-test
+[ 71%] Linking CXX static library ../../../lib/libnewloanwizard.a
+[ 77%] Built target newloanwizard
+[ 77%] Linking CXX static library ../../lib/libconverter.a
+[ 77%] Built target converter
+[ 77%] Built target kmm_widgets_autogen_timestamp_deps
+[ 77%] Built target matchfinder-test_autogen_timestamp_deps
+[ 77%] Automatic MOC for target matchfinder-test
+[ 77%] Automatic MOC for target kmm_widgets
+[ 77%] Built target matchfinder-test_autogen
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'bin/matchfinder-test'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 77%] Building CXX object kmymoney/converter/tests/CMakeFiles/matchfinder-test.dir/matchfinder-test.cpp.o
+[ 77%] Building CXX object kmymoney/converter/tests/CMakeFiles/matchfinder-test.dir/matchfinder-test_autogen/mocs_compilation.cpp.o
+[ 77%] Built target kmm_widgets_autogen
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/libkmm_widgets.so.5.1.80'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 77%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_widgets.dir/budgetviewproxymodel.cpp.o
+[ 77%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_widgets.dir/kmymoneybriefschedule.cpp.o
+[ 78%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_widgets.dir/kmm_widgets_autogen/mocs_compilation.cpp.o
+[ 78%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_widgets.dir/daterangedlg.cpp.o
+[ 78%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_widgets.dir/kmymoneyviewbase.cpp.o
+[ 78%] Building CXX object kmymoney/widgets/CMakeFiles/kmm_widgets.dir/ktransactionfilter.cpp.o
+[ 78%] Built target matchfinder-test
+[ 78%] Built target kmm_widgets
+[ 78%] Built target ofximporter_dialogs_autogen_timestamp_deps
+[ 78%] Built target wizardpages_autogen_timestamp_deps
+[ 78%] Built target qifexporter_autogen_timestamp_deps
+[ 78%] Built target kmm_templates_autogen_timestamp_deps
+[ 78%] Built target onlinejoboutboxview_autogen_timestamp_deps
+[ 78%] Built target budgetview_autogen_timestamp_deps
+[ 78%] Built target forecastview_autogen_timestamp_deps
+[ 78%] Built target settings_autogen_timestamp_deps
+[ 78%] Built target woob_autogen_timestamp_deps
+[ 78%] Built target sqlstorage_autogen_timestamp_deps
+[ 78%] Built target sqlstoragestatic_autogen_timestamp_deps
+[ 78%] Built target views_autogen_timestamp_deps
+[ 78%] Built target kmm_extended_dialogs_autogen_timestamp_deps
+[ 78%] Automatic MOC for target sqlstoragestatic
+[ 78%] Automatic MOC for target wizardpages
+[ 78%] Automatic MOC for target ofximporter_dialogs
+[ 78%] Automatic MOC for target kmm_templates
+[ 79%] Automatic MOC for target qifexporter
+[ 79%] Automatic MOC for target onlinejoboutboxview
+[ 79%] Automatic MOC for target budgetview
+[ 79%] Automatic MOC for target sqlstorage
+[ 79%] Automatic MOC for target woob
+[ 79%] Automatic MOC for target forecastview
+[ 79%] Automatic MOC for target kmm_extended_dialogs
+[ 79%] Automatic MOC for target views
+[ 79%] Automatic MOC for target settings
+[ 79%] Built target sqlstoragestatic_autogen
+[ 79%] Built target ofximporter_dialogs_autogen
+[ 79%] Built target qifexporter_autogen
+[ 79%] Built target wizardpages_autogen
+[ 79%] Built target onlinejoboutboxview_autogen
+[ 79%] Built target kmm_templates_autogen
+[ 79%] Built target sqlstorage_autogen
+[ 79%] Generating qrc_templates.cpp
+[ 79%] Building CXX object kmymoney/plugins/sql/tests/CMakeFiles/sqlstoragestatic.dir/__/mymoneystoragesql.cpp.o
+Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+[ 79%] Built target forecastview_autogen
+[ 79%] Building CXX object kmymoney/plugins/sql/tests/CMakeFiles/sqlstoragestatic.dir/__/mymoneydbdef.cpp.o
+[ 79%] Building CXX object kmymoney/plugins/ofx/import/dialogs/CMakeFiles/ofximporter_dialogs.dir/kofxdirectconnectdlg.cpp.o
+[ 79%] Building CXX object kmymoney/plugins/ofx/import/dialogs/CMakeFiles/ofximporter_dialogs.dir/konlinebankingstatus.cpp.o
+[ 79%] Building CXX object kmymoney/plugins/ofx/import/dialogs/CMakeFiles/ofximporter_dialogs.dir/mymoneyofxconnector.cpp.o
+[ 79%] Building CXX object kmymoney/plugins/sql/CMakeFiles/sqlstorage.dir/sqlstorage.cpp.o
+[ 79%] Building CXX object kmymoney/plugins/views/onlinejoboutbox/CMakeFiles/onlinejoboutboxview.dir/konlinejoboutboxview.cpp.o
+[ 79%] Building CXX object kmymoney/plugins/qif/export/CMakeFiles/qifexporter.dir/qifexporter_autogen/mocs_compilation.cpp.o
+[ 79%] Building CXX object kmymoney/plugins/views/onlinejoboutbox/CMakeFiles/onlinejoboutboxview.dir/konlinetransferform.cpp.o
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/kmymoney_plugins/onlinejoboutboxview.so'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 79%] Building CXX object kmymoney/wizards/wizardpages/CMakeFiles/wizardpages.dir/accounts.cpp.o
+[ 79%] Building CXX object kmymoney/plugins/sql/CMakeFiles/sqlstorage.dir/mymoneystoragesql.cpp.o
+[ 79%] Building CXX object kmymoney/plugins/qif/export/CMakeFiles/qifexporter.dir/qifexporter.cpp.o
+[ 79%] Building CXX object kmymoney/plugins/views/onlinejoboutbox/CMakeFiles/onlinejoboutboxview.dir/onlinejobmessagesmodel.cpp.o
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/kmymoney_plugins/forecastview.so'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 79%] Building CXX object kmymoney/plugins/views/forecast/CMakeFiles/forecastview.dir/kforecastview.cpp.o
+[ 79%] Built target woob_autogen
+make[2]: *** No rule to make target 'lib/libwoob_dialogs.a', needed by 'lib/kmymoney_plugins/woob.so'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 79%] Building CXX object kmymoney/plugins/woob/CMakeFiles/woob.dir/woob.cpp.o
+[ 79%] Built target settings_autogen
+[ 79%] Building CXX object kmymoney/dialogs/settings/CMakeFiles/settings.dir/settings_autogen/mocs_compilation.cpp.o
+[ 79%] Built target budgetview_autogen
+[ 79%] Building CXX object kmymoney/dialogs/settings/CMakeFiles/settings.dir/ksettingsgeneral.cpp.o
+[ 79%] Built target kmm_extended_dialogs_autogen
+[ 79%] Building CXX object kmymoney/plugins/views/budget/CMakeFiles/budgetview.dir/budgetview_autogen/mocs_compilation.cpp.o
+[ 79%] Building CXX object kmymoney/templates/CMakeFiles/kmm_templates.dir/templateloader.cpp.o
+In file included from /mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h:13,
+                 from /mnt/kmymoney/plugins/sql/mymoneystoragesql.cpp:16:
+/mnt/kmymoney/plugins/sql/mymoneystoragesql.h:47:38: error: conflicting declaration of template 'template<class T1, class T2> struct QPair'
+   47 | template <class T1, class T2> struct QPair;
+      |                                      ^~~~~
+In file included from /usr/include/qt6/QtCore/qtypeinfo.h:9,
+                 from /usr/include/qt6/QtCore/qglobal.h:47,
+                 from /usr/include/qt6/QtCore/qshareddata.h:7,
+                 from /usr/include/qt6/QtCore/QSharedData:1,
+                 from /mnt/kmymoney/plugins/sql/mymoneystoragesql.h:12:
+/usr/include/qt6/QtCore/qcontainerfwd.h:28:7: note: previous declaration 'template<class T1, class T2> using QPair = std::pair<_T1, _T2>'
+   28 | using QPair = std::pair<T1, T2>;
+      |       ^~~~~
+[ 79%] Built target views_autogen
+[ 79%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_extended_dialogs.dir/kequitypriceupdatedlg.cpp.o
+In file included from /mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h:13,
+                 from /mnt/kmymoney/plugins/sql/mymoneystoragesql.cpp:16:
+/mnt/kmymoney/plugins/sql/mymoneystoragesql.h:47:38: error: conflicting declaration of template 'template<class T1, class T2> struct QPair'
+   47 | template <class T1, class T2> struct QPair;
+      |                                      ^~~~~
+In file included from /usr/include/qt6/QtCore/qtypeinfo.h:9,
+                 from /usr/include/qt6/QtCore/qglobal.h:47,
+                 from /usr/include/qt6/QtCore/qshareddata.h:7,
+                 from /usr/include/qt6/QtCore/QSharedData:1,
+                 from /mnt/kmymoney/plugins/sql/mymoneystoragesql.h:12:
+/usr/include/qt6/QtCore/qcontainerfwd.h:28:7: note: previous declaration 'template<class T1, class T2> using QPair = std::pair<_T1, _T2>'
+   28 | using QPair = std::pair<T1, T2>;
+      |       ^~~~~
+/mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h: In destructor 'MyMoneyDbTransaction::~MyMoneyDbTransaction()':
+/mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h:125:36: warning: 'bool std::uncaught_exception()' is deprecated: use 'std::uncaught_exceptions()' instead [-Wdeprecated-declarations]
+  125 |         if (std::uncaught_exception()) {
+      |             ~~~~~~~~~~~~~~~~~~~~~~~^~
+In file included from /usr/include/c++/14/optional:42,
+                 from /usr/include/qt6/QtCore/qttypetraits.h:10,
+                 from /usr/include/qt6/QtCore/qforeach.h:11,
+                 from /usr/include/qt6/QtCore/qglobal.h:57:
+/usr/include/c++/14/exception:125:8: note: declared here
+  125 |   bool uncaught_exception() _GLIBCXX_USE_NOEXCEPT __attribute__ ((__pure__));
+      |        ^~~~~~~~~~~~~~~~~~
+[ 79%] Building CXX object kmymoney/wizards/wizardpages/CMakeFiles/wizardpages.dir/userinfo.cpp.o
+/mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h: In lambda function:
+/mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h:2965:80: warning: 'QVariant::QVariant(Type)' is deprecated: Use the constructor taking a QMetaType instead. [-Wdeprecated-declarations]
+ 2965 |             query.bindValue(":bic", (bic.isEmpty()) ? QVariant(QVariant::String) : bic);
+      |                                                                                ^
+In file included from /usr/include/qt6/QtCore/qmetaobject.h:10,
+                 from /usr/include/qt6/QtSql/qsqldatabase.h:8,
+                 from /usr/include/qt6/QtSql/QSqlDatabase:1,
+                 from /mnt/kmymoney/plugins/sql/mymoneystoragesql.h:14:
+/usr/include/qt6/QtCore/qvariant.h:429:14: note: declared here
+  429 |     explicit QVariant(Type type)
+      |              ^~~~~~~~
+/mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h: In lambda function:
+/mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h:3009:109: warning: 'QVariant::QVariant(Type)' is deprecated: Use the constructor taking a QMetaType instead. [-Wdeprecated-declarations]
+ 3009 |             query.bindValue(":bankCode", (payeeIdentifier->bankCode().isEmpty()) ? QVariant(QVariant::String) : payeeIdentifier->bankCode());
+      |                                                                                                             ^
+/usr/include/qt6/QtCore/qvariant.h:429:14: note: declared here
+  429 |     explicit QVariant(Type type)
+      |              ^~~~~~~~
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/libkmm_extended_dialogs.so.5.1.80'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 79%] Building CXX object kmymoney/dialogs/CMakeFiles/kmm_extended_dialogs.dir/kmymoneypricedlg.cpp.o
+In file included from /mnt/kmymoney/plugins/sql/sqlstorage.cpp:38:
+/mnt/kmymoney/plugins/sql/mymoneystoragesql.h:47:38: error: conflicting declaration of template 'template<class T1, class T2> struct QPair'
+   47 | template <class T1, class T2> struct QPair;
+      |                                      ^~~~~
+In file included from /usr/include/qt6/QtCore/qtypeinfo.h:9,
+                 from /usr/include/qt6/QtCore/qglobal.h:47,
+                 from /usr/include/qt6/QtCore/qcompare.h:12,
+                 from /usr/include/qt6/QtCore/qurlquery.h:8,
+                 from /usr/include/qt6/QtCore/QUrlQuery:1,
+                 from /mnt/kmymoney/plugins/sql/sqlstorage.cpp:15:
+/usr/include/qt6/QtCore/qcontainerfwd.h:28:7: note: previous declaration 'template<class T1, class T2> using QPair = std::pair<_T1, _T2>'
+   28 | using QPair = std::pair<T1, T2>;
+      |       ^~~~~
+/mnt/kmymoney/plugins/ofx/import/dialogs/konlinebankingstatus.cpp: In constructor 'KOnlineBankingStatus::KOnlineBankingStatus(const MyMoneyAccount&, QWidget*)':
+/mnt/kmymoney/plugins/ofx/import/dialogs/konlinebankingstatus.cpp:66:59: error: 'defaultUserAgent' is not a member of 'KProtocolManager'
+   66 |     m_userAgentEdit->setPlaceholderText(KProtocolManager::defaultUserAgent());
+      |                                                           ^~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp: In member function 'virtual bool SQLStorage::open(const QUrl&)':
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:105:38: error: variable 'QPointer<KSelectDatabaseDlg> dialog' has initializer but incomplete type
+  105 |         QPointer<KSelectDatabaseDlg> dialog = new KSelectDatabaseDlg(QIODevice::ReadWrite, dbUrl);
+      |                                      ^~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:107:13: error: type '<type error>' argument given to 'delete', expected pointer
+  107 |             delete dialog;
+      |             ^~~~~~~~~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:117:17: error: type '<type error>' argument given to 'delete', expected pointer
+  117 |                 delete dialog;
+      |                 ^~~~~~~~~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:121:9: error: type '<type error>' argument given to 'delete', expected pointer
+  121 |         delete dialog;
+      |         ^~~~~~~~~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp: In member function 'virtual bool SQLStorage::saveAs()':
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:216:34: error: variable 'QPointer<KSelectDatabaseDlg> dialog' has initializer but incomplete type
+  216 |     QPointer<KSelectDatabaseDlg> dialog = new KSelectDatabaseDlg(QIODevice::WriteOnly);
+      |                                  ^~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:219:9: error: type '<type error>' argument given to 'delete', expected pointer
+  219 |         delete dialog;
+      |         ^~~~~~~~~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:240:5: error: type '<type error>' argument given to 'delete', expected pointer
+  240 |     delete dialog;
+      |     ^~~~~~~~~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp: In member function 'void SQLStorage::slotOpenDatabase()':
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:276:34: error: variable 'QPointer<KSelectDatabaseDlg> dialog' has initializer but incomplete type
+  276 |     QPointer<KSelectDatabaseDlg> dialog = new KSelectDatabaseDlg(QIODevice::ReadWrite);
+      |                                  ^~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:278:9: error: type '<type error>' argument given to 'delete', expected pointer
+  278 |         delete dialog;
+      |         ^~~~~~~~~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:292:17: error: type '<type error>' argument given to 'delete', expected pointer
+  292 |                 delete dialog;
+      |                 ^~~~~~~~~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:301:21: error: type '<type error>' argument given to 'delete', expected pointer
+  301 |                     delete dialog;
+      |                     ^~~~~~~~~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:308:5: error: type '<type error>' argument given to 'delete', expected pointer
+  308 |     delete dialog;
+      |     ^~~~~~~~~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp: In member function 'void SQLStorage::slotGenerateSql()':
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:313:31: error: variable 'QPointer<KGenerateSqlDlg> editor' has initializer but incomplete type
+  313 |     QPointer<KGenerateSqlDlg> editor = new KGenerateSqlDlg(nullptr);
+      |                               ^~~~~~
+/mnt/kmymoney/plugins/sql/sqlstorage.cpp:316:5: error: type '<type error>' argument given to 'delete', expected pointer
+  316 |     delete editor;
+      |     ^~~~~~~~~~~~~
+[ 80%] Generating ui_kpayeesview.h
+Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+[ 80%] Generating ui_newtransactioneditor.h
+Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+[ 81%] Generating ui_newtransactionform.h
+Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+/mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h: In destructor 'MyMoneyDbTransaction::~MyMoneyDbTransaction()':
+/mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h:125:36: warning: 'bool std::uncaught_exception()' is deprecated: use 'std::uncaught_exceptions()' instead [-Wdeprecated-declarations]
+  125 |         if (std::uncaught_exception()) {
+      |             ~~~~~~~~~~~~~~~~~~~~~~~^~
+In file included from /usr/include/c++/14/optional:42,
+                 from /usr/include/qt6/QtCore/qttypetraits.h:10,
+                 from /usr/include/qt6/QtCore/qforeach.h:11,
+                 from /usr/include/qt6/QtCore/qglobal.h:57:
+/usr/include/c++/14/exception:125:8: note: declared here
+  125 |   bool uncaught_exception() _GLIBCXX_USE_NOEXCEPT __attribute__ ((__pure__));
+      |        ^~~~~~~~~~~~~~~~~~
+[ 81%] Building CXX object kmymoney/plugins/sql/CMakeFiles/sqlstorage.dir/mymoneydbdef.cpp.o
+[ 81%] Building CXX object kmymoney/views/CMakeFiles/views.dir/views_autogen/mocs_compilation.cpp.o
+[ 81%] Building CXX object kmymoney/templates/CMakeFiles/kmm_templates.dir/templatewriter.cpp.o
+/mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h: In lambda function:
+/mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h:2965:80: warning: 'QVariant::QVariant(Type)' is deprecated: Use the constructor taking a QMetaType instead. [-Wdeprecated-declarations]
+ 2965 |             query.bindValue(":bic", (bic.isEmpty()) ? QVariant(QVariant::String) : bic);
+      |                                                                                ^
+In file included from /usr/include/qt6/QtCore/qmetaobject.h:10,
+                 from /usr/include/qt6/QtSql/qsqldatabase.h:8,
+                 from /usr/include/qt6/QtSql/QSqlDatabase:1,
+                 from /mnt/kmymoney/plugins/sql/mymoneystoragesql.h:14:
+/usr/include/qt6/QtCore/qvariant.h:429:14: note: declared here
+  429 |     explicit QVariant(Type type)
+      |              ^~~~~~~~
+/mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h: In lambda function:
+/mnt/kmymoney/plugins/sql/mymoneystoragesql_p.h:3009:109: warning: 'QVariant::QVariant(Type)' is deprecated: Use the constructor taking a QMetaType instead. [-Wdeprecated-declarations]
+ 3009 |             query.bindValue(":bankCode", (payeeIdentifier->bankCode().isEmpty()) ? QVariant(QVariant::String) : payeeIdentifier->bankCode());
+      |                                                                                                             ^
+/usr/include/qt6/QtCore/qvariant.h:429:14: note: declared here
+  429 |     explicit QVariant(Type type)
+      |              ^~~~~~~~
+[ 81%] Building CXX object kmymoney/views/CMakeFiles/views.dir/kaccountsview.cpp.o
+/mnt/kmymoney/plugins/woob/woob.cpp: In member function 'virtual bool Woob::mapAccount(const MyMoneyAccount&, MyMoneyKeyValueContainer&)':
+/mnt/kmymoney/plugins/woob/woob.cpp:147:36: error: variable 'QPointer<MapAccountWizard> w' has initializer but incomplete type
+  147 |         QPointer<MapAccountWizard> w = new MapAccountWizard(nullptr, &d->woob);
+      |                                    ^
+/mnt/kmymoney/plugins/woob/woob.cpp:154:9: error: type '<type error>' argument given to 'delete', expected pointer
+  154 |         delete w;
+      |         ^~~~~~~~
+In file included from /usr/include/qt6/QtCore/qfuture.h:13,
+                 from /usr/include/qt6/QtCore/qfuturewatcher.h:7,
+                 from /usr/include/qt6/QtCore/QFutureWatcher:1,
+                 from /mnt/kmymoney/plugins/woob/woob.cpp:19:
+/usr/include/qt6/QtCore/qfuture_impl.h: In instantiation of 'struct QtPrivate::ArgResolver<WoobInterface*>':
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:189:64:   required from 'struct QtConcurrent::PromiseTaskResolver<WoobInterface*, WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString, QString, QString>'
+  189 |     static_assert(QtPrivate::ArgResolver<Function>::IsPromise::value,
+      |                                                                ^~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:211:8:   required from 'struct QtConcurrent::TaskResolverHelper<std::integral_constant<bool, false>, WoobInterface*, WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString, QString, QString>'
+  211 | struct TaskResolverHelper<std::false_type, Function, Args...>
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:217:8:   required from 'struct QtConcurrent::TaskResolver<WoobInterface*, WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString, QString, QString>'
+  217 | struct TaskResolver : public TaskResolverHelper<typename std::is_invocable<std::decay_t<Function>,
+      |        ^~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:47:76:   required from 'auto QtConcurrent::run(QThreadPool*, Function&&, Args&& ...) [with Function = WoobInterface*; Args = {WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString&, QString&, QString&}]'
+   47 |     return TaskResolver<std::decay_t<Function>, std::decay_t<Args>...>::run(
+      |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+   48 |                 std::move(tuple), TaskStartParameters { pool });
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~             
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:64:15:   required from 'auto QtConcurrent::run(Function&&, Args&& ...) [with Function = WoobInterface*; Args = {WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString&, QString&, QString&}]'
+   64 |     return run(QThreadPool::globalInstance(), std::forward<Function>(f),
+      |            ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   65 |                std::forward<Args>(args)...);
+      |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/woob/woob.cpp:179:67:   required from here
+  179 |         QFuture<WoobInterface::Account> future = QtConcurrent::run(&d->woob, &WoobInterface::getAccount, bname, id, max);
+      |                                                  ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qfuture_impl.h:179:43: error: 'operator()' is not a member of 'std::decay<WoobInterface*>::type' {aka 'WoobInterface*'}
+  179 | struct ArgResolver : ArgResolver<decltype(&std::decay_t<F>::operator())>
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/qt6/QtConcurrent/qtconcurrentrun.h:16,
+                 from /usr/include/qt6/QtConcurrent/QtConcurrentRun:1,
+                 from /mnt/kmymoney/plugins/woob/woob.cpp:21:
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h: In instantiation of 'struct QtConcurrent::PromiseTaskResolver<WoobInterface*, WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString, QString, QString>':
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:211:8:   required from 'struct QtConcurrent::TaskResolverHelper<std::integral_constant<bool, false>, WoobInterface*, WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString, QString, QString>'
+  211 | struct TaskResolverHelper<std::false_type, Function, Args...>
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:217:8:   required from 'struct QtConcurrent::TaskResolver<WoobInterface*, WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString, QString, QString>'
+  217 | struct TaskResolver : public TaskResolverHelper<typename std::is_invocable<std::decay_t<Function>,
+      |        ^~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:47:76:   required from 'auto QtConcurrent::run(QThreadPool*, Function&&, Args&& ...) [with Function = WoobInterface*; Args = {WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString&, QString&, QString&}]'
+   47 |     return TaskResolver<std::decay_t<Function>, std::decay_t<Args>...>::run(
+      |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+   48 |                 std::move(tuple), TaskStartParameters { pool });
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~             
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:64:15:   required from 'auto QtConcurrent::run(Function&&, Args&& ...) [with Function = WoobInterface*; Args = {WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString&, QString&, QString&}]'
+   64 |     return run(QThreadPool::globalInstance(), std::forward<Function>(f),
+      |            ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   65 |                std::forward<Args>(args)...);
+      |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/woob/woob.cpp:179:67:   required from here
+  179 |         QFuture<WoobInterface::Account> future = QtConcurrent::run(&d->woob, &WoobInterface::getAccount, bname, id, max);
+      |                                                  ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:189:64: error: no type named 'IsPromise' in 'struct QtPrivate::ArgResolver<WoobInterface*>'
+  189 |     static_assert(QtPrivate::ArgResolver<Function>::IsPromise::value,
+      |                                                                ^~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h: In instantiation of 'static auto QtConcurrent::PromiseTaskResolver<Function, Args ...>::run(TaskWithArgs&&, const QtConcurrent::TaskStartParameters&) [with Function = WoobInterface*; Args = {WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString, QString, QString}; TaskWithArgs = std::tuple<WoobInterface*, WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString, QString, QString>]':
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:47:76:   required from 'auto QtConcurrent::run(QThreadPool*, Function&&, Args&& ...) [with Function = WoobInterface*; Args = {WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString&, QString&, QString&}]'
+   47 |     return TaskResolver<std::decay_t<Function>, std::decay_t<Args>...>::run(
+      |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+   48 |                 std::move(tuple), TaskStartParameters { pool });
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~             
+/usr/include/qt6/QtConcurrent/qtconcurrentrun.h:64:15:   required from 'auto QtConcurrent::run(Function&&, Args&& ...) [with Function = WoobInterface*; Args = {WoobInterface::Account (WoobInterface::*)(QString, QString, QString), QString&, QString&, QString&}]'
+   64 |     return run(QThreadPool::globalInstance(), std::forward<Function>(f),
+      |            ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   65 |                std::forward<Args>(args)...);
+      |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/woob/woob.cpp:179:67:   required from here
+  179 |         QFuture<WoobInterface::Account> future = QtConcurrent::run(&d->woob, &WoobInterface::getAccount, bname, id, max);
+      |                                                  ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:195:15: error: no type named 'PromiseType' in 'struct QtPrivate::ArgResolver<WoobInterface*>'
+  195 |         using PromiseType = typename QtPrivate::ArgResolver<Function>::PromiseType;
+      |               ^~~~~~~~~~~
+/usr/include/qt6/QtConcurrent/qtconcurrentstoredfunctioncall.h:196:17: error: no type named 'PromiseType' in 'struct QtPrivate::ArgResolver<WoobInterface*>'
+  196 |         return (new StoredFunctionCallWithPromise<Function, PromiseType, Args...>(std::move(args)))
+      |                ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/plugins/ofx/import/dialogs/kofxdirectconnectdlg.cpp: In member function 'void KOfxDirectConnectDlg::slotOfxData(KIO::Job*, const QByteArray&)':
+/mnt/kmymoney/plugins/ofx/import/dialogs/kofxdirectconnectdlg.cpp:149:18: warning: format '%d' expects argument of type 'int', but argument 3 has type 'qsizetype' {aka 'long long int'} [-Wformat=]
+  149 |     qDebug("Got %d bytes of data", _ba.size());
+      |                 ~^                 ~~~~~~~~~~
+      |                  |                         |
+      |                  int                       qsizetype {aka long long int}
+      |                 %lld
+/mnt/kmymoney/plugins/ofx/import/dialogs/kofxdirectconnectdlg.cpp: In member function 'void KOfxDirectConnectDlg::slotOfxFinished(KJob*)':
+/mnt/kmymoney/plugins/ofx/import/dialogs/kofxdirectconnectdlg.cpp:188:23: error: 'class KIO::TransferJob' has no member named 'isErrorPage'
+  188 |     } else if (m_job->isErrorPage()) {
+      |                       ^~~~~~~~~~~
+[ 81%] Building CXX object kmymoney/plugins/qif/export/CMakeFiles/qifexporter.dir/mymoneyqifwriter.cpp.o
+[ 81%] Building CXX object kmymoney/templates/CMakeFiles/kmm_templates.dir/kloadtemplatedlg.cpp.o
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/libkmm_templates.so.5.1.80'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 81%] Building CXX object kmymoney/templates/CMakeFiles/kmm_templates.dir/qrc_templates.cpp.o
+[ 81%] Building CXX object kmymoney/plugins/views/budget/CMakeFiles/budgetview.dir/kbudgetview.cpp.o
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/kmymoney_plugins/qifexporter.so'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 82%] Building CXX object kmymoney/plugins/qif/export/CMakeFiles/qifexporter.dir/kexportdlg.cpp.o
+[ 82%] Linking CXX static library ../../../lib/libwizardpages.a
+[ 83%] Built target wizardpages
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/kmymoney_plugins/budgetview.so'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 83%] Built target woob
+[ 83%] Building CXX object kmymoney/plugins/views/budget/CMakeFiles/budgetview.dir/kbudgetvalues.cpp.o
+[ 83%] Building CXX object kmymoney/views/CMakeFiles/views.dir/kcategoriesview.cpp.o
+[ 83%] Building CXX object kmymoney/views/CMakeFiles/views.dir/accountdelegate.cpp.o
+[ 83%] Building CXX object kmymoney/views/CMakeFiles/views.dir/khomeview.cpp.o
+[ 84%] Building CXX object kmymoney/dialogs/settings/CMakeFiles/settings.dir/ksettingshome.cpp.o
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'lib/kmymoney_plugins/sqlstorage.so'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 84%] Building CXX object kmymoney/plugins/sql/CMakeFiles/sqlstorage.dir/kselectdatabasedlg.cpp.o
+[ 85%] Linking CXX static library ../../../../../lib/libofximporter_dialogs.a
+/usr/bin/ar: CMakeFiles/ofximporter_dialogs.dir/kofxdirectconnectdlg.cpp.o: No such file or directory
+[ 85%] Built target ofximporter_dialogs
+[ 85%] Built target ofximporter_autogen_timestamp_deps
+[ 85%] Building CXX object kmymoney/views/CMakeFiles/views.dir/kinstitutionsview.cpp.o
+[ 85%] Built target onlinejoboutboxview
+[ 86%] Building CXX object kmymoney/views/CMakeFiles/views.dir/kinvestmentview.cpp.o
+[ 86%] Building CXX object kmymoney/views/CMakeFiles/views.dir/kmymoneyview.cpp.o
+[ 86%] Automatic MOC for target ofximporter
+[ 87%] Built target forecastview
+[ 87%] Building CXX object kmymoney/dialogs/settings/CMakeFiles/settings.dir/ksettingsonlinequotes.cpp.o
+[ 87%] Built target ofximporter_autogen
+[ 87%] Building CXX object kmymoney/plugins/ofx/import/CMakeFiles/ofximporter.dir/ofximporter.cpp.o
+[ 88%] Built target kmm_templates
+[ 88%] Built target newuserwizard_autogen_timestamp_deps
+[ 88%] Building CXX object kmymoney/views/CMakeFiles/views.dir/kpayeesview.cpp.o
+[ 88%] Automatic MOC for target newuserwizard
+[ 88%] Built target newuserwizard_autogen
+[ 88%] Building CXX object kmymoney/wizards/newuserwizard/CMakeFiles/newuserwizard.dir/knewuserwizard.cpp.o
+[ 88%] Building CXX object kmymoney/views/CMakeFiles/views.dir/kscheduledview.cpp.o
+[ 88%] Building CXX object kmymoney/views/CMakeFiles/views.dir/keditscheduledlg.cpp.o
+[ 88%] Building CXX object kmymoney/dialogs/settings/CMakeFiles/settings.dir/ksettingskmymoney.cpp.o
+[ 89%] Built target kmm_extended_dialogs
+make[2]: *** No rule to make target 'lib/libofximporter_dialogs.a', needed by 'lib/kmymoney_plugins/ofximporter.so'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 89%] Building CXX object kmymoney/plugins/ofx/import/CMakeFiles/ofximporter.dir/ofxpartner.cpp.o
+In file included from /mnt/kmymoney/plugins/sql/kselectdatabasedlg.cpp:26:
+/mnt/kmymoney/plugins/sql/mymoneystoragesql.h:47:38: error: conflicting declaration of template 'template<class T1, class T2> struct QPair'
+   47 | template <class T1, class T2> struct QPair;
+      |                                      ^~~~~
+In file included from /usr/include/qt6/QtCore/qtypeinfo.h:9,
+                 from /usr/include/qt6/QtCore/qglobal.h:47,
+                 from /usr/include/qt6/QtCore/qnamespace.h:12,
+                 from /usr/include/qt6/QtCore/qbytearray.h:9,
+                 from /usr/include/qt6/QtCore/qurl.h:8,
+                 from /usr/include/qt6/QtCore/QUrl:1,
+                 from /mnt/kmymoney/plugins/sql/kselectdatabasedlg.h:13,
+                 from /mnt/kmymoney/plugins/sql/kselectdatabasedlg.cpp:8:
+/usr/include/qt6/QtCore/qcontainerfwd.h:28:7: note: previous declaration 'template<class T1, class T2> using QPair = std::pair<_T1, _T2>'
+   28 | using QPair = std::pair<T1, T2>;
+      |       ^~~~~
+[ 89%] Built target qifexporter
+[ 89%] Building CXX object kmymoney/dialogs/settings/CMakeFiles/settings.dir/ksettingsplugins.cpp.o
+[ 89%] Building CXX object kmymoney/views/CMakeFiles/views.dir/kenterscheduledlg.cpp.o
+/mnt/kmymoney/dialogs/settings/ksettingsonlinequotes.cpp: In member function 'void KSettingsOnlineQuotes::saveSettings()':
+/mnt/kmymoney/dialogs/settings/ksettingsonlinequotes.cpp:95:36: error: no matching function for call to 'QPushButton::animateClick(int)'
+   95 |     d->m_acceptButton->animateClick(1); // a very short click (1ms)
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+In file included from /usr/include/qt6/QtWidgets/qcheckbox.h:8,
+                 from /usr/include/qt6/QtWidgets/QCheckBox:1,
+                 from /mnt/kmymoney/dialogs/settings/ksettingsonlinequotes.cpp:11:
+/usr/include/qt6/QtWidgets/qabstractbutton.h:83:10: note: candidate: 'void QAbstractButton::animateClick()'
+   83 |     void animateClick();
+      |          ^~~~~~~~~~~~
+/usr/include/qt6/QtWidgets/qabstractbutton.h:83:10: note:   candidate expects 0 arguments, 1 provided
+[ 89%] Building CXX object kmymoney/wizards/newuserwizard/CMakeFiles/newuserwizard.dir/kcategoriespage.cpp.o
+[ 89%] Linking CXX static library ../../../../lib/libsqlstoragestatic.a
+/usr/bin/ar: CMakeFiles/sqlstoragestatic.dir/__/mymoneystoragesql.cpp.o: No such file or directory
+[ 90%] Built target sqlstoragestatic
+[ 90%] Building CXX object kmymoney/views/CMakeFiles/views.dir/ktagsview.cpp.o
+[ 90%] Building CXX object kmymoney/views/CMakeFiles/views.dir/kpayeeidentifierview.cpp.o
+[ 91%] Built target budgetview
+[ 91%] Building CXX object kmymoney/views/CMakeFiles/views.dir/payeeidentifierselectiondelegate.cpp.o
+[ 91%] Building CXX object kmymoney/views/CMakeFiles/views.dir/simpleledgerview.cpp.o
+[ 92%] Building CXX object kmymoney/views/CMakeFiles/views.dir/ledgerviewpage.cpp.o
+[ 92%] Building CXX object kmymoney/views/CMakeFiles/views.dir/ledgerview.cpp.o
+/mnt/kmymoney/plugins/ofx/import/ofxpartner.cpp: In member function 'void OfxHttpRequest::slotOfxFinished(KJob*)':
+/mnt/kmymoney/plugins/ofx/import/ofxpartner.cpp:401:31: error: 'class KIO::TransferJob' has no member named 'isErrorPage'
+  401 |         } else if (m_postJob->isErrorPage()) {
+      |                               ^~~~~~~~~~~
+[ 92%] Building CXX object kmymoney/views/CMakeFiles/views.dir/ledgerviewsettings.cpp.o
+[ 92%] Building CXX object kmymoney/views/CMakeFiles/views.dir/ledgeraccountfilter.cpp.o
+[ 93%] Built target sqlstorage
+[ 93%] Building CXX object kmymoney/views/CMakeFiles/views.dir/ledgerjournalidfilter.cpp.o
+/mnt/kmymoney/views/kmymoneyview.cpp: In member function 'QHash<eMenu::Action, QAction*> KMyMoneyView::actionsToBeConnected()':
+/mnt/kmymoney/views/kmymoneyview.cpp:539:126: warning: 'constexpr QKeyCombination Qt::operator+(Modifier, Key)' is deprecated: Use operator| instead [-Wdeprecated-declarations]
+  539 |         {Action::ShowHomeView,            View::Home,               i18n("Show home page"),                   Qt::CTRL + Qt::Key_1},
+      |                                                                                                                              ^~~~~
+In file included from /usr/include/qt6/QtCore/qobjectdefs.h:12,
+                 from /usr/include/qt6/QtCore/qobject.h:10,
+                 from /usr/include/qt6/QtCore/qiodevice.h:10,
+                 from /usr/include/qt6/QtCore/qfiledevice.h:7,
+                 from /usr/include/qt6/QtCore/QFileDevice:1,
+                 from /mnt/kmymoney/views/kmymoneyview.h:16,
+                 from /mnt/kmymoney/views/kmymoneyview.cpp:9:
+/usr/include/qt6/QtCore/qnamespace.h:1972:27: note: declared here
+ 1972 | constexpr QKeyCombination operator+(Qt::Modifier modifier, Qt::Key key) noexcept
+      |                           ^~~~~~~~
+/mnt/kmymoney/views/kmymoneyview.cpp:540:126: warning: 'constexpr QKeyCombination Qt::operator+(Modifier, Key)' is deprecated: Use operator| instead [-Wdeprecated-declarations]
+  540 |         {Action::ShowInstitutionsView,    View::Institutions,       i18n("Show institutions page"),           Qt::CTRL + Qt::Key_2},
+      |                                                                                                                              ^~~~~
+/usr/include/qt6/QtCore/qnamespace.h:1972:27: note: declared here
+ 1972 | constexpr QKeyCombination operator+(Qt::Modifier modifier, Qt::Key key) noexcept
+      |                           ^~~~~~~~
+/mnt/kmymoney/views/kmymoneyview.cpp:541:126: warning: 'constexpr QKeyCombination Qt::operator+(Modifier, Key)' is deprecated: Use operator| instead [-Wdeprecated-declarations]
+  541 |         {Action::ShowAccountsView,        View::Accounts,           i18n("Show accounts page"),               Qt::CTRL + Qt::Key_3},
+      |                                                                                                                              ^~~~~
+/usr/include/qt6/QtCore/qnamespace.h:1972:27: note: declared here
+ 1972 | constexpr QKeyCombination operator+(Qt::Modifier modifier, Qt::Key key) noexcept
+      |                           ^~~~~~~~
+/mnt/kmymoney/views/kmymoneyview.cpp:542:126: warning: 'constexpr QKeyCombination Qt::operator+(Modifier, Key)' is deprecated: Use operator| instead [-Wdeprecated-declarations]
+  542 |         {Action::ShowSchedulesView,       View::Schedules,          i18n("Show scheduled transactions page"), Qt::CTRL + Qt::Key_4},
+      |                                                                                                                              ^~~~~
+/usr/include/qt6/QtCore/qnamespace.h:1972:27: note: declared here
+ 1972 | constexpr QKeyCombination operator+(Qt::Modifier modifier, Qt::Key key) noexcept
+      |                           ^~~~~~~~
+/mnt/kmymoney/views/kmymoneyview.cpp:543:126: warning: 'constexpr QKeyCombination Qt::operator+(Modifier, Key)' is deprecated: Use operator| instead [-Wdeprecated-declarations]
+  543 |         {Action::ShowCategoriesView,      View::Categories,         i18n("Show categories page"),             Qt::CTRL + Qt::Key_5},
+      |                                                                                                                              ^~~~~
+/usr/include/qt6/QtCore/qnamespace.h:1972:27: note: declared here
+ 1972 | constexpr QKeyCombination operator+(Qt::Modifier modifier, Qt::Key key) noexcept
+      |                           ^~~~~~~~
+/mnt/kmymoney/views/kmymoneyview.cpp:545:126: warning: 'constexpr QKeyCombination Qt::operator+(Modifier, Key)' is deprecated: Use operator| instead [-Wdeprecated-declarations]
+  545 |         {Action::ShowPayeesView,          View::Payees,             i18n("Show payees page"),                 Qt::CTRL + Qt::Key_6},
+      |                                                                                                                              ^~~~~
+/usr/include/qt6/QtCore/qnamespace.h:1972:27: note: declared here
+ 1972 | constexpr QKeyCombination operator+(Qt::Modifier modifier, Qt::Key key) noexcept
+      |                           ^~~~~~~~
+/mnt/kmymoney/views/kmymoneyview.cpp:546:126: warning: 'constexpr QKeyCombination Qt::operator+(Modifier, Key)' is deprecated: Use operator| instead [-Wdeprecated-declarations]
+  546 |         {Action::ShowLedgersView,         View::NewLedgers,         i18n("Show ledgers page"),                Qt::CTRL + Qt::Key_7},
+      |                                                                                                                              ^~~~~
+/usr/include/qt6/QtCore/qnamespace.h:1972:27: note: declared here
+ 1972 | constexpr QKeyCombination operator+(Qt::Modifier modifier, Qt::Key key) noexcept
+      |                           ^~~~~~~~
+/mnt/kmymoney/views/kmymoneyview.cpp:547:126: warning: 'constexpr QKeyCombination Qt::operator+(Modifier, Key)' is deprecated: Use operator| instead [-Wdeprecated-declarations]
+  547 |         {Action::ShowInvestmentsView,     View::Investments,        i18n("Show investments page"),            Qt::CTRL + Qt::Key_8},
+      |                                                                                                                              ^~~~~
+/usr/include/qt6/QtCore/qnamespace.h:1972:27: note: declared here
+ 1972 | constexpr QKeyCombination operator+(Qt::Modifier modifier, Qt::Key key) noexcept
+      |                           ^~~~~~~~
+/mnt/kmymoney/views/kmymoneyview.cpp:548:126: warning: 'constexpr QKeyCombination Qt::operator+(Modifier, Key)' is deprecated: Use operator| instead [-Wdeprecated-declarations]
+  548 |         {Action::ShowReportsView,         View::Reports,            i18n("Show reports page"),                Qt::CTRL + Qt::Key_9},
+      |                                                                                                                              ^~~~~
+/usr/include/qt6/QtCore/qnamespace.h:1972:27: note: declared here
+ 1972 | constexpr QKeyCombination operator+(Qt::Modifier modifier, Qt::Key key) noexcept
+      |                           ^~~~~~~~
+[ 93%] Building CXX object kmymoney/views/CMakeFiles/views.dir/ledgerpayeefilter.cpp.o
+[ 93%] Linking CXX static library ../../../lib/libsettings.a
+/mnt/kmymoney/plugins/ofx/import/ofximporter.cpp: In member function 'bool OFXImporter::storeStatements(const QList<MyMoneyStatement>&)':
+/mnt/kmymoney/plugins/ofx/import/ofximporter.cpp:1047:56: warning: format '%d' expects argument of type 'int', but argument 3 has type 'qsizetype' {aka 'long long int'} [-Wformat=]
+ 1047 |     qDebug("OfxImporterPlugin::storeStatements() with %d statements called", statements.count());
+      |                                                       ~^                     ~~~~~~~~~~~~~~~~~~
+      |                                                        |                                     |
+      |                                                        int                                   qsizetype {aka long long int}
+      |                                                       %lld
+/usr/bin/ar: CMakeFiles/settings.dir/ksettingsonlinequotes.cpp.o: No such file or directory
+[ 94%] Built target settings
+[ 94%] Building CXX object kmymoney/views/CMakeFiles/views.dir/ledgertagfilter.cpp.o
+[ 94%] Building CXX object kmymoney/views/CMakeFiles/views.dir/multitransactioneditor.cpp.o
+[ 94%] Building CXX object kmymoney/views/CMakeFiles/views.dir/journaldelegate.cpp.o
+[ 94%] Linking CXX static library ../../../lib/libnewuserwizard.a
+[ 96%] Built target newuserwizard
+[ 96%] Building CXX object kmymoney/views/CMakeFiles/views.dir/onlinebalancedelegate.cpp.o
+/mnt/kmymoney/views/ledgerview.cpp: In member function 'virtual void LedgerView::mousePressEvent(QMouseEvent*)':
+/mnt/kmymoney/views/ledgerview.cpp:947:51: warning: 'int QMouseEvent::x() const' is deprecated: Use position() [-Wdeprecated-declarations]
+  947 |                 const auto col = columnAt(event->x());
+      |                                           ~~~~~~~~^~
+In file included from /usr/include/qt6/QtGui/QResizeEvent:1,
+                 from /mnt/kmymoney/views/ledgerview.cpp:18:
+/usr/include/qt6/QtGui/qevent.h:226:16: note: declared here
+  226 |     inline int x() const { return qRound(position().x()); }
+      |                ^
+/mnt/kmymoney/views/ledgerview.cpp:948:48: warning: 'int QMouseEvent::y() const' is deprecated: Use position() [-Wdeprecated-declarations]
+  948 |                 const auto row = rowAt(event->y());
+      |                                        ~~~~~~~~^~
+/usr/include/qt6/QtGui/qevent.h:228:16: note: declared here
+  228 |     inline int y() const { return qRound(position().y()); }
+      |                ^
+[ 96%] Building CXX object kmymoney/views/CMakeFiles/views.dir/reconciliationdelegate.cpp.o
+[ 97%] Building CXX object kmymoney/views/CMakeFiles/views.dir/reconciliationledgerviewpage.cpp.o
+[ 97%] Building CXX object kmymoney/views/CMakeFiles/views.dir/specialdatedelegate.cpp.o
+[ 97%] Building CXX object kmymoney/views/CMakeFiles/views.dir/investtransactioneditor.cpp.o
+[ 97%] Building CXX object kmymoney/views/CMakeFiles/views.dir/investactivities.cpp.o
+[ 97%] Building CXX object kmymoney/views/CMakeFiles/views.dir/newspliteditor.cpp.o
+[ 97%] Building CXX object kmymoney/views/CMakeFiles/views.dir/transactioneditorbase.cpp.o
+[ 97%] Building CXX object kmymoney/views/CMakeFiles/views.dir/ksearchtransactiondlg.cpp.o
+[ 97%] Building CXX object kmymoney/views/CMakeFiles/views.dir/ktransactionselectdlg.cpp.o
+[ 97%] Building CXX object kmymoney/views/CMakeFiles/views.dir/newtransactioneditor.cpp.o
+[ 97%] Building CXX object kmymoney/views/CMakeFiles/views.dir/newtransactionform.cpp.o
+[ 98%] Built target ofximporter
+[ 98%] Building CXX object kmymoney/views/CMakeFiles/views.dir/securityaccountnamedelegate.cpp.o
+[ 98%] Building CXX object kmymoney/views/CMakeFiles/views.dir/splitview.cpp.o
+[ 99%] Building CXX object kmymoney/views/CMakeFiles/views.dir/splitdialog.cpp.o
+[ 99%] Building CXX object kmymoney/views/CMakeFiles/views.dir/splitdelegate.cpp.o
+[ 99%] Linking CXX static library ../../lib/libviews.a
+[ 99%] Built target views
+[ 99%] Built target kmymoney_autogen_timestamp_deps
+[ 99%] Automatic MOC for target kmymoney
+[ 99%] Built target kmymoney_autogen
+[ 99%] Generating qrc_kmymoney.cpp
+Detected locale "C" with character encoding "ANSI_X3.4-1968", which is not UTF-8.
+Qt depends on a UTF-8 locale, and has switched to "C.UTF-8" instead.
+If this causes problems, reconfigure your locale. See the locale(1) manual
+for more information.
+make[2]: *** No rule to make target 'lib/libkmymoney_common.a', needed by 'bin/kmymoney'.  Stop.
+make[2]: *** Waiting for unfinished jobs....
+[ 99%] Building CXX object kmymoney/CMakeFiles/kmymoney.dir/kmymoney_autogen/mocs_compilation.cpp.o
+[ 99%] Building CXX object kmymoney/CMakeFiles/kmymoney.dir/main.cpp.o
+[ 99%] Building CXX object kmymoney/CMakeFiles/kmymoney.dir/qrc_kmymoney.cpp.o
+[ 99%] Building CXX object kmymoney/CMakeFiles/kmymoney.dir/kmymoney.cpp.o
+[ 99%] Building CXX object kmymoney/CMakeFiles/kmymoney.dir/pluginloader.cpp.o
+[ 99%] Building CXX object kmymoney/CMakeFiles/kmymoney.dir/kmymoneyadaptor.cpp.o
+/mnt/kmymoney/pluginloader.cpp:22:10: fatal error: KPluginLoader: No such file or directory
+   22 | #include <KPluginLoader>
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+/mnt/kmymoney/main.cpp: In function 'int runKMyMoney(QApplication&, const QUrl&, bool)':
+/mnt/kmymoney/main.cpp:295:24: warning: 'Qt::AA_UseHighDpiPixmaps' is deprecated: High-DPI pixmaps are always enabled. This attribute no longer has any effect. [-Wdeprecated-declarations]
+  295 |     a.setAttribute(Qt::AA_UseHighDpiPixmaps);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/qt6/QtCore/qbytearray.h:9,
+                 from /usr/include/qt6/QtCore/qstringview.h:10,
+                 from /usr/include/qt6/QtCore/qchar.h:660,
+                 from /usr/include/qt6/QtCore/qstring.h:14,
+                 from /usr/include/qt6/QtCore/qcoreapplication.h:8,
+                 from /usr/include/qt6/QtWidgets/qapplication.h:8,
+                 from /usr/include/qt6/QtWidgets/QApplication:1,
+                 from /mnt/kmymoney/main.cpp:13:
+/usr/include/qt6/QtCore/qnamespace.h:440:9: note: declared here
+  440 |         AA_UseHighDpiPixmaps Q_DECL_ENUMERATOR_DEPRECATED_X(
+      |         ^~~~~~~~~~~~~~~~~~~~
+/mnt/kmymoney/kmymoney.cpp: In member function 'bool KMyMoneyApp::Private::askAboutSaving()':
+/mnt/kmymoney/kmymoney.cpp:510:86: error: no matching function for call to 'QString::fromLatin1(QString)'
+  510 |         const auto isFileNotSaved = q->actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Save)))->isEnabled();
+      |                                                                   ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/qt6/QtCore/qhashfunctions.h:9,
+                 from /usr/include/qt6/QtCore/qlist.h:10,
+                 from /usr/include/qt6/QtCore/QList:1,
+                 from /mnt/kmymoney/kmymoney.h:13,
+                 from /mnt/kmymoney/kmymoney.cpp:12:
+/usr/include/qt6/QtCore/qstring.h:660:27: note: candidate: 'template<class> static QString QString::fromLatin1(const QByteArray&)'
+  660 |     static inline QString fromLatin1(const QByteArray &ba) { return fromLatin1(QByteArrayView(ba)); }
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note:   template argument deduction/substitution failed:
+/mnt/kmymoney/kmymoney.cpp:510:108: note:   cannot convert 'KStandardAction::name(StandardAction)()' (type 'QString') to type 'const QByteArray&'
+  510 |         const auto isFileNotSaved = q->actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Save)))->isEnabled();
+      |                                                                                       ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:20: note: candidate: 'static QString QString::fromLatin1(QByteArrayView)'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                    ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:46: note:   no known conversion for argument 1 from 'QString' to 'QByteArrayView'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                               ~~~~~~~~~~~~~~~^~
+/usr/include/qt6/QtCore/qstring.h:661:27: note: candidate: 'static QString QString::fromLatin1(const char*, qsizetype)'
+  661 |     static inline QString fromLatin1(const char *str, qsizetype size)
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:661:27: note:   candidate expects 2 arguments, 1 provided
+/mnt/kmymoney/kmymoney.cpp: In member function 'void KMyMoneyApp::Private::updateActions(const SelectedObjects&)':
+/mnt/kmymoney/kmymoney.cpp:1152:39: error: no matching function for call to 'QString::fromLatin1(QString)'
+ 1152 |         aC->action(QString::fromLatin1(KStandardAction::name(KStandardAction::SaveAs)))->setEnabled(canFileSaveAs());
+      |                    ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note: candidate: 'template<class> static QString QString::fromLatin1(const QByteArray&)'
+  660 |     static inline QString fromLatin1(const QByteArray &ba) { return fromLatin1(QByteArrayView(ba)); }
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note:   template argument deduction/substitution failed:
+/mnt/kmymoney/kmymoney.cpp:1152:61: note:   cannot convert 'KStandardAction::name(StandardAction)()' (type 'QString') to type 'const QByteArray&'
+ 1152 |         aC->action(QString::fromLatin1(KStandardAction::name(KStandardAction::SaveAs)))->setEnabled(canFileSaveAs());
+      |                                        ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:20: note: candidate: 'static QString QString::fromLatin1(QByteArrayView)'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                    ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:46: note:   no known conversion for argument 1 from 'QString' to 'QByteArrayView'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                               ~~~~~~~~~~~~~~~^~
+/usr/include/qt6/QtCore/qstring.h:661:27: note: candidate: 'static QString QString::fromLatin1(const char*, qsizetype)'
+  661 |     static inline QString fromLatin1(const char *str, qsizetype size)
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:661:27: note:   candidate expects 2 arguments, 1 provided
+/mnt/kmymoney/kmymoney.cpp:1153:39: error: no matching function for call to 'QString::fromLatin1(QString)'
+ 1153 |         aC->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Close)))->setEnabled(m_storageInfo.isOpened);
+      |                    ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note: candidate: 'template<class> static QString QString::fromLatin1(const QByteArray&)'
+  660 |     static inline QString fromLatin1(const QByteArray &ba) { return fromLatin1(QByteArrayView(ba)); }
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note:   template argument deduction/substitution failed:
+/mnt/kmymoney/kmymoney.cpp:1153:61: note:   cannot convert 'KStandardAction::name(StandardAction)()' (type 'QString') to type 'const QByteArray&'
+ 1153 |         aC->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Close)))->setEnabled(m_storageInfo.isOpened);
+      |                                        ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:20: note: candidate: 'static QString QString::fromLatin1(QByteArrayView)'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                    ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:46: note:   no known conversion for argument 1 from 'QString' to 'QByteArrayView'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                               ~~~~~~~~~~~~~~~^~
+/usr/include/qt6/QtCore/qstring.h:661:27: note: candidate: 'static QString QString::fromLatin1(const char*, qsizetype)'
+  661 |     static inline QString fromLatin1(const char *str, qsizetype size)
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:661:27: note:   candidate expects 2 arguments, 1 provided
+/mnt/kmymoney/kmymoney.cpp: In member function 'void KMyMoneyApp::Private::fileAction(eKMyMoney::FileAction)':
+/mnt/kmymoney/kmymoney.cpp:1198:62: error: no matching function for call to 'QString::fromLatin1(QString)'
+ 1198 |             q->actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Save)))->setEnabled(false);
+      |                                           ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note: candidate: 'template<class> static QString QString::fromLatin1(const QByteArray&)'
+  660 |     static inline QString fromLatin1(const QByteArray &ba) { return fromLatin1(QByteArrayView(ba)); }
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note:   template argument deduction/substitution failed:
+/mnt/kmymoney/kmymoney.cpp:1198:84: note:   cannot convert 'KStandardAction::name(StandardAction)()' (type 'QString') to type 'const QByteArray&'
+ 1198 |             q->actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Save)))->setEnabled(false);
+      |                                                               ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:20: note: candidate: 'static QString QString::fromLatin1(QByteArrayView)'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                    ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:46: note:   no known conversion for argument 1 from 'QString' to 'QByteArrayView'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                               ~~~~~~~~~~~~~~~^~
+/usr/include/qt6/QtCore/qstring.h:661:27: note: candidate: 'static QString QString::fromLatin1(const char*, qsizetype)'
+  661 |     static inline QString fromLatin1(const char *str, qsizetype size)
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:661:27: note:   candidate expects 2 arguments, 1 provided
+/mnt/kmymoney/kmymoney.cpp:1217:62: error: no matching function for call to 'QString::fromLatin1(QString)'
+ 1217 |             q->actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Save)))->setEnabled(dirty());
+      |                                           ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note: candidate: 'template<class> static QString QString::fromLatin1(const QByteArray&)'
+  660 |     static inline QString fromLatin1(const QByteArray &ba) { return fromLatin1(QByteArrayView(ba)); }
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note:   template argument deduction/substitution failed:
+/mnt/kmymoney/kmymoney.cpp:1217:84: note:   cannot convert 'KStandardAction::name(StandardAction)()' (type 'QString') to type 'const QByteArray&'
+ 1217 |             q->actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Save)))->setEnabled(dirty());
+      |                                                               ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:20: note: candidate: 'static QString QString::fromLatin1(QByteArrayView)'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                    ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:46: note:   no known conversion for argument 1 from 'QString' to 'QByteArrayView'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                               ~~~~~~~~~~~~~~~^~
+/usr/include/qt6/QtCore/qstring.h:661:27: note: candidate: 'static QString QString::fromLatin1(const char*, qsizetype)'
+  661 |     static inline QString fromLatin1(const char *str, qsizetype size)
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:661:27: note:   candidate expects 2 arguments, 1 provided
+/mnt/kmymoney/kmymoney.cpp:1245:62: error: no matching function for call to 'QString::fromLatin1(QString)'
+ 1245 |             q->actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Save)))->setEnabled(false);
+      |                                           ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note: candidate: 'template<class> static QString QString::fromLatin1(const QByteArray&)'
+  660 |     static inline QString fromLatin1(const QByteArray &ba) { return fromLatin1(QByteArrayView(ba)); }
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note:   template argument deduction/substitution failed:
+/mnt/kmymoney/kmymoney.cpp:1245:84: note:   cannot convert 'KStandardAction::name(StandardAction)()' (type 'QString') to type 'const QByteArray&'
+ 1245 |             q->actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Save)))->setEnabled(false);
+      |                                                               ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:20: note: candidate: 'static QString QString::fromLatin1(QByteArrayView)'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                    ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:46: note:   no known conversion for argument 1 from 'QString' to 'QByteArrayView'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                               ~~~~~~~~~~~~~~~^~
+/usr/include/qt6/QtCore/qstring.h:661:27: note: candidate: 'static QString QString::fromLatin1(const char*, qsizetype)'
+  661 |     static inline QString fromLatin1(const char *str, qsizetype size)
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:661:27: note:   candidate expects 2 arguments, 1 provided
+/mnt/kmymoney/kmymoney.cpp:1259:62: error: no matching function for call to 'QString::fromLatin1(QString)'
+ 1259 |             q->actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Save)))->setEnabled(false);
+      |                                           ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note: candidate: 'template<class> static QString QString::fromLatin1(const QByteArray&)'
+  660 |     static inline QString fromLatin1(const QByteArray &ba) { return fromLatin1(QByteArrayView(ba)); }
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note:   template argument deduction/substitution failed:
+/mnt/kmymoney/kmymoney.cpp:1259:84: note:   cannot convert 'KStandardAction::name(StandardAction)()' (type 'QString') to type 'const QByteArray&'
+ 1259 |             q->actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Save)))->setEnabled(false);
+      |                                                               ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:20: note: candidate: 'static QString QString::fromLatin1(QByteArrayView)'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                    ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:46: note:   no known conversion for argument 1 from 'QString' to 'QByteArrayView'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                               ~~~~~~~~~~~~~~~^~
+/usr/include/qt6/QtCore/qstring.h:661:27: note: candidate: 'static QString QString::fromLatin1(const char*, qsizetype)'
+  661 |     static inline QString fromLatin1(const char *str, qsizetype size)
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:661:27: note:   candidate expects 2 arguments, 1 provided
+/mnt/kmymoney/kmymoney.cpp:1266:62: error: no matching function for call to 'QString::fromLatin1(QString)'
+ 1266 |             q->actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Save)))->setEnabled(true && !m_storageInfo.url.isEmpty());
+      |                                           ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note: candidate: 'template<class> static QString QString::fromLatin1(const QByteArray&)'
+  660 |     static inline QString fromLatin1(const QByteArray &ba) { return fromLatin1(QByteArrayView(ba)); }
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note:   template argument deduction/substitution failed:
+/mnt/kmymoney/kmymoney.cpp:1266:84: note:   cannot convert 'KStandardAction::name(StandardAction)()' (type 'QString') to type 'const QByteArray&'
+ 1266 |             q->actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::Save)))->setEnabled(true && !m_storageInfo.url.isEmpty());
+      |                                                               ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:20: note: candidate: 'static QString QString::fromLatin1(QByteArrayView)'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                    ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:46: note:   no known conversion for argument 1 from 'QString' to 'QByteArrayView'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                               ~~~~~~~~~~~~~~~^~
+/usr/include/qt6/QtCore/qstring.h:661:27: note: candidate: 'static QString QString::fromLatin1(const char*, qsizetype)'
+  661 |     static inline QString fromLatin1(const char *str, qsizetype size)
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:661:27: note:   candidate expects 2 arguments, 1 provided
+/mnt/kmymoney/kmymoney.cpp: In member function 'QHash<eMenu::Action, QAction*> KMyMoneyApp::initActions()':
+/mnt/kmymoney/kmymoney.cpp:2268:51: error: no matching function for call to 'QString::fromLatin1(QString)'
+ 2268 |     auto aboutApp = aC->action(QString::fromLatin1(KStandardAction::name(KStandardAction::AboutApp)));
+      |                                ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note: candidate: 'template<class> static QString QString::fromLatin1(const QByteArray&)'
+  660 |     static inline QString fromLatin1(const QByteArray &ba) { return fromLatin1(QByteArrayView(ba)); }
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note:   template argument deduction/substitution failed:
+/mnt/kmymoney/kmymoney.cpp:2268:73: note:   cannot convert 'KStandardAction::name(StandardAction)()' (type 'QString') to type 'const QByteArray&'
+ 2268 |     auto aboutApp = aC->action(QString::fromLatin1(KStandardAction::name(KStandardAction::AboutApp)));
+      |                                                    ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:20: note: candidate: 'static QString QString::fromLatin1(QByteArrayView)'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                    ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:46: note:   no known conversion for argument 1 from 'QString' to 'QByteArrayView'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                               ~~~~~~~~~~~~~~~^~
+/usr/include/qt6/QtCore/qstring.h:661:27: note: candidate: 'static QString QString::fromLatin1(const char*, qsizetype)'
+  661 |     static inline QString fromLatin1(const char *str, qsizetype size)
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:661:27: note:   candidate expects 2 arguments, 1 provided
+/mnt/kmymoney/kmymoney.cpp: In member function 'void KMyMoneyApp::slotAddSharedAction(eMenu::Action, QAction*)':
+/mnt/kmymoney/kmymoney.cpp:2288:64: warning: 'QList<T> QAction::associatedWidgets() const [with T = QWidget*]' is deprecated: Use associatedObjects() with qobject_cast() instead [-Wdeprecated-declarations]
+ 2288 |             for (auto* widget : actionObject->associatedWidgets()) {
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+In file included from /usr/include/qt6/QtWidgets/qwidget.h:12,
+                 from /usr/include/qt6/QtWidgets/qdialog.h:8,
+                 from /usr/include/qt6/QtWidgets/qfiledialog.h:11,
+                 from /usr/include/qt6/QtWidgets/QFileDialog:1,
+                 from /mnt/kmymoney/kmymoney.h:15:
+/usr/include/qt6/QtGui/qaction.h:98:14: note: declared here
+   98 |     QList<T> associatedWidgets() const
+      |              ^~~~~~~~~~~~~~~~~
+/mnt/kmymoney/kmymoney.cpp: In member function 'bool KMyMoneyApp::openUrl(const QUrl&)':
+/mnt/kmymoney/kmymoney.cpp:3143:5: error: 'QRegExp' was not declared in this scope
+ 3143 |     QRegExp rx(fi.fileName());
+      |     ^~~~~~~
+/mnt/kmymoney/kmymoney.cpp:3149:13: error: 'rx' was not declared in this scope; did you mean 'x'?
+ 3149 |         if (rx.indexIn(fileInfo.fileName()) != -1) {
+      |             ^~
+      |             x
+/mnt/kmymoney/kmymoney.cpp: In member function 'void KMyMoneyApp::slotUpdateConfiguration(const QString&)':
+/mnt/kmymoney/kmymoney.cpp:3741:55: error: no matching function for call to 'QString::fromLatin1(QString)'
+ 3741 |         actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::SaveAs)))->setEnabled(d->canFileSaveAs());
+      |                                    ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note: candidate: 'template<class> static QString QString::fromLatin1(const QByteArray&)'
+  660 |     static inline QString fromLatin1(const QByteArray &ba) { return fromLatin1(QByteArrayView(ba)); }
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:660:27: note:   template argument deduction/substitution failed:
+/mnt/kmymoney/kmymoney.cpp:3741:77: note:   cannot convert 'KStandardAction::name(StandardAction)()' (type 'QString') to type 'const QByteArray&'
+ 3741 |         actionCollection()->action(QString::fromLatin1(KStandardAction::name(KStandardAction::SaveAs)))->setEnabled(d->canFileSaveAs());
+      |                                                        ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:20: note: candidate: 'static QString QString::fromLatin1(QByteArrayView)'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                    ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:658:46: note:   no known conversion for argument 1 from 'QString' to 'QByteArrayView'
+  658 |     static QString fromLatin1(QByteArrayView ba);
+      |                               ~~~~~~~~~~~~~~~^~
+/usr/include/qt6/QtCore/qstring.h:661:27: note: candidate: 'static QString QString::fromLatin1(const char*, qsizetype)'
+  661 |     static inline QString fromLatin1(const char *str, qsizetype size)
+      |                           ^~~~~~~~~~
+/usr/include/qt6/QtCore/qstring.h:661:27: note:   candidate expects 2 arguments, 1 provided
+[100%] Built target kmymoney
+make: Leaving directory '/mnt/ci-build-kf6-native'
