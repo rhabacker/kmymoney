@@ -106,11 +106,19 @@ add_definitions(
 
 # GPG Encryption checks
 # ---------------------
-find_package(QGpgme)
-if (QGpgme_FOUND)
-    set(GPG_FOUND TRUE)
-else ()
-    set(GPG_FOUND FALSE)
+set(GPG_FOUND FALSE)
+if(BUILD_WITH_QT6)
+    find_package(QGpgmeQt6)
+    if(QGpgmeQt6_FOUND)
+        set(GPG_FOUND TRUE)
+        set(GPG_VERSION ${QGpgmeQt6})
+    endif()
+else()
+    find_package(QGpgme)
+    if(QGpgme_FOUND)
+      set(GPG_FOUND TRUE)
+      set(GPG_VERSION ${QGpgme})
+    endif()
 endif()
 
 cmake_dependent_option(ENABLE_GPG "Enable GPG support." ON
