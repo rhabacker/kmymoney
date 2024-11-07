@@ -187,8 +187,8 @@ void ReportsViewSettingsWidget::slotEditingFinished()
     d->checkCssFile(txt);
 }
 
-KCMReportsView::KCMReportsView(QWidget *parent, const QVariantList& args)
-    : KCModule(parent, args)
+KCMReportsView::KCMReportsView(QObject* parent, const QVariantList& args)
+    : KMMKCModule(parent, args)
 {
     ReportsViewSettingsWidget* w = new ReportsViewSettingsWidget(this);
     // addConfig(ReportsViewSettings::self(), w);
