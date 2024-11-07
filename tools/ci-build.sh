@@ -83,7 +83,7 @@ make="make -j${ci_parallel}"
 # kmymoney specific command line
 case $ci_variant in
     (kf6*)
-        cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo .. -DBUILD_WITH_QT6=1 -DSQLCIPHER_LIBRARIES=/usr/lib64/libsqlcipher.so
+        cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo .. -DBUILD_WITH_QT6=1 -DSQLCIPHER_LIBRARIES=/usr/lib64/libsqlcipher.so -DENABLE_WOOB=0
         ;;
     (*)
         cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo .. -DSQLCIPHER_LIBRARIES=/usr/lib64/libsqlcipher.so
