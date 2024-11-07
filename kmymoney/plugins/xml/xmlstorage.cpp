@@ -17,6 +17,7 @@
 #include <QFile>
 #include <QTemporaryFile>
 #include <QFileDialog>
+#include <QPointer>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 
