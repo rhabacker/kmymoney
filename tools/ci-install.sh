@@ -173,6 +173,7 @@ case "$ci_distro" in
                     "cmake(LibAlkimia${mjv})"
                     "cmake(QGpgmeQt6)"
                     "cmake(${qt}Core)"
+                    "cmake(${qt}Core5Compat)"
                     "cmake(${qt}DBus)"
                     "cmake(${qt}Keychain)"
                     "cmake(${qt}PrintSupport)"
