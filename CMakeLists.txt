@@ -473,6 +473,12 @@ endif()
 
 ######################### Output Results #############################
 
+if(BUILD_WITH_QT6)
+    set(QLIST_COUNT_FORMAT "%lld")
+else()
+    set(QLIST_COUNT_FORMAT "%d")
+endif()
+
 # create the config.h file out of the config.h.cmake
 configure_file("config-kmymoney.h.cmake" "${CMAKE_CURRENT_BINARY_DIR}/config-kmymoney.h")
 configure_file("config-kmymoney-version.h.cmake" "${CMAKE_CURRENT_BINARY_DIR}/config-kmymoney-version.h")

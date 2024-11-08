@@ -42,3 +42,5 @@
 
 #cmakedefine ENABLE_COSTCENTER 1
 /* No external component */
+
+#define QLIST_COUNT_FORMAT "@QLIST_COUNT_FORMAT@"
