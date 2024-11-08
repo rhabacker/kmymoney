@@ -155,11 +155,16 @@ if (${KF_MIN_VERSION} VERSION_LESS "5.100")
             -DSecondaryAction=No
         )
     endif()
-elseif(QT_MAJOR_VERSION VERSION_LESS "6.0.0")
+elseif(NOT BUILD_WITH_QT6)
     message(FATAL_ERROR "Remove the above logic from CMakeLists.txt since it is not needed anymore")
 endif()
 
-find_package(KF${QT_MAJOR_VERSION} ${KF_MIN_VERSION} OPTIONAL_COMPONENTS DocTools Holidays Contacts Activities)
+if(BUILD_WITH_QT6)
+    find_package(PlasmaActivities)
+else()
+    set(KF_ACTIVITIES Activities)
+endif()
+find_package(KF${QT_MAJOR_VERSION} ${KF_MIN_VERSION} OPTIONAL_COMPONENTS DocTools Holidays Contacts ${KF_ACTIVITIES})
 if (DEFINED AKONADI_MIN_VERSION)
   # Akonadi 23.04 moved to KPim5 prefix, deprecating KF${QT_MAJOR_VERSION}
   set(PIMPREFIX KPim${QT_MAJOR_VERSION})
