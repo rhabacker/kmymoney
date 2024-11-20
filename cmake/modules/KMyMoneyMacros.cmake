@@ -213,3 +213,39 @@ function(add_docbook_manual)
         )
     endif()
 endfunction()
+
+function(kmm_kdoctools_install podir)
+    file(GLOB lang_dirs "${podir}/*")
+    if (NOT KDE_INSTALL_DOCBUNDLEDIR)
+        if (HTML_INSTALL_DIR) # TODO KF6: deprecated, remove
+            set(KDE_INSTALL_DOCBUNDLEDIR ${HTML_INSTALL_DIR})
+        else()
+            set(KDE_INSTALL_DOCBUNDLEDIR share/doc/HTML)
+        endif()
+    endif()
+    foreach(lang_dir ${lang_dirs})
+        get_filename_component(lang ${lang_dir} NAME)
+        file(GLOB_RECURSE docbooks RELATIVE "${lang_dir}" "${lang_dir}/docs/*.docbook")
+        foreach(docbook ${docbooks})
+            string(REGEX MATCH "^docs/(.*)/index.docbook" match ${docbook})
+            if (match)
+                string(REPLACE ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} OUTPUT_DIR ${lang_dir}/docs)
+                message(STATUS "${lang_dir}/${match} ${OUTPUT_DIR}")
+                COPYDIR(
+                    SOURCES ${lang_dir}/kmymoney
+                    TYPES *.png *.svg *.css
+                    OUTPUT_DIR ${OUTPUT_DIR}/kmymoney
+                )
+                add_docbook(
+                    index
+                    TARGET_NAME po-${lang}-docs-kmymoney-index-html
+                    SOURCE ${lang_dir}/${match}
+                    OUTPUT_DIR ${OUTPUT_DIR}/kmymoney
+                    FORMATS html
+                    CSS_FILE ${CMAKE_SOURCE_DIR}/doc/kmymoney.css
+                    INSTALL_DIR ${KDE_INSTALL_DOCBUNDLEDIR}/${lang}
+                )
+            endif()
+        endforeach()
+    endforeach()
+endfunction()
