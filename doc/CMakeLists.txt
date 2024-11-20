@@ -33,11 +33,12 @@ if(ENABLE_XML_DOCS)
 #                           (without variable substitution)
 # @param MAN_CATEGORY <cat> category for creating man pages (also used for html output)
 # @param FORMATS <formats>  list with output formats to generate ('html' and/or 'man')
+# @param CSS_FILE <file>    add file with css styles to the generated output
 # @param LOAD_TRACE         show load traces of external entities)
 #
 macro(add_docbook _target)
     set(options LOAD_TRACE)
-    set(oneValueArgs SOURCE TEMPLATE MAN_CATEGORY)
+    set(oneValueArgs SOURCE TEMPLATE MAN_CATEGORY CSS_FILE)
     set(multiValueArgs FORMATS)
     cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
@@ -70,6 +71,10 @@ macro(add_docbook _target)
         if(ARGS_LOAD_TRACE)
             list(APPEND optional --load-trace)
         endif()
+        if(ARGS_CSS_FILE)
+            list(APPEND optional --stringparam html.stylesheet ${ARGS_CSS_FILE})
+        endif()
+
         add_custom_command(
             OUTPUT ${_outfile}
             COMMAND ${XSLTPROC_EXECUTABLE} --output ${_outfile} --nonet --xinclude --param passivetex.extensions '1' --param generate.consistent.ids '1' ${optional} ${STYLESHEET} ${_xmlfile}
@@ -108,13 +113,14 @@ endmacro()
 # which is required to run generated xml docs from build directory
 COPYDIR(doc *.png)
 COPYDIR(doc *.svg)
+COPYDIR(doc *.css)
 
 set(formats html)
 # if(UNIX)
 #     list(APPEND formats man)
 # endif()
 # generate docbook output
-add_docbook(kmymoney SOURCE index.docbook FORMATS ${formats})
+add_docbook(kmymoney SOURCE index.docbook FORMATS ${formats} CSS_FILE kmymoney.css)
 
 install(FILES ${DOC_DATA} DESTINATION ${CMAKE_INSTALL_DATADIR}/doc/kmymoney)
 
