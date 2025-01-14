@@ -1,0 +1,15 @@
+Date,Num,Payee,Tags,Category,Amount,Balance
+"Acct 1"
+"2015-01-01","","Opening Balance","","","","GBP 0.00"
+"2015-01-01","","[Empty Payee]","[No Tag]","Transfer from Opening Balances","GBP 100.00","GBP 100.00"
+"2025-01-11","","Closing Balance","","","","GBP 100.00"
+Total Acct 1,,,,,"GBP 100.00",
+"Foreign Acct"
+"2015-01-01","","Opening Balance","","","","USD 0.00"
+"2015-01-01","","[Empty Payee]","[No Tag]","Transfer from Opening Balances (USD)","USD 200.00","USD 200.00"
+"2015-03-27","1","Payee1","[No Tag]","Dining","USD -25.00","USD 175.00"
+"2015-03-27","2","Payee2","[No Tag]","Dining","USD -123.56","USD 51.44"
+"2025-01-11","","Closing Balance","","","","USD 51.44"
+Total Foreign Acct,,,,,"USD 51.44",
+Grand Total,,,,,"GBP 100.00",
+,,,,"USD 51.44",

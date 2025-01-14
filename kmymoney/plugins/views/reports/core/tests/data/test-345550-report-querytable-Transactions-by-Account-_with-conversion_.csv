@@ -1,0 +1,14 @@
+Date,Num,Payee,Tags,Category,Amount,Balance
+"Acct 1"
+"2015-01-01","","Opening Balance","","",""," 0.00"
+"2015-01-01","","[Empty Payee]","[No Tag]","Transfer from Opening Balances"," 100.00"," 100.00"
+"2025-01-11","","Closing Balance","","",""," 100.00"
+Total Acct 1,,,,," 100.00",
+"Foreign Acct"
+"2015-01-01","","Opening Balance","","",""," 0.00"
+"2015-01-01","","[Empty Payee]","[No Tag]","Transfer from Opening Balances (USD)"," 135.12"," 135.12"
+"2015-03-27","1","Payee1","[No Tag]","Dining"," -16.89"," 118.23"
+"2015-03-27","2","Payee2","[No Tag]","Dining"," -83.48","  34.75"
+"2025-01-11","","Closing Balance","","",""," 34.75"
+Total Foreign Acct,,,,," 99.63",
+Grand Total,,,,," 199.63",
