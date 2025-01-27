@@ -11,6 +11,7 @@ set(querytable_test_files
   test-469195.xml
   test-cash-flow.xml
   test-investment.xml
+  test-investment-multi-currency.xml
   test-net-worth.xml
   test-transactions.xml
   refinance-loan.xml

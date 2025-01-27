@@ -1,0 +1,29 @@
+Date,Category,Account,Action,Shares,Price,Amount,Balance
+"Investment"
+"A"
+"2024-01-01","Initial Market Value","A","","0.00"," 0.0000",""," 0.00"
+"2024-01-27","Transfer to Investment: A","A","Buy","200.00"," 5.0000"," -1,000.00"," -1,000.00"
+"2025-01-31","Ending Market Value","A","","200.00"," 7.0000",""," 1,400.00"
+Total A,,,,,," -1,000.00",
+"B"
+"2024-01-01","Initial Market Value","B","","0.00"," 0.0000",""," 0.00"
+"2024-01-27","Transfer to Investment: B","B","Buy","30.00"," 20.0000"," -600.00"," -600.00"
+"2024-10-01","Transfer to Investment: B","B","Buy","15.00"," 20.0000"," -300.00"," -900.00"
+"2025-01-31","Ending Market Value","B","","45.00"," 25.0000",""," 1,125.00"
+Total B,,,,,," -900.00",
+Total Investment,,,,,," -1,900.00",
+"Investment (EUR)"
+"E"
+"2024-01-01","Initial Market Value","E","","0.00"," 0.0000",""," 0.00"
+"2024-01-01","Transfer to Investment (EUR): E","E","Buy","5.00"," 15.7894"," -78.95"," -78.95"
+"2025-01-31","Ending Market Value","E","","5.00"," 15.7895",""," 78.94"
+Total E,,,,,," -78.95",
+Total Investment (EUR),,,,,," -78.95",
+"Investment (JPY)"
+"C (JPY)"
+"2024-01-01","Initial Market Value","C (JPY)","","0.00"," 0.0000",""," 0.00"
+"2024-01-27","Transfer to Investment (JPY): C (JPY)","C (JPY)","Buy","110.00"," 0.2353"," -26.00"," -26.00"
+"2025-01-31","Ending Market Value","C (JPY)","","110.00"," 0.2541",""," 27.95"
+Total C (JPY),,,,,," -26.00",
+Total Investment (JPY),,,,,," -26.00",
+Grand Total,,,,,," -2,004.95",
