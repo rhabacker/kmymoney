@@ -130,6 +130,7 @@ public Q_SLOTS:
     void slotItemDoubleClicked(QTreeWidgetItem* item, int column);
     void slotOpenReport(const QString&);
     void slotOpenReport(const MyMoneyReport&);
+    void slotCloseReport(const MyMoneyReport&);
     void slotCloseCurrent();
     void slotClose(int index);
     void slotCloseAll();

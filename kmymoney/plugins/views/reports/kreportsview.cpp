@@ -134,10 +134,32 @@ void KReportsView::executeAction(eMenu::Action action, const SelectedObjects& se
 
     case eMenu::Action::ChartAccountBalance: {
         const auto account = MyMoneyFile::instance()->accountsModel()->itemById(selections.firstSelection(SelectedObjects::Account));
+#if 0
         if (!account.id().isEmpty()) {
             QPointer<KBalanceChartDlg> dlg = new KBalanceChartDlg(account, this);
             dlg->exec();
             delete dlg;
+#else
+        if (!account.id().isEmpty()) {
+            MyMoneyReport r = MyMoneyFile::instance()->report(d->balanceHistoryReportID);
+            slotCloseReport(r);
+            r.setName(i18n("%1 Balance History", account.name()));
+            r.setNegExpenses(MyMoneyAccount::balanceFactor(account.accountType()).isNegative());
+            r.clearAccountFilter();
+            r.clearCategoryFilter();
+            r.setDateFilter(QDate::currentDate().addMonths(-3), QDate::currentDate().addMonths(3));
+            if (account.accountType() == eMyMoney::Account::Type::Investment) {
+                const auto subAccountList = account.accountList();
+                for (const auto& accountID : qAsConst(subAccountList))
+                    r.addAccount(accountID);
+            } else {
+                r.addAccount(account.id());
+            }
+
+            // add min/max lines
+            slotOpenReport(r);
+            // toggleChart();
+#endif
         }
     } break;
 
@@ -598,6 +620,25 @@ void KReportsView::slotOpenReport(const MyMoneyReport& report)
 
     if (!isVisible())
         Q_EMIT switchViewRequested(View::Reports);
+}
+
+void KReportsView::slotCloseReport(const MyMoneyReport& report)
+{
+    Q_D(KReportsView);
+    if (d->m_needLoad)
+        d->init();
+
+    // Find the tab which contains the report indicated by this list item
+    int index = 1;
+    while (index < d->ui.m_reportTabWidget->count()) {
+        auto current = dynamic_cast<KReportTab*>(d->ui.m_reportTabWidget->widget(index));
+
+        if (current && current->report().name() == report.name()) {
+            slotClose(index);
+            return;
+        }
+        ++index;
+    }
 }
 
 void KReportsView::slotItemDoubleClicked(QTreeWidgetItem* item, int column)

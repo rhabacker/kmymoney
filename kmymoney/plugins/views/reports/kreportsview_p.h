@@ -944,6 +944,24 @@ public:
                                i18n("Account Balances by Type"),
                                i18n("Default Report")
                            ));
+            list.push_back(MyMoneyReport(eMyMoney::Report::RowType::AssetLiability,
+                                         static_cast<unsigned>(eMyMoney::Report::ColumnType::Months),
+                                         eMyMoney::TransactionFilter::Date::Last3ToNext3Months,
+                                         eMyMoney::Report::DetailLevel::Total,
+                                         i18n("%1 Balance History", QString()),
+                                         i18n("Generated Report")));
+            list.back().setChartByDefault(true);
+            list.back().setChartCHGridLines(false);
+            list.back().setChartSVGridLines(false);
+            list.back().setChartDataLabels(false);
+            list.back().setChartType(eMyMoney::Report::ChartType::Line);
+            list.back().setChartPalette(eMyMoney::Report::ChartPalette::Application);
+            list.back().setIncludingBudgetActuals(true);
+            list.back().setIncludingForecast(true);
+            list.back().setColumnsAreDays(false);
+            list.back().setConvertCurrency(false);
+            list.back().setMixedTime(true);
+            balanceHistoryReportID = list.back().id();
 
             groups.push_back(list);
         }
@@ -1507,6 +1525,7 @@ public:
     bool m_columnsAlreadyAdjusted;
     MyMoneyAccount m_currentAccount;
     QMap<QString, bool> expandStatesBeforeSearch;
+    QString balanceHistoryReportID;
 };
 
 #endif
