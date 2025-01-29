@@ -134,7 +134,7 @@ void KReportsView::executeAction(eMenu::Action action, const SelectedObjects& se
 
     case eMenu::Action::ChartAccountBalance: {
         const auto account = MyMoneyFile::instance()->accountsModel()->itemById(selections.firstSelection(SelectedObjects::Account));
-#if 0
+#if 1
         if (!account.id().isEmpty()) {
             QPointer<KBalanceChartDlg> dlg = new KBalanceChartDlg(account, this);
             dlg->exec();
