@@ -1,4 +1,4 @@
-Date,Num,Category,Account,Price,Amount
+Date,Num,Category,Account,Rate,Amount
 "tag1"
 "2024-01-01","","expense","checking"," 1.0000"," -123.00"
 "tag2"

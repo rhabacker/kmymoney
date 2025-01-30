@@ -1,4 +1,4 @@
-Date,Num,Payee,Tags,Category,Price,Amount,Balance
+Date,Num,Payee,Tags,Category,Rate,Amount,Balance
 "[Empty Payee]"
 "2024-01-04","","[Empty Payee]","[No Tag]","E"," 1.0000"," -50.00"," -50.00"
 Total [Empty Payee],,,,,," -50.00",

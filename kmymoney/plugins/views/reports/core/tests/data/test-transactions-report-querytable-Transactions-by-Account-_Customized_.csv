@@ -1,4 +1,4 @@
-Date,Num,Payee,Tags,Category,Price,Amount,Balance
+Date,Num,Payee,Tags,Category,Rate,Amount,Balance
 "checking"
 "2024-01-01","","Opening Balance","",""," 1.0000",""," 0.00"
 "2024-01-01","","[Empty Payee]","tag1","expense"," 1.0000"," -123.00"," -123.00"

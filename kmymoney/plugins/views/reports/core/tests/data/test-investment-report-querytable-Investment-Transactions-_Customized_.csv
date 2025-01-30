@@ -1,4 +1,4 @@
-Date,Category,Account,Action,Shares,Price,Amount,Balance
+Date,Category,Account,Action,Shares,Rate,Amount,Balance
 "Shares"
 "BHP"
 "2022-01-01","Initial Market Value","BHP","","0.00"," 0.00",""," 0.00"

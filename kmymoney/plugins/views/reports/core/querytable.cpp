@@ -189,14 +189,16 @@ void QueryTable::init()
         m_columns << ctAction;
     if (qc & eMyMoney::Report::QueryColumn::Shares)
         m_columns << ctShares;
-    // When loading reports from a file, it is ensured that the price column is displayed
+    if (qc & eMyMoney::Report::QueryColumn::Price)
+        m_columns << ctPrice;
+    // When loading reports from a file, it is ensured that the rate column is displayed
     // when using currency conversion. However, there are cases where this does not apply
     // (e.g. test cases), so here it is ensured that the corresponding column is displayed.
-    if (qc & eMyMoney::Report::QueryColumn::Price || m_config.isConvertCurrency())
-        m_priceColumn << ctPrice;
+    if (qc & eMyMoney::Report::QueryColumn::Rate || m_config.isConvertCurrency())
+        m_rateColumn << ctRate;
     if (qc & eMyMoney::Report::QueryColumn::Performance) {
         m_subtotal.clear();
-        m_priceColumn.clear();
+        m_rateColumn.clear();
         switch (m_config.investmentSum()) {
         case eMyMoney::Report::InvestmentSum::OwnedAndSold:
             m_columns << ctBuys << ctSells << ctReinvestIncome << ctCashIncome << ctEndingMarketValue << ctExtendedInternalRateOfReturn << ctReturnInvestment
@@ -225,7 +227,7 @@ void QueryTable::init()
     }
     if (qc & eMyMoney::Report::QueryColumn::CapitalGain) {
         m_subtotal.clear();
-        m_priceColumn.clear();
+        m_rateColumn.clear();
         switch (m_config.investmentSum()) {
         case eMyMoney::Report::InvestmentSum::Owned:
             m_columns << ctShares << ctBuyPrice << ctBuys << ctLastPrice << ctEndingMarketValue << ctPercentageGain << ctCapitalGain;
@@ -245,12 +247,12 @@ void QueryTable::init()
         }
     }
     if (qc & eMyMoney::Report::QueryColumn::Loan) {
-        m_columns << ctPayment << ctInterest << ctFees << m_priceColumn;
+        m_columns << ctPayment << ctInterest << ctFees << m_rateColumn;
         m_postcolumns << ctBalance;
     }
 
-    if (!m_columns.contains(ctPrice))
-        m_columns << m_priceColumn;
+    if (!m_columns.contains(ctRate))
+        m_columns << m_rateColumn;
 
     if (qc & eMyMoney::Report::QueryColumn::Balance)
         m_postcolumns << ctBalance;
@@ -785,6 +787,8 @@ void QueryTable::constructTransactionTable()
                     qA[ctShares] = shares.isZero() ? QString() : shares.toString();
                     qA[ctPrice] = shares.isZero() ? QString() : xr.convertPrecision(pricePrecision).toString();
                     qA.addSourceLine(ctPrice, __LINE__);
+                    qA[ctRate] = (xr / (*it_split).possiblyCalculatedPrice()).convertPrecision(pricePrecision).toString();
+                    qA.addSourceLine(ctRate, __LINE__);
 
                     if (((*it_split).action() == MyMoneySplit::actionName(eMyMoney::Split::Action::BuyShares)) && shares.isNegative())
                         qA[ctAction] = "Sell";
@@ -793,6 +797,8 @@ void QueryTable::constructTransactionTable()
                 } else {
                     qA[ctPrice] = xr.toString();
                     qA.addSourceLine(ctPrice, __LINE__);
+                    qA[ctRate] = xr.toString();
+                    qA.addSourceLine(ctRate, __LINE__);
                 }
 
                 a_fullname = splitAcc.fullName();
@@ -815,7 +821,9 @@ void QueryTable::constructTransactionTable()
                 qA[ctMemo] = a_memo;
 
                 qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
+                qA[ctRate] = xr.convert(fraction).toString();
                 qA.addSourceLine(ctValue, __LINE__);
+                qA.addSourceLine(ctRate, __LINE__);
 
                 qS[ctReconcileDate] = qA[ctReconcileDate];
                 qS[ctReconcileFlag] = qA[ctReconcileFlag];
@@ -1005,6 +1013,8 @@ void QueryTable::constructTransactionTable()
                         }
                         qS[ctPrice] = xr.convert(fraction).toString();
                         qS.addSourceLine(ctPrice, __LINE__);
+                        qS[ctRate] = xr.convert(fraction).toString();
+                        qS.addSourceLine(ctRate, __LINE__);
 
                         //multiply by currency and convert to lowest fraction
                         qS[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
@@ -1175,6 +1185,8 @@ void QueryTable::constructTransactionTable()
 
         qA[ctPrice] = startPrice.convertPrecision(account.currency().pricePrecision()).toString();
         qA.addSourceLine(ctPrice, __LINE__);
+        qA[ctRate] = startPrice.convertPrecision(account.currency().pricePrecision()).toString();
+        qA.addSourceLine(ctRate, __LINE__);
 
         if (account.isInvest()) {
             qA[ctShares] = startShares.toString();
@@ -1190,6 +1202,8 @@ void QueryTable::constructTransactionTable()
         //ending balance
         qA[ctPrice] = endPrice.convertPrecision(account.currency().pricePrecision()).toString();
         qA.addSourceLine(ctPrice, __LINE__);
+        qA[ctRate] = endPrice.convertPrecision(account.currency().pricePrecision()).toString();
+        qA.addSourceLine(ctRate, __LINE__);
 
         if (account.isInvest()) {
             qA[ctShares] = endShares.toString();
@@ -1976,7 +1990,9 @@ void QueryTable::constructSplitsTable()
             int pricePrecision = file->security(splitAcc.currencyId()).pricePrecision();
             qA[ctPrice] = xr.convertPrecision(pricePrecision).toString();
             qA.addSourceLine(ctPrice, __LINE__);
+            qA[ctRate] = xr.convertPrecision(pricePrecision).toString();
             qA[ctAccount] = splitAcc.name();
+            qA.addSourceLine(ctRate, __LINE__);
             qA[ctAccountID] = splitAcc.id();
             qA[ctTopAccount] = splitAcc.topParentName();
 
@@ -2159,6 +2175,8 @@ void QueryTable::constructSplitsTable()
         int pricePrecision = file->security(account.currencyId()).pricePrecision();
         qA[ctPrice] = startPrice.convertPrecision(pricePrecision).toString();
         qA.addSourceLine(ctPrice, __LINE__);
+        qA[ctRate] = startPrice.convertPrecision(pricePrecision).toString();
+        qA.addSourceLine(ctRate, __LINE__);
 
         if (account.isInvest()) {
             qA[ctShares] = startShares.toString();
@@ -2175,6 +2193,8 @@ void QueryTable::constructSplitsTable()
         //ending balance
         qA[ctPrice] = endPrice.convertPrecision(pricePrecision).toString();
         qA.addSourceLine(ctPrice, __LINE__);
+        qA[ctRate] = endPrice.convertPrecision(pricePrecision).toString();
+        qA.addSourceLine(ctRate, __LINE__);
 
         if (account.isInvest()) {
             qA[ctShares] = endShares.toString();

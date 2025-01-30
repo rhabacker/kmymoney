@@ -659,8 +659,8 @@ public:
             const auto idx = model->index(row, 0);
             MyMoneyReport report = model->itemByIndex(idx);
             unsigned qc = report.queryColumns();
-            if (report.isConvertCurrency() && !(qc & eMyMoney::Report::QueryColumn::Price)) {
-                qc |= eMyMoney::Report::QueryColumn::Price;
+            if (report.isConvertCurrency() && !(qc & eMyMoney::Report::QueryColumn::Rate)) {
+                qc |= eMyMoney::Report::QueryColumn::Rate;
                 report.setQueryColumns((eMyMoney::Report::QueryColumn)qc);
             }
             file->modifyReport(report);

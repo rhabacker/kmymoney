@@ -1,4 +1,4 @@
-Date,Payment,Interest,Fees,Price,Amount,Balance
+Date,Payment,Interest,Fees,Rate,Amount,Balance
 "First loan"
 "2000-01-01","","",""," 1.0000",""," 0.00"
 "2000-01-01"," -20,000.00","",""," 1.0000"," -20,000.00"," -20,000.00"

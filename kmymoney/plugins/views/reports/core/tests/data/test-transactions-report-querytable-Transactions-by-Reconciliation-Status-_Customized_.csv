@@ -1,4 +1,4 @@
-Date,Num,Payee,Category,Price,Amount,Balance
+Date,Num,Payee,Category,Rate,Amount,Balance
 "checking"
 "Cleared"
 "2024-01-02","","[Empty Payee]","income"," 1.0000"," 445.00"," 445.00"

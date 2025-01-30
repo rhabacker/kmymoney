@@ -118,7 +118,7 @@ void ListTable::render(QString& result, QString& csv) const
     // Table header
     //
     for (const auto& cellType : qAsConst(columns)) {
-        result.append(QString::fromLatin1("<th>%1</th>").arg(tableHeader(cellType)));
+        result.append(QString::fromLatin1("<th title=\"%1\">%2</th>").arg(tableToolTip(cellType), tableHeader(cellType)));
         csv.append(tableHeader(cellType) + QLatin1Char(','));
     }
     csv.chop(1);  // remove last ',' character
@@ -648,6 +648,7 @@ ListTable::cellGroupE ListTable::cellGroup(const cellTypeE cellType)
     case ctStartingMarketValue:
     case ctEndingMarketValue:
         return cgMoney;
+    case ctRate:
     case ctPrice:
     case ctLastPrice:
     case ctBuyPrice:
@@ -807,9 +808,22 @@ QString ListTable::tableHeader(const cellTypeE cellType)
         return i18n("Starting Market Value");
     case ctEndingMarketValue:
         return i18n("Ending Market Value");
+    case ctRate:
+        return i18n("Rate");
     default:
         break;
     }
     return QLatin1String("None");
+}
+
+QString ListTable::tableToolTip(const cellTypeE cellType)
+{
+    switch (cellType) {
+    case ctRate:
+        return i18n("Conversion Rate");
+    default:
+        break;
+    }
+    return QString();
 }
 }

@@ -300,6 +300,8 @@ void KReportConfigurationFilterDlg::slotSearch()
             qc |= eMyMoney::Report::QueryColumn::Shares;
         if (d->m_tabRowColQuery->ui->m_checkPrice->isChecked())
             qc |= eMyMoney::Report::QueryColumn::Price;
+        if (d->m_tabRowColQuery->ui->m_checkRate->isChecked())
+            qc |= eMyMoney::Report::QueryColumn::Rate;
         if (d->m_tabRowColQuery->ui->m_checkBalance->isChecked())
             qc |= eMyMoney::Report::QueryColumn::Balance;
 
@@ -551,6 +553,7 @@ void KReportConfigurationFilterDlg::slotReset()
         d->m_tabRowColQuery->ui->m_checkAction->setChecked(qc & eMyMoney::Report::QueryColumn::Action);
         d->m_tabRowColQuery->ui->m_checkShares->setChecked(qc & eMyMoney::Report::QueryColumn::Shares);
         d->m_tabRowColQuery->ui->m_checkPrice->setChecked(qc & eMyMoney::Report::QueryColumn::Price);
+        d->m_tabRowColQuery->ui->m_checkRate->setChecked(qc & eMyMoney::Report::QueryColumn::Rate);
         d->m_tabRowColQuery->ui->m_checkBalance->setChecked(qc & eMyMoney::Report::QueryColumn::Balance);
 
         d->m_tabRowColQuery->ui->m_checkTax->setChecked(d->m_initialState.isTax());

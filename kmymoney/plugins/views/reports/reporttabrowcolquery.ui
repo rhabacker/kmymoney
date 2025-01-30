@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>730</width>
-    <height>267</height>
+    <height>293</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -144,51 +144,6 @@
         <property name="spacing">
          <number>2</number>
         </property>
-        <item row="1" column="1">
-         <widget class="QCheckBox" name="m_checkMemo">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>&lt;p&gt;Select this option to show the Memo column&lt;/p&gt;</string>
-          </property>
-          <property name="text">
-           <string>Memo</string>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">buttonGroup1</string>
-          </attribute>
-         </widget>
-        </item>
-        <item row="0" column="4">
-         <widget class="QCheckBox" name="m_checkShares">
-          <property name="toolTip">
-           <string>&lt;p&gt;Select this option to show the Shares column for investments&lt;/p&gt;</string>
-          </property>
-          <property name="text">
-           <string>Shares</string>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">buttonGroup1</string>
-          </attribute>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QCheckBox" name="m_checkPrice">
-          <property name="toolTip">
-           <string>&lt;p&gt;Select this option to show the Price column for investments&lt;/p&gt;</string>
-          </property>
-          <property name="text">
-           <string>Price</string>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">buttonGroup1</string>
-          </attribute>
-         </widget>
-        </item>
         <item row="1" column="2">
          <widget class="QCheckBox" name="m_checkReconciled">
           <property name="toolTip">
@@ -202,32 +157,13 @@
           </attribute>
          </widget>
         </item>
-        <item row="0" column="3">
-         <widget class="QCheckBox" name="m_checkAccount">
+        <item row="1" column="5">
+         <widget class="QCheckBox" name="m_checkBalance">
           <property name="toolTip">
-           <string>&lt;p&gt;Select this option to show the Account column&lt;/p&gt;</string>
+           <string>&lt;p&gt;Select this option to show the Running balance column&lt;/p&gt;</string>
           </property>
           <property name="text">
-           <string>Account</string>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">buttonGroup1</string>
-          </attribute>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QCheckBox" name="m_checkNumber">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>&lt;p&gt;Select this option to show the Number column&lt;/p&gt;</string>
-          </property>
-          <property name="text">
-           <string>Number</string>
+           <string>Balance</string>
           </property>
           <attribute name="buttonGroup">
            <string notr="true">buttonGroup1</string>
@@ -253,6 +189,57 @@
           </attribute>
          </widget>
         </item>
+        <item row="1" column="3">
+         <widget class="QCheckBox" name="m_checkPrice">
+          <property name="toolTip">
+           <string>&lt;p&gt;Select this option to show the Price column for investments&lt;/p&gt;</string>
+          </property>
+          <property name="text">
+           <string>Price</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup1</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="m_checkNumber">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;p&gt;Select this option to show the Number column&lt;/p&gt;</string>
+          </property>
+          <property name="text">
+           <string>Number</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup1</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="m_checkMemo">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;p&gt;Select this option to show the Memo column&lt;/p&gt;</string>
+          </property>
+          <property name="text">
+           <string>Memo</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup1</string>
+          </attribute>
+         </widget>
+        </item>
         <item row="1" column="0">
          <widget class="QCheckBox" name="m_checkPayee">
           <property name="minimumSize">
@@ -266,6 +253,19 @@
           </property>
           <property name="text">
            <string>Payee</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup1</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QCheckBox" name="m_checkAccount">
+          <property name="toolTip">
+           <string>&lt;p&gt;Select this option to show the Account column&lt;/p&gt;</string>
+          </property>
+          <property name="text">
+           <string>Account</string>
           </property>
           <attribute name="buttonGroup">
            <string notr="true">buttonGroup1</string>
@@ -291,6 +291,26 @@
           </attribute>
          </widget>
         </item>
+        <item row="1" column="4">
+         <widget class="QCheckBox" name="m_checkRate">
+          <property name="text">
+           <string>Rate</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="QCheckBox" name="m_checkShares">
+          <property name="toolTip">
+           <string>&lt;p&gt;Select this option to show the Shares column for investments&lt;/p&gt;</string>
+          </property>
+          <property name="text">
+           <string>Shares</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup1</string>
+          </attribute>
+         </widget>
+        </item>
         <item row="0" column="5">
          <widget class="QCheckBox" name="m_checkAction">
           <property name="toolTip">
@@ -298,19 +318,6 @@
           </property>
           <property name="text">
            <string>Action</string>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">buttonGroup1</string>
-          </attribute>
-         </widget>
-        </item>
-        <item row="1" column="4">
-         <widget class="QCheckBox" name="m_checkBalance">
-          <property name="toolTip">
-           <string>&lt;p&gt;Select this option to show the Running balance column&lt;/p&gt;</string>
-          </property>
-          <property name="text">
-           <string>Balance</string>
           </property>
           <attribute name="buttonGroup">
            <string notr="true">buttonGroup1</string>
@@ -435,8 +442,6 @@
   <tabstop>m_checkCategory</tabstop>
   <tabstop>m_checkTag</tabstop>
   <tabstop>m_checkAccount</tabstop>
-  <tabstop>m_checkShares</tabstop>
-  <tabstop>m_checkAction</tabstop>
   <tabstop>m_checkPayee</tabstop>
   <tabstop>m_checkMemo</tabstop>
   <tabstop>m_checkReconciled</tabstop>
