@@ -12,6 +12,7 @@
 #include <QDialogButtonBox>
 #include <QLocale>
 #include <QPushButton>
+#include <QTabWidget>
 #include <QVBoxLayout>
 #include <QWindow>
 
@@ -192,19 +193,25 @@ void KBalanceChartDlg::configureReport()
     QDialog dialog;
     QVBoxLayout* layout = new QVBoxLayout;
     dialog.setLayout(layout);
+    QTabWidget* tabWidget = new QTabWidget;
+    layout->addWidget(tabWidget);
     ReportTabChart* chartWidget = new ReportTabChart(&dialog);
     chartWidget->setPlotExpensesDownwardVisible(false);
     chartWidget->removeChartType(eMyMoney::Report::ChartType::StackedBar);
     chartWidget->removeChartType(eMyMoney::Report::ChartType::Ring);
-    layout->addWidget(chartWidget);
+    tabWidget->addTab(chartWidget, i18n("Chart"));
+    ReportTabRange* rangeWidget = new ReportTabRange(&dialog);
+    tabWidget->addTab(rangeWidget, i18n("Range"));
     QDialogButtonBox* box = new QDialogButtonBox(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
     layout->addWidget(box);
     box->addButton(box->button(QDialogButtonBox::Ok), QDialogButtonBox::AcceptRole);
     connect(box, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
     connect(box, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
     chartWidget->load(m_reportCfg);
+    rangeWidget->load(m_reportCfg);
     if (dialog.exec() == QDialog::Accepted) {
         chartWidget->apply(m_reportCfg);
+        rangeWidget->apply(m_reportCfg);
         reports::PivotTable(*m_reportCfg).drawChart(*m_chartView);
     }
 }
