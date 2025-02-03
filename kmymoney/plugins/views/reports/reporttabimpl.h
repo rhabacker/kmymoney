@@ -95,6 +95,9 @@ public:
     Ui::ReportTabRange* ui;
     DateRangeDlg *m_dateRange;
     void setRangeLogarythmic(bool set);
+    bool apply(MyMoneyReport* report);
+    bool load(MyMoneyReport* report);
+
 private:
     enum EDimension { eRangeStart = 0, eRangeEnd, eMajorTick, eMinorTick};
     bool m_logYaxis;

@@ -212,6 +212,18 @@ ReportTabRange::ReportTabRange(QWidget *parent)
     connect(ui->m_dataMinorTick, &QLineEdit::editingFinished, this, &ReportTabRange::slotEditingFinishedMinor);
     connect(ui->m_dataLock, &QComboBox::currentIndexChanged, this, &ReportTabRange::slotDataLockChanged);
     Q_EMIT ui->m_dataLock->currentIndexChanged(ui->m_dataLock->currentIndex());
+    ui->m_comboColumns->addItem(i18nc("@item the columns will display daily data", "Daily"),
+                                QVariant::fromValue<eMyMoney::Report::ColumnType>(eMyMoney::Report::ColumnType::Days));
+    ui->m_comboColumns->addItem(i18nc("@item the columns will display weekly data", "Weekly"),
+                                QVariant::fromValue<eMyMoney::Report::ColumnType>(eMyMoney::Report::ColumnType::Weeks));
+    ui->m_comboColumns->addItem(i18nc("@item the columns will display monthly data", "Monthly"),
+                                QVariant::fromValue<eMyMoney::Report::ColumnType>(eMyMoney::Report::ColumnType::Months));
+    ui->m_comboColumns->addItem(i18nc("@item the columns will display bi-monthly data", "Bi-Monthly"),
+                                QVariant::fromValue<eMyMoney::Report::ColumnType>(eMyMoney::Report::ColumnType::BiMonths));
+    ui->m_comboColumns->addItem(i18nc("@item the columns will display quarterly data", "Quarterly"),
+                                QVariant::fromValue<eMyMoney::Report::ColumnType>(eMyMoney::Report::ColumnType::Quarters));
+    ui->m_comboColumns->addItem(i18nc("@item the columns will display yearly data", "Yearly"),
+                                QVariant::fromValue<eMyMoney::Report::ColumnType>(eMyMoney::Report::ColumnType::Years));
 }
 
 ReportTabRange::~ReportTabRange()
@@ -239,6 +251,62 @@ void ReportTabRange::setRangeLogarythmic(bool set)
     }
 
     updateDataRangeValidators(ui->m_yLabelsPrecision->value()); // update data range validators and re-validate
+}
+
+bool ReportTabRange::apply(MyMoneyReport* report)
+{
+    report->setDataRangeStart(ui->m_dataRangeStart->text());
+    report->setDataRangeEnd(ui->m_dataRangeEnd->text());
+    report->setDataMajorTick(ui->m_dataMajorTick->text());
+    report->setDataMinorTick(ui->m_dataMinorTick->text());
+    report->setYLabelsPrecision(ui->m_yLabelsPrecision->value());
+    report->setDataFilter(ui->m_dataLock->currentData().value<eMyMoney::Report::DataLock>());
+    eMyMoney::Report::ColumnType columnType = ui->m_comboColumns->currentData().value<eMyMoney::Report::ColumnType>();
+    report->setColumnType(columnType);
+    report->setColumnsAreDays(columnType == eMyMoney::Report::ColumnType::NoColumns || columnType == eMyMoney::Report::ColumnType::Days);
+    if (report->reportType() == eMyMoney::Report::ReportType::PivotTable)
+        report->setDateFilter(m_dateRange->fromDate(), m_dateRange->toDate());
+    return true;
+}
+
+bool ReportTabRange::load(MyMoneyReport* report)
+{
+    ui->m_dataRangeStart->setText(report->dataRangeStart());
+    ui->m_dataRangeEnd->setText(report->dataRangeEnd());
+    ui->m_dataMajorTick->setText(report->dataMajorTick());
+    ui->m_dataMinorTick->setText(report->dataMinorTick());
+    ui->m_yLabelsPrecision->setValue(report->yLabelsPrecision());
+    ui->m_dataLock->setCurrentIndex((int)report->dataFilter());
+
+    KComboBox* combo = ui->m_comboColumns;
+    if (report->isColumnsAreDays()) {
+        switch (report->columnType()) {
+        case eMyMoney::Report::ColumnType::NoColumns:
+            combo->setCurrentIndex(combo->findData(QVariant::fromValue(eMyMoney::Report::ColumnType::Days)));
+            break;
+        case eMyMoney::Report::ColumnType::Days:
+        case eMyMoney::Report::ColumnType::Weeks:
+            combo->setCurrentIndex(combo->findData(QVariant::fromValue(report->columnType())));
+            break;
+        default:
+            break;
+        }
+    } else {
+        switch (report->columnType()) {
+        case eMyMoney::Report::ColumnType::NoColumns:
+            combo->setCurrentIndex(combo->findData(QVariant::fromValue(eMyMoney::Report::ColumnType::Months)));
+            break;
+        case eMyMoney::Report::ColumnType::Months:
+        case eMyMoney::Report::ColumnType::BiMonths:
+        case eMyMoney::Report::ColumnType::Quarters:
+        case eMyMoney::Report::ColumnType::Years:
+            combo->setCurrentIndex(combo->findData(QVariant::fromValue(report->columnType())));
+            break;
+        default:
+            break;
+        }
+    }
+    return true;
 }
 
 void ReportTabRange::updateDataRangeValidators(const int& precision)

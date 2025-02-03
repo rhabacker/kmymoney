@@ -150,8 +150,8 @@ KReportConfigurationFilterDlg::KReportConfigurationFilterDlg(MyMoneyReport repor
         d->m_dateRange = d->m_tabRange->m_dateRange;
 
         if (!(d->m_initialState.isIncludingPrice() || d->m_initialState.isIncludingAveragePrice())) {
-            connect(d->m_tabRange->ui->m_comboColumns, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, &KReportConfigurationFilterDlg::slotColumnTypeChanged);
-            connect(d->m_tabRange->ui->m_comboColumns, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, static_cast<void (KReportConfigurationFilterDlg::*)(int)>(&KReportConfigurationFilterDlg::slotUpdateColumnsCombo));
+            connect(d->m_tabRange->ui->m_comboColumns, &QComboBox::activated, this, &KReportConfigurationFilterDlg::slotColumnTypeChanged);
+            connect(d->m_tabRange->ui->m_comboColumns, &QComboBox::activated, this, &KReportConfigurationFilterDlg::slotUpdateColumnsCombo);
         }
         connect(d->m_tabChart->ui->m_logYaxis, &QCheckBox::stateChanged, this, &KReportConfigurationFilterDlg::slotLogAxisChanged);
         connect(d->m_tabChart->ui->m_negExpenses, &QCheckBox::stateChanged, this, &KReportConfigurationFilterDlg::slotNegExpensesChanged);
@@ -297,20 +297,7 @@ void KReportConfigurationFilterDlg::slotSearch()
     }
 
     if (d->m_tabRange) {
-        d->m_currentState.setDataRangeStart(d->m_tabRange->ui->m_dataRangeStart->text());
-        d->m_currentState.setDataRangeEnd(d->m_tabRange->ui->m_dataRangeEnd->text());
-        d->m_currentState.setDataMajorTick(d->m_tabRange->ui->m_dataMajorTick->text());
-        d->m_currentState.setDataMinorTick(d->m_tabRange->ui->m_dataMinorTick->text());
-        d->m_currentState.setYLabelsPrecision(d->m_tabRange->ui->m_yLabelsPrecision->value());
-        d->m_currentState.setDataFilter((eMyMoney::Report::DataLock)d->m_tabRange->ui->m_dataLock->currentIndex());
-
-        eMyMoney::Report::ColumnType ct[6] = { eMyMoney::Report::ColumnType::Days, eMyMoney::Report::ColumnType::Weeks, eMyMoney::Report::ColumnType::Months, eMyMoney::Report::ColumnType::BiMonths, eMyMoney::Report::ColumnType::Quarters, eMyMoney::Report::ColumnType::Years, };
-        bool dy[6] = { true, true, false, false, false, false };
-        d->m_currentState.setColumnType(ct[d->m_tabRange->ui->m_comboColumns->currentIndex()]);
-
-        //TODO (Ace) This should be implicit in the call above.  MMReport needs fixin'
-        d->m_currentState.setColumnsAreDays(dy[d->m_tabRange->ui->m_comboColumns->currentIndex()]);
-        d->m_currentState.setDateFilter(d->m_dateRange->fromDate(), d->m_dateRange->toDate());
+        d->m_tabRange->apply(&d->m_currentState);
     }
 
     // setup the date lock
@@ -343,24 +330,22 @@ void KReportConfigurationFilterDlg::slotColumnTypeChanged(int row)
 {
     Q_D(KReportConfigurationFilterDlg);
     if ((d->m_tabRowColPivot->ui->m_comboBudget->isEnabled() && row < 2)) {
-        d->m_tabRange->ui->m_comboColumns->setCurrentItem(i18nc("@item the columns will display monthly data", "Monthly"), false);
+        d->m_tabRange->ui->m_comboColumns->setCurrentIndex(
+            d->m_tabRange->ui->m_comboColumns->findData(QVariant::fromValue(eMyMoney::Report::ColumnType::Months)));
     }
 }
 
-void KReportConfigurationFilterDlg::slotUpdateColumnsCombo()
+void KReportConfigurationFilterDlg::slotUpdateColumnsCombo(int idx)
 {
+    Q_UNUSED(idx)
     Q_D(KReportConfigurationFilterDlg);
-    const int monthlyIndex = 2;
     const int incomeExpenseIndex = 0;
     const bool isIncomeExpenseForecast = d->m_currentState.isIncludingForecast() && d->m_tabRowColPivot->ui->m_comboRows->currentIndex() == incomeExpenseIndex;
-    if (isIncomeExpenseForecast && d->m_tabRange->ui->m_comboColumns->currentIndex() != monthlyIndex) {
-        d->m_tabRange->ui->m_comboColumns->setCurrentItem(i18nc("@item the columns will display monthly data", "Monthly"), false);
+    if (isIncomeExpenseForecast
+        && d->m_tabRange->ui->m_comboColumns->currentData().value<eMyMoney::Report::ColumnType>() != eMyMoney::Report::ColumnType::Months) {
+        d->m_tabRange->ui->m_comboColumns->setCurrentIndex(
+            d->m_tabRange->ui->m_comboColumns->findData(QVariant::fromValue(eMyMoney::Report::ColumnType::Months)));
     }
-}
-
-void KReportConfigurationFilterDlg::slotUpdateColumnsCombo(int)
-{
-    slotUpdateColumnsCombo();
 }
 
 void KReportConfigurationFilterDlg::slotLogAxisChanged(int state)
@@ -546,45 +531,7 @@ void KReportConfigurationFilterDlg::slotReset()
     }
 
     if (d->m_tabRange) {
-        d->m_tabRange->ui->m_dataRangeStart->setText(d->m_initialState.dataRangeStart());
-        d->m_tabRange->ui->m_dataRangeEnd->setText(d->m_initialState.dataRangeEnd());
-        d->m_tabRange->ui->m_dataMajorTick->setText(d->m_initialState.dataMajorTick());
-        d->m_tabRange->ui->m_dataMinorTick->setText(d->m_initialState.dataMinorTick());
-        d->m_tabRange->ui->m_yLabelsPrecision->setValue(d->m_initialState.yLabelsPrecision());
-        d->m_tabRange->ui->m_dataLock->setCurrentIndex((int)d->m_initialState.dataFilter());
-
-        KComboBox *combo = d->m_tabRange->ui->m_comboColumns;
-        if (d->m_initialState.isColumnsAreDays()) {
-            switch (d->m_initialState.columnType()) {
-            case eMyMoney::Report::ColumnType::NoColumns:
-            case eMyMoney::Report::ColumnType::Days:
-                combo->setCurrentItem(i18nc("@item the columns will display daily data", "Daily"), false);
-                break;
-            case eMyMoney::Report::ColumnType::Weeks:
-                combo->setCurrentItem(i18nc("@item the columns will display weekly data", "Weekly"), false);
-                break;
-            default:
-                break;
-            }
-        } else {
-            switch (d->m_initialState.columnType()) {
-            case eMyMoney::Report::ColumnType::NoColumns:
-            case eMyMoney::Report::ColumnType::Months:
-                combo->setCurrentItem(i18nc("@item the columns will display monthly data", "Monthly"), false);
-                break;
-            case eMyMoney::Report::ColumnType::BiMonths:
-                combo->setCurrentItem(i18nc("@item the columns will display bi-monthly data", "Bi-Monthly"), false);
-                break;
-            case eMyMoney::Report::ColumnType::Quarters:
-                combo->setCurrentItem(i18nc("@item the columns will display quarterly data", "Quarterly"), false);
-                break;
-            case eMyMoney::Report::ColumnType::Years:
-                combo->setCurrentItem(i18nc("@item the columns will display yearly data", "Yearly"), false);
-                break;
-            default:
-                break;
-            }
-        }
+        d->m_tabRange->load(&d->m_initialState);
     }
 
     if (d->m_tabCapitalGain) {
