@@ -23,13 +23,17 @@
 #include <KLocalizedString>
 #include <KSharedConfig>
 #include <KWindowConfig>
+#include <QPointer>
 
 // ----------------------------------------------------------------------------
 // Project Includes
 
 #include "icons.h"
 #include "kreportchartview.h"
+#include "kreportconfigurationfilterdlg.h"
 #include "mymoneyenums.h"
+#include "mymoneyexception.h"
+#include "mymoneyfile.h"
 #include "mymoneyreport.h"
 #include "pivottable.h"
 #include "reporttabimpl.h"
@@ -211,12 +215,15 @@ KBalanceChartDlg::KBalanceChartDlg(const MyMoneyAccount& account, QWidget* paren
     }
 
     // add the buttons
-    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Close | QDialogButtonBox::Reset);
+    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Close | QDialogButtonBox::Reset | QDialogButtonBox::Retry);
     buttonBox->button(QDialogButtonBox::Reset)->setText(i18n("Configure report"));
     buttonBox->button(QDialogButtonBox::Reset)->setIcon(Icons::get(Icons::Icon::DocumentProperties));
+    buttonBox->button(QDialogButtonBox::Retry)->setText(i18n("New report"));
+    buttonBox->button(QDialogButtonBox::Retry)->setIcon(Icons::get(Icons::Icon::DocumentNew));
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(buttonBox->button(QDialogButtonBox::Reset), &QPushButton::pressed, this, &KBalanceChartDlg::configureReport);
+    connect(buttonBox->button(QDialogButtonBox::Retry), &QPushButton::pressed, this, &KBalanceChartDlg::newReport);
     mainLayout->addWidget(buttonBox);
 
     if (!showLegend) {
@@ -252,5 +259,32 @@ void KBalanceChartDlg::configureReport()
     if (dialog.exec() == QDialog::Accepted) {
         chartWidget->apply(m_reportCfg);
         reports::PivotTable(*m_reportCfg).drawChart(*m_chartView);
+    }
+}
+
+void KBalanceChartDlg::newReport()
+{
+    QPointer<KReportConfigurationFilterDlg> dlg = new KReportConfigurationFilterDlg(*m_reportCfg);
+
+    if (dlg->exec()) {
+        MyMoneyReport newreport = dlg->getConfig();
+        newreport.setGroup("Value/Balance History");
+
+        // If this report has an ID, then MODIFY it, otherwise ADD it
+        MyMoneyFileTransaction ft;
+        try {
+            if (!newreport.id().isEmpty()) {
+                MyMoneyFile::instance()->modifyReport(newreport);
+                ft.commit();
+            } else {
+                MyMoneyFile::instance()->addReport(newreport);
+                ft.commit();
+
+                // QString reportGroupName = newreport.group();
+            }
+            // open created and close actual opened report
+            // KReportsView::slotOpenReport(report);
+        } catch (const MyMoneyException& e) {
+        }
     }
 }
