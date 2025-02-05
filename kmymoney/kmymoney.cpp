@@ -815,6 +815,11 @@ void KMyMoneyApp::initActions()
   connect(account_online_transfer, SIGNAL(triggered()), this, SLOT(slotNewOnlineTransfer()));
   connect(onlineJobAdministration::instance(), SIGNAL(canSendCreditTransferChanged(bool)),  account_online_transfer, SLOT(setEnabled(bool)));
 
+  KAction *account_copy_number = actionCollection()->addAction("account_copy_number");
+  account_copy_number->setText(i18n("Copy account number to clipboard"));
+  account_copy_number->setIcon(KIcon("copy"));
+  connect(account_copy_number, SIGNAL(triggered()), this, SLOT(slotAccountCopyNumber()));
+
   // *******************
   // The categories menu
   // *******************
@@ -7976,6 +7981,16 @@ void KMyMoneyApp::slotAccountUpdateOnline()
 
   // re-enable the disabled actions
   slotUpdateActions();
+}
+
+void KMyMoneyApp::slotAccountCopyNumber()
+{
+    // no account selected
+    if (d->m_selectedAccount.id().isEmpty())
+      return;
+
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText(d->m_selectedAccount.number());
 }
 
 void KMyMoneyApp::slotNewOnlineTransfer()

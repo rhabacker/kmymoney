@@ -547,6 +547,7 @@ protected slots:
   void slotAccountUnmapOnline();
   void slotAccountUpdateOnline();
   void slotAccountUpdateOnlineAll();
+  void slotAccountCopyNumber();
 
   /**
    * @brief Start dialog for an online banking transfer
