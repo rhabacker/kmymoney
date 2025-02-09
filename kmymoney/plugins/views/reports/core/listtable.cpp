@@ -807,6 +807,8 @@ QString ListTable::tableHeader(const cellTypeE cellType)
         return i18n("Starting Market Value");
     case ctEndingMarketValue:
         return i18n("Ending Market Value");
+    case ctRate:
+        return i18n("Conversion Rate");
     default:
         break;
     }

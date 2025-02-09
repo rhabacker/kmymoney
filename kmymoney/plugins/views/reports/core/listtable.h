@@ -116,6 +116,7 @@ public:
         ctCommodity,
         ctID,
         ctRank,
+        ctRate,
         ctSplit,
         ctMemo,
         ctAccount,

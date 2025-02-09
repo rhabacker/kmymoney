@@ -191,6 +191,7 @@ void QueryTable::init()
         m_columns << ctShares;
     if (qc & eMyMoney::Report::QueryColumn::Price)
         m_columns << ctPrice;
+    m_columns << ctRate;
     if (qc & eMyMoney::Report::QueryColumn::Performance) {
         m_subtotal.clear();
         switch (m_config.investmentSum()) {
@@ -806,7 +807,9 @@ void QueryTable::constructTransactionTable()
                 qA[ctMemo] = a_memo;
 
                 qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
+                qA[ctRate] = xr.convert(fraction).toString();
                 qA.addSourceLine(ctValue, __LINE__);
+                qA.addSourceLine(ctRate, __LINE__);
 
                 qS[ctReconcileDate] = qA[ctReconcileDate];
                 qS[ctReconcileFlag] = qA[ctReconcileFlag];
