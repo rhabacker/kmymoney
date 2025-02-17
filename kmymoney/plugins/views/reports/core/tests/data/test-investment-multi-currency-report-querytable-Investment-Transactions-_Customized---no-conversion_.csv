@@ -2,30 +2,30 @@ Date,Category,Account,Action,Shares,Price,Amount,Balance
 "Investment"
 "A"
 "2024-01-01","Initial Market Value","A","","0.00","USD 0.0000","","USD 0.00"
-"2024-01-27","Transfer to Investment: A","A","Buy","200.00","USD 5.0000","USD -1,000.00","USD -1,000.00"
+"2024-01-27","Transfer from Investment (Brokerage)","A","Buy","200.00","USD 5.0000","USD 1,000.00","USD 1,000.00"
 "2025-01-31","Ending Market Value","A","","200.00","USD 7.0000","","USD 1,400.00"
-Total A,,,,,,"USD -1,000.00",
+Total A,,,,,,"USD 1,000.00",
 "B"
 "2024-01-01","Initial Market Value","B","","0.00","USD 0.0000","","USD 0.00"
-"2024-01-27","Transfer to Investment: B","B","Buy","30.00","USD 20.0000","USD -600.00","USD -600.00"
-"2024-10-01","Transfer to Investment: B","B","Buy","15.00","USD 20.0000","USD -300.00","USD -900.00"
+"2024-01-27","Transfer from Investment (Brokerage)","B","Buy","30.00","USD 20.0000","USD 600.00","USD 600.00"
+"2024-10-01","Transfer from Investment (Brokerage)","B","Buy","15.00","USD 20.0000","USD 300.00","USD 900.00"
 "2025-01-31","Ending Market Value","B","","45.00","USD 25.0000","","USD 1,125.00"
-Total B,,,,,,"USD -900.00",
-Total Investment,,,,,,"USD -1,900.00",
+Total B,,,,,,"USD 900.00",
+Total Investment,,,,,,"USD 1,900.00",
 "Investment (EUR)"
 "E"
 "2024-01-01","Initial Market Value","E","","0.00","EUR 0.0000","","EUR 0.00"
-"2024-01-01","Transfer to Investment (EUR): E","E","Buy","5.00","EUR 15.0000","EUR -75.00","EUR -75.00"
+"2024-01-01","Transfer from Investment (EUR) (Brokerage)","E","Buy","5.00","EUR 15.0000","EUR 75.00","EUR 75.00"
 "2025-01-31","Ending Market Value","E","","5.00","EUR 15.0000","","EUR 75.00"
-Total E,,,,,,"EUR -75.00",
-Total Investment (EUR),,,,,,"EUR -75.00",
+Total E,,,,,,"EUR 75.00",
+Total Investment (EUR),,,,,,"EUR 75.00",
 "Investment (JPY)"
 "C (JPY)"
 "2024-01-01","Initial Market Value","C (JPY)","","0.00","JPY 0.0000","","JPY 0"
-"2024-01-27","Transfer to Investment (JPY): C (JPY)","C (JPY)","Buy","110.00","JPY 25.0000","JPY -2,750","JPY -2,750"
+"2024-01-27","Transfer from Investment (JPY) (Brokerage)","C (JPY)","Buy","110.00","JPY 25.0000","JPY 2,750","JPY 2,750"
 "2025-01-31","Ending Market Value","C (JPY)","","110.00","JPY 27.0000","","JPY 2,970"
-Total C (JPY),,,,,,"JPY -2,750",
-Total Investment (JPY),,,,,,"JPY -2,750",
-Grand Total,,,,,,"EUR -75.00",
-,,,,,"JPY -2,750",
-,,,,,"USD -1,900.00",
+Total C (JPY),,,,,,"JPY 2,750",
+Total Investment (JPY),,,,,,"JPY 2,750",
+Grand Total,,,,,,"EUR 75.00",
+,,,,,"JPY 2,750",
+,,,,,"USD 1,900.00",
