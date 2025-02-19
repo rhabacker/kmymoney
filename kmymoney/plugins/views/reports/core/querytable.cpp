@@ -993,12 +993,19 @@ void QueryTable::constructTransactionTable()
                         // Add/Remove shares
                         if (splitAcc.isInvest()) {
                             qS[ctShares] = (*it_split).shares().convert(fraction).toString();
+                            if ((*it_split).action() == MyMoneySplit::actionName(eMyMoney::Split::Action::AddShares)) {
+                                qS[ctAction] = (*it_split).shares().isNegative() ? "Remove" : (*it_split).action();
+                            } else {
+                                qS[ctAction] = (*it_split).action();
+                                qS[ctPrice] = (*it_split).price().convert(fraction).toString();
+                                qS[ctValue] = ((*it_split).shares() * (*it_split).price()).convert(fraction).toString();
+                                qS.addSourceLine(ctValue, __LINE__);
+                            }
+                        } else {
+                            // multiply by currency and convert to lowest fraction
+                            qS[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
+                            qS.addSourceLine(ctValue, __LINE__);
                         }
-
-                        //multiply by currency and convert to lowest fraction
-                        qS[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
-                        qS.addSourceLine(ctValue, __LINE__);
-
                         // also keep the value in the "payment" column for loan payment reports
                         qS[ctPayment] = qS[ctValue];
 
