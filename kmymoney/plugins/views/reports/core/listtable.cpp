@@ -265,7 +265,7 @@ void ListTable::render(QString& result, QString& csv) const
                          || *it_column == ctShares //
                          || *it_column == ctPrice //
                          || *it_column == ctNextDueDate //
-                         || *it_column == ctBalance //
+                         //|| *it_column == ctBalance //
                          || *it_column == ctAccount //
                          || *it_column == ctName)
                     data.clear();

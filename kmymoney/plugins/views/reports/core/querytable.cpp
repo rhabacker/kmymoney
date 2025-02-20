@@ -355,6 +355,7 @@ void QueryTable::constructTotalRows()
                     QMap<cellTypeE, MyMoneyMoney>::iterator lowerGrp = (*currencyGrp)[i + 1].begin();
 
                     while(upperGrp != (*currencyGrp)[i].end()) {
+                        totalsRow.addSourceLine(lowerGrp.key(), __LINE__);
                         totalsRow[lowerGrp.key()] = lowerGrp.value().toString();  // fill totals row with subtotal values...
                         (*upperGrp) += (*lowerGrp);
                         //          (*lowerGrp) = MyMoneyMoney();
@@ -365,7 +366,9 @@ void QueryTable::constructTotalRows()
                     // custom total values calculations
                     for (const auto& subtotal : qAsConst(subtotals)) {
                         totalsRow.addSourceLine(subtotal, __LINE__);
-                        if (subtotal == ctReturnInvestment) {
+                        if (subtotal == ctValue) {
+                            totalsRow[ctBalance] = totalsRow[ctValue];
+                        } else if (subtotal == ctReturnInvestment) {
                             totalsRow[subtotal] = helperROI((*currencyGrp).at(i + 1).value(ctBuys),
                                                             (*currencyGrp).at(i + 1).value(ctSells),
                                                             (*currencyGrp).at(i + 1).value(ctReinvestIncome),
@@ -1211,8 +1214,7 @@ void QueryTable::constructTransactionTable()
         }
 
         qA[ctPostDate] = strStartDate;
-        qA[ctBalance] = startBalance.convert(fraction).toString();
-        qA[ctValue].clear();
+        qA[ctValue] = startBalance.convert(fraction).toString();
         qA.addSourceLine(ctValue, __LINE__);
         qA[ctID] = FIRST_ID_SORT;
         m_rows += qA;
@@ -1226,7 +1228,8 @@ void QueryTable::constructTransactionTable()
         }
 
         qA[ctPostDate] = strEndDate;
-        qA[ctBalance] = endBalance.toString();
+        qA[ctValue] = endBalance.toString();
+        qA.addSourceLine(ctValue, __LINE__);
         qA[ctRank] = END_BALANCE_RANK;
         qA[ctID] = LAST_ID_SORT;
         m_rows += qA;
@@ -2195,8 +2198,7 @@ void QueryTable::constructSplitsTable()
         }
 
         qA[ctPostDate] = strStartDate;
-        qA[ctBalance] = startBalance.convert(fraction).toString();
-        qA[ctValue].clear();
+        qA[ctValue] = startBalance.convert(fraction).toString();
         qA.addSourceLine(ctValue, __LINE__);
         qA[ctID] = FIRST_ID_SORT;
         m_rows += qA;
@@ -2211,7 +2213,8 @@ void QueryTable::constructSplitsTable()
         }
 
         qA[ctPostDate] = strEndDate;
-        qA[ctBalance] = endBalance.toString();
+        qA[ctValue] = endBalance.toString();
+        qA.addSourceLine(ctValue, __LINE__);
         qA[ctID] = LAST_ID_SORT;
         m_rows += qA;
         if (!m_containsNonBaseCurrency && qA[ctCurrency] != file->baseCurrency().id()) {
