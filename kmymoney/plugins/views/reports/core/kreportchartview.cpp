@@ -157,13 +157,21 @@ void KReportChartView::drawPivotChart(const PivotGrid &grid, const MyMoneyReport
         KReportCartesianAxis *yAxis = new KReportCartesianAxis(loc, config.yLabelsPrecision());
         yAxis->setPosition(CartesianAxis::Left);
 
+        QString title;
+        QString unit;
+        if (config.accounts().size() > 0) {
+            MyMoneyAccount account = MyMoneyFile::instance()->account(config.accounts().at(0));
+            MyMoneySecurity currency = MyMoneyFile::instance()->security(account.currencyId());
+            unit = currency.name();
+        }
         if (config.isIncludingPrice())
-            yAxis->setTitleText(i18n("Price"));
+            title = i18n("Price");
         else if (config.isInvestmentsOnly())
-            yAxis->setTitleText(i18n("Value"));
+            title = i18n("Value");
         else
-            yAxis->setTitleText(i18n("Balance"));
+            title = i18n("Balance");
 
+        yAxis->setTitleText(!unit.isEmpty() ? QString("%1 [%2]").arg(title, unit) : title);
         TextAttributes yAxisTitleTextAttr(yAxis->titleTextAttributes());
         yAxisTitleTextAttr.setMinimalFontSize(QFontDatabase::systemFont(QFontDatabase::GeneralFont).pointSize());
         yAxisTitleTextAttr.setPen(m_foregroundBrush.color());
