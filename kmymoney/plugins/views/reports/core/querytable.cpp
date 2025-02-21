@@ -1003,6 +1003,8 @@ void QueryTable::constructTransactionTable()
                         if (splitAcc.isInvest()) {
                             qS[ctShares] = (*it_split).shares().convert(fraction).toString();
                         }
+                        qS[ctPrice] = xr.convert(fraction).toString();
+                        qS.addSourceLine(ctPrice, __LINE__);
 
                         //multiply by currency and convert to lowest fraction
                         qS[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
