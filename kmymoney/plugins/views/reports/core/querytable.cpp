@@ -1212,8 +1212,27 @@ bool QueryTable::ROI(MyMoneyMoney& returnInvestment,
                      const MyMoneyMoney& startingBalance,
                      const MyMoneyMoney& endingBalance) const
 {
-    MyMoneyMoney allBuys = buys - reinvestIncome;
+    // reinvestments are added to the endingBalance
+    MyMoneyMoney allBuys = buys;
     MyMoneyMoney costs(startingBalance - allBuys);
+    MyMoneyMoney income(sells + cashIncome + endingBalance);
+    // see https://www.calculator.net/roi-calculator.html
+    if (costs.isZero())
+        return false;
+    returnInvestment = (income - costs) / costs;
+    return true;
+}
+
+bool QueryTable::ROI2(MyMoneyMoney& returnInvestment,
+                      const MyMoneyMoney& buys,
+                      const MyMoneyMoney& sells,
+                      const MyMoneyMoney& reinvestIncome,
+                      const MyMoneyMoney& cashIncome,
+                      const MyMoneyMoney& startingBalance,
+                      const MyMoneyMoney& endingBalance) const
+{
+    MyMoneyMoney allBuys = buys;
+    MyMoneyMoney costs(allBuys - startingBalance);
     MyMoneyMoney income(sells + cashIncome + endingBalance);
     // see https://www.calculator.net/roi-calculator.html
     if (costs.isZero())
@@ -1255,6 +1274,21 @@ QString QueryTable::helperROI(const MyMoneyMoney& buys,
 {
     MyMoneyMoney returnInvestment;
     if (ROI(returnInvestment, buys, sells, reinvestIncome, cashIncome, startingBalance, endingBalance)) {
+        return returnInvestment.convert(10000).toString();
+    } else {
+        return QString();
+    }
+}
+
+QString QueryTable::helperROI2(const MyMoneyMoney& buys,
+                               const MyMoneyMoney& sells,
+                               const MyMoneyMoney& reinvestIncome,
+                               const MyMoneyMoney& cashIncome,
+                               const MyMoneyMoney& startingBalance,
+                               const MyMoneyMoney& endingBalance) const
+{
+    MyMoneyMoney returnInvestment;
+    if (ROI2(returnInvestment, buys, sells, reinvestIncome, cashIncome, startingBalance, endingBalance)) {
         return returnInvestment.convert(10000).toString();
     } else {
         return QString();

@@ -63,6 +63,13 @@ protected:
              const MyMoneyMoney& cashIncome,
              const MyMoneyMoney& startingBalance,
              const MyMoneyMoney& endingBalance) const;
+    bool ROI2(MyMoneyMoney& returnInvestment,
+              const MyMoneyMoney& buys,
+              const MyMoneyMoney& sells,
+              const MyMoneyMoney& reinvestIncome,
+              const MyMoneyMoney& cashIncome,
+              const MyMoneyMoney& startingBalance,
+              const MyMoneyMoney& endingBalance) const;
     QString helperAROI(const MyMoneyMoney& buys,
                        const MyMoneyMoney& sells,
                        const MyMoneyMoney& reinvestIncome,
@@ -77,6 +84,12 @@ protected:
                       const MyMoneyMoney& cashIncome,
                       const MyMoneyMoney& startingBalance,
                       const MyMoneyMoney& endingBalance) const;
+    QString helperROI2(const MyMoneyMoney& buys,
+                       const MyMoneyMoney& sells,
+                       const MyMoneyMoney& reinvestIncome,
+                       const MyMoneyMoney& cashIncome,
+                       const MyMoneyMoney& startingBalance,
+                       const MyMoneyMoney& endingBalance) const;
 
     /**
      * Calculates the extended internal rate of return

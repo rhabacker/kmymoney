@@ -668,7 +668,7 @@ void QueryTableTest::testInvestment()
 
         QVERIFY(rows.count() == 5);
         QVERIFY(MyMoneyMoney(rows[0][ListTable::ctExtendedInternalRateOfReturn]) == MyMoneyMoney("669/10000"));
-        QVERIFY(MyMoneyMoney(rows[0][ListTable::ctReturnInvestment]) == MyMoneyMoney("-39/5000"));
+        QVERIFY(MyMoneyMoney(rows[0][ListTable::ctReturnInvestment]) == MyMoneyMoney("87/2500"));
         QVERIFY(MyMoneyMoney(rows[0][ListTable::ctBuys]) == MyMoneyMoney(-210000.00));
         QVERIFY(MyMoneyMoney(rows[0][ListTable::ctSells]) == MyMoneyMoney(44000.00));
         QVERIFY(MyMoneyMoney(rows[0][ListTable::ctReinvestIncome]) == MyMoneyMoney(9000.00));
@@ -1123,6 +1123,34 @@ public:
         QCOMPARE(result2, QString());
     }
 
+    // https://bugs.kde.org/show_bug.cgi?id=396301
+    // Dividend paid out
+    void testHelperROI2()
+    {
+        MyMoneyMoney buys(1200);
+        MyMoneyMoney sells(1000);
+        MyMoneyMoney reinvestIncome(0);
+        MyMoneyMoney cashIncome(150);
+        MyMoneyMoney startingBalance(0);
+        MyMoneyMoney endingBalance(200);
+        QString result1 = helperROI2(buys, sells, reinvestIncome, cashIncome, startingBalance, endingBalance);
+        QCOMPARE(result1, MyMoneyMoney(125, 1000).convert(10000).toString());
+    }
+
+    // https://bugs.kde.org/show_bug.cgi?id=396301
+    // Dividend reinvested
+    void testHelperROI3()
+    {
+        MyMoneyMoney buys(1250);
+        MyMoneyMoney sells(1000);
+        MyMoneyMoney reinvestIncome(150);
+        MyMoneyMoney cashIncome(0);
+        MyMoneyMoney startingBalance(0);
+        MyMoneyMoney endingBalance(350);
+        QString result1 = helperROI2(buys, sells, reinvestIncome, cashIncome, startingBalance, endingBalance);
+        QCOMPARE(result1, MyMoneyMoney(8, 100).convert(10000).toString());
+    }
+
     void testHelperXIRR()
     {
         // see https://help.libreoffice.org/latest/de/text/scalc/01/04060118.html
@@ -1151,6 +1179,16 @@ void QueryTableTest::testROI()
     try {
         QueryTableProtectedTester().testHelperROI();
     } catch (const MyMoneyException &e) {
+        QFAIL(e.what());
+    }
+    try {
+        QueryTableProtectedTester().testHelperROI2();
+    } catch (const MyMoneyException& e) {
+        QFAIL(e.what());
+    }
+    try {
+        QueryTableProtectedTester().testHelperROI3();
+    } catch (const MyMoneyException& e) {
         QFAIL(e.what());
     }
 }
