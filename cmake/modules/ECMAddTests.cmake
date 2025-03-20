@@ -13,7 +13,7 @@ Convenience functions for adding tests.
 
   ecm_add_tests(<sources>
       [COMPILE_DEFINITIONS <definition> [<definition> [...]]] # Since 6.13.0
-      [ENV <list>]  # Since 6.13.0
+      [ENVIRONMENT <list>]  # Since 6.13.0
       LINK_LIBRARIES <library> [<library> [...]]
       [NAME_PREFIX <prefix>]
       [GUI]
@@ -28,7 +28,7 @@ created (whose name is the base name of the source file) with the compiler
 definitions passed with ``COMPILE_DEFINITIONS``. This will be linked
 against the libraries given with ``LINK_LIBRARIES``. Each executable will
 be added as a test with the same name and can have an environment provided
-by ``ENV``.
+by ``ENVIRONMENT``.
 
 If ``NAME_PREFIX`` is given, this prefix will be prepended to the test names, but
 not the target names. As a result, it will not prevent clashes between tests
@@ -63,7 +63,7 @@ generator expressions. Since 5.111.
   ecm_add_test(
       <sources>
       [COMPILE_DEFINITIONS <definition> [<definition> [...]]] # Since 6.13.0
-      [ENV <list>]  # Since 6.13.0
+      [ENVIRONMENT <list>]  # Since 6.13.0
       LINK_LIBRARIES <library> [<library> [...]]
       [TEST_NAME <name>]
       [NAME_PREFIX <prefix>]
@@ -93,7 +93,7 @@ function(ecm_add_test)
   # TARGET_NAME_VAR and TEST_NAME_VAR are undocumented args used by
   # ecm_add_tests
   set(oneValueArgs TEST_NAME NAME_PREFIX TARGET_NAME_VAR TEST_NAME_VAR WORKING_DIRECTORY)
-  set(multiValueArgs COMPILE_DEFINITIONS ENV LINK_LIBRARIES)
+  set(multiValueArgs COMPILE_DEFINITIONS ENVIRONMENT LINK_LIBRARIES)
   cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
   set(_sources ${ARG_UNPARSED_ARGUMENTS})
   list(LENGTH _sources _sourceCount)
@@ -135,10 +135,10 @@ function(ecm_add_test)
       endif()
       set(_plugin_path "${_plugin_path}${PATHSEP}$ENV{QT_PLUGIN_PATH}")
     endif()
-    list(APPEND ARG_ENV "QT_PLUGIN_PATH=${_plugin_path}")
+    list(APPEND ARG_ENVIRONMENT "QT_PLUGIN_PATH=${_plugin_path}")
   endif()
-  if (ARG_ENV)
-    list(JOIN ARG_ENV ";" env)
+  if (ARG_ENVIRONMENT)
+    list(JOIN ARG_ENVIRONMENT ";" env)
     set_property(TEST ${_testname} PROPERTY ENVIRONMENT "${env}")
   endif()
   if (ARG_TARGET_NAME_VAR)
@@ -152,7 +152,7 @@ endfunction()
 function(ecm_add_tests)
   set(options GUI)
   set(oneValueArgs NAME_PREFIX TARGET_NAMES_VAR TEST_NAMES_VAR WORKING_DIRECTORY)
-  set(multiValueArgs COMPILE_DEFINITIONS ENV LINK_LIBRARIES)
+  set(multiValueArgs COMPILE_DEFINITIONS ENVIRONMENT LINK_LIBRARIES)
   cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
   if(ARG_GUI)
     set(_exe_type GUI)
@@ -169,7 +169,7 @@ function(ecm_add_tests)
     ecm_add_test(${_test_source}
       NAME_PREFIX ${ARG_NAME_PREFIX}
       COMPILE_DEFINITIONS ${ARG_COMPILE_DEFINITIONS}
-      ENV ${ARG_ENV}
+      ENVIRONMENT ${ARG_ENVIRONMENT}
       LINK_LIBRARIES ${ARG_LINK_LIBRARIES}
       TARGET_NAME_VAR target_name
       TEST_NAME_VAR test_name
