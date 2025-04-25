@@ -366,6 +366,7 @@ void ListTable::render(QString& result, QString& csv) const
             if (m_config.isConvertCurrency()) // don't show currency id, if there is only single currency
                 currencyID.clear();
 
+            QString tradingSymbol = file->currency(currencyID).tradingSymbol();
             switch (cellGroup(*it_column)) {
             case cgMoney:
                 if (data.isEmpty()) {
@@ -380,8 +381,7 @@ void ListTable::render(QString& result, QString& csv) const
                 } else {
                     auto value = MyMoneyMoney(data);
                     auto valueStr = value.formatMoney(fraction);
-                    csv.append(QString::fromLatin1("\"%1 %2\",")
-                               .arg(currencyID, valueStr));
+                    csv.append(QString::fromLatin1("\"%1 %2\",").arg(tradingSymbol, valueStr));
 
                     QString colorBegin;
                     QString colorEnd;
@@ -391,11 +391,13 @@ void ListTable::render(QString& result, QString& csv) const
                     }
 
                     result.append(QString::fromLatin1("<td%1>%4%6%2&nbsp;%3%7%5</td>")
-                                  .arg((*it_column == ctValue) ? QLatin1String(" class=\"value\"") : QString(),
-                                       currencyID,
-                                       valueStr,
-                                       tlinkBegin, tlinkEnd,
-                                       colorBegin, colorEnd));
+                                      .arg((*it_column == ctValue) ? QLatin1String(" class=\"value\"") : QString(),
+                                           tradingSymbol,
+                                           valueStr,
+                                           tlinkBegin,
+                                           tlinkEnd,
+                                           colorBegin,
+                                           colorEnd));
                 }
                 break;
             case cgPercent:
@@ -428,8 +430,8 @@ void ListTable::render(QString& result, QString& csv) const
                 } else {
                     int pricePrecision = file->security(file->account((*it_row).value(ctAccountID)).currencyId()).pricePrecision();
                     result.append(QString::fromLatin1("<td>%3%2&nbsp;%1%4</td>")
-                                      .arg(MyMoneyMoney(data).formatMoney(QString(), pricePrecision), currencyID, tlinkBegin, tlinkEnd));
-                    csv.append(QString::fromLatin1("\"%1 %2\",").arg(currencyID, MyMoneyMoney(data).formatMoney(QString(), pricePrecision, false)));
+                                      .arg(MyMoneyMoney(data).formatMoney(QString(), pricePrecision), tradingSymbol, tlinkBegin, tlinkEnd));
+                    csv.append(QString::fromLatin1("\"%1 %2\",").arg(tradingSymbol, MyMoneyMoney(data).formatMoney(QString(), pricePrecision, false)));
                 }
             }
             break;
