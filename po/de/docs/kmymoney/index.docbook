@@ -202,6 +202,7 @@
   <!ENTITY whatsnew SYSTEM "whatsnew.docbook">
   <!ENTITY details-institutions SYSTEM "details-institutions.docbook">
   <!ENTITY details-accounts SYSTEM "details-accounts.docbook">
+  <!ENTITY details-aqbanking SYSTEM "details-aqbanking.docbook">
   <!ENTITY details-loans SYSTEM "details-loans.docbook">
   <!ENTITY details-budgets SYSTEM "details-budgets.docbook">
   <!ENTITY details-forecast SYSTEM "details-forecast.docbook">
@@ -385,6 +386,7 @@ consistent documentation style across all KDE apps. -->
 &details-search;
 &details-formats;
 &details-database;
+&details-aqbanking;
 &faq;
 &reference;
 &credits;
