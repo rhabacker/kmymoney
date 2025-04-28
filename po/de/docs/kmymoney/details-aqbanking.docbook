@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="details.aqbanking">
+<chapterinfo>
+  <authorgroup>
+    <author> &Ralf.Habacker; &Ralf.Habacker.mail; </author>
+  </authorgroup>
+  <date>2025-04-25</date>
+  <releaseinfo>5.2.0</releaseinfo>
+</chapterinfo>
+
+<title>Online-Banking</title>
+
+<para>
+  Die Konfiguration des Online-Bankings erfolgt über den Menüpunkt "Einstellungen" -> "Aqbanking konfigurieren"
+</para>
+
+<para>
+<screenshot>
+  <screeninfo>Kmymoney-settings-aqbanking-de.png</screeninfo>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="Kmymoney-settings-aqbanking-de.png" width="400px" />
+    </imageobject>
+  </mediaobject>
+</screenshot>
+</para>
+
+<para>
+  Dieser Menüpunkt ist sichtbar, nachdem das zugehörige KBanking-Plugin aktiviert wurde, was über den Menüpunkt &quot;KMyMoney einrichten&quot; und nach Auswahl des Eintrags &quot;Modul&quot; im linken Fensterbereich erfolgen kann.
+</para>
+
+<para>
+<screenshot>
+  <screeninfo>Kmymoney-settings-plugins-de.png</screeninfo>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="Kmymoney-settings-plugins-de.png" width="400px" />
+    </imageobject>
+  </mediaobject>
+</screenshot>
+</para>
+
+<para>
+  Nachdem Sie den Menüeintrag gedrückt haben, sehen Sie den folgenden Dialog:
+</para>
+
+<para>
+<screenshot>
+  <screeninfo>kbanking-wizard-page1-de.png</screeninfo>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="Kbanking-wizard-page1-de.png" width="400px" />
+    </imageobject>
+  </mediaobject>
+</screenshot>
+</para>
+
+<sect1 id="add_user">
+  <title>Benutzer anlegen</title>
+  <para>
+    Nachdem Sie auf &quot;Benutzer anlegen&quot; geklickt haben, werden Sie zu dem unten abgebildeten Dialog &quot;Benutzer hinzufügen&quot; weitergeleitet:
+  </para>
+  <screenshot>
+    <screeninfo>kbanking-user-wizard-page1-de.png</screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="Kbanking-user-wizard-page1-de.png" width="400px" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+</sect1>
+<sect1 id="select_online_banking_protocol">
+  <title>Online-Banking-Protokoll auswählen</title>
+  <para>
+    Nachdem Sie auf &quot;Weiter&quot; gedrückt haben, sehen Sie eine Liste der verfügbaren Online-Banking-Protokolle:
+  </para>
+  <screenshot>
+    <screeninfo>kbanking-user-wizard-page2-de.png</screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="Kbanking-user-wizard-page2-de.png" width="400px" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+</sect1>
+<sect1 id="configuring_a_hbci_account">
+  <title>Einrichten eines HBCI-Kontos</title>
+  <para>
+    Nachdem Sie &quot;HBCI&quot; ausgewählt und auf &quot;Weiter&quot; gedrückt haben, sehen Sie die folgende Seite, auf der Sie den Sicherheitstyp auswählen können:
+  </para>
+  <screenshot>
+    <screeninfo>kbanking-user-wizard-hbci-page1-de.png</screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="Kbanking-user-wizard-hbci-page1-de.png" width="400px" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+  <para>
+    Unter <ulink url="https://www.aquamaniac.de/rdm/projects/aqbanking/wiki/AqBanking6_Bankentabelle#section-2">AqBanking6 Bankentabelle</ulink> finden Sie einige Details zu den von den Banken unterstützten Sicherheitstypen. Wenn Ihre Bank dort nicht aufgeführt ist, sollten Sie zunächst Pin/TAN ausprobieren.
+  </para>
+</sect1>
+<sect1 id="setup_pintan">
+  <title>Pin/Tan einrichten</title>
+  <screenshot>
+    <screeninfo>kbanking-user-wizard-hbci-page2-de.png</screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="Kbanking-user-wizard-hbci-page2-de.png" width="400px" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+</sect1>
+<sect1 id="select_bank_and_server_url">
+  <title>Bank und Server-Url auswählen</title>
+  <screenshot>
+    <screeninfo>kbanking-user-wizard-hbci-page3-de.png</screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="Kbanking-user-wizard-hbci-page3-de.png" width="400px" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+  <para>
+    At
+    <ulink url="https://www.aquamaniac.de/rdm/projects/aqbanking/wiki/AqBanking6_Bankentabelle">AqBanking6
+    Bankentabelle</ulink> you can find a list of bank server url known
+    to work.
+  </para>
+</sect1>
+<sect1 id="select_bank_account_and_user_name">
+  <title>Bankkonto und Benutzernamen auswählen</title>
+  <screenshot>
+    <screeninfo>kbanking-user-wizard-hbci-page4-de.png</screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="Kbanking-user-wizard-hbci-page4-de.png" width="400px" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+</sect1>
+<sect1 id="choose_extended_settings_or_continue">
+  <title>Choose extended settings or continue</title>
+  <screenshot>
+    <screeninfo>kbanking-user-wizard-hbci-page5-de.png</screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="Kbanking-user-wizard-hbci-page5-de.png" width="400px" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+</sect1>
+<sect1 id="select_extended_settings">
+  <title>Erweiterte Einstellungen wählen oder fortfahren</title>
+  <screenshot>
+    <screeninfo>kbanking-user-wizard-hbci-page6-de.png</screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="Kbanking-user-wizard-hbci-page6-de.png" width="400px" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+</sect1>
+<sect1 id="finish_creating_user">
+  <title>Benutzer fertig erstellen</title>
+  <para>
+    Nach dem Drücken von &quot;Weiter&quot; kontaktiert aqbanking den Server und holt sich das Serverzertifikat und die Bankdaten.
+  </para>
+  <screenshot>
+    <screeninfo>kbanking-user-wizard-hbci-page7.png</screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="Kbanking-user-wizard-hbci-page7.png" width="400px" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+  <para>
+    Wenn das nicht funktioniert, sind Sie wahrscheinlich von <ulink url="https://www.aquamaniac.de/rdm/issues/273">bug
+    273</ulink> betroffen und müssen das Konto auf der Kommandozeile mit den aqbanking-Kommandozeilentools erstellen, wie unter
+   <ulink url="https://www.aquamaniac.de/rdm/projects/aqbanking/wiki/SetupPinTan">Setup
+    HBCI with Pin/Tan</ulink> beschrieben.
+  </para>
+  <para>
+    Andernfalls wurde Ihr Benutzerkonto nach dem Drücken von &quot;Schließen&quot; erstellt.    
+  </para>
+</sect1>
+<sect1 id="add_account">
+  <title>Konto hinzufügen</title>
+  <para>
+    Falls das Hinzufügen eines Benutzerkontos nicht fehlgeschlagen ist, sollten die Konten, die der angegebenen Bank zugeordnet sind, bereits in der Kontoliste vorhanden sein.
+  </para>
+</sect1>
+</chapter>
