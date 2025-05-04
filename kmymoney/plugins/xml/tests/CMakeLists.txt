@@ -25,4 +25,5 @@ kmm_add_tests(${tests_sources}
     mymoneystoragexml
     kmm_testutils
     kmm_testutilities
+    xmlstorage_static
 )

@@ -286,9 +286,18 @@ public:
             return true;
         }
 
+        if (m_lockFile)
+            m_lockFile->unlock();
+
         auto newLock = new QLockFile(filename + ".lck");
         newLock->setStaleLockTime(0);
         if (!newLock->tryLock()) {
+            qint64 pid;
+            QString hostname;
+            QString appname;
+            if (newLock->getLockInfo(&pid, &hostname, &appname)) {
+                qDebug() << pid << hostname << appname;
+            }
             delete newLock;
             return false;
         }
