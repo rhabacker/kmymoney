@@ -30,16 +30,14 @@
 </para>
 
 <para>
-  This menu item is visible after the associated KBanking plugin has
-  been activated, which can be done via the &quot;Configure KMyMoney&quot;
-  menu item and after selecting the &quot;Module&quot; entry in the left
-  pane.
+  This menu item is visible after the associated KBanking plugin has been activated,
+  which can be done via the menu item &quot;Configure KMyMoney&quot; and after
+  selecting the &quot;Plugins&quot; entry in the left-hand window area.
 </para>
 
 <para>
 <screenshot>
   <screeninfo>KMyMoney configuration menu</screeninfo>
-  <screeninfo></screeninfo>
   <mediaobject>
     <imageobject>
       <imagedata fileref="configure_plugins.png" />
@@ -49,15 +47,17 @@
     </textobject>
   </mediaobject>
 </screenshot>
+ Make sure that the checkbox in front of the line with KBanking is checked.
 </para>
 
+<title>Aqbanking setup</title>
 <para>
-  After you pressed the menu entry you will see the following dialog:
+  After you pressed the menu entry &quot;Configure Aqbanking&quot; you will see the following dialog:
 </para>
 
 <para>
 <screenshot>
-  <screeninfo>kbanking-wizard-page1.png</screeninfo>
+  <screeninfo></screeninfo>
   <mediaobject>
     <imageobject>
       <imagedata fileref="aqbanking-wizard-page1.png" />
@@ -66,8 +66,13 @@
 </screenshot>
 </para>
 
+<para>
+  Adding takes place in two steps. The first step is to
+  add a user and the second step is to add an account.
+</para>
+
 <sect1 id="create_user">
-  <title>Create user</title>
+  <title>Create a user</title>
   <para>
     After pressing &quot;Create user&quot; you will be redirected
     to the &quot;Create user&quot; dialog shown below:
@@ -80,10 +85,9 @@
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect1>
-<sect1 id="hbci_create_user">
-  <title>Configuring a HBCI account</title>
-<sect2 id="hbci_select_online_banking_protocol">
+<sect2 id="hbci_create_user">
+  <title>Create user for HBCI</title>
+<sect3 id="hbci_select_online_banking_protocol">
   <title>Select online banking protocol</title>
   <para>
     After pressing &quot;Next&quot; you will see a list of available
@@ -97,8 +101,8 @@
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect2>
-<sect2 id="hbci_configuring_a_account">
+</sect3>
+<sect3 id="hbci_configuring_a_account">
   <title>Configuring a HBCI account</title>
   <para>
     After choosing &quot;HBCI&quot; and pressing &quot;Next&quot; you
@@ -120,19 +124,19 @@
     supported by banks. If your bank is not listed there, you should
     try Pin/TAN first.
   </para>
-</sect2>
-<sect2 id="hbci_setup_pintan">
+</sect3>
+<sect3 id="hbci_setup_pintan">
   <title>Setup pin/Tan</title>
   <screenshot>
-    <screeninfo>kbanking-user-wizard-hbci-page2.png</screeninfo>
+    <screeninfo></screeninfo>
     <mediaobject>
       <imageobject>
         <imagedata fileref="aqbanking-user-wizard-hbci-page2.png" />
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect2>
-<sect2 id="hbci_select_bank_and_server_url">
+</sect3>
+<sect3 id="hbci_select_bank_and_server_url">
   <title>Select bank and server url</title>
   <screenshot>
     <screeninfo></screeninfo>
@@ -148,8 +152,8 @@
     Bankentabelle</ulink> you can find a list of bank server url known
     to work.
   </para>
-</sect2>
-<sect2 id="hbci_select_bank_account_and_user_name">
+</sect3>
+<sect3 id="hbci_select_bank_account_and_user_name">
   <title>Select bank account and user name</title>
   <screenshot>
     <screeninfo></screeninfo>
@@ -159,8 +163,8 @@
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect2>
-<sect2 id="hbci_choose_extended_settings_or_continue">
+</sect3>
+<sect3 id="hbci_choose_extended_settings_or_continue">
   <title>Choose extended settings or continue</title>
   <screenshot>
     <screeninfo></screeninfo>
@@ -170,8 +174,8 @@
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect2>
-<sect2 id="hbci_select_extended_settings">
+</sect3>
+<sect3 id="hbci_select_extended_settings">
   <title>Select extended settings</title>
   <screenshot>
     <screeninfo></screeninfo>
@@ -181,8 +185,8 @@
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect2>
-<sect2 id="hbci_finish_creating_user">
+</sect3>
+<sect3 id="hbci_finish_creating_user">
   <title>Finish creating user</title>
   <para>
     After pressing &quot;Next&quot; aqbanking will contact the server
@@ -208,19 +212,19 @@
     Otherwise, after pressing &quot;Close&quot; your user account has
     been created.
   </para>
-</sect2>
-<sect2 id="add_account">
+</sect3>
+<sect3 id="add_account">
   <title>Add account</title>
   <para>
     In case that adding a user account did not fail, the accounts
     associated to the given bank should already be present in the
     account list.
   </para>
+</sect3>
 </sect2>
-</sect1>
-<sect1 id="paypal_create_user">
-  <title>Configuring a Paypal account</title>
-<sect2 id="paypal_select_online_banking_protocol">
+<sect2 id="paypal_create_user">
+  <title>Paypal</title>
+<sect3 id="paypal_select_online_banking_protocol">
   <title>Select online banking protocol</title>
   <para>
     After pressing &quot;Next&quot; you will see a list of available
@@ -234,9 +238,9 @@
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect2>
-<sect2 id="paypal_info_page_1">
-  <title>Configuring a Paypal account</title>
+</sect3>
+<sect3 id="paypal_info_page_1">
+  <title>Configuring a user for Paypal</title>
   <para>
     After choosing &quot;Paypal&quot; and pressing &quot;Next&quot; you
     will see the following info page:
@@ -252,9 +256,9 @@
   <para>
     Press &quot;Run&quot; to continue.
   </para>
-</sect2>
-<sect2 id="paypal_user_name_and_email">
-  <title>Enter user name and paypal email address</title>
+</sect3>
+<sect3 id="paypal_user_name_and_email">
+  <title>Enter user name and the Paypal email address</title>
   <screenshot>
     <screeninfo></screeninfo>
     <mediaobject>
@@ -263,8 +267,8 @@
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect2>
-<sect2 id="paypal_api_password_and_signature">
+</sect3>
+<sect3 id="paypal_api_password_and_signature">
   <title>Select API settings</title>
   <screenshot>
     <screeninfo></screeninfo>
@@ -274,8 +278,8 @@
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect2>
-<sect2 id="paypal_info_page_2">
+</sect3>
+<sect3 id="paypal_info_page_2">
   <title>Summary info before creating the user</title>
   <screenshot>
     <screeninfo></screeninfo>
@@ -285,9 +289,9 @@
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect2>
-<sect2 id="paypal_setup_password">
-  <title>Enter new password for accessing the account</title>
+</sect3>
+<sect3 id="paypal_setup_password">
+  <title>Enter new password for the Paypal user</title>
   <screenshot>
     <screeninfo></screeninfo>
     <mediaobject>
@@ -296,8 +300,8 @@
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect2>
-<sect2 id="paypal_finish_creating_user">
+</sect3>
+<sect3 id="paypal_finish_creating_user">
   <title>Finish creating user</title>
   <screenshot>
     <screeninfo></screeninfo>
@@ -314,8 +318,8 @@
   <para>
     The remaining step is to create a new account based on this user.
   </para>
-</sect2>
-<sect2 id="paypal_choose_backend">
+</sect3>
+<sect3 id="paypal_choose_backend">
   <title>Add paypal account</title>
   <screenshot>
     <screeninfo></screeninfo>
@@ -325,8 +329,8 @@
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect2>
-<sect2 id="paypal_add_account">
+</sect3>
+<sect3 id="paypal_add_account">
   <title>Add paypal account</title>
   <screenshot>
     <screeninfo></screeninfo>
@@ -336,6 +340,7 @@
       </imageobject>
     </mediaobject>
   </screenshot>
+</sect3>
 </sect2>
 </sect1>
 </chapter>
