@@ -39,7 +39,7 @@
 <para>
 <screenshot>
   <screeninfo>KMyMoney configuration menu</screeninfo>
-  <screeninfo>png</screeninfo>
+  <screeninfo></screeninfo>
   <mediaobject>
     <imageobject>
       <imagedata fileref="configure_plugins.png" />
@@ -57,46 +57,48 @@
 
 <para>
 <screenshot>
-  <screeninfo>kbanking-wizard-page1-de.png</screeninfo>
+  <screeninfo>kbanking-wizard-page1.png</screeninfo>
   <mediaobject>
     <imageobject>
-      <imagedata fileref="aqbanking-wizard-page1.png" width="400px" />
+      <imagedata fileref="aqbanking-wizard-page1.png" />
     </imageobject>
   </mediaobject>
 </screenshot>
 </para>
 
-<sect1 id="add_user">
-  <title>Add user</title>
+<sect1 id="create_user">
+  <title>Create user</title>
   <para>
-    After pressing &quot;Benutzer anlegen&quot; you will be redirected
-    to the &quot;Add user&quot; dialog shown below:
+    After pressing &quot;Create user&quot; you will be redirected
+    to the &quot;Create user&quot; dialog shown below:
   </para>
   <screenshot>
-    <screeninfo>kbanking-user-wizard-page1-de.png</screeninfo>
+    <screeninfo></screeninfo>
     <mediaobject>
       <imageobject>
-        <imagedata fileref="aqbanking-user-wizard-page1.png" width="400px" />
+        <imagedata fileref="aqbanking-user-wizard-page1.png" />
       </imageobject>
     </mediaobject>
   </screenshot>
 </sect1>
-<sect1 id="select_online_banking_protocol">
+<sect1 id="hbci_create_user">
+  <title>Configuring a HBCI account</title>
+<sect2 id="hbci_select_online_banking_protocol">
   <title>Select online banking protocol</title>
   <para>
     After pressing &quot;Next&quot; you will see a list of available
     online banking protocols:
   </para>
   <screenshot>
-    <screeninfo>kbanking-user-wizard-page2-de.png</screeninfo>
+    <screeninfo></screeninfo>
     <mediaobject>
       <imageobject>
-        <imagedata fileref="aqbanking-user-wizard-page2.png" width="400px" />
+        <imagedata fileref="aqbanking-user-wizard-page2.png" />
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect1>
-<sect1 id="configuring_a_hbci_account">
+</sect2>
+<sect2 id="hbci_configuring_a_account">
   <title>Configuring a HBCI account</title>
   <para>
     After choosing &quot;HBCI&quot; and pressing &quot;Next&quot; you
@@ -104,10 +106,10 @@
     type:
   </para>
   <screenshot>
-    <screeninfo>kbanking-user-wizard-hbci-page1-de.png</screeninfo>
+    <screeninfo></screeninfo>
     <mediaobject>
       <imageobject>
-        <imagedata fileref="aqbanking-user-wizard-hbci-page1.png" width="400px" />
+        <imagedata fileref="aqbanking-user-wizard-hbci-page1.png" />
       </imageobject>
     </mediaobject>
   </screenshot>
@@ -118,25 +120,25 @@
     supported by banks. If your bank is not listed there, you should
     try Pin/TAN first.
   </para>
-</sect1>
-<sect1 id="setup_pintan">
+</sect2>
+<sect2 id="hbci_setup_pintan">
   <title>Setup pin/Tan</title>
   <screenshot>
-    <screeninfo>kbanking-user-wizard-hbci-page2-de.png</screeninfo>
+    <screeninfo>kbanking-user-wizard-hbci-page2.png</screeninfo>
     <mediaobject>
       <imageobject>
-        <imagedata fileref="aqbanking-user-wizard-hbci-page2.png" width="400px" />
+        <imagedata fileref="aqbanking-user-wizard-hbci-page2.png" />
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect1>
-<sect1 id="select_bank_and_server_url">
+</sect2>
+<sect2 id="hbci_select_bank_and_server_url">
   <title>Select bank and server url</title>
   <screenshot>
-    <screeninfo>kbanking-user-wizard-hbci-page3-de.png</screeninfo>
+    <screeninfo></screeninfo>
     <mediaobject>
       <imageobject>
-        <imagedata fileref="aqbanking-user-wizard-hbci-page3.png" width="400px" />
+        <imagedata fileref="aqbanking-user-wizard-hbci-page3.png" />
       </imageobject>
     </mediaobject>
   </screenshot>
@@ -146,51 +148,51 @@
     Bankentabelle</ulink> you can find a list of bank server url known
     to work.
   </para>
-</sect1>
-<sect1 id="select_bank_account_and_user_name">
+</sect2>
+<sect2 id="hbci_select_bank_account_and_user_name">
   <title>Select bank account and user name</title>
   <screenshot>
-    <screeninfo>kbanking-user-wizard-hbci-page4-de.png</screeninfo>
+    <screeninfo></screeninfo>
     <mediaobject>
       <imageobject>
-        <imagedata fileref="aqbanking-user-wizard-hbci-page4.png" width="400px" />
+        <imagedata fileref="aqbanking-user-wizard-hbci-page4.png" />
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect1>
-<sect1 id="choose_extended_settings_or_continue">
+</sect2>
+<sect2 id="hbci_choose_extended_settings_or_continue">
   <title>Choose extended settings or continue</title>
   <screenshot>
-    <screeninfo>kbanking-user-wizard-hbci-page5-de.png</screeninfo>
+    <screeninfo></screeninfo>
     <mediaobject>
       <imageobject>
-        <imagedata fileref="aqbanking-user-wizard-hbci-page5.png" width="400px" />
+        <imagedata fileref="aqbanking-user-wizard-hbci-page5.png" />
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect1>
-<sect1 id="select_extended_settings">
+</sect2>
+<sect2 id="hbci_select_extended_settings">
   <title>Select extended settings</title>
   <screenshot>
-    <screeninfo>kbanking-user-wizard-hbci-page6-de.png</screeninfo>
+    <screeninfo></screeninfo>
     <mediaobject>
       <imageobject>
-        <imagedata fileref="aqbanking-user-wizard-hbci-page6.png" width="400px" />
+        <imagedata fileref="aqbanking-user-wizard-hbci-page6.png" />
       </imageobject>
     </mediaobject>
   </screenshot>
-</sect1>
-<sect1 id="finish_creating_user">
+</sect2>
+<sect2 id="hbci_finish_creating_user">
   <title>Finish creating user</title>
   <para>
     After pressing &quot;Next&quot; aqbanking will contact the server
     and fetches the server certificate and bank info.
   </para>
   <screenshot>
-    <screeninfo>kbanking-user-wizard-hbci-page7.png</screeninfo>
+    <screeninfo></screeninfo>
     <mediaobject>
       <imageobject>
-        <imagedata fileref="aqbanking-user-wizard-hbci-page7.png" width="400px" />
+        <imagedata fileref="aqbanking-user-wizard-hbci-page7.png" />
       </imageobject>
     </mediaobject>
   </screenshot>
@@ -206,13 +208,134 @@
     Otherwise, after pressing &quot;Close&quot; your user account has
     been created.
   </para>
-</sect1>
-<sect1 id="add_account">
+</sect2>
+<sect2 id="add_account">
   <title>Add account</title>
   <para>
     In case that adding a user account did not fail, the accounts
     associated to the given bank should already be present in the
     account list.
   </para>
+</sect2>
+</sect1>
+<sect1 id="paypal_create_user">
+  <title>Configuring a Paypal account</title>
+<sect2 id="paypal_select_online_banking_protocol">
+  <title>Select online banking protocol</title>
+  <para>
+    After pressing &quot;Next&quot; you will see a list of available
+    online banking protocols:
+  </para>
+  <screenshot>
+    <screeninfo></screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="aqbanking-user-wizard-paypal-page1.png" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+</sect2>
+<sect2 id="paypal_info_page_1">
+  <title>Configuring a Paypal account</title>
+  <para>
+    After choosing &quot;Paypal&quot; and pressing &quot;Next&quot; you
+    will see the following info page:
+  </para>
+  <screenshot>
+    <screeninfo></screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="aqbanking-user-wizard-paypal-page2.png" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+  <para>
+    Press &quot;Run&quot; to continue.
+  </para>
+</sect2>
+<sect2 id="paypal_user_name_and_email">
+  <title>Enter user name and paypal email address</title>
+  <screenshot>
+    <screeninfo></screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="aqbanking-user-wizard-paypal-page3.png" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+</sect2>
+<sect2 id="paypal_api_password_and_signature">
+  <title>Select API settings</title>
+  <screenshot>
+    <screeninfo></screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="aqbanking-user-wizard-paypal-page4.png" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+</sect2>
+<sect2 id="paypal_info_page_2">
+  <title>Summary info before creating the user</title>
+  <screenshot>
+    <screeninfo></screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="aqbanking-user-wizard-paypal-page5.png" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+</sect2>
+<sect2 id="paypal_setup_password">
+  <title>Enter new password for accessing the account</title>
+  <screenshot>
+    <screeninfo></screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="aqbanking-user-wizard-paypal-page6.png" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+</sect2>
+<sect2 id="paypal_finish_creating_user">
+  <title>Finish creating user</title>
+  <screenshot>
+    <screeninfo></screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="aqbanking-user-wizard-paypal-page7.png" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+  <para>
+    After pressing &quot;finish&quot; the user account has
+    been created.
+  </para>
+  <para>
+    The remaining step is to create a new account based on this user.
+  </para>
+</sect2>
+<sect2 id="paypal_choose_backend">
+  <title>Add paypal account</title>
+  <screenshot>
+    <screeninfo></screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="aqbanking-account-wizard-paypal-page1.png" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+</sect2>
+<sect2 id="paypal_add_account">
+  <title>Add paypal account</title>
+  <screenshot>
+    <screeninfo></screeninfo>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="aqbanking-account-wizard-paypal-page2.png" />
+      </imageobject>
+    </mediaobject>
+  </screenshot>
+</sect2>
 </sect1>
 </chapter>
