@@ -525,8 +525,15 @@ public:
                     setFileFixVersion(11);
                     break;
 
-                // add new levels above, in mymoneyfixes.h and other storage backends
-                // Don't forget to increase availableFixVersion()
+                case 11:
+                    upgradeToV12();
+                    upgradeToV13();
+                    upgradeToV14();
+                    setFixVersion(14);
+                    break;
+
+                // add new levels above. Don't forget to increase availableFixVersion() for all
+                // the storage backends this fix applies to
                 default:
                     throw MYMONEYEXCEPTION(QString::fromLatin1("Unknown fix level in input file"));
                 }
@@ -1323,6 +1330,11 @@ void MyMoneyFile::unload()
     d->m_priceCache.clear();
     d->undoStack.clear();
     d->m_dirty = false;
+}
+
+int MyMoneyFile::availableFixVersion() const
+{
+    return d->availableFixVersion();
 }
 
 int MyMoneyFile::fixVersion() const

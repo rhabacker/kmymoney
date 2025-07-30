@@ -216,8 +216,6 @@ public:
 
     /**
      * This returns the currently implemented highest fix version
-     *
-     * @note keep in sync with MyMoneyDbDef::m_currentVersion
      */
     constexpr static int availableFixVersion() {
         return 11;

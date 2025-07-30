@@ -28,11 +28,17 @@ public:
     }
 
     virtual int fixVersion() const = 0;
-    virtual int availableFixVersion() const = 0;
+    static int availableFixVersion()
+    {
+        return 14;
+    }
     virtual void* initFix() = 0;
     virtual void commitFix(void* p) = 0;
     virtual void setFixVersion(int version) = 0;
     virtual bool applyFixes(bool expertMode) = 0;
+    virtual int upgradeToV14() = 0;
+    virtual int upgradeToV13() = 0;
+    virtual int upgradeToV12() = 0;
     virtual int upgradeToV11() = 0;
     virtual int upgradeToV10() = 0;
     virtual int upgradeToV9() = 0;

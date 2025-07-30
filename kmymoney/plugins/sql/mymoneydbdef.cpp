@@ -507,7 +507,7 @@ const QString MyMoneyDbDef::generateSQL(const QExplicitlySharedDataPointer<MyMon
         toReplace.prepend(':');
         QString replace = "NULL";
         if ((*fit)->name() == "version")
-            replace = QString::number(m_currentVersion);
+            replace = QString::number(currentVersion());
         if ((*fit)->name() == "fixLevel") {
             const auto file = MyMoneyFile::instance();
             replace = file->fileInfoModel()->itemById(file->fixedKey(MyMoneyFile::FileFixVersion)).value();

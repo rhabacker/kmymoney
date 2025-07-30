@@ -27,6 +27,8 @@
 // ----------------------------------------------------------------------------
 // Project Includes
 
+#include "mymoneyfixes.h"
+
 class MyMoneyDbDriver;
 template <class T> class QExplicitlySharedDataPointer;
 
@@ -436,15 +438,13 @@ public:
     }
 
     inline unsigned int currentVersion() const {
-        return (m_currentVersion);
-    };
+        return MyMoneyFixes::availableFixVersion();
+    }
 
 private:
     const QString enclose(const QString& text) const {
         return (QString("'" + text + "'"));
     }
-
-    static unsigned int m_currentVersion; // The current version of the database layout
 
 #define TABLE(name) void name();
 #define VIEW(name) void name();

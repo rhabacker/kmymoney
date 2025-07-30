@@ -193,7 +193,7 @@ public:
 #define MYMONEYEXCEPTIONSQL(exceptionMessage) MYMONEYEXCEPTION(buildError(query, Q_FUNC_INFO, exceptionMessage))
 #define MYMONEYEXCEPTIONSQL_D(exceptionMessage) MYMONEYEXCEPTION(d->buildError(query, Q_FUNC_INFO, exceptionMessage))
 
-class MyMoneyStorageSqlPrivate
+class MyMoneyStorageSqlPrivate : public MyMoneyFixes
 {
     Q_DISABLE_COPY(MyMoneyStorageSqlPrivate)
     Q_DECLARE_PUBLIC(MyMoneyStorageSql)
@@ -1617,6 +1617,7 @@ public:
             "SELECT "
             "  created, lastModified, "
             "  encryptData, logonUser, logonAt, "
+            "  fixLevel, version, "
             "  (SELECT count(*) FROM kmmInstitutions) AS institutions, "
             "  (SELECT count(*) from kmmAccounts) AS accounts, "
             "  (SELECT count(*) FROM kmmCurrencies) AS currencies, "
@@ -1646,6 +1647,10 @@ public:
         m_file->parametersModel()->addItem(m_file->fixedKey(MyMoneyFile::CreationDate), date.toString(Qt::ISODate));
         date = GETDATE(rec.indexOf("lastModified"));
         m_file->parametersModel()->addItem(m_file->fixedKey(MyMoneyFile::LastModificationDate), date.toString(Qt::ISODate));
+        QString version = GETSTRING(rec.indexOf("version"));
+        m_file->parametersModel()->addItem(QLatin1String("Version"), version);
+        QString fixLevel = GETSTRING(rec.indexOf("fixLevel"));
+        m_file->fileInfoModel()->addItem(m_file->fixedKey(MyMoneyFile::FileFixVersion), fixLevel);
 
         m_institutions = (ulong) GETULL(rec.indexOf("institutions"));
         m_accounts = (ulong) GETULL(rec.indexOf("accounts"));
@@ -2114,6 +2119,34 @@ public:
         return (rc);
     }
 
+    int fixVersion() const override
+    {
+        QString version = m_file->parametersModel()->itemById(m_file->fixedKey(MyMoneyFile::FileFixVersion)).value();
+        return version.toInt();
+    }
+
+    void setFixVersion(int version) override
+    {
+        m_file->parametersModel()->addItem(m_file->fixedKey(MyMoneyFile::FileFixVersion), QString::number(version));
+    }
+
+    void* initFix() override
+    {
+        return nullptr;
+    }
+
+    void commitFix(void* p) override
+    {
+        Q_UNUSED(p);
+    }
+
+    bool applyFixes(bool expertMode) override
+    {
+        Q_UNUSED(expertMode);
+
+        initFix();
+        return false;
+    }
 
     int upgradeDb()
     {
@@ -2158,6 +2191,7 @@ public:
             fixVersion = query.value(0).toString();
         }
         m_file->parametersModel()->addItem(m_file->fixedKey(MyMoneyFile::FileFixVersion), fixVersion);
+        m_file->parametersModel()->addItem(QLatin1String("Version"), QString::number(m_dbVersion));
 
         if (m_dbVersion == m_db.currentVersion())
             return 0;
@@ -2283,11 +2317,12 @@ public:
             buildError(query, Q_FUNC_INFO, "Error updating db version");
             return 1;
         }
+        m_file->parametersModel()->addItem(QLatin1String("Version"), QString::number(m_dbVersion));
         //signalProgress(-1,-1);
         return 0;
     }
 
-    int upgradeToV1()
+    int upgradeToV1() override
     {
         Q_Q(MyMoneyStorageSql);
         MyMoneyDbTransaction t(*q, Q_FUNC_INFO);
@@ -2402,8 +2437,10 @@ public:
         return 0;
     }
 
-    int upgradeToV2()
+    int upgradeToV2(bool expertMode = false) override
     {
+        Q_UNUSED(expertMode);
+
         Q_Q(MyMoneyStorageSql);
         MyMoneyDbTransaction t(*q, Q_FUNC_INFO);
         // change kmmSplits add price, priceFormatted fields
@@ -2412,7 +2449,7 @@ public:
         return 0;
     }
 
-    int upgradeToV3()
+    int upgradeToV3() override
     {
         Q_Q(MyMoneyStorageSql);
         MyMoneyDbTransaction t(*q, Q_FUNC_INFO);
@@ -2431,7 +2468,7 @@ public:
         return 0;
     }
 
-    int upgradeToV4()
+    int upgradeToV4() override
     {
         Q_Q(MyMoneyStorageSql);
         MyMoneyDbTransaction t(*q, Q_FUNC_INFO);
@@ -2445,7 +2482,7 @@ public:
         return 0;
     }
 
-    int upgradeToV5()
+    int upgradeToV5() override
     {
         Q_Q(MyMoneyStorageSql);
         MyMoneyDbTransaction dbtrans(*q, Q_FUNC_INFO);
@@ -2462,7 +2499,7 @@ public:
         return 0;
     }
 
-    int upgradeToV6()
+    int upgradeToV6() override
     {
         Q_Q(MyMoneyStorageSql);
         q->startCommitUnit(Q_FUNC_INFO);
@@ -2513,7 +2550,7 @@ public:
         return 0;
     }
 
-    int upgradeToV7()
+    int upgradeToV7() override
     {
         Q_Q(MyMoneyStorageSql);
         MyMoneyDbTransaction dbtrans(*q, Q_FUNC_INFO);
@@ -2527,7 +2564,7 @@ public:
         return 0;
     }
 
-    int upgradeToV8()
+    int upgradeToV8() override
     {
         Q_Q(MyMoneyStorageSql);
         MyMoneyDbTransaction dbtrans(*q, Q_FUNC_INFO);
@@ -2539,7 +2576,7 @@ public:
         return 0;
     }
 
-    int upgradeToV9()
+    int upgradeToV9() override
     {
         Q_Q(MyMoneyStorageSql);
         MyMoneyDbTransaction dbtrans(*q, Q_FUNC_INFO);
@@ -2551,7 +2588,7 @@ public:
         return 0;
     }
 
-    int upgradeToV10()
+    int upgradeToV10() override
     {
         Q_Q(MyMoneyStorageSql);
         MyMoneyDbTransaction dbtrans(*q, Q_FUNC_INFO);
@@ -2564,7 +2601,7 @@ public:
         return 0;
     }
 
-    int upgradeToV11()
+    int upgradeToV11() override
     {
         Q_Q(MyMoneyStorageSql);
         MyMoneyDbTransaction dbtrans(*q, Q_FUNC_INFO);
@@ -2579,7 +2616,7 @@ public:
         return 0;
     }
 
-    int upgradeToV12()
+    int upgradeToV12() override
     {
         Q_Q(MyMoneyStorageSql);
         MyMoneyDbTransaction dbtrans(*q, Q_FUNC_INFO);
@@ -2613,7 +2650,7 @@ public:
         return 0;
     }
 
-    int upgradeToV13()
+    int upgradeToV13() override
     {
         Q_Q(MyMoneyStorageSql);
         MyMoneyDbTransaction dbtrans(*q, Q_FUNC_INFO);
@@ -2631,7 +2668,7 @@ public:
         return 0;
     }
 
-    int upgradeToV14()
+    int upgradeToV14() override
     {
         Q_Q(MyMoneyStorageSql);
         q->startCommitUnit(Q_FUNC_INFO);
