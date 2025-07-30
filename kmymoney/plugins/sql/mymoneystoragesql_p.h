@@ -20,22 +20,22 @@
 // ----------------------------------------------------------------------------
 // QT Includes
 
-#include <QString>
+#include <QColor>
 #include <QDateTime>
-#include <QStringList>
+#include <QDebug>
+#include <QFile>
 #include <QIODevice>
-#include <QUrlQuery>
-#include <QSqlQuery>
+#include <QList>
+#include <QMap>
 #include <QSqlDriver>
 #include <QSqlError>
-#include <QList>
+#include <QSqlQuery>
 #include <QSqlRecord>
-#include <QMap>
-#include <QFile>
-#include <QVariant>
-#include <QColor>
-#include <QDebug>
 #include <QStack>
+#include <QString>
+#include <QStringList>
+#include <QUrlQuery>
+#include <QVariant>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -45,46 +45,47 @@
 // ----------------------------------------------------------------------------
 // Project Includes
 
-#include "mymoneyfile.h"
-#include "onlinejobadministration.h"
-#include "onlinetasks/interfaces/tasks/onlinetask.h"
-#include "mymoneycostcenter.h"
-#include "mymoneyexception.h"
-#include "mymoneyinstitution.h"
+#include "accountsmodel.h"
+#include "budgetsmodel.h"
+#include "institutionsmodel.h"
+#include "journalmodel.h"
 #include "mymoneyaccount.h"
-#include "mymoneysecurity.h"
-#include "mymoneymoney.h"
-#include "mymoneyschedule.h"
-#include "mymoneypayee.h"
-#include "mymoneytag.h"
-#include "mymoneysplit.h"
-#include "mymoneytransaction.h"
-#include "mymoneytransactionfilter.h"
 #include "mymoneybudget.h"
-#include "mymoneyreport.h"
-#include "mymoneyprice.h"
-#include "mymoneyutils.h"
+#include "mymoneycostcenter.h"
 #include "mymoneydbdef.h"
 #include "mymoneydbdriver.h"
-#include "payeeidentifierdata.h"
+#include "mymoneyenums.h"
+#include "mymoneyexception.h"
+#include "mymoneyfile.h"
+#include "mymoneyfixes.h"
+#include "mymoneyinstitution.h"
+#include "mymoneymoney.h"
+#include "mymoneypayee.h"
+#include "mymoneyprice.h"
+#include "mymoneyreport.h"
+#include "mymoneyschedule.h"
+#include "mymoneysecurity.h"
+#include "mymoneysplit.h"
+#include "mymoneytag.h"
+#include "mymoneytransaction.h"
+#include "mymoneytransactionfilter.h"
+#include "mymoneyutils.h"
+#include "onlinejobadministration.h"
+#include "onlinejobsmodel.h"
+#include "onlinetasks/interfaces/tasks/onlinetask.h"
+#include "onlinetasks/sepa/sepaonlinetransferimpl.h"
+#include "parametersmodel.h"
 #include "payeeidentifier.h"
-#include "payeeidentifiertyped.h"
 #include "payeeidentifier/ibanbic/ibanbic.h"
 #include "payeeidentifier/nationalaccount/nationalaccount.h"
-#include "onlinetasks/sepa/sepaonlinetransferimpl.h"
-#include "xmlstoragehelper.h"
-#include "mymoneyenums.h"
-#include "parametersmodel.h"
-#include "institutionsmodel.h"
-#include "accountsmodel.h"
+#include "payeeidentifierdata.h"
+#include "payeeidentifiertyped.h"
 #include "payeesmodel.h"
-#include "securitiesmodel.h"
+#include "pricemodel.h"
 #include "reportsmodel.h"
 #include "schedulesmodel.h"
-#include "journalmodel.h"
-#include "pricemodel.h"
-#include "budgetsmodel.h"
-#include "onlinejobsmodel.h"
+#include "securitiesmodel.h"
+#include "xmlstoragehelper.h"
 
 using namespace eMyMoney;
 
@@ -1632,8 +1633,7 @@ public:
             "  (SELECT count(*) FROM kmmBudgetConfig) AS budgets, "
             "  (SELECT count(*) FROM kmmOnlineJobs) AS onlineJobs, "
             "  (SELECT count(*) FROM kmmPayeeIdentifier) AS payeeIdentifier "
-            "FROM kmmFileInfo;"
-        );
+            "FROM kmmFileInfo;");
 
         if (!query.exec())
             throw MYMONEYEXCEPTIONSQL("reading FileInfo"); // krazy:exclude=crashy
