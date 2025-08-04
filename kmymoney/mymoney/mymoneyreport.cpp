@@ -26,6 +26,7 @@
 #include "mymoneymoney.h"
 #include "mymoneytransaction.h"
 #include "mymoneytransactionfilter.h"
+#include "pricemodel.h"
 
 MyMoneyReport::MyMoneyReport()
     : MyMoneyObject(*new MyMoneyReportPrivate(this))
@@ -983,6 +984,21 @@ bool MyMoneyReport::includes(const MyMoneyAccount& acc) const
         }
     }
     return result;
+}
+
+bool MyMoneyReport::mustShowPriceColumn() const
+{
+    return isConvertCurrency() && MyMoneyFile::instance()->priceModel()->rowCount() > 0 && m_multiCurrencyReport;
+}
+
+bool MyMoneyReport::multiCurrencyReport() const
+{
+    return m_multiCurrencyReport;
+}
+
+void MyMoneyReport::setMultiCurrencyReport(bool state)
+{
+    m_multiCurrencyReport = state;
 }
 
 int MyMoneyReport::m_lineWidth = 2;

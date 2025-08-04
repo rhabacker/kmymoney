@@ -50,6 +50,7 @@ public:
     void init();
 
 protected:
+    QStringList m_usedCurrencyIDs;
     void constructAccountTable();
     void constructTotalRows();
     void constructTransactionTable();

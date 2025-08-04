@@ -194,7 +194,7 @@ void QueryTable::init()
     // when using currency conversion and there are prices available. However, there are
     // cases where this does not apply (e.g. test cases), so here it is ensured that the
     // corresponding column is displayed.
-    if (qc & eMyMoney::Report::QueryColumn::Price || (m_config.isConvertCurrency() && MyMoneyFile::instance()->priceModel()->rowCount() > 0))
+    if (qc & eMyMoney::Report::QueryColumn::Price || m_config.mustShowPriceColumn())
         m_priceColumn << ctPrice;
     if (qc & eMyMoney::Report::QueryColumn::Performance) {
         m_subtotal.clear();
@@ -577,6 +577,7 @@ void QueryTable::constructTransactionTable()
     QList<MyMoneyTransaction> transactions;
     file->transactionList(transactions, report);
 
+    m_usedCurrencyIDs.clear();
     for (QList<MyMoneyTransaction>::const_iterator it_transaction = transactions.cbegin(); it_transaction != transactions.cend(); ++it_transaction) {
         TableRow qA, qS;
         QList<TableRow> qStack;
@@ -721,6 +722,9 @@ void QueryTable::constructTransactionTable()
                 splitCurrency = file->account((*it_split).accountId()).currencyId();
             if (it_split == myBegin)
                 myBeginCurrency = splitCurrency;
+
+            if (!m_usedCurrencyIDs.contains(splitCurrency))
+                m_usedCurrencyIDs.append(splitCurrency);
 
             //get fraction for account
             int fraction = splitAcc.currency().smallestAccountFraction();
@@ -1214,6 +1218,9 @@ void QueryTable::constructTransactionTable()
             m_containsNonBaseCurrency = true;
         }
     }
+
+    // setup multi currency state
+    m_config.setMultiCurrencyReport(m_usedCurrencyIDs.size() > 1);
 }
 
 MyMoneyMoney QueryTable::returnValue(const MyMoneyMoney& buys,

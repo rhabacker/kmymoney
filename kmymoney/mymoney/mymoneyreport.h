@@ -384,6 +384,9 @@ public:
       */
     bool includes(const MyMoneyAccount& acc) const;
 
+    bool mustShowPriceColumn() const;
+    void setMultiCurrencyReport(bool state);
+
     /**
      * Return row type as string.
      *
@@ -410,7 +413,10 @@ public:
     // set the expert mode which shows equity accounts for some reports
     static void setExpertMode(bool expertMode);
 
+    bool multiCurrencyReport() const;
+
 private:
+    bool m_multiCurrencyReport{false};
     void addAccountGroupsByRowType(eMyMoney::Report::RowType rt);
 
 private:

@@ -214,7 +214,7 @@ void KReportConfigurationFilterDlg::slotConvertCurrencyChanged(int state)
     // Previous state is saved into the tristate flag
     if (state) {
         box->setTristate(box->checkState());
-        if (MyMoneyFile::instance()->priceModel()->rowCount() > 0) {
+        if (d->m_currentState.mustShowPriceColumn()) {
             box->setChecked(true);
             box->setEnabled(false);
         }
