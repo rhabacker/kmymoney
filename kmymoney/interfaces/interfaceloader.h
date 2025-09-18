@@ -34,10 +34,10 @@ class InterfaceLoader
      * @{
      * This class is owner of these objects. However, the parent is somebody else. They are deleted by destruction of the parent only.
      */
-    KMyMoneyPlugin::AppInterface* appInterface;
-    KMyMoneyPlugin::ViewInterface* viewInterface;
-    KMyMoneyPlugin::StatementInterface* statementInterface;
-    KMyMoneyPlugin::ImportInterface* importInterface;
+    KMyMoneyPlugin::AppInterface* appInterface = nullptr;
+    KMyMoneyPlugin::ViewInterface* viewInterface = nullptr;
+    KMyMoneyPlugin::StatementInterface* statementInterface = nullptr;
+    KMyMoneyPlugin::ImportInterface* importInterface = nullptr;
     /** @} */
 
     friend KMyMoneyApp;
