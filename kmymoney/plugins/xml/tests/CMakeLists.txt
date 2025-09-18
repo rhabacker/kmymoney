@@ -24,3 +24,9 @@ kmm_add_tests(${tests_sources}
     kmm_testutils
     kmm_testutilities
 )
+
+add_executable(testfilelocking testfilelocking.cpp)
+target_link_libraries(testfilelocking PRIVATE Qt::Core Qt::Test)
+add_test(NAME testfilelocking_local COMMAND $<TARGET_NAME:testfilelocking>)
+add_test(NAME testfilelocking_nfs COMMAND $<TARGET_NAME:testfilelocking>)
+set_tests_properties(testfilelocking_nfs PROPERTIES ENVIRONMENT TESTFILELOCKING_PATH=/server/daten/downloads)
