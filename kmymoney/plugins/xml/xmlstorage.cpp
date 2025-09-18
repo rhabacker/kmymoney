@@ -63,6 +63,46 @@ static constexpr KCompressionDevice::CompressionType const& COMPRESSION_TYPE = K
 #define RECOVER_KEY_EXPIRATION_WARNING 30
 #endif
 
+#if defined(Q_OS_UNIX)
+#include <sys/mount.h>
+#include <sys/param.h>
+#include <sys/statfs.h>
+#endif
+
+#if defined(Q_OS_WIN)
+#include <windows.h>
+#endif
+
+// --- Helper ---
+static bool isDefinitelyLocal(const QString& path)
+{
+#if defined(Q_OS_WIN)
+    QString root = QDir(path).rootPath();
+    UINT type = GetDriveTypeW(reinterpret_cast<LPCWSTR>(root.utf16()));
+    if (type == DRIVE_REMOTE) {
+        return false; // mapped network drive
+    }
+#elif defined(Q_OS_UNIX)
+    struct statfs sfs;
+    if (statfs(path.toLocal8Bit().constData(), &sfs) == 0) {
+#ifdef __APPLE__
+        QString fstype = QString::fromLatin1(sfs.f_fstypename);
+        if (fstype == "nfs" || fstype == "smbfs" || fstype == "afpfs") {
+            return false;
+        }
+#else
+        switch (sfs.f_type) {
+        case 0x6969: // NFS_SUPER_MAGIC
+        case 0x517B: // SMB_SUPER_MAGIC
+        case 0xFF534D42: // CIFS_MAGIC_NUMBER
+            return false;
+        }
+#endif
+    }
+#endif
+    return true;
+}
+
 class XMLStoragePrivate
 {
 public:
@@ -294,6 +334,11 @@ public:
             return true;
         }
 
+        // Refuse to lock network/remote paths
+        if (!isDefinitelyLocal(filename)) {
+            qWarning() << "Skipping file lock: path is not a guaranteed local filesystem" << filename;
+            return true; // allow access, but unlocked
+        }
         auto newLock = new QLockFile(filename + ".lck");
         newLock->setStaleLockTime(0);
         if (!newLock->tryLock()) {
