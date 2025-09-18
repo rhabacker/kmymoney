@@ -340,7 +340,7 @@ public:
             return true; // allow access, but unlocked
         }
         auto newLock = new QLockFile(filename + ".lck");
-        newLock->setStaleLockTime(0);
+        newLock->setStaleLockTime(30000); // reclaim stale locks after 30s
         if (!newLock->tryLock()) {
             // in case we cannot write the lockfile, we assume that the
             // file cannot be changed as well and open it unlocked
