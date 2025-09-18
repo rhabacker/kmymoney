@@ -492,7 +492,8 @@ bool XMLStorage::open(const QUrl &url)
 
     d->m_fileUrl = url;
     //write the directory used for this file as the default one for next time.
-    appInterface()->writeLastUsedDir(url.toDisplayString(QUrl::RemoveFilename | QUrl::PreferLocalFile | QUrl::StripTrailingSlash));
+    if (appInterface())
+        appInterface()->writeLastUsedDir(url.toDisplayString(QUrl::RemoveFilename | QUrl::PreferLocalFile | QUrl::StripTrailingSlash));
 
     return true;
 }

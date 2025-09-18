@@ -89,7 +89,8 @@ KMyMoneyPlugin::OnlinePlugin::~OnlinePlugin()
 
 KMyMoneyPlugin::AppInterface* KMyMoneyPlugin::Plugin::appInterface() const
 {
-    Q_CHECK_PTR(KMyMoneyPlugin::pluginInterfaces().appInterface);
+    if (KMyMoneyPlugin::pluginInterfaces().appInterface == nullptr)
+        return nullptr;
     return KMyMoneyPlugin::pluginInterfaces().appInterface;
 }
 
