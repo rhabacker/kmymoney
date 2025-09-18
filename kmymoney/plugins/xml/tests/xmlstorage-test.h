@@ -31,4 +31,6 @@ private Q_SLOTS:
     void cleanup();
     void testOpen();
     void testFileLocking();
+    void testStaleLockFile();
+    void testLockFilePermissionError();
 };

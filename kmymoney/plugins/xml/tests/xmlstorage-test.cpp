@@ -43,4 +43,45 @@ void XMLStorageTest::testOpen()
 
 void XMLStorageTest::testFileLocking()
 {
+    KPluginMetaData metaData;
+    const QVariantList args;
+    XMLStorage storage1(nullptr, metaData, args);
+    XMLStorage storage2(nullptr, metaData, args);
+
+    QCOMPARE(storage1.open(_testFile), true);
+    QCOMPARE(storage2.open(_testFile), false);
+    storage1.close();
+    storage2.close();
+}
+
+void XMLStorageTest::testStaleLockFile()
+{
+    KPluginMetaData metaData;
+    const QVariantList args;
+
+    {
+        XMLStorage storage1(nullptr, metaData, args);
+        QCOMPARE(storage1.open(_testFile), true);
+    }
+
+    XMLStorage storage2(nullptr, metaData, args);
+    QCOMPARE(storage2.open(_testFile), true);
+    storage2.close();
+}
+
+void XMLStorageTest::testLockFilePermissionError()
+{
+    KPluginMetaData metaData;
+    const QVariantList args;
+    XMLStorage storage1(nullptr, metaData, args);
+    XMLStorage storage2(nullptr, metaData, args);
+
+    QFile f(_testFile.toLocalFile() + QLatin1String(".lck"));
+    QCOMPARE(f.open(QIODevice::WriteOnly), true);
+    f.close();
+    f.setPermissions(QFileDevice::ReadOwner);
+    QCOMPARE(storage1.open(_testFile), true);
+    QCOMPARE(storage2.open(_testFile), false);
+    storage1.close();
+    storage2.close();
 }
