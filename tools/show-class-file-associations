@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# SPDX-FileCopyrightText: 2025 Ralf Habacker <ralf.habacker@freenet.de>
+# SPDX-License-Identifier: MIT
+
+find kmymoney -name '*.h' | xargs gawk '
+$0 ~ /^class\s+/ && $0 !~ /;/ {
+    f=FILENAME
+    gsub(/:.*$/,"",f)
+    b=f
+    gsub(/^.*\//, "", b)
+    if ($2 ~ /_EXPORT/)
+        c=$3
+    else
+        c=$2
+    fi
+    gsub(/[;:].*$/,"",c)
+    e=tolower(c) ".h"
+    if (b != e)
+        print f " " c " " e
+}'
