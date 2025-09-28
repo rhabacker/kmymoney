@@ -25,8 +25,10 @@ kmm_add_tests(${tests_sources}
     kmm_testutilities
 )
 
-add_executable(testfilelocking testfilelocking.cpp)
-target_link_libraries(testfilelocking PRIVATE Qt::Core Qt::Test)
-add_test(NAME testfilelocking_local COMMAND $<TARGET_NAME:testfilelocking>)
-add_test(NAME testfilelocking_nfs COMMAND $<TARGET_NAME:testfilelocking>)
-set_tests_properties(testfilelocking_nfs PROPERTIES ENVIRONMENT TESTFILELOCKING_PATH=/server/daten/downloads)
+add_executable(test-filelocking test-filelocking.cpp)
+target_link_libraries(test-filelocking PRIVATE Qt::Core Qt::Test)
+if(BUILD_TESTING)
+    add_test(NAME test-filelocking-local COMMAND $<TARGET_NAME:test-filelocking>)
+    add_test(NAME test-filelocking-nfs COMMAND $<TARGET_NAME:test-filelocking> -- /server/daten/downloads)
+endif()
+#set_tests_properties(testfilelocking_nfs PROPERTIES ENVIRONMENT TESTFILELOCKING_PATH=/server/daten/downloads)
