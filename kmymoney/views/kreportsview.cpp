@@ -71,6 +71,29 @@ using namespace reports;
 #define VIEW_REPORTS        "reports"
 
 /**
+ * Creates a unique file name in a specific directory
+ * @param rootDir Directory used to search for a unique file name
+ * @param reportName Name of the report to create a file name
+ * @param extension Extension to add to the file name
+ * @returns the absolute file path or an empty string if no free name was found after more than 100 attempts
+ */
+static QString createSaveFileName(const QString& rootDir, const QString& reportName, const QString& extension)
+{
+    static QRegExp rx(QLatin1String("\\s+"));
+    QString name(reportName);
+    name.replace(rx, "-");
+    QString suffix;
+    QFileInfo fi;
+    int index = 0;
+    do {
+        fi.setFile(rootDir + QDir::separator() + name + suffix + extension);
+        suffix = QString(QLatin1String("-%1")).arg(++index);
+    } while (fi.exists() && index < 100);
+
+    return index < 100 ? fi.absoluteFilePath() : QString();
+}
+
+/**
   * KReportsView::KReportTab Implementation
   */
 
@@ -1282,12 +1305,39 @@ void KReportsView::slotSaveAsPDFFromList()
     if (tocItem && tocItem->isReport()) {
       TocItemReport* reportTocItem = dynamic_cast<TocItemReport*>(tocItem);
       MyMoneyReport& report = reportTocItem->getReport();
-      QFileInfo fi(rootDir + QDir::separator() + report.name() + ".pdf");
+      auto name = createSaveFileName(rootDir, report.name(), QLatin1String(".pdf"));
       slotItemDoubleClicked(tocItem, 0);
       KReportTab* tab = dynamic_cast<KReportTab*>(m_reportTabWidget->currentWidget());
       if (!tab)
         continue;
-      tab->printToFile(fi.absoluteFilePath());
+      tab->printToFile(name);
+    }
+  }
+}
+
+void KReportsView::slotSaveAsXMLFromList()
+{
+  QList<QTreeWidgetItem*> items = m_tocTreeWidget->selectedItems();
+  if (items.isEmpty())
+    return;
+
+  QString rootDir = QFileDialog::getExistingDirectory(this, i18n("Directory for saving reports to XML files"),
+                                                      QDir::homePath(),
+                                                      QFileDialog::ShowDirsOnly);
+  if (rootDir.isEmpty())
+    return;
+
+  foreach(QTreeWidgetItem *item, items) {
+    TocItem* tocItem = dynamic_cast<TocItem*>(item);
+    if (tocItem && tocItem->isReport()) {
+      TocItemReport* reportTocItem = dynamic_cast<TocItemReport*>(tocItem);
+      MyMoneyReport& report = reportTocItem->getReport();
+      auto name = createSaveFileName(rootDir, report.name(), QLatin1String(".xml"));
+      slotItemDoubleClicked(tocItem, 0);
+      KReportTab* tab = dynamic_cast<KReportTab*>(m_reportTabWidget->currentWidget());
+      if (!tab)
+        continue;
+      tab->saveAs(name);
     }
   }
 }

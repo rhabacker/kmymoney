@@ -237,6 +237,7 @@ public slots:
   void slotOpenFromList();
   void slotPrintFromList();
   void slotSaveAsPDFFromList();
+  void slotSaveAsXMLFromList();
   void slotConfigureFromList();
   void slotNewFromList();
   void slotDeleteFromList();
