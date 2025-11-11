@@ -383,6 +383,7 @@ void TransactionEditor::updateMemoLink()
   urlLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
   urlLabel->setOpenExternalLinks(true);
   urlLabel->setText(QString("<a href=\"%1\">%2</a>").arg(url.toString()).arg(i18n("Link")));
+  urlLabel->setToolTip(url.toString());
   qDebug() << url;
 }
 
