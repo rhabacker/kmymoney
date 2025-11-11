@@ -1,5 +1,5 @@
 # The CMake version we require
-cmake_minimum_required(VERSION 2.8.9)
+cmake_minimum_required(VERSION 3.10)
 
 # Setting the name of the main project
 project(KMyMoney)
@@ -22,7 +22,7 @@ if(COMMAND cmake_policy)
   # for the various translations, we need to keep the following setting
   # http://www.vtkedge.org/Wiki/CMake_Policies#Setting_Policies_Individually
   # has an explanation of the problem
-  cmake_policy(SET CMP0002 OLD)
+  cmake_policy(SET CMP0002 NEW)
 endif(COMMAND cmake_policy)
 
 # Our modules reside in the subdirectory cmake/modules/
