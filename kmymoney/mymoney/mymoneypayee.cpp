@@ -308,14 +308,29 @@ QStringList MyMoneyPayee::matchingLinks(const QString& idPattern, const QString&
   return result;
 }
 
+QString fillUrlTemplate(const QString &templateStr, const QStringList &matches)
+{
+    QString result = templateStr;
+
+    // Iterate in reverse to avoid partial replacements (%10 before %1)
+    for (int i = matches.size() - 1; i >= 1; --i) {
+        const QString placeholder = "%" + QString::number(i);
+
+        // Only replace if the template actually contains the placeholder
+        if (result.contains(placeholder)) {
+            result.replace(placeholder, matches[i]);
+        }
+    }
+
+    return result;
+}
+
 QUrl MyMoneyPayee::payeeLink(const QString& idPattern, const QString& urlTemplate, const QString& text)
 {
     QStringList matches = matchingLinks(idPattern, urlTemplate, text);
     QString result;
-    if (matches.size() == 2) {
-        return QUrl(urlTemplate.arg(matches[1]));
-    } else if (matches.size() == 3) {
-        return QUrl(urlTemplate.arg(matches[1], matches[2]));
+    if (matches.size() >= 2) {
+        return QUrl(fillUrlTemplate(urlTemplate, matches));
     } else {
         return QUrl();
     }
