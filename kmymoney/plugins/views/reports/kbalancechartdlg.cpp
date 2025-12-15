@@ -100,7 +100,7 @@ void BalanceChartView::addMarker()
         }
         if (haveMaxCredit) {
             paintZeroLine &= !maxCredit.isZero();
-            drawLimitLine(maxCredit.toDouble());
+            drawLimitLine(-maxCredit.toDouble());
         }
     }
 
