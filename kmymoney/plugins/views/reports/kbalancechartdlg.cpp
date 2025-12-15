@@ -65,15 +65,17 @@ void BalanceChartView::addMarker()
     bool needRow = false;
     bool haveMinBalance = false;
     bool haveMaxCredit = false;
+    bool haveMaxCreditEarly = false;
     MyMoneyMoney minBalance, maxCredit;
+    MyMoneyMoney maxCreditEarly;
     MyMoneyMoney factor(1, 1);
     if (m_account.accountGroup() == eMyMoney::Account::Type::Asset)
         factor = -factor;
 
     if (!m_account.value("maxCreditEarly").isEmpty()) {
         needRow = true;
-        haveMaxCredit = true;
-        maxCredit = MyMoneyMoney(m_account.value("maxCreditEarly")) * factor;
+        haveMaxCreditEarly = true;
+        maxCreditEarly = MyMoneyMoney(m_account.value("maxCreditEarly")) * factor;
     }
     if (!m_account.value("maxCreditAbsolute").isEmpty()) {
         needRow = true;
@@ -101,6 +103,10 @@ void BalanceChartView::addMarker()
         if (haveMaxCredit) {
             paintZeroLine &= !maxCredit.isZero();
             drawLimitLine(-maxCredit.toDouble());
+        }
+        if (haveMaxCreditEarly) {
+            paintZeroLine &= !maxCreditEarly.isZero();
+            drawLimitLine(-maxCreditEarly.toDouble());
         }
     }
 
