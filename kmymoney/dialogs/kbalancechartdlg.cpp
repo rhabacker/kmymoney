@@ -104,27 +104,29 @@ KReportChartView* KBalanceChartDlg::drawChart(const MyMoneyAccount& account)
   // add another row for limit
   bool needRow = false;
   bool haveMinBalance = false;
+  bool haveMinBalanceEarly = false;
   bool haveMaxCredit = false;
-  MyMoneyMoney minBalance, maxCredit;
+  bool haveMaxCreditEarly = false;
+  MyMoneyMoney minBalance, minBalanceEarly;
+  MyMoneyMoney maxCredit, maxCreditEarly;
   MyMoneyMoney factor(1, 1);
   if (account.accountGroup() == MyMoneyAccount::Asset)
     factor = -factor;
 
-  if (account.value("maxCreditEarly").length() > 0) {
-    needRow = true;
-    haveMaxCredit = true;
-    maxCredit = MyMoneyMoney(account.value("maxCreditEarly")) * factor;
+  if (!account.value("maxCreditEarly").isEmpty()) {
+      needRow = true;
+      haveMaxCreditEarly = true;
+      maxCreditEarly = MyMoneyMoney(account.value("maxCreditEarly")) * factor;
   }
   if (account.value("maxCreditAbsolute").length() > 0) {
     needRow = true;
     haveMaxCredit = true;
     maxCredit = MyMoneyMoney(account.value("maxCreditAbsolute")) * factor;
   }
-
-  if (account.value("minBalanceEarly").length() > 0) {
+  if (!account.value("minBalanceEarly").isEmpty()) {
     needRow = true;
-    haveMinBalance = true;
-    minBalance = MyMoneyMoney(account.value("minBalanceEarly"));
+    haveMinBalanceEarly = true;
+    minBalanceEarly = MyMoneyMoney(account.value("minBalanceEarly"));
   }
   if (account.value("minBalanceAbsolute").length() > 0) {
     needRow = true;
@@ -133,8 +135,14 @@ KReportChartView* KBalanceChartDlg::drawChart(const MyMoneyAccount& account)
   }
 
   if (needRow) {
+    if (haveMinBalanceEarly) {
+      chartWidget->drawLimitLine(minBalanceEarly.toDouble());
+    }
     if (haveMinBalance) {
       chartWidget->drawLimitLine(minBalance.toDouble());
+    }
+    if (haveMaxCreditEarly) {
+      chartWidget->drawLimitLine(maxCreditEarly.toDouble());
     }
     if (haveMaxCredit) {
       chartWidget->drawLimitLine(maxCredit.toDouble());
