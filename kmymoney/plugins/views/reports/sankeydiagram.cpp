@@ -112,10 +112,12 @@ void SankeyDiagram::paint(KChart::PaintContext* paintContext)
         const QRectF rect = paintContext->rectangle();
 
         if (d->layoutDirty) {
-            rebuildDataFromModel();
-            // 1. Build nodes + links FROM MODEL
-            // (for now, keep your dummy code or move it to a helper)
-            // IMPORTANT: nodes and links must already be filled here
+            d->nodes.clear();
+            d->links.clear();
+
+            rebuildDataFromModel(); // nodes + links (values only)
+            computeNodeRects(paintContext->rectangle());
+            computeLinkPaths(); // <-- THIS IS WHERE THE FIX GOES
 
             // 2. Run the layout engine
             d->layoutEngine.setNodes(&d->nodes);
@@ -132,7 +134,9 @@ void SankeyDiagram::paint(KChart::PaintContext* paintContext)
 
     // Paint links first (none yet)
     for (const SankeyLink& link : d->links) {
-        QPen pen(link.color, 4.0, Qt::SolidLine, Qt::RoundCap);
+        QPen pen(link.color);
+        pen.setWidthF(link.thickness);
+        pen.setCapStyle(Qt::FlatCap);
         painter->setPen(pen);
         painter->drawPath(link.path);
     }
@@ -190,5 +194,103 @@ void SankeyDiagram::rebuildDataFromModel()
         link.color = d->nodes[link.source].color;
 
         d->links.append(link);
+    }
+}
+
+void SankeyDiagram::computeLinkPaths()
+{
+    Q_D(SankeyDiagram);
+
+    const int nodeCount = d->nodes.size();
+    if (nodeCount == 0)
+        return;
+
+    QVector<qreal> outOffset(nodeCount, 0.0);
+    QVector<qreal> inOffset(nodeCount, 0.0);
+
+    // Compute total flow per node (outgoing)
+    QVector<qreal> nodeOut(nodeCount, 0.0);
+    for (const SankeyLink& link : qAsConst(d->links)) {
+        if (link.source >= 0)
+            nodeOut[link.source] += link.value;
+    }
+
+    // Build paths
+    for (SankeyLink& link : d->links) {
+        if (link.source < 0 || link.target < 0)
+            continue;
+
+        const SankeyNode& src = d->nodes[link.source];
+        const SankeyNode& dst = d->nodes[link.target];
+
+        const qreal scale = nodeOut[link.source] > 0 ? src.rect.height() / nodeOut[link.source] : 0;
+
+        link.thickness = link.value * scale;
+
+        const QPointF start(src.rect.right(), src.rect.top() + outOffset[link.source] + link.thickness / 2);
+
+        const QPointF end(dst.rect.left(), dst.rect.top() + inOffset[link.target] + link.thickness / 2);
+
+        const qreal dx = (end.x() - start.x()) * 0.5;
+
+        QPainterPath path(start);
+        path.cubicTo(start + QPointF(dx, 0), end - QPointF(dx, 0), end);
+
+        link.path = path;
+
+        outOffset[link.source] += link.thickness;
+        inOffset[link.target] += link.thickness;
+    }
+}
+
+void SankeyDiagram::computeNodeRects(const QRectF& area)
+{
+    Q_D(SankeyDiagram);
+
+    const int n = d->nodes.size();
+    if (n == 0)
+        return;
+
+    // 1. Compute total flow per node (max of in/out)
+    QVector<qreal> inFlow(n, 0.0);
+    QVector<qreal> outFlow(n, 0.0);
+
+    for (const SankeyLink& link : qAsConst(d->links)) {
+        if (link.source >= 0 && link.source < n)
+            outFlow[link.source] += link.value;
+        if (link.target >= 0 && link.target < n)
+            inFlow[link.target] += link.value;
+    }
+
+    QVector<qreal> nodeValue(n, 0.0);
+    qreal totalValue = 0.0;
+
+    for (int i = 0; i < n; ++i) {
+        nodeValue[i] = qMax(inFlow[i], outFlow[i]);
+        totalValue += nodeValue[i];
+    }
+
+    if (totalValue <= 0)
+        return;
+
+    // 2. Vertical layout parameters
+    const qreal spacing = 8.0;
+    const qreal usableHeight = area.height() - spacing * (n - 1);
+
+    qreal y = area.top();
+
+    const qreal nodeWidth = 80.0; // temporary fixed width
+
+    // 3. Assign rectangles
+    for (int i = 0; i < n; ++i) {
+        const qreal h = usableHeight * (nodeValue[i] / totalValue);
+
+        d->nodes[i].rect = QRectF(area.left() + 20, // left margin
+                                  y,
+                                  nodeWidth,
+                                  qMax<qreal>(h, 6.0) // minimum height
+        );
+
+        y += h + spacing;
     }
 }

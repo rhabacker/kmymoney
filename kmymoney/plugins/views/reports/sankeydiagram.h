@@ -34,6 +34,8 @@ protected Q_SLOTS:
 protected:
     const QPair<QPointF, QPointF> calculateDataBoundaries() const override;
     void rebuildDataFromModel();
+    void computeLinkPaths();
+    void computeNodeRects(const QRectF& area);
 
 private:
     SankeyDiagramPrivate* const d_ptr;
