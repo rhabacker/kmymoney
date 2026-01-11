@@ -90,6 +90,7 @@ ReportTabChart::ReportTabChart(QWidget *parent)
     ui->m_comboType->addItem(i18nc("type of graphic chart", "Stacked Bar"), QVariant::fromValue(eMyMoney::Report::ChartType::StackedBar));
     ui->m_comboType->addItem(i18nc("type of graphic chart", "Pie"), QVariant::fromValue(eMyMoney::Report::ChartType::Pie));
     ui->m_comboType->addItem(i18nc("type of graphic chart", "Ring"), QVariant::fromValue(eMyMoney::Report::ChartType::Ring));
+    ui->m_comboType->addItem(i18nc("type of graphic chart", "Sankey"), QVariant::fromValue(eMyMoney::Report::ChartType::Sankey));
     connect(ui->m_comboType, &QComboBox::currentIndexChanged, this, &ReportTabChart::slotChartTypeChanged);
     Q_EMIT ui->m_comboType->currentIndexChanged(ui->m_comboType->currentIndex());
 

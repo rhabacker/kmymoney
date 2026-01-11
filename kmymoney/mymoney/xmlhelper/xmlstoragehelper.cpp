@@ -332,6 +332,7 @@ QHash<eMyMoney::Report::ChartType, QString> chartTypeLUT()
         {eMyMoney::Report::ChartType::Bar,        QStringLiteral("bar")},
         {eMyMoney::Report::ChartType::Pie,        QStringLiteral("pie")},
         {eMyMoney::Report::ChartType::Ring,       QStringLiteral("ring")},
+        {eMyMoney::Report::ChartType::Sankey,     QStringLiteral("sankey")},
         {eMyMoney::Report::ChartType::StackedBar, QStringLiteral("stackedbar")},
     };
     // clang-format on

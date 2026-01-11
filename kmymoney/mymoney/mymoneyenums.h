@@ -140,7 +140,7 @@ inline qHashSeedType qHash(const DetailLevel key, qHashSeedType seed)
 }
 
 enum class InvestmentSum { Period = 0, OwnedAndSold, Owned, Sold, Bought};
-enum class ChartType { None = 0, Line, Bar, Pie, Ring, StackedBar, End };
+enum class ChartType { None = 0, Line, Bar, Pie, Ring, StackedBar, Sankey, End };
 inline qHashSeedType qHash(const ChartType key, qHashSeedType seed)
 {
     return ::qHash(static_cast<uint>(key), seed);
