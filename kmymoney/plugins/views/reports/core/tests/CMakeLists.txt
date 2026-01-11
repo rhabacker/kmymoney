@@ -39,5 +39,18 @@ if(NOT "$ENV{KDECI_BUILD}")
     )
 endif()
 
+add_executable(test-sankeydiagram
+    test-sankeydiagram.cpp
+    sankeytestmodel.cpp
+    ../../sankeydiagram.cpp
+    ../../sankeylayoutengine.cpp
+)
+target_link_libraries(test-sankeydiagram
+    PRIVATE
+        Qt::Widgets
+        $<$<BOOL:${KChart_FOUND}>:KChart>
+        $<$<BOOL:${KChart6_FOUND}>:KChart6>
+)
+
 add_subdirectory(data)
 

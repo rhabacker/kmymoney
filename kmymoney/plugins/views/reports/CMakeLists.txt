@@ -3,15 +3,17 @@ add_subdirectory(core)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/reportsview.json.cmake ${CMAKE_CURRENT_BINARY_DIR}/reportsview.json @ONLY)
 
 set(reportsview_SOURCES
-  reportsview.cpp
+  kbalancechartdlg.cpp
+  kreportconfigurationfilterdlg.cpp
   kreportsview.cpp
+  reportcontrolimpl.cpp
+  reportsview.cpp
+  reporttabimpl.cpp
+  sankeydiagram.cpp
+  sankeylayoutengine.cpp
   tocitem.cpp
   tocitemgroup.cpp
   tocitemreport.cpp
-  kreportconfigurationfilterdlg.cpp
-  reporttabimpl.cpp
-  reportcontrolimpl.cpp
-  kbalancechartdlg.cpp
   )
 
 ki18n_wrap_ui(reportsview_SOURCES
