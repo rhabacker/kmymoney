@@ -37,6 +37,7 @@
 #include <QUrlQuery>
 #include <QVBoxLayout>
 #include <QWheelEvent>
+#include <flowtable.h>
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QTextCodec>
@@ -413,6 +414,9 @@ void KReportTab::updateReport()
         m_chartEnabled = false;
     } else if (m_report.reportType() == eMyMoney::Report::ReportType::InfoTable) {
         m_table = new ObjectInfoTable(m_report);
+        m_chartEnabled = false;
+    } else if (m_report.reportType() == eMyMoney::Report::ReportType::FlowTable) {
+        m_table = new FlowTable(m_report);
         m_chartEnabled = false;
     }
 
@@ -1019,6 +1023,16 @@ public:
                                          eMyMoney::Report::DetailLevel::All,
                                          eMyMoney::Report::Origin::BuiltIn,
                                          i18n("Cash Flow Transactions This Month"),
+                                         i18n("Default Report")));
+            groups.push_back(list);
+        }
+        {
+            ReportGroup list("AccountFlow", i18n("Account Flow"));
+            list.push_back(MyMoneyReport(eMyMoney::Report::RowType::AccountFlow,
+                                         eMyMoney::Report::QueryColumn::Number | eMyMoney::Report::QueryColumn::Payee | eMyMoney::Report::QueryColumn::Account,
+                                         TransactionFilter::Date::CurrentMonth,
+                                         eMyMoney::Report::DetailLevel::All,
+                                         i18n("Account Flow Transactions This Month"),
                                          i18n("Default Report")));
             groups.push_back(list);
         }

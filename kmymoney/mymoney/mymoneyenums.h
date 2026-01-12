@@ -110,7 +110,32 @@ inline qHashSeedType qHash(const Type key, qHashSeedType seed)
 }
 
 namespace Report {
-enum class RowType { NoRows = 0, AssetLiability, ExpenseIncome, Category, TopCategory, Account, Tag, Payee, Month, Week, TopAccount, AccountByTopAccount, EquityType, AccountType, Institution, Budget, BudgetActual, Schedule, AccountInfo, AccountLoanInfo, AccountReconcile, CashFlow, Invalid };
+enum class RowType {
+    NoRows = 0,
+    AssetLiability,
+    ExpenseIncome,
+    Category,
+    TopCategory,
+    Account,
+    Tag,
+    Payee,
+    Month,
+    Week,
+    TopAccount,
+    AccountByTopAccount,
+    EquityType,
+    AccountType,
+    Institution,
+    Budget,
+    BudgetActual,
+    Schedule,
+    AccountInfo,
+    AccountLoanInfo,
+    AccountReconcile,
+    CashFlow,
+    AccountFlow,
+    Invalid
+};
 inline qHashSeedType qHash(const RowType key, qHashSeedType seed)
 {
     return ::qHash(static_cast<uint>(key), seed);
@@ -128,7 +153,7 @@ enum class Origin {
     Test // internal / unit-test only
 };
 
-enum class ReportType { NoReport = 0, PivotTable, QueryTable, InfoTable, Invalid };
+enum class ReportType { NoReport = 0, PivotTable, QueryTable, InfoTable, FlowTable, Invalid };
 // if you add bits to this bitmask, start with the value currently assigned to QCend and update its value afterwards
 // also don't forget to add column names to kQueryColumnsText in mymoneyreport.cpp
 enum QueryColumn : int { None = 0x0, Begin = 0x1, Number = 0x1, Payee = 0x2, Category = 0x4, Tag = 0x8, Memo = 0x10, Account = 0x20, Reconciled = 0x40, Action = 0x80, Shares = 0x100, Price = 0x200, Performance = 0x400, Loan = 0x800, Balance = 0x1000, CapitalGain = 0x2000, End = 0x4000 };

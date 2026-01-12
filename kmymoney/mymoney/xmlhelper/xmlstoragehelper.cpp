@@ -217,6 +217,7 @@ QHash<eMyMoney::Report::RowType, QString> rowTypesLUT()
         {eMyMoney::Report::RowType::AccountLoanInfo,      QStringLiteral("accountloaninfo")},
         {eMyMoney::Report::RowType::AccountReconcile,     QStringLiteral("accountreconcile")},
         {eMyMoney::Report::RowType::CashFlow,             QStringLiteral("cashflow")},
+        {eMyMoney::Report::RowType::AccountFlow,          QStringLiteral("accountflow")},
     };
     // clang-format on
     return lut;
@@ -569,7 +570,12 @@ eMyMoney::Report::ReportType rowTypeToReportType(eMyMoney::Report::RowType rowTy
 {
     // clang-format off
     static const QHash<eMyMoney::Report::RowType, eMyMoney::Report::ReportType> reportTypes {
+        {eMyMoney::Report::RowType::Schedule,             eMyMoney::Report::ReportType::InfoTable},
+        {eMyMoney::Report::RowType::AccountInfo,          eMyMoney::Report::ReportType::InfoTable},
+        {eMyMoney::Report::RowType::AccountLoanInfo,      eMyMoney::Report::ReportType::InfoTable},
         {eMyMoney::Report::RowType::NoRows,               eMyMoney::Report::ReportType::NoReport},
+        {eMyMoney::Report::RowType::Budget,               eMyMoney::Report::ReportType::PivotTable},
+        {eMyMoney::Report::RowType::BudgetActual,         eMyMoney::Report::ReportType::PivotTable},
         {eMyMoney::Report::RowType::AssetLiability,       eMyMoney::Report::ReportType::PivotTable},
         {eMyMoney::Report::RowType::ExpenseIncome,        eMyMoney::Report::ReportType::PivotTable},
         {eMyMoney::Report::RowType::Category,             eMyMoney::Report::ReportType::QueryTable},
@@ -584,13 +590,9 @@ eMyMoney::Report::ReportType rowTypeToReportType(eMyMoney::Report::RowType rowTy
         {eMyMoney::Report::RowType::EquityType,           eMyMoney::Report::ReportType::QueryTable},
         {eMyMoney::Report::RowType::AccountType,          eMyMoney::Report::ReportType::QueryTable},
         {eMyMoney::Report::RowType::Institution,          eMyMoney::Report::ReportType::QueryTable},
-        {eMyMoney::Report::RowType::Budget,               eMyMoney::Report::ReportType::PivotTable},
-        {eMyMoney::Report::RowType::BudgetActual,         eMyMoney::Report::ReportType::PivotTable},
-        {eMyMoney::Report::RowType::Schedule,             eMyMoney::Report::ReportType::InfoTable},
-        {eMyMoney::Report::RowType::AccountInfo,          eMyMoney::Report::ReportType::InfoTable},
-        {eMyMoney::Report::RowType::AccountLoanInfo,      eMyMoney::Report::ReportType::InfoTable},
         {eMyMoney::Report::RowType::AccountReconcile,     eMyMoney::Report::ReportType::QueryTable},
         {eMyMoney::Report::RowType::CashFlow,             eMyMoney::Report::ReportType::QueryTable},
+        {eMyMoney::Report::RowType::AccountFlow,          eMyMoney::Report::ReportType::FlowTable},
     };
     // clang-format on
     return reportTypes.value(rowType, eMyMoney::Report::ReportType::Invalid);

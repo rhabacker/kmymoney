@@ -59,7 +59,9 @@ MyMoneyReport::MyMoneyReport(eMyMoney::Report::RowType rt,
     //set report type
     if (d->m_reportType == eMyMoney::Report::ReportType::PivotTable)
         d->m_columnType = static_cast<eMyMoney::Report::ColumnType>(ct);
-    if (d->m_reportType == eMyMoney::Report::ReportType::QueryTable)
+    else if (d->m_reportType == eMyMoney::Report::ReportType::QueryTable)
+        d->m_queryColumns = static_cast<eMyMoney::Report::QueryColumn>(ct);
+    else if (d->m_reportType == eMyMoney::Report::ReportType::FlowTable)
         d->m_queryColumns = static_cast<eMyMoney::Report::QueryColumn>(ct);
     setDateFilter(dl);
 
@@ -147,7 +149,8 @@ void MyMoneyReport::addAccountGroupsByRowType(eMyMoney::Report::RowType rt)
         addAccountGroup(eMyMoney::Account::Type::Income);
         break;
 
-    //cash flow reports show splits for all account groups
+    case eMyMoney::Report::RowType::AccountFlow:
+        // cash flow reports show splits for all account groups
     case eMyMoney::Report::RowType::CashFlow:
         addAccountGroup(eMyMoney::Account::Type::Expense);
         addAccountGroup(eMyMoney::Account::Type::Income);
@@ -1136,6 +1139,8 @@ QString MyMoneyReport::toString(eMyMoney::Report::RowType type)
         return "eAccountReconcile";
     case eMyMoney::Report::RowType::CashFlow           :
         return "eCashFlow";
+    case eMyMoney::Report::RowType::AccountFlow:
+        return "eAccountFlow";
     default                  :
         return "undefined";
     }
@@ -1152,6 +1157,8 @@ QString MyMoneyReport::toString(eMyMoney::Report::ReportType type)
         return "eQueryTable";
     case eMyMoney::Report::ReportType::InfoTable:
         return "eInfoTable";
+    case eMyMoney::Report::ReportType::FlowTable:
+        return "eFlowTable";
     default:
         return "undefined";
     }
