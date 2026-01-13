@@ -1,6 +1,7 @@
 #include "flowtable.h"
 
 #include "mymoneyaccount.h"
+#include "mymoneyenums.h"
 #include "mymoneyfile.h"
 #include "mymoneymoney.h"
 #include "mymoneyprice.h"
@@ -10,6 +11,8 @@
 #include "reportaccount.h"
 
 #include <QDate>
+
+#include <KLocalizedString>
 
 namespace reports {
 
@@ -21,6 +24,32 @@ FlowTable::FlowTable(const MyMoneyReport& report)
 
 FlowTable::~FlowTable()
 {
+}
+
+QString reports::FlowTable::FlowTable::toNodeName(const ReportAccount& acc) const
+{
+    // usually identical logic
+    return fromNodeName(acc);
+}
+
+QString reports::FlowTable::FlowTable::fromNodeName(const ReportAccount& acc) const
+{
+    switch (m_config.detailLevel()) {
+    case eMyMoney::Report::DetailLevel::All:
+        return acc.fullName();
+
+    case eMyMoney::Report::DetailLevel::Top:
+        return acc.topParentName();
+
+    case eMyMoney::Report::DetailLevel::Group:
+        return MyMoneyAccount::accountTypeToString(acc.accountGroup());
+
+    case eMyMoney::Report::DetailLevel::Total:
+        return i18n("Total");
+
+    default:
+        return QString();
+    }
 }
 
 void FlowTable::init()
@@ -94,11 +123,11 @@ void FlowTable::constructFlowTable()
                 TableRow row;
 
                 row[ctFromAccountID] = fromAcc.id();
-                row[ctFromAccount] = fromAcc.fullName();
+                row[ctFromAccount] = fromNodeName(fromAcc);
                 row[ctFromTopAccount] = fromAcc.topParentName();
 
                 row[ctToAccountID] = toAcc.id();
-                row[ctToAccount] = toAcc.fullName();
+                row[ctToAccount] = toNodeName(toAcc);
                 row[ctToTopAccount] = toAcc.topParentName();
 
                 // Convert to report currency
@@ -117,7 +146,28 @@ void FlowTable::constructFlowTable()
             }
         }
     }
-    m_group << ctFromAccountID << ctToAccountID;
+
+    switch (m_config.detailLevel()) {
+    case eMyMoney::Report::DetailLevel::All:
+        m_group << ctFromAccount << ctToAccount;
+        break;
+
+    case eMyMoney::Report::DetailLevel::Top:
+        m_group << ctFromAccount << ctToAccount;
+        break;
+
+    case eMyMoney::Report::DetailLevel::Group:
+        m_group << ctFromAccount << ctToAccount;
+        break;
+
+    case eMyMoney::Report::DetailLevel::Total:
+        // single aggregated flow
+        break;
+
+    default:
+        return;
+    }
+
     m_columns << ctFromAccount << ctToAccount;
     m_subtotal << ctValue;
 

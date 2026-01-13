@@ -14,6 +14,9 @@ public:
     explicit FlowTable(const MyMoneyReport& report);
     virtual ~FlowTable();
 
+    QString fromNodeName(const ReportAccount& acc) const;
+    QString toNodeName(const ReportAccount& acc) const;
+
 protected:
     void init();
     void constructFlowTable();
