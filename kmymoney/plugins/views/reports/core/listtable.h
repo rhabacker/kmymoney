@@ -147,12 +147,18 @@ public:
         ctEndingMarketValue,
         csID,
         /* Flow / Sankey */
-        ctFromAccountID,
+        csFromID,
+        csToID,
         ctFromAccount,
+        ctFromAccountID,
+        ctFromCurrency,
+        ctFromTag,
         ctFromTopAccount,
-        ctToAccountID,
         ctToAccount,
+        ctToAccountID,
+        ctToCurrency,
         ctToTopAccount,
+        ctToTag,
     };
     Q_ENUM(cellTypeE)
 

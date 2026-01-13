@@ -14,6 +14,8 @@
 
 #include <KLocalizedString>
 
+constexpr QChar tagSeparator = QChar(QChar::ParagraphSeparator);
+
 namespace reports {
 
 FlowTable::FlowTable(const MyMoneyReport& report)
@@ -81,7 +83,7 @@ void FlowTable::constructFlowTable()
     const auto fraction = baseCurrency.smallestAccountFraction();
 
     // 2. Iterate transactions
-    for (const auto& tx : qAsConst(transactions)) {
+    for (const MyMoneyTransaction& tx : qAsConst(transactions)) {
         const auto splits = tx.splits();
         if (splits.count() < 2)
             continue;
@@ -121,14 +123,23 @@ void FlowTable::constructFlowTable()
 
                 // 3. Build table row
                 TableRow row;
+                row[ctID] = tx.id();
+                row[ctPostDate] = tx.postDate().toString(Qt::ISODate);
 
                 row[ctFromAccountID] = fromAcc.id();
                 row[ctFromAccount] = fromNodeName(fromAcc);
+                row[ctFromCurrency] = fromAcc.currencyId();
                 row[ctFromTopAccount] = fromAcc.topParentName();
+                row[csFromID] = fromSplit.id();
+                row[ctFromTag] = fromSplit.tagIdList().join(tagSeparator);
 
                 row[ctToAccountID] = toAcc.id();
                 row[ctToAccount] = toNodeName(toAcc);
+                row[ctToCurrency] = toAcc.currencyId();
                 row[ctToTopAccount] = toAcc.topParentName();
+                row[csToID] = toSplit.id();
+                row[ctCommodity] = tx.commodity();
+                row[ctToTag] = toSplit.tagIdList().join(tagSeparator);
 
                 // Convert to report currency
 
