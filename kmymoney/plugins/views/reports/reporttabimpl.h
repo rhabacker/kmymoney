@@ -19,8 +19,6 @@ class MyMoneyReport;
 namespace Ui
 {
 class ReportTabGeneral;
-class ReportTabRowColPivot;
-class ReportTabRowColQuery;
 class ReportTabChart;
 class ReportTabRange;
 class ReportTabCapitalGain;
@@ -36,31 +34,6 @@ public:
     ~ReportTabGeneral();
 
     Ui::ReportTabGeneral* ui;
-};
-
-class ReportTabRowColPivot : public QWidget
-{
-    Q_DISABLE_COPY(ReportTabRowColPivot)
-
-public:
-    explicit ReportTabRowColPivot(QWidget *parent);
-    ~ReportTabRowColPivot();
-
-    Ui::ReportTabRowColPivot* ui;
-};
-
-class ReportTabRowColQuery : public QWidget
-{
-    Q_OBJECT
-    Q_DISABLE_COPY(ReportTabRowColQuery)
-
-public:
-    explicit ReportTabRowColQuery(QWidget *parent);
-    ~ReportTabRowColQuery();
-
-    Ui::ReportTabRowColQuery* ui;
-private Q_SLOTS:
-    void slotHideTransactionsChanged(bool checked);
 };
 
 class ReportTabChart : public QWidget

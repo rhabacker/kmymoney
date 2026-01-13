@@ -37,6 +37,8 @@
 #include "mymoneyreport.h"
 #include "pricemodel.h"
 #include "reporttabimpl.h"
+#include "reporttabrowcolpivot.h"
+#include "reporttabrowcolquery.h"
 
 #include <ui_kreportconfigurationfilterdlg.h>
 #include <ui_reporttabgeneral.h>
@@ -145,8 +147,10 @@ KReportConfigurationFilterDlg::KReportConfigurationFilterDlg(MyMoneyReport repor
         if (!(d->m_initialState.isIncludingPrice() || d->m_initialState.isIncludingAveragePrice())) {
             d->m_tabRowColPivot = new ReportTabRowColPivot(d->ui->m_criteriaTab);
             d->ui->m_criteriaTab->insertTab(tabNr++, d->m_tabRowColPivot, i18n("Rows/Columns"));
-            connect(d->m_tabRowColPivot->ui->m_comboRows, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, static_cast<void (KReportConfigurationFilterDlg::*)(int)>(&KReportConfigurationFilterDlg::slotRowTypeChanged));
-            connect(d->m_tabRowColPivot->ui->m_comboRows, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, static_cast<void (KReportConfigurationFilterDlg::*)(int)>(&KReportConfigurationFilterDlg::slotUpdateColumnsCombo));
+            connect(d->m_tabRowColPivot,
+                    &ReportTabRowColPivot::rowTypeChanged,
+                    this,
+                    static_cast<void (KReportConfigurationFilterDlg::*)(int)>(&KReportConfigurationFilterDlg::slotUpdateColumnsCombo));
             //control the state of the includeTransfer check
             connect(d->m_tabFilters->categoriesView(), &KMyMoneySelector::stateChanged, this, &KReportConfigurationFilterDlg::slotUpdateCheckTransfers);
         }
@@ -228,22 +232,10 @@ void KReportConfigurationFilterDlg::slotConvertCurrencyChanged(int state)
     if (!d->m_tabRowColQuery)
         return;
 
-    QCheckBox* box = d->m_tabRowColQuery->ui->m_checkPrice;
     // The price column is mandatory when currency conversion is enabled,
     // see https://bugs.kde.org/show_bug.cgi?id=345550
-
-    // Previous state is saved into the tristate flag
-    if (state) {
-        box->setTristate(box->checkState());
-        if (MyMoneyFile::instance()->priceModel()->rowCount() > 0) {
-            box->setChecked(true);
-            box->setEnabled(false);
-        }
-    } else {
-        box->setChecked(box->isTristate());
-        box->setTristate(false);
-        box->setEnabled(true);
-    }
+    const bool hasPrices = MyMoneyFile::instance()->priceModel()->rowCount() > 0;
+    d->m_tabRowColQuery->enforcePriceColumn(state, hasPrices);
 }
 
 void KReportConfigurationFilterDlg::slotSearch()
@@ -272,82 +264,9 @@ void KReportConfigurationFilterDlg::slotSearch()
     d->m_currentState.setSkipZero(d->m_tabGeneral->ui->m_skipZero->isChecked());
 
     if (d->m_tabRowColPivot) {
-        eMyMoney::Report::DetailLevel dl[4] = { eMyMoney::Report::DetailLevel::All, eMyMoney::Report::DetailLevel::Top, eMyMoney::Report::DetailLevel::Group, eMyMoney::Report::DetailLevel::Total };
-
-        d->m_currentState.setDetailLevel(dl[d->m_tabRowColPivot->ui->m_comboDetail->currentIndex()]);
-
-        // modify the rowtype only if the widget is enabled
-        if (d->m_tabRowColPivot->ui->m_comboRows->isEnabled()) {
-            eMyMoney::Report::RowType rt[2] = { eMyMoney::Report::RowType::ExpenseIncome, eMyMoney::Report::RowType::AssetLiability };
-            d->m_currentState.setRowType(rt[d->m_tabRowColPivot->ui->m_comboRows->currentIndex()]);
-        }
-
-        d->m_currentState.setShowingRowTotals(false);
-        if (d->m_tabRowColPivot->ui->m_comboRows->currentIndex() == 0)
-            d->m_currentState.setShowingRowTotals(d->m_tabRowColPivot->ui->m_checkTotalColumn->isChecked());
-
-        d->m_currentState.setShowingColumnTotals(d->m_tabRowColPivot->ui->m_checkTotalRow->isChecked());
-        d->m_currentState.setIncludingSchedules(d->m_tabRowColPivot->ui->m_checkScheduled->isChecked());
-        d->m_currentState.setPropagateBudgetDifference(d->m_tabRowColPivot->ui->m_propagateRemainder->isChecked());
-        d->m_currentState.setIncludingTransfers(d->m_tabRowColPivot->ui->m_checkTransfers->isChecked());
-
-        d->m_currentState.setIncludingUnusedAccounts(d->m_tabRowColPivot->ui->m_checkUnused->isChecked());
-
-        if (d->m_tabRowColPivot->ui->m_comboBudget->isEnabled() && (d->m_budgets.count() > 0)) {
-            d->m_currentState.setBudget(d->m_budgets[d->m_tabRowColPivot->ui->m_comboBudget->currentItem()].id(), d->m_initialState.rowType() == eMyMoney::Report::RowType::BudgetActual);
-        } else {
-            d->m_currentState.setBudget(QString(), false);
-        }
-
-        //set moving average days
-        if (d->m_tabRowColPivot->ui->m_movingAverageDays->isEnabled()) {
-            d->m_currentState.setMovingAverageDays(d->m_tabRowColPivot->ui->m_movingAverageDays->value());
-        }
+        d->m_tabRowColPivot->save(d->m_currentState, d->m_budgets, d->m_initialState.rowType() == eMyMoney::Report::RowType::BudgetActual);
     } else if (d->m_tabRowColQuery) {
-        eMyMoney::Report::RowType rtq[8] = { eMyMoney::Report::RowType::Category, eMyMoney::Report::RowType::TopCategory, eMyMoney::Report::RowType::Tag, eMyMoney::Report::RowType::Payee, eMyMoney::Report::RowType::Account, eMyMoney::Report::RowType::TopAccount, eMyMoney::Report::RowType::Month, eMyMoney::Report::RowType::Week, };
-        d->m_currentState.setRowType(rtq[d->m_tabRowColQuery->ui->m_comboOrganizeBy->currentIndex()]);
-
-        unsigned qc = eMyMoney::Report::QueryColumn::None;
-
-        if (d->m_currentState.queryColumns() & eMyMoney::Report::QueryColumn::Loan)
-            // once a loan report, always a loan report
-            qc = eMyMoney::Report::QueryColumn::Loan;
-
-        if (d->m_tabRowColQuery->ui->m_checkNumber->isChecked())
-            qc |= eMyMoney::Report::QueryColumn::Number;
-        if (d->m_tabRowColQuery->ui->m_checkPayee->isChecked())
-            qc |= eMyMoney::Report::QueryColumn::Payee;
-        if (d->m_tabRowColQuery->ui->m_checkTag->isChecked())
-            qc |= eMyMoney::Report::QueryColumn::Tag;
-        if (d->m_tabRowColQuery->ui->m_checkCategory->isChecked())
-            qc |= eMyMoney::Report::QueryColumn::Category;
-        if (d->m_tabRowColQuery->ui->m_checkMemo->isChecked())
-            qc |= eMyMoney::Report::QueryColumn::Memo;
-        if (d->m_tabRowColQuery->ui->m_checkAccount->isChecked())
-            qc |= eMyMoney::Report::QueryColumn::Account;
-        if (d->m_tabRowColQuery->ui->m_checkReconciled->isChecked())
-            qc |= eMyMoney::Report::QueryColumn::Reconciled;
-        if (d->m_tabRowColQuery->ui->m_checkAction->isChecked())
-            qc |= eMyMoney::Report::QueryColumn::Action;
-        if (d->m_tabRowColQuery->ui->m_checkShares->isChecked())
-            qc |= eMyMoney::Report::QueryColumn::Shares;
-        if (d->m_tabRowColQuery->ui->m_checkPrice->isChecked())
-            qc |= eMyMoney::Report::QueryColumn::Price;
-        if (d->m_tabRowColQuery->ui->m_checkBalance->isChecked())
-            qc |= eMyMoney::Report::QueryColumn::Balance;
-
-        d->m_currentState.setQueryColumns(static_cast<eMyMoney::Report::QueryColumn>(qc));
-
-        d->m_currentState.setTax(d->m_tabRowColQuery->ui->m_checkTax->isChecked());
-        d->m_currentState.setInvestmentsOnly(d->m_tabRowColQuery->ui->m_checkInvestments->isChecked());
-        d->m_currentState.setLoansOnly(d->m_tabRowColQuery->ui->m_checkLoans->isChecked());
-
-        d->m_currentState.setDetailLevel(d->m_tabRowColQuery->ui->m_checkHideSplitDetails->isChecked() ?
-                                         eMyMoney::Report::DetailLevel::None : eMyMoney::Report::DetailLevel::All);
-        d->m_currentState.setHideTransactions(d->m_tabRowColQuery->ui->m_checkHideTransactions->isChecked());
-        d->m_currentState.setShowingColumnTotals(!d->m_tabRowColQuery->ui->m_checkHideTotals->isChecked());
-
-        d->m_currentState.setIncludingTransfers(d->m_tabRowColQuery->ui->m_checkTransfers->isChecked());
+        d->m_tabRowColQuery->save(d->m_currentState);
     }
 
     if (d->m_tabChart) {
@@ -391,34 +310,23 @@ void KReportConfigurationFilterDlg::slotSearch()
     done(true);
 }
 
-void KReportConfigurationFilterDlg::slotRowTypeChanged(int row)
-{
-    Q_D(KReportConfigurationFilterDlg);
-    d->m_tabRowColPivot->ui->m_checkTotalColumn->setEnabled(row == 0);
-}
-
 void KReportConfigurationFilterDlg::slotColumnTypeChanged(int row)
 {
     Q_D(KReportConfigurationFilterDlg);
-    if ((d->m_tabRowColPivot->ui->m_comboBudget->isEnabled() && row < 2)) {
+    if ((d->m_tabRowColPivot->isBudgetComboEnabled() && row < 2)) {
         d->m_tabRange->ui->m_comboColumns->setCurrentItem(i18nc("@item the columns will display monthly data", "Monthly"), false);
     }
 }
 
-void KReportConfigurationFilterDlg::slotUpdateColumnsCombo()
+void KReportConfigurationFilterDlg::slotUpdateColumnsCombo(int row)
 {
     Q_D(KReportConfigurationFilterDlg);
     const int monthlyIndex = 2;
     const int incomeExpenseIndex = 0;
-    const bool isIncomeExpenseForecast = d->m_currentState.isIncludingForecast() && d->m_tabRowColPivot->ui->m_comboRows->currentIndex() == incomeExpenseIndex;
+    const bool isIncomeExpenseForecast = d->m_currentState.isIncludingForecast() && row == incomeExpenseIndex;
     if (isIncomeExpenseForecast && d->m_tabRange->ui->m_comboColumns->currentIndex() != monthlyIndex) {
         d->m_tabRange->ui->m_comboColumns->setCurrentItem(i18nc("@item the columns will display monthly data", "Monthly"), false);
     }
-}
-
-void KReportConfigurationFilterDlg::slotUpdateColumnsCombo(int)
-{
-    slotUpdateColumnsCombo();
 }
 
 void KReportConfigurationFilterDlg::slotLogAxisChanged(int state)
@@ -467,143 +375,11 @@ void KReportConfigurationFilterDlg::slotReset()
     }
 
     if (d->m_tabRowColPivot) {
-        KComboBox *combo = d->m_tabRowColPivot->ui->m_comboDetail;
-        switch (d->m_initialState.detailLevel()) {
-        case eMyMoney::Report::DetailLevel::None:
-        case eMyMoney::Report::DetailLevel::End:
-        case eMyMoney::Report::DetailLevel::All:
-            combo->setCurrentItem(i18nc("All accounts", "All"), false);
-            break;
-        case eMyMoney::Report::DetailLevel::Top:
-            combo->setCurrentItem(i18n("Top-Level"), false);
-            break;
-        case eMyMoney::Report::DetailLevel::Group:
-            combo->setCurrentItem(i18n("Groups"), false);
-            break;
-        case eMyMoney::Report::DetailLevel::Total:
-            combo->setCurrentItem(i18n("Totals"), false);
-            break;
-        }
-
-        combo = d->m_tabRowColPivot->ui->m_comboRows;
-        switch (d->m_initialState.rowType()) {
-        case eMyMoney::Report::RowType::ExpenseIncome:
-        case eMyMoney::Report::RowType::Budget:
-        case eMyMoney::Report::RowType::BudgetActual:
-            combo->setCurrentItem(i18n("Income & Expenses"), false); // income / expense
-            break;
-        default:
-            combo->setCurrentItem(i18n("Assets & Liabilities"), false); // asset / liability
-            break;
-        }
-        d->m_tabRowColPivot->ui->m_checkTotalColumn->setChecked(d->m_initialState.isShowingRowTotals());
-        d->m_tabRowColPivot->ui->m_checkTotalRow->setChecked(d->m_initialState.isShowingColumnTotals());
-        d->m_tabRowColPivot->ui->m_propagateRemainder->setEnabled(d->m_initialState.rowType() == eMyMoney::Report::RowType::BudgetActual);
-        d->m_tabRowColPivot->ui->m_propagateRemainder->setChecked(d->m_initialState.isPropagateBudgetDifference());
-        d->m_tabRowColPivot->ui->m_checkTotalRow->setDisabled(d->m_initialState.isPropagateBudgetDifference());
-
-        connect(d->m_tabRowColPivot->ui->m_propagateRemainder, &QCheckBox::stateChanged, this, [&](int _state) {
-            Q_D(KReportConfigurationFilterDlg);
-            const auto state = static_cast<Qt::CheckState>(_state);
-            d->m_tabRowColPivot->ui->m_checkTotalColumn->setDisabled(state == Qt::Checked);
-            switch (state) {
-            case Qt::Checked:
-                d->m_tabRowColPivot->ui->m_checkTotalColumn->setChecked(false);
-                break;
-            default:
-                break;
-            }
-        });
-
-        slotRowTypeChanged(combo->currentIndex());
-
-        //load budgets combo
-        d->m_tabRowColPivot->ui->m_comboBudget->setDisabled(true);
-        if (d->m_initialState.rowType() == eMyMoney::Report::RowType::Budget
-                || d->m_initialState.rowType() == eMyMoney::Report::RowType::BudgetActual) {
-            d->m_tabRowColPivot->ui->m_comboBudget->setEnabled(true);
-            d->m_tabRowColPivot->ui->m_comboRows->setEnabled(false);
-            d->m_tabRowColPivot->ui->m_rowsLabel->setEnabled(false);
-            d->m_tabRowColPivot->ui->m_budgetFrame->setEnabled(!d->m_budgets.empty());
-            auto i = 0;
-            for (QVector<MyMoneyBudget>::const_iterator it_b = d->m_budgets.cbegin(); it_b != d->m_budgets.cend(); ++it_b) {
-                d->m_tabRowColPivot->ui->m_comboBudget->insertItem((*it_b).name(), i);
-                //set the current selected item
-                if ((d->m_initialState.budget() == "Any" && (*it_b).budgetStart().year() == QDate::currentDate().year())
-                        || d->m_initialState.budget() == (*it_b).id())
-                    d->m_tabRowColPivot->ui->m_comboBudget->setCurrentItem(i);
-                i++;
-            }
-        }
-
-        //set moving average days spinbox
-        QSpinBox *spinbox = d->m_tabRowColPivot->ui->m_movingAverageDays;
-        spinbox->setEnabled(d->m_initialState.isIncludingMovingAverage());
-        d->m_tabRowColPivot->ui->m_movingAverageLabel->setEnabled(d->m_initialState.isIncludingMovingAverage());
-
-        if (d->m_initialState.isIncludingMovingAverage()) {
-            spinbox->setValue(d->m_initialState.movingAverageDays());
-        }
-
-        d->m_tabRowColPivot->ui->m_checkScheduled->setChecked(d->m_initialState.isIncludingSchedules());
-        d->m_tabRowColPivot->ui->m_checkTransfers->setChecked(d->m_initialState.isIncludingTransfers());
-        d->m_tabRowColPivot->ui->m_checkUnused->setChecked(d->m_initialState.isIncludingUnusedAccounts());
+        d->m_tabRowColPivot->load(d->m_initialState, d->m_budgets);
     } else if (d->m_tabRowColQuery) {
-        KComboBox *combo = d->m_tabRowColQuery->ui->m_comboOrganizeBy;
-        switch (d->m_initialState.rowType()) {
-        case eMyMoney::Report::RowType::NoRows:
-        case eMyMoney::Report::RowType::Category:
-            combo->setCurrentItem(i18n("Categories"), false);
-            break;
-        case eMyMoney::Report::RowType::TopCategory:
-            combo->setCurrentItem(i18n("Top Categories"), false);
-            break;
-        case eMyMoney::Report::RowType::Tag:
-            combo->setCurrentItem(i18n("Tags"), false);
-            break;
-        case eMyMoney::Report::RowType::Payee:
-            combo->setCurrentItem(i18n("Payees"), false);
-            break;
-        case eMyMoney::Report::RowType::Account:
-            combo->setCurrentItem(i18n("Accounts"), false);
-            break;
-        case eMyMoney::Report::RowType::TopAccount:
-            combo->setCurrentItem(i18n("Top Accounts"), false);
-            break;
-        case eMyMoney::Report::RowType::Month:
-            combo->setCurrentItem(i18n("Month"), false);
-            break;
-        case eMyMoney::Report::RowType::Week:
-            combo->setCurrentItem(i18n("Week"), false);
-            break;
-        default:
-            throw MYMONEYEXCEPTION_CSTRING("KReportConfigurationFilterDlg::slotReset(): QueryTable report has invalid rowtype");
-        }
-
-        unsigned qc = d->m_initialState.queryColumns();
-        d->m_tabRowColQuery->ui->m_checkNumber->setChecked(qc & eMyMoney::Report::QueryColumn::Number);
-        d->m_tabRowColQuery->ui->m_checkPayee->setChecked(qc & eMyMoney::Report::QueryColumn::Payee);
-        d->m_tabRowColQuery->ui->m_checkTag->setChecked(qc & eMyMoney::Report::QueryColumn::Tag);
-        d->m_tabRowColQuery->ui->m_checkCategory->setChecked(qc & eMyMoney::Report::QueryColumn::Category);
-        d->m_tabRowColQuery->ui->m_checkMemo->setChecked(qc & eMyMoney::Report::QueryColumn::Memo);
-        d->m_tabRowColQuery->ui->m_checkAccount->setChecked(qc & eMyMoney::Report::QueryColumn::Account);
-        d->m_tabRowColQuery->ui->m_checkReconciled->setChecked(qc & eMyMoney::Report::QueryColumn::Reconciled);
-        d->m_tabRowColQuery->ui->m_checkAction->setChecked(qc & eMyMoney::Report::QueryColumn::Action);
-        d->m_tabRowColQuery->ui->m_checkShares->setChecked(qc & eMyMoney::Report::QueryColumn::Shares);
-        d->m_tabRowColQuery->ui->m_checkPrice->setChecked(qc & eMyMoney::Report::QueryColumn::Price);
-        d->m_tabRowColQuery->ui->m_checkBalance->setChecked(qc & eMyMoney::Report::QueryColumn::Balance);
-
-        d->m_tabRowColQuery->ui->m_checkTax->setChecked(d->m_initialState.isTax());
-        d->m_tabRowColQuery->ui->m_checkInvestments->setChecked(d->m_initialState.isInvestmentsOnly());
-        d->m_tabRowColQuery->ui->m_checkLoans->setChecked(d->m_initialState.isLoansOnly());
-
-        d->m_tabRowColQuery->ui->m_checkHideTransactions->setChecked(d->m_initialState.isHideTransactions());
-        d->m_tabRowColQuery->ui->m_checkHideTotals->setChecked(!d->m_initialState.isShowingColumnTotals());
-        d->m_tabRowColQuery->ui->m_checkHideSplitDetails->setEnabled(!d->m_initialState.isHideTransactions());
-
-        d->m_tabRowColQuery->ui->m_checkHideSplitDetails->setChecked
-        (d->m_initialState.detailLevel() == eMyMoney::Report::DetailLevel::None || d->m_initialState.isHideTransactions());
-        d->m_tabRowColQuery->ui->m_checkTransfers->setChecked(d->m_initialState.isIncludingTransfers());
+        d->m_tabRowColQuery->load(d->m_initialState);
+    } else if (d->m_tabRowColFlow) {
+        d->m_tabRowColFlow->load(d->m_initialState);
     }
 
     if (d->m_tabChart) {
@@ -707,11 +483,10 @@ void KReportConfigurationFilterDlg::slotShowHelp()
 void KReportConfigurationFilterDlg::slotUpdateCheckTransfers()
 {
     Q_D(KReportConfigurationFilterDlg);
-    auto cb = d->m_tabRowColPivot->ui->m_checkTransfers;
     if (!d->m_tabFilters->categoriesView()->allItemsSelected()) {
-        cb->setChecked(false);
-        cb->setDisabled(true);
+        d->m_tabRowColPivot->setTransfersChecked(false);
+        d->m_tabRowColPivot->setTransfersEnabled(false);
     } else {
-        cb->setEnabled(true);
+        d->m_tabRowColPivot->setTransfersEnabled(true);
     }
 }

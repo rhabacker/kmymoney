@@ -54,14 +54,12 @@ public:
     void setType(Type newType);
 
 protected Q_SLOTS:
-    void slotRowTypeChanged(int);
     void slotColumnTypeChanged(int);
     void slotReset();
     void slotConvertCurrencyChanged(int state);
     void slotSearch();
     void slotShowHelp();
     void slotUpdateCheckTransfers();
-    void slotUpdateColumnsCombo();
     void slotUpdateColumnsCombo(int idx);
     void slotLogAxisChanged(int state);
     void slotNegExpensesChanged(int state);

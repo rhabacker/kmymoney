@@ -9,6 +9,8 @@ set(reportsview_SOURCES
   reportcontrolimpl.cpp
   reportsview.cpp
   reporttabimpl.cpp
+  reporttabrowcolquery.cpp
+  reporttabrowcolpivot.cpp
   sankeydiagram.cpp
   sankeylayoutengine.cpp
   tocitem.cpp
