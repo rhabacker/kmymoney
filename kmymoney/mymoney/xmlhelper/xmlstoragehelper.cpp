@@ -790,6 +790,8 @@ MyMoneyReport readReport(QXmlStreamReader* reader)
         report.setReportType(eMyMoney::Report::ReportType::QueryTable);
     } else if (type.startsWith(QLatin1String("infotable"))) {
         report.setReportType(eMyMoney::Report::ReportType::InfoTable);
+    } else if (type.startsWith(QLatin1String("flowtable"))) {
+        report.setReportType(eMyMoney::Report::ReportType::FlowTable);
     } else {
         throw MYMONEYEXCEPTION_CSTRING("Unknown report type");
     }
@@ -817,7 +819,34 @@ MyMoneyReport readReport(QXmlStreamReader* reader)
     report.setSkipZero(readBoolAttribute(reader, attributeName(Attribute::Report::SkipZero), false));
     const auto rowTypeFromXML = stringToRowType(readStringAttribute(reader, attributeName(Attribute::Report::RowType)));
 
-    if (report.reportType() == eMyMoney::Report::ReportType::PivotTable) {
+    if (report.reportType() == eMyMoney::Report::ReportType::FlowTable) {
+        // read rows/columns tab
+        if (rowTypeFromXML != eMyMoney::Report::RowType::Invalid) {
+            report.setRowType(rowTypeFromXML);
+        } else {
+            report.setRowType(eMyMoney::Report::RowType::AccountFlow);
+        }
+
+#if 0
+        unsigned qc = 0;
+        const auto columns = readStringAttribute(reader, attributeName(Attribute::Report::QueryColumns), "none").split(',');
+        for (const auto& column : columns) {
+            const int queryColumnFromXML = stringToQueryColumn(column);
+            if (queryColumnFromXML != eMyMoney::Report::QueryColumn::End) {
+                qc |= queryColumnFromXML;
+            }
+        }
+        report.setQueryColumns(static_cast<eMyMoney::Report::QueryColumn>(qc));
+#endif
+        report.setHideTransactions(readBoolAttribute(reader, attributeName(Attribute::Report::HideTransactions), false));
+        report.setIncludingTransfers(readBoolAttribute(reader, attributeName(Attribute::Report::IncludesTransfers), false));
+        const auto detailLevelFromXML = stringToDetailLevel(readStringAttribute(reader, attributeName(Attribute::Report::Detail), "none"));
+        if (detailLevelFromXML == eMyMoney::Report::DetailLevel::All) {
+            report.setDetailLevel(detailLevelFromXML);
+        } else {
+            report.setDetailLevel(eMyMoney::Report::DetailLevel::None);
+        }
+    } else if (report.reportType() == eMyMoney::Report::ReportType::PivotTable) {
         // read report's internals
         report.setEvaluationDate(readDateAttribute(reader, attributeName(Attribute::Report::EvaluationDate)));
         report.setIncludingBudgetActuals(readBoolAttribute(reader, attributeName(Attribute::Report::IncludesActuals), false));
@@ -1097,6 +1126,8 @@ void writeReport(const MyMoneyReport& report, QXmlStreamWriter* writer)
         writer->writeAttribute(attributeName(Attribute::Report::Type), "querytable 1.15");
     else if (report.reportType() == eMyMoney::Report::ReportType::InfoTable)
         writer->writeAttribute(attributeName(Attribute::Report::Type), "infotable 1.0");
+    else if (report.reportType() == eMyMoney::Report::ReportType::FlowTable)
+        writer->writeAttribute(attributeName(Attribute::Report::Type), "flowtable 1.0");
 
     writer->writeAttribute(attributeName(Attribute::Report::Group), report.group());
 
@@ -1111,7 +1142,20 @@ void writeReport(const MyMoneyReport& report, QXmlStreamWriter* writer)
     writer->writeAttribute(attributeName(Attribute::Report::DateLock), dateLockAttributeToString(report.dateRange()));
     writer->writeAttribute(attributeName(Attribute::Report::RowType), reportNames(report.rowType()));
 
-    if (report.reportType() == eMyMoney::Report::ReportType::PivotTable) {
+    if (report.reportType() == eMyMoney::Report::ReportType::FlowTable) {
+        // write rows/columns tab
+        QStringList columns;
+        unsigned qc = report.queryColumns();
+        unsigned it_qc = eMyMoney::Report::QueryColumn::Begin;
+        while (it_qc != eMyMoney::Report::QueryColumn::End) {
+            if (qc & it_qc)
+                columns += reportNamesForQC(static_cast<eMyMoney::Report::QueryColumn>(it_qc));
+            it_qc *= 2;
+        }
+        writer->writeAttribute(attributeName(Attribute::Report::QueryColumns), columns.join(","));
+        writer->writeAttribute(attributeName(Attribute::Report::Detail), reportNames(report.detailLevel()));
+        writer->writeAttribute(attributeName(Attribute::Report::IncludesTransfers), attrValue(report.isIncludingTransfers()));
+    } else if (report.reportType() == eMyMoney::Report::ReportType::PivotTable) {
         // write report's internals
         writer->writeAttribute(attributeName(Attribute::Report::IncludesActuals), attrValue(report.isIncludingBudgetActuals()));
         writer->writeAttribute(attributeName(Attribute::Report::IncludesForecast), attrValue(report.isIncludingForecast()));

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ReportTabRowColFlow</class>
+ <widget class="QWidget" name="ReportTabRowColFlow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>264</width>
+    <height>212</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Rows/Columns Tab</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <item row="4" column="0" colspan="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="1">
+    <widget class="KComboBox" name="m_comboDetail">
+     <item>
+      <property name="text">
+       <string>All</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Top-Level</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Groups</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Totals</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QCheckBox" name="m_checkUnused">
+     <property name="text">
+      <string>Include unused accounts/categories</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="labelDetail">
+     <property name="text">
+      <string>Detail level:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QCheckBox" name="m_checkHideSplitDetails">
+     <property name="text">
+      <string>Hide split transaction details</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QCheckBox" name="m_checkTransfers">
+     <property name="text">
+      <string>Include transfers</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>KComboBox</class>
+   <extends>QComboBox</extends>
+   <header>kcombobox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

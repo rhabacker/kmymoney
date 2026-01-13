@@ -37,6 +37,7 @@
 #include "mymoneyreport.h"
 #include "pricemodel.h"
 #include "reporttabimpl.h"
+#include "reporttabrowcolflow.h"
 #include "reporttabrowcolpivot.h"
 #include "reporttabrowcolquery.h"
 
@@ -76,6 +77,7 @@ public:
     Ui::KReportConfigurationFilterDlg  *ui;
 
     QPointer<ReportTabGeneral>     m_tabGeneral;
+    QPointer<ReportTabRowColFlow> m_tabRowColFlow;
     QPointer<ReportTabRowColPivot> m_tabRowColPivot;
     QPointer<ReportTabRowColQuery> m_tabRowColQuery;
     QPointer<ReportTabChart>       m_tabChart;
@@ -184,6 +186,9 @@ KReportConfigurationFilterDlg::KReportConfigurationFilterDlg(MyMoneyReport repor
             d->m_tabPerformance = new ReportTabPerformance(d->ui->m_criteriaTab);
             d->ui->m_criteriaTab->insertTab(1, d->m_tabPerformance, i18n("Report"));
         }
+    } else if (d->m_initialState.reportType() == eMyMoney::Report::ReportType::FlowTable) {
+        d->m_tabRowColFlow = new ReportTabRowColFlow(d->ui->m_criteriaTab);
+        d->ui->m_criteriaTab->insertTab(1, d->m_tabRowColFlow, i18n("Rows/Columns"));
     }
 
     connect(d->m_tabGeneral->ui->m_checkCurrency, &QCheckBox::stateChanged, this, &KReportConfigurationFilterDlg::slotConvertCurrencyChanged);
@@ -267,6 +272,8 @@ void KReportConfigurationFilterDlg::slotSearch()
         d->m_tabRowColPivot->save(d->m_currentState, d->m_budgets, d->m_initialState.rowType() == eMyMoney::Report::RowType::BudgetActual);
     } else if (d->m_tabRowColQuery) {
         d->m_tabRowColQuery->save(d->m_currentState);
+    } else if (d->m_tabRowColFlow) {
+        d->m_tabRowColFlow->save(d->m_currentState);
     }
 
     if (d->m_tabChart) {

@@ -9,6 +9,7 @@ set(reportsview_SOURCES
   reportcontrolimpl.cpp
   reportsview.cpp
   reporttabimpl.cpp
+  reporttabrowcolflow.cpp
   reporttabrowcolquery.cpp
   reporttabrowcolpivot.cpp
   sankeydiagram.cpp
@@ -23,6 +24,7 @@ ki18n_wrap_ui(reportsview_SOURCES
   kreportsview.ui
   reportcontrol.ui
   reporttabgeneral.ui
+  reporttabrowcolflow.ui
   reporttabrowcolquery.ui
   reporttabrowcolpivot.ui
   reporttabrange.ui
