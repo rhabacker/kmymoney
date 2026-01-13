@@ -77,11 +77,15 @@ macro(to_test_and_file_name)
 endmacro()
 
 macro(add_report_tests)
-   set(options)
-   set(oneValueArgs TYPE)
-   set(multiValueArgs FILES FORMATS)
-   cmake_parse_arguments(ART "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
-
+  set(options)
+  set(oneValueArgs TYPE)
+  set(multiValueArgs FILES FORMATS)
+  cmake_parse_arguments(ART "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+  if(WIN32)
+      set(msg_prefix "LANG=C")
+  else()
+      set(msg_prefix "LANG=C.UTF-8 ")
+  endif()
   foreach(file ${ART_FILES})
     cmake_path(GET file STEM basename)
     message(STATUS "${file}")
@@ -124,11 +128,6 @@ macro(add_report_tests)
             SKIP_REGULAR_EXPRESSION "is missing" "SKIP" "Skipped"
             ENVIRONMENT ${KMM_ADD_TESTS_ENVIRONMENT}
         )
-        if(WIN32)
-            set(msg_prefix "LANG=C")
-        else()
-            set(msg_prefix "LANG=C.UTF-8 ")
-        endif()
         add_test(
             NAME ${test_name}-${format}-reference
             COMMAND ${launcher} --reference --${format} --${type} --report "${rn}" --output "${reffilename}" ${testfile}

@@ -3,7 +3,7 @@
 <KMYMONEY-FILE>
   <FILEINFO>
     <CREATION_DATE date=""/>
-    <LAST_MODIFIED_DATE date="2026-01-13T23:55:20+01:00"/>
+    <LAST_MODIFIED_DATE date="2026-01-14T00:17:25+01:00"/>
     <VERSION id="1"/>
     <FIXVERSION id="10"/>
     <APPVERSION id="5.2.70-f52743d25"/>
@@ -113,7 +113,7 @@
     </TRANSACTION>
   </TRANSACTIONS>
   <KEYVALUEPAIRS>
-    <PAIR key="LastModificationDate" value="2026-01-13T23:55:20+01:00"/>
+    <PAIR key="LastModificationDate" value="2026-01-14T00:17:25+01:00"/>
     <PAIR key="kmm-baseCurrency" value="EUR"/>
     <PAIR key="kmm-id" value="{f8f47595-3cac-4ace-8579-b740638b1629}"/>
   </KEYVALUEPAIRS>
@@ -131,6 +131,24 @@
       <ACCOUNTGROUP group="liability"/>
     </REPORT>
     <REPORT id="R000021" type="flowtable 1.0" group="AccountFlow" name="Account Flow Transactions (include transfers, all details)" comment="Custom Report" convertcurrency="1" favorite="0" skipZero="0" datelock="alldates" rowtype="accountflow" querycolumns="" detail="all" includestransfers="1">
+      <ACCOUNTGROUP group="expense"/>
+      <ACCOUNTGROUP group="income"/>
+      <ACCOUNTGROUP group="asset"/>
+      <ACCOUNTGROUP group="liability"/>
+    </REPORT>
+    <REPORT id="R000022" type="flowtable 1.0" group="AccountFlow" name="Account Flow Transactions (without transfers, top level details)" comment="Custom Report" convertcurrency="1" favorite="0" skipZero="0" datelock="alldates" rowtype="accountflow" querycolumns="" detail="top" includestransfers="0">
+      <ACCOUNTGROUP group="expense"/>
+      <ACCOUNTGROUP group="income"/>
+      <ACCOUNTGROUP group="asset"/>
+      <ACCOUNTGROUP group="liability"/>
+    </REPORT>
+    <REPORT id="R000023" type="flowtable 1.0" group="AccountFlow" name="Account Flow Transactions (without transfers, group details)" comment="Custom Report" convertcurrency="1" favorite="0" skipZero="0" datelock="alldates" rowtype="accountflow" querycolumns="" detail="group" includestransfers="0">
+      <ACCOUNTGROUP group="expense"/>
+      <ACCOUNTGROUP group="income"/>
+      <ACCOUNTGROUP group="asset"/>
+      <ACCOUNTGROUP group="liability"/>
+    </REPORT>
+    <REPORT id="R000024" type="flowtable 1.0" group="AccountFlow" name="Account Flow Transactions (without transfers, totals details)" comment="Custom Report" convertcurrency="1" favorite="0" skipZero="0" datelock="alldates" rowtype="accountflow" querycolumns="" detail="total" includestransfers="0">
       <ACCOUNTGROUP group="expense"/>
       <ACCOUNTGROUP group="income"/>
       <ACCOUNTGROUP group="asset"/>
