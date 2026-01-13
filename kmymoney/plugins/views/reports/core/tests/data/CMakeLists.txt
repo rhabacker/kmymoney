@@ -1,3 +1,7 @@
+set(flowtable_test_files
+  test-sankey-extended.xml
+)
+
 set(infotable_test_files
   test-general-information.xml
 )
@@ -123,3 +127,4 @@ endmacro()
 add_report_tests(TYPE infotable FILES ${infotable_test_files} FORMATS csv)
 add_report_tests(TYPE querytable FILES ${querytable_test_files} FORMATS csv)
 add_report_tests(TYPE pivottable FILES ${pivottable_test_files} FORMATS csv)
+add_report_tests(TYPE flowtable FILES ${flowtable_test_files} FORMATS xml)

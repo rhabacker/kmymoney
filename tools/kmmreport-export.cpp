@@ -19,6 +19,7 @@
 // Project includes
 
 #include "config-kmymoney-version.h"
+#include "flowtable.h"
 #include "mymoneyenums.h"
 #include "mymoneyfile.h"
 #include "mymoneyreport.h"
@@ -37,6 +38,7 @@ public:
     bool hasCreateReferenceOption = false;
     bool hasHTMLOption = false;
     bool hasListOption = false;
+    bool hasFlowTableOption = false;
     bool hasObjectInfoTableOption = false;
     bool hasPivotTableOption = false;
     bool hasQueryTableOption = true;
@@ -72,12 +74,15 @@ void exportTable(QTextStream& o, const Options& options, const MyMoneyReport& re
     }
 }
 
+template void exportTable<FlowTable>(QTextStream& o, const Options& options, const MyMoneyReport& report);
 template void exportTable<PivotTable>(QTextStream& o, const Options& options, const MyMoneyReport& report);
 template void exportTable<QueryTable>(QTextStream& o, const Options& options, const MyMoneyReport& report);
 template void exportTable<ObjectInfoTable>(QTextStream& o, const Options& options, const MyMoneyReport& report);
 
 void exportTable(QTextStream& o, const Options& options, const MyMoneyReport& report)
 {
+    if (options.hasFlowTableOption && report.reportType() == eMyMoney::Report::ReportType::FlowTable)
+        exportTable<FlowTable>(o, options, report);
     if (options.hasObjectInfoTableOption && report.reportType() == eMyMoney::Report::ReportType::InfoTable)
         exportTable<ObjectInfoTable>(o, options, report);
     if (options.hasPivotTableOption && report.reportType() == eMyMoney::Report::ReportType::PivotTable)
@@ -88,6 +93,8 @@ void exportTable(QTextStream& o, const Options& options, const MyMoneyReport& re
 
 void showReportName(QTextStream& o, const Options& options, const MyMoneyReport& report)
 {
+    if (options.hasFlowTableOption && report.reportType() == eMyMoney::Report::ReportType::FlowTable)
+        o << report.name() << "\n";
     if (options.hasObjectInfoTableOption && report.reportType() == eMyMoney::Report::ReportType::InfoTable)
         o << report.name() << "\n";
     if (options.hasPivotTableOption && report.reportType() == eMyMoney::Report::ReportType::PivotTable)
@@ -127,6 +134,9 @@ int main(int argc, char** argv)
         const QCommandLineOption createReferenceOption(QStringLiteral("reference"), i18n("Create reference file from output"));
         parser.addOption(createReferenceOption);
 
+        const QCommandLineOption flowTableOption(QStringLiteral("flowtable"), i18n("Use flow table for exporting"));
+        parser.addOption(flowTableOption);
+
         const QCommandLineOption infoTableOption(QStringLiteral("infotable"), i18n("Use info table for exporting"));
         parser.addOption(infoTableOption);
 
@@ -159,6 +169,7 @@ int main(int argc, char** argv)
             return 1;
         }
         options.hasListOption = parser.isSet(listOption);
+        options.hasFlowTableOption = parser.isSet(flowTableOption);
         options.hasObjectInfoTableOption = parser.isSet(infoTableOption);
         options.hasPivotTableOption = parser.isSet(pivotTableOption);
         options.hasQueryTableOption = parser.isSet(queryTableOption);
