@@ -101,16 +101,21 @@ macro(add_report_tests)
         execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${working_dir})
         to_test_and_file_name(TYPE ${ART_TYPE} BASENAME ${basename} REPORT_NAME ${rn} RETURN_TEST_NAME test_name RETURN_FILE_NAME file_name)
         message(" * adding test '${test_name}-${format}' for report '${rn}' with type '${rt}' and id '${id}'")
+        set(launcher $<TARGET_FILE:kmmreport-export>)
+        set(type ${ART_TYPE})
+        set(outfilename ${CMAKE_CURRENT_BINARY_DIR}/${format}/${file_name}.${format})
+        set(reffilename ${CMAKE_CURRENT_SOURCE_DIR}/${format}/${file_name}.${format})
+        set(testfile ${CMAKE_CURRENT_SOURCE_DIR}/${file})
         add_test(
           NAME ${test_name}-${format}
           COMMAND ${CMAKE_COMMAND}
-            -Dlauncher=$<TARGET_FILE:kmmreport-export>
-            -Dtestfile=${CMAKE_CURRENT_SOURCE_DIR}/${file}
+            -Dlauncher=${launcher}
+            -Dtestfile=${testfile}
             -Dformat=${format}
-            -Dtype=${ART_TYPE}
+            -Dtype=${type}
             -Dreport=${rn}
-            -Doutfilename=${CMAKE_CURRENT_BINARY_DIR}/${format}/${file_name}.${format}
-            -Dreffilename=${CMAKE_CURRENT_SOURCE_DIR}/${format}/${file_name}.${format}
+            -Doutfilename=${outfilename}
+            -Dreffilename=${reffilename}
             -Dworkingdir=${working_dir}
             -P ${CMAKE_CURRENT_SOURCE_DIR}/compare.cmake
         )
@@ -118,7 +123,20 @@ macro(add_report_tests)
           PROPERTIES
             SKIP_REGULAR_EXPRESSION "is missing" "SKIP" "Skipped"
             ENVIRONMENT ${KMM_ADD_TESTS_ENVIRONMENT}
-          )
+        )
+        if(WIN32)
+            set(msg_prefix "LANG=C")
+        else()
+            set(msg_prefix "LANG=C.UTF-8 ")
+        endif()
+        add_test(
+            NAME ${test_name}-${format}-reference
+            COMMAND ${launcher} --reference --${format} --${type} --report "${rn}" --output "${reffilename}" ${testfile}
+        )
+        set_tests_properties(${test_name}-${format}-reference
+            PROPERTIES
+            ENVIRONMENT ${msg_prefix}
+        )
       endforeach()
     endwhile()
   endforeach()
