@@ -517,7 +517,7 @@ bool ListTable::saveToXml(const QString& file)
 QString ListTable::toXml() const
 {
     AlkDomDocument doc;
-    AlkDomElement el = doc.createElement("ListTable");
+    AlkDomElement el = doc.createElement(xmlTagName());
     QString name = m_config.name();
     el.setAttribute("name", name);
 

@@ -50,6 +50,11 @@ public:
     void init();
 
 protected:
+    QString xmlTagName() const override
+    {
+        return QStringLiteral("QueryTable");
+    }
+
     void constructAccountTable();
     void constructTotalRows();
     void constructTransactionTable();

@@ -83,6 +83,11 @@ protected:
      */
     virtual QString renderHTML() const = 0;
 
+    /**
+     * Returns the top level tag name for xml export
+     */
+    virtual QString xmlTagName() const = 0;
+
     MyMoneyReport m_config;
     /**
      * Does the report contain any non-base currency

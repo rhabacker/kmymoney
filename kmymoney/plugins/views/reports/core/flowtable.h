@@ -24,6 +24,11 @@ protected:
     {
         return true;
     }
+
+    QString xmlTagName() const override
+    {
+        return QStringLiteral("FlowTable");
+    }
 };
 
 }

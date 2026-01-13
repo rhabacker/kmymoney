@@ -53,6 +53,11 @@ protected:
         return false;
     }
 
+    QString xmlTagName() const override
+    {
+        return QStringLiteral("ObjectInfoTable");
+    }
+
 private:
     /**
       * @param acc the investment account

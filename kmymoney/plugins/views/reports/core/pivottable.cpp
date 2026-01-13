@@ -2060,7 +2060,7 @@ bool PivotTable::saveToXml(const QString& file)
 QString PivotTable::toXml() const
 {
     AlkDomDocument doc;
-    AlkDomElement el = doc.createElement("PivotTable");
+    AlkDomElement el = doc.createElement(xmlTagName());
     QString name = m_config.name();
     el.setAttribute("name", name);
     m_grid.saveToXml(doc, el);

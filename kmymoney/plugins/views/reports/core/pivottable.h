@@ -113,6 +113,10 @@ public:
 
 protected:
     void init();    // used for debugging the constructor
+    QString xmlTagName() const override
+    {
+        return QStringLiteral("PivotTable");
+    }
 
 private:
 

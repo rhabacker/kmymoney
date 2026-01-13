@@ -202,6 +202,11 @@ protected:
      */
     void includeInvestmentSubAccounts();
 
+    QString xmlTagName() const override
+    {
+        return QStringLiteral("ListTable");
+    }
+
     QList<TableRow> m_rows;
 
     QList<cellTypeE> m_group;
