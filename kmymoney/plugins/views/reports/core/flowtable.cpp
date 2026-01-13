@@ -121,6 +121,15 @@ void FlowTable::constructFlowTable()
                 if (fromAcc.id() == toAcc.id())
                     continue;
 
+                if (!m_config.isIncludingTransfers()) {
+                    const bool fromIE = fromAcc.isIncomeExpense();
+                    const bool toIE = toAcc.isIncomeExpense();
+
+                    // both sides are balance-sheet accounts → transfer
+                    if (!fromIE && !toIE)
+                        continue;
+                }
+
                 // 3. Build table row
                 TableRow row;
                 row[ctID] = tx.id();
