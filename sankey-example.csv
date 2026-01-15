@@ -1,0 +1,31 @@
+source,target,value
+Total Income,Paycheck1,202480
+Total Income,Paycheck2,57143
+Paycheck1,Deductions,25000
+Paycheck1,Tax,65000
+Paycheck1,Net,112480
+Paycheck2,Deductions,6849
+Paycheck2,Tax,20701
+Paycheck2,Net,29693
+Deductions,401k,23655
+Deductions,FSA,5000
+Deductions,Health,2889
+Deductions,Dental,305
+Tax,Federal,50108
+Tax,State,17477
+Tax,Social Security,10641
+Tax,Medicare,6475
+Tax,Tax at filing,1000
+Net,Expenses,98000
+Net,Savings,73728
+Expenses,Home,47500
+Expenses,Auto,5300
+Expenses,Food,10000
+Expenses,Kids,10600
+Expenses,Bills,6600
+Expenses,Travel,7700
+Expenses,Gifts & Shopping,5500
+Expenses,Others,3800
+Savings,529,24000
+Savings,Mutual Funds,16250
+Savings,Savings/CD,4823
