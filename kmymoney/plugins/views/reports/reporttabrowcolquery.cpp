@@ -59,6 +59,9 @@ void ReportTabRowColQuery::load(const MyMoneyReport& report)
     case eMyMoney::Report::RowType::Week:
         combo->setCurrentItem(i18n("Week"), false);
         break;
+    case eMyMoney::Report::RowType::CashFlow:
+        combo->setCurrentItem(i18n("CashFlow"), false);
+        break;
     default:
         throw MYMONEYEXCEPTION_CSTRING("ReportTabRowColQuery::load(): QueryTable report has invalid rowtype");
     }

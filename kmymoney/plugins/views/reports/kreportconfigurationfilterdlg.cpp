@@ -174,7 +174,8 @@ KReportConfigurationFilterDlg::KReportConfigurationFilterDlg(MyMoneyReport repor
     } else if (d->m_initialState.reportType() == eMyMoney::Report::ReportType::QueryTable) {
         // eInvestmentHoldings is a special-case report, and you cannot configure the
         // rows & columns of that report.
-        if (d->m_initialState.rowType() < eMyMoney::Report::RowType::AccountByTopAccount) {
+        if (d->m_initialState.rowType() < eMyMoney::Report::RowType::AccountByTopAccount
+            || d->m_initialState.rowType() == eMyMoney::Report::RowType::CashFlow) {
             d->m_tabRowColQuery = new ReportTabRowColQuery(d->ui->m_criteriaTab);
             d->ui->m_criteriaTab->insertTab(1, d->m_tabRowColQuery, i18n("Rows/Columns"));
         }
