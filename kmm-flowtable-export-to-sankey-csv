@@ -1,0 +1,2 @@
+#!/bin/sh
+gawk -F',' '$3 ~ /Betrag/ { $0 = "source,target,value";} NF >= 3 { print $0}' "$1"
