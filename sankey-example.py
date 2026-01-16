@@ -8,9 +8,10 @@ def split_hierarchy(label: str):
     Split 'A: B' → ('A', 'B')
     If no hierarchy, returns (None, label)
     """
-    #if ":" in label:
-    #    parent, child = label.split(":", 1)
-    #    return parent.strip(), child.strip()
+    if ":" in label:
+        parent, child = label.split(":", 1)
+        return None, child.strip()
+        #return parent.strip(), child.strip()
     return None, label.strip()
 
 
