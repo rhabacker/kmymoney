@@ -504,16 +504,6 @@ void ListTable::dump(const QString& file, const QString& context) const
     }
 }
 
-bool ListTable::saveToXml(const QString& file)
-{
-    QFile out(file);
-    if (!out.open(QIODevice::WriteOnly))
-        return false;
-    QTextStream stream(&out);
-    stream << toXml();
-    return true;
-}
-
 QString ListTable::toXml() const
 {
     AlkDomDocument doc;
@@ -533,6 +523,51 @@ QString ListTable::toXml() const
     }
     doc.appendChild(el);
     return doc.toString();
+}
+
+QString ListTable::toCSV() const
+{
+    QString csv;
+    QTextStream stream(&csv);
+
+    if (m_rows.isEmpty())
+        return csv;
+
+    // Use enum metadata for column names
+    QMetaEnum metaEnum = QMetaEnum::fromType<cellTypeE>();
+
+    // Determine stable column order from first row
+    QList<cellTypeE> keys = m_rows.first().keys();
+
+    // --- Header row ---
+    for (int i = 0; i < keys.size(); ++i) {
+        if (i)
+            stream << ",";
+        stream << metaEnum.valueToKey(keys[i]);
+    }
+    stream << "\n";
+
+    // --- Data rows ---
+    for (const TableRow& row : m_rows) {
+        for (int i = 0; i < keys.size(); ++i) {
+            if (i)
+                stream << ",";
+
+            QString value = row.value(keys[i]);
+
+            // Escape CSV
+            if (value.contains('"'))
+                value.replace("\"", "\"\"");
+
+            if (value.contains(',') || value.contains('\n') || value.contains('"'))
+                value = "\"" + value + "\"";
+
+            stream << value;
+        }
+        stream << "\n";
+    }
+
+    return csv;
 }
 
 void ListTable::includeInvestmentSubAccounts()

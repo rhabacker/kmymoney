@@ -356,7 +356,9 @@ void KReportTab::saveAs(const QString& filename, const QString& selectedMimeType
     QFile file(filename);
     if (file.open(QIODevice::WriteOnly)) {
         if (selectedMimeType == QStringLiteral("text/csv")) {
-            QTextStream(&file) << m_table->renderReport(QLatin1String("csv"), m_encoding, QString());
+            QTextStream(&file) << m_table->toCSV();
+        // } else if (selectedMimeType == QStringLiteral("text/csv")) {
+        //     QTextStream(&file) << m_table->renderReport(QLatin1String("csv"), m_encoding, QString());
         } else if (selectedMimeType == QStringLiteral("text/html")) {
             QString table = m_table->renderReport(QLatin1String("html"), m_encoding, m_report.name());
             // remove the background information only needed by Qt

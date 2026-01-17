@@ -2047,16 +2047,6 @@ void PivotTable::dump(const QString& file, const QString& /* context */) const
     }
 }
 
-bool PivotTable::saveToXml(const QString& file)
-{
-    QFile out(file);
-    if (!out.open(QIODevice::WriteOnly))
-        return false;
-    QTextStream stream(&out);
-    stream << toXml();
-    return true;
-}
-
 QString PivotTable::toXml() const
 {
     AlkDomDocument doc;
@@ -2066,6 +2056,11 @@ QString PivotTable::toXml() const
     m_grid.saveToXml(doc, el);
     doc.appendChild(el);
     return doc.toString();
+}
+
+QString PivotTable::toCSV() const
+{
+    return QString();
 }
 
 void PivotTable::drawChart(KReportChartView& chartView) const

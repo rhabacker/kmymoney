@@ -78,6 +78,26 @@ QString reports::ReportTable::renderFooter()
     return "</body>\n</html>\n";
 }
 
+bool reports::ReportTable::saveToXml(const QString& file)
+{
+    QFile out(file);
+    if (!out.open(QIODevice::WriteOnly))
+        return false;
+    QTextStream stream(&out);
+    stream << toXml();
+    return true;
+}
+
+bool reports::ReportTable::saveToCSV(const QString& file)
+{
+    QFile out(file);
+    if (!out.open(QIODevice::WriteOnly))
+        return false;
+    QTextStream stream(&out);
+    stream << toCSV();
+    return true;
+}
+
 QString reports::ReportTable::renderReport(const QString& type, const QByteArray& encoding, const QString& title)
 {
     MyMoneyFile* file = MyMoneyFile::instance();

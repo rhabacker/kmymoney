@@ -54,8 +54,9 @@ public:
     QString renderCSV() const final override;
     void drawChart(KReportChartView&) const final override {}
     void dump(const QString& file, const QString& context = QString()) const final override;
-    bool saveToXml(const QString& file) override;
     QString toXml() const override;
+    QString toCSV() const override;
+
     void init();
 
 public:
