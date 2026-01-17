@@ -1,7 +1,45 @@
+#!/usr/bin/python3.11
+
 import os, sys
 import pandas as pd
 import plotly.graph_objects as go
 
+def parse_accounting_value(v):
+    v = str(v).strip()
+
+    if "/" in v:
+        num, den = v.split("/", 1)
+        return float(num) / float(den)
+    elif ',' in v:
+        return float(v
+            .astype(str)
+            .str.replace(",", "", regex=False)
+            .str.strip()
+            )
+    else:
+        return float(v)
+
+
+def load_accounting_csv(csv_path: str) -> pd.DataFrame:
+    COLUMN_MAP = {
+        "ctFromAccount": "source",
+        "ctToAccount": "target",
+        "ctValue": "value"
+    }
+
+    df = pd.read_csv(csv_path)
+
+    required_cols = {"source", "target", "value"}
+    if not required_cols.issubset(df.columns):
+        df = df.rename(columns=COLUMN_MAP)
+        if not required_cols.issubset(df.columns):
+            raise ValueError(
+                f"CSV missing required columns after mapping: {required_cols}"
+            )
+
+    df["value"] = df["value"].apply(parse_accounting_value)
+
+    return df
 
 def split_hierarchy(label: str):
     """
@@ -16,20 +54,11 @@ def split_hierarchy(label: str):
 
 
 def load_and_validate_csv(csv_path: str) -> pd.DataFrame:
-    df = pd.read_csv(csv_path)
+    df = load_accounting_csv(csv_path)
 
     required_cols = {"source", "target", "value"}
     if not required_cols.issubset(df.columns):
         raise ValueError(f"CSV must contain {required_cols}")
-
-    # --- Clean numeric values ---
-    df["value"] = (
-        df["value"]
-        .astype(str)
-        .str.replace(",", "", regex=False)
-        .str.strip()
-        .astype(float)
-    )
 
     expanded_rows = []
 
