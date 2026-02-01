@@ -811,6 +811,30 @@ void MyMoneyReport::setSettlementPeriod(uint days)
     d->m_settlementPeriod = days;
 }
 
+eMyMoney::Report::EvaluationMode MyMoneyReport::evaluationMode() const
+{
+    Q_D(const MyMoneyReport);
+    return d->m_evaluationMode;
+}
+
+void MyMoneyReport::setEvaluationMode(eMyMoney::Report::EvaluationMode mode)
+{
+    Q_D(MyMoneyReport);
+    d->m_evaluationMode = mode;
+}
+
+QDate MyMoneyReport::evaluationDate() const
+{
+    Q_D(const MyMoneyReport);
+    return d->m_evaluationDate;
+}
+
+void MyMoneyReport::setEvaluationDate(const QDate& date)
+{
+    Q_D(MyMoneyReport);
+    d->m_evaluationDate = date;
+}
+
 bool MyMoneyReport::isShowingSTLTCapitalGains() const
 {
     Q_D(const MyMoneyReport);

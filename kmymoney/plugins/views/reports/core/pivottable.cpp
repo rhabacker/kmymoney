@@ -2111,20 +2111,30 @@ void PivotTable::calculateForecast()
     forecast.setIncludeUnusedAccounts(true);
 
     //setup forecast dates
-    if (m_endDate > QDate::currentDate()) {
-        forecast.setForecastEndDate(m_endDate);
-        forecast.setForecastStartDate(QDate::currentDate());
-        forecast.setForecastDays(QDate::currentDate().daysTo(m_endDate));
+    if (m_config.evaluationMode() == eMyMoney::Report::EvaluationMode::Static) {
+        QDate beginDate = m_beginDate;
+        QDate endDate = m_endDate;
+        QDate evaluationDate = m_config.evaluationDate();
+        forecast.setForecastDays(evaluationDate.daysTo(endDate));
+        forecast.setHistoryEndDate(evaluationDate.addDays(-1));
+        forecast.setHistoryStartDate(beginDate);
+        forecast.setEvaluationDate(evaluationDate);
     } else {
-        forecast.setForecastStartDate(m_beginDate);
-        forecast.setForecastEndDate(m_endDate);
-        forecast.setForecastDays(m_beginDate.daysTo(m_endDate) + 1);
-    }
+        if (m_endDate > QDate::currentDate()) {
+            forecast.setForecastEndDate(m_endDate);
+            forecast.setForecastStartDate(QDate::currentDate());
+            forecast.setForecastDays(QDate::currentDate().daysTo(m_endDate));
+        } else {
+            forecast.setForecastStartDate(m_beginDate);
+            forecast.setForecastEndDate(QDate::currentDate());
+            forecast.setForecastDays(m_beginDate.daysTo(m_endDate) + 1);
+        }
 
-    //adjust history dates if beginning date is before today
-    if (m_beginDate < QDate::currentDate()) {
-        forecast.setHistoryEndDate(m_beginDate.addDays(-1));
-        forecast.setHistoryStartDate(forecast.historyEndDate().addDays(-forecast.accountsCycle()*forecast.forecastCycles()));
+        // adjust history dates if beginning date is before today
+        if (m_beginDate < QDate::currentDate()) {
+            forecast.setHistoryEndDate(m_beginDate.addDays(-1));
+            forecast.setHistoryStartDate(forecast.historyEndDate().addDays(-forecast.accountsCycle() * forecast.forecastCycles()));
+        }
     }
 
     //run forecast
@@ -2444,9 +2454,9 @@ void PivotTable::includeInvestmentSubAccounts()
 
 int PivotTable::currentDateColumn()
 {
-
+    QDate evaluationDate = m_config.evaluationMode() == eMyMoney::Report::EvaluationMode::Static ? m_config.evaluationDate() : QDate::currentDate();
     //return -1 if the columns do not include the current date
-    if (m_beginDate > QDate::currentDate() || m_endDate < QDate::currentDate()) {
+    if (m_beginDate > evaluationDate || m_endDate < evaluationDate) {
         return -1;
     }
 
@@ -2455,7 +2465,7 @@ int PivotTable::currentDateColumn()
     int column = m_startColumn;
 
     while (column < m_numColumns) {
-        if (columnDate(column) >= QDate::currentDate()) {
+        if (columnDate(column) >= evaluationDate) {
             break;
         }
         column++;

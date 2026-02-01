@@ -74,6 +74,7 @@ QString attributeName(Attribute::Report attributeID)
         {Attribute::Report::SkipZero,               QStringLiteral("skipZero")},
         {Attribute::Report::DateLock,               QStringLiteral("datelock")},
         {Attribute::Report::DataLock,               QStringLiteral("datalock")},
+        {Attribute::Report::EvaluationDate,         QStringLiteral("evaluationdate")},
         {Attribute::Report::MovingAverageDays,      QStringLiteral("movingaveragedays")},
         {Attribute::Report::IncludesActuals,        QStringLiteral("includesactuals")},
         {Attribute::Report::IncludesForecast,       QStringLiteral("includesforecast")},
@@ -761,6 +762,11 @@ inline static QString attrValue(uint attribute)
     return QString::number(attribute);
 }
 
+inline static QString attrValue(const QDate& attribute)
+{
+    return attribute.toString(Qt::ISODate);
+}
+
 MyMoneyReport readReport(QXmlStreamReader* reader)
 {
     Q_ASSERT(reader->isStartElement() && (reader->name() == nodeName(Node::Report)));
@@ -811,6 +817,9 @@ MyMoneyReport readReport(QXmlStreamReader* reader)
         // read report's internals
         report.setIncludingBudgetActuals(readBoolAttribute(reader, attributeName(Attribute::Report::IncludesActuals), false));
         report.setIncludingForecast(readBoolAttribute(reader, attributeName(Attribute::Report::IncludesForecast), false));
+        QDate evaluationDate = readDateAttribute(reader, attributeName(Attribute::Report::EvaluationDate));
+        report.setEvaluationDate(evaluationDate);
+        report.setEvaluationMode(evaluationDate.isNull() ? eMyMoney::Report::EvaluationMode::Dynamic : eMyMoney::Report::EvaluationMode::Static);
         report.setIncludingPrice(readBoolAttribute(reader, attributeName(Attribute::Report::IncludesPrice), false));
         report.setIncludingAveragePrice(readBoolAttribute(reader, attributeName(Attribute::Report::IncludesAveragePrice), false));
         report.setMixedTime(readBoolAttribute(reader, attributeName(Attribute::Report::MixedTime), false));
@@ -1105,6 +1114,8 @@ void writeReport(const MyMoneyReport& report, QXmlStreamWriter* writer)
         writer->writeAttribute(attributeName(Attribute::Report::IncludesActuals), attrValue(report.isIncludingBudgetActuals()));
         writer->writeAttribute(attributeName(Attribute::Report::IncludesForecast), attrValue(report.isIncludingForecast()));
         writer->writeAttribute(attributeName(Attribute::Report::IncludesPrice), attrValue(report.isIncludingPrice()));
+        if (report.evaluationMode() == eMyMoney::Report::EvaluationMode::Static)
+            writer->writeAttribute(attributeName(Attribute::Report::EvaluationDate), attrValue(report.evaluationDate()));
         writer->writeAttribute(attributeName(Attribute::Report::IncludesAveragePrice), attrValue(report.isIncludingAveragePrice()));
         writer->writeAttribute(attributeName(Attribute::Report::MixedTime), attrValue(report.isMixedTime()));
         writer->writeAttribute(attributeName(Attribute::Report::Investments),

@@ -150,6 +150,14 @@ inline qHashSeedType qHash(const ChartPalette key, qHashSeedType seed)
 {
     return ::qHash(static_cast<uint>(key), seed);
 }
+enum class EvaluationMode {
+    Dynamic, // relative dates, currentDate() semantics
+    Static // fixed evaluation date, reproducible
+};
+inline qHashSeedType qHash(const EvaluationMode key, qHashSeedType seed)
+{
+    return ::qHash(static_cast<uint>(key), seed);
+}
 }
 
 namespace Schedule {

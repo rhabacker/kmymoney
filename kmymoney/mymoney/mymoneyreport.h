@@ -46,6 +46,7 @@ enum class InvestmentSum;
 enum class ChartType;
 enum class DataLock;
 enum class ChartPalette;
+enum class EvaluationMode;
 }
 }
 
@@ -294,6 +295,12 @@ public:
 
     uint settlementPeriod() const;
     void setSettlementPeriod(uint days);
+
+    eMyMoney::Report::EvaluationMode evaluationMode() const;
+    void setEvaluationMode(eMyMoney::Report::EvaluationMode mode);
+
+    QDate evaluationDate() const;
+    void setEvaluationDate(const QDate& date);
 
     bool isShowingSTLTCapitalGains() const;
     void setShowSTLTCapitalGains(bool f);
