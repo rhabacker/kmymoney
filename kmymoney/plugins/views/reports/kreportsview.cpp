@@ -402,7 +402,9 @@ void KReportsView::doConfigure(ConfigureOption configureOption)
         report.setName(i18n("%1 (Customized)", report.name()));
     }
 
-    QPointer<KReportConfigurationFilterDlg> dlg = new KReportConfigurationFilterDlg(report);
+    KReportConfigurationFilterDlg::Type dlgType =
+        report.isStaticEvaluation() ? KReportConfigurationFilterDlg::Type::StaticEvaluationSafe : KReportConfigurationFilterDlg::Type::Default;
+    QPointer<KReportConfigurationFilterDlg> dlg = new KReportConfigurationFilterDlg(report, dlgType);
 
     if (dlg->exec()) {
         MyMoneyReport newreport = dlg->getConfig();
