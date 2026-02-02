@@ -402,7 +402,10 @@ void KReportsView::doConfigure(ConfigureOption configureOption)
         report.setName(i18n("%1 (Customized)", report.name()));
     }
 
-    QPointer<KReportConfigurationFilterDlg> dlg = new KReportConfigurationFilterDlg(report);
+    KReportConfigurationFilterDlg::Type dlgType = report.evaluationMode() == eMyMoney::Report::EvaluationMode::Static
+        ? KReportConfigurationFilterDlg::Type::BalanceChart
+        : KReportConfigurationFilterDlg::Type::Default;
+    QPointer<KReportConfigurationFilterDlg> dlg = new KReportConfigurationFilterDlg(report, dlgType);
 
     if (dlg->exec()) {
         MyMoneyReport newreport = dlg->getConfig();
