@@ -4,15 +4,16 @@ endif()
 
 set (libreports_a_SOURCES
   cashflowlist.cpp
+  kreportcartesianaxis.cpp
   kreportchartview.cpp
-  reportaccount.cpp
+  kreportdateaxis.cpp
   listtable.cpp
   objectinfotable.cpp
   pivotgrid.cpp
   pivottable.cpp
   querytable.cpp
+  reportaccount.cpp
   reporttable.cpp
-  kreportcartesianaxis.cpp
 )
 
 add_library(reports STATIC ${libreports_a_SOURCES})

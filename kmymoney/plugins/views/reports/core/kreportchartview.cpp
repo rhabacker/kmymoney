@@ -22,23 +22,24 @@
 
 // ----------------------------------------------------------------------------
 // Project Includes
+#include "kmymoneysettings.h"
+#include "kreportcartesianaxis.h"
+#include "kreportdateaxis.h"
+#include "mymoneyenums.h"
+#include "mymoneyfile.h"
+#include "mymoneysecurity.h"
 #include <KChartBackgroundAttributes>
+#include <KChartBarDiagram>
+#include <KChartCartesianAxis>
 #include <KChartDataValueAttributes>
-#include <KChartMarkerAttributes>
+#include <KChartFrameAttributes>
 #include <KChartGridAttributes>
 #include <KChartHeaderFooter>
 #include <KChartLegend>
 #include <KChartLineDiagram>
-#include <KChartBarDiagram>
+#include <KChartMarkerAttributes>
 #include <KChartPieDiagram>
 #include <KChartRingDiagram>
-#include <KChartCartesianAxis>
-#include <KChartFrameAttributes>
-#include "kmymoneysettings.h"
-#include "kreportcartesianaxis.h"
-#include "mymoneyfile.h"
-#include "mymoneysecurity.h"
-#include "mymoneyenums.h"
 
 using namespace reports;
 
@@ -122,23 +123,14 @@ void KReportChartView::drawPivotChart(const PivotGrid &grid, const MyMoneyReport
             cartesianPlane->setAxesCalcModeY(KChart::AbstractCoordinatePlane::Linear);
 
         QLocale loc = locale();
-        // set-up grid
-        GridAttributes ga = cartesianPlane->gridAttributes(Qt::Vertical);
-        ga.setGridVisible(config.isChartCHGridLines());
-        ga.setGridStepWidth(config.isDataUserDefined() ? loc.toDouble(config.dataMajorTick()) : 0.0);
-        ga.setGridSubStepWidth(config.isDataUserDefined() ? loc.toDouble(config.dataMinorTick()) : 0.0);
-        cartesianPlane->setGridAttributes(Qt::Vertical, ga);
-
-        ga = cartesianPlane->gridAttributes(Qt::Horizontal);
-        ga.setGridVisible(config.isChartSVGridLines());
-        cartesianPlane->setGridAttributes(Qt::Horizontal, ga);
-
         // set-up data range
         cartesianPlane->setVerticalRange(qMakePair(config.isDataUserDefined() ? loc.toDouble(config.dataRangeStart()) : 0.0,
                                          config.isDataUserDefined() ? loc.toDouble(config.dataRangeEnd()) : 0.0));
 
         //set-up x axis
-        CartesianAxis *xAxis = new CartesianAxis();
+        KReportDateAxis* xAxis = new KReportDateAxis(loc);
+        xAxis->setDateRange(config.fromDate(), config.toDate());
+
         xAxis->setPosition(CartesianAxis::Bottom);
         xAxis->setTitleText(i18n("Time"));
         TextAttributes xAxisTitleTextAttr(xAxis->titleTextAttributes());
@@ -175,6 +167,22 @@ void KReportChartView::drawPivotChart(const PivotGrid &grid, const MyMoneyReport
         yAxisRulerAttr.setTickMarkPen(m_foregroundBrush.color());
         yAxisRulerAttr.setShowRulerLine(true);
         yAxis->setRulerAttributes(yAxisRulerAttr);
+
+        // set-up grid
+        GridAttributes ga = cartesianPlane->gridAttributes(Qt::Vertical);
+        ga.setGridVisible(config.isChartCHGridLines());
+        if (config.isDataUserDefined()) {
+            ga.setGridStepWidth(loc.toDouble(config.dataMajorTick()));
+            ga.setGridSubStepWidth(loc.toDouble(config.dataMinorTick()));
+        } else {
+            ga.setGridStepWidth(xAxis->majorStepWidth());
+            ga.setGridSubStepWidth(xAxis->minorStepWidth());
+        }
+        cartesianPlane->setGridAttributes(Qt::Vertical, ga);
+
+        ga = cartesianPlane->gridAttributes(Qt::Horizontal);
+        ga.setGridVisible(config.isChartSVGridLines());
+        cartesianPlane->setGridAttributes(Qt::Horizontal, ga);
 
         switch (config.chartType()) {
         case eMyMoney::Report::ChartType::End:
