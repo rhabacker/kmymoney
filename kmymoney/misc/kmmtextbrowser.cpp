@@ -28,6 +28,11 @@ KMMTextBrowser::KMMTextBrowser(QWidget* parent)
  */
 void KMMTextBrowser::print(QPagedPaintDevice* printer)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+    QTextDocument::setMetaInformation(QTextDocument::CssMedia, "print");
+    QTextBrowser::print(printer);
+    QTextDocument::setMetaInformation(QTextDocument::CssMedia, "screen");
+#else
     QTextDocument documentCopy;
     documentCopy.setDefaultStyleSheet(QString());
     documentCopy.setHtml(m_html);
@@ -39,12 +44,15 @@ void KMMTextBrowser::print(QPagedPaintDevice* printer)
         cursor.setBlockFormat(tbf);
     }
     documentCopy.print(printer);
+#endif
 }
 
 void KMMTextBrowser::setHtml(const QString& text)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 3, 0)
     m_html = text;
     m_html.replace("@media screen", "@media _screen").replace("@media print", "@media screen");
+#endif
     if (m_content != text) {
         m_content = text;
         QTextBrowser::setHtml(m_content);
