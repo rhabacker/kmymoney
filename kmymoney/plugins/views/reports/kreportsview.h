@@ -134,14 +134,21 @@ public Q_SLOTS:
     void slotCloseCurrent();
     void slotClose(int index);
     void slotCloseAll();
+    void slotContextMenu(const QPoint& p);
     void slotDelete();
     void slotListContextMenu(const QPoint &);
     void slotOpenFromList();
+    void slotOpenFromView();
     void slotPrintFromList();
+    void slotPrintFromView();
     void slotExportFromList();
+    void slotExportFromView();
     void slotConfigureFromList();
+    void slotConfigureFromView();
     void slotNewFromList();
+    void slotNewFromView();
     void slotDeleteFromList();
+    void slotDeleteFromView();
 
     void updateActions(const SelectedObjects& selections) override;
 

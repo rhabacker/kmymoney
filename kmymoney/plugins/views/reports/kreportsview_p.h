@@ -521,7 +521,10 @@ public:
 
         MyMoneyFile* file = MyMoneyFile::instance();
         ui.m_tocTreeView->setModel(file->reportsModel());
+        ui.m_tocTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
+        ui.m_tocTreeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
         q->connect(ui.m_tocTreeView, &QTreeView::doubleClicked, q, &KReportsView::slotDoubleClicked);
+        q->connect(ui.m_tocTreeView, &QWidget::customContextMenuRequested, q, &KReportsView::slotContextMenu);
 
         ui.m_tocTreeWidget->sortByColumn(0, Qt::AscendingOrder);
         ui.m_tocTreeWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
