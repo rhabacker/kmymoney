@@ -57,6 +57,9 @@
         </widget>
        </item>
        <item>
+        <widget class="QTreeView" name="m_tocTreeView"/>
+       </item>
+       <item>
         <widget class="QWidget" name="m_filterContainer" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,2">
           <property name="spacing">

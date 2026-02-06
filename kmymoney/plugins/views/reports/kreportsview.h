@@ -127,6 +127,7 @@ public Q_SLOTS:
     void slotConfigure();
     void slotDuplicate();
     void slotToggleChart();
+    void slotDoubleClicked(const QModelIndex& index);
     void slotItemDoubleClicked(QTreeWidgetItem* item, int column);
     void slotOpenReport(const QString&);
     void slotOpenReport(const MyMoneyReport&);

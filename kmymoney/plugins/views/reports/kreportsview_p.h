@@ -75,6 +75,7 @@
 #include "pivottable.h"
 #include "querytable.h"
 #include "reportcontrolimpl.h"
+#include "reportsmodel.h"
 #include "reporttable.h"
 #include "tocitem.h"
 #include "tocitemgroup.h"
@@ -517,6 +518,11 @@ public:
 
         setColumnsAlreadyAdjusted(false);
         ui.setupUi(q);
+
+        MyMoneyFile* file = MyMoneyFile::instance();
+        ui.m_tocTreeView->setModel(file->reportsModel());
+        q->connect(ui.m_tocTreeView, &QTreeView::doubleClicked, q, &KReportsView::slotDoubleClicked);
+
         ui.m_tocTreeWidget->sortByColumn(0, Qt::AscendingOrder);
         ui.m_tocTreeWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
         ui.m_closeButton->setIcon(Icons::get(Icon::DialogClose));

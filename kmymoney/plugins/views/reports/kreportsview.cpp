@@ -608,6 +608,61 @@ void KReportsView::slotOpenReport(const MyMoneyReport& report)
         Q_EMIT switchViewRequested(View::Reports);
 }
 
+void KReportsView::slotDoubleClicked(const QModelIndex& index)
+{
+    Q_D(KReportsView);
+    MyMoneyFile* file = MyMoneyFile::instance();
+    const auto& report = file->reportsModel()->itemByIndex(index);
+
+#if 0
+    auto tocItem = dynamic_cast<TocItem*>(item);
+    if (tocItem && !tocItem->isReport()) {
+        // toggle the expanded-state for reportgroup-items
+        item->setExpanded(item->isExpanded() ? false : true);
+
+        // nothing else to do for reportgroup-items
+        return;
+    }
+
+    TocItemReport* reportTocItem = dynamic_cast<TocItemReport*>(tocItem);
+
+    MyMoneyReport& report = reportTocItem->getReport();
+#endif
+    KReportTab* page = nullptr;
+
+    // Find the tab which contains the report indicated by this list item
+    int i = 1;
+    while (i < d->ui.m_reportTabWidget->count()) {
+        auto current = dynamic_cast<KReportTab*>(d->ui.m_reportTabWidget->widget(i));
+        if (current) {
+            // If this report has an ID, we'll use the ID to match
+            if (!report.id().isEmpty()) {
+                if (current->report().id() == report.id()) {
+                    page = current;
+                    break;
+                }
+            }
+            // Otherwise, use the name to match.  THIS ASSUMES that no 2 default reports
+            // have the same name...but that would be pretty a boneheaded thing to do.
+            else {
+                if (current->report().name() == report.name()) {
+                    page = current;
+                    break;
+                }
+            }
+        }
+
+        ++i;
+    }
+
+    // Show the tab, or create a new one, as needed
+    if (page)
+        d->ui.m_reportTabWidget->setCurrentIndex(i);
+    else {
+        d->addReportTab(report, OpenImmediately);
+    }
+}
+
 void KReportsView::slotItemDoubleClicked(QTreeWidgetItem* item, int column)
 {
     doItemDoubleClicked(item, column, OpenImmediately);
