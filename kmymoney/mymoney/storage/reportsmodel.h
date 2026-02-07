@@ -31,6 +31,7 @@ class KMM_MYMONEY_EXPORT ReportsModel : public MyMoneyModel<MyMoneyReport>
 public:
     enum Columns {
         ReportName,
+        Comment,
         // insert new columns above this line
         MaxColumns,
     };

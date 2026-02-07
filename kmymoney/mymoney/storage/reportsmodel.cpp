@@ -39,15 +39,18 @@ ReportsModel::~ReportsModel()
 int ReportsModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
-    return 1;
+    return 2;
 }
 
 QVariant ReportsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if(orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch(section) {
-        case 0:
+        case ReportName:
             return i18nc("Reportname", "Name");
+            break;
+        case Comment:
+            return i18nc("Report comment", "Comment");
             break;
         }
     }
@@ -68,6 +71,8 @@ QVariant ReportsModel::data(const QModelIndex& index, int role) const
         switch(index.column()) {
         case ReportName:
             return report.name();
+        case Comment:
+            return report.comment();
         default:
             return QStringLiteral("not yet implemented");
         }
