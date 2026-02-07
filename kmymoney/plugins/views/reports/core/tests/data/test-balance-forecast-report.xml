@@ -3,10 +3,10 @@
 <KMYMONEY-FILE>
   <FILEINFO>
     <CREATION_DATE date=""/>
-    <LAST_MODIFIED_DATE date="2026-02-06T17:17:15+01:00"/>
+    <LAST_MODIFIED_DATE date="2026-02-07T19:57:34+01:00"/>
     <VERSION id="1"/>
     <FIXVERSION id="10"/>
-    <APPVERSION id="5.2.70-9a7bcd416"/>
+    <APPVERSION id="5.2.70-c15d3750c"/>
   </FILEINFO>
   <USER name="" email="">
     <ADDRESS street="" city="" state="" zip="" telephone="" country="" county="" zipcode="" postcode=""/>
@@ -80,7 +80,7 @@
     </TRANSACTION>
   </TRANSACTIONS>
   <KEYVALUEPAIRS>
-    <PAIR key="LastModificationDate" value="2026-02-06T17:17:15+01:00"/>
+    <PAIR key="LastModificationDate" value="2026-02-07T19:57:34+01:00"/>
     <PAIR key="kmm-baseCurrency" value="EUR"/>
     <PAIR key="kmm-id" value="{f8f47595-3cac-4ace-8579-b740638b1629}"/>
   </KEYVALUEPAIRS>
@@ -118,6 +118,10 @@
       <ACCOUNTGROUP group="liability"/>
       <ACCOUNT id="A000001"/>
       <DATES from="2024-01-01" to="2024-07-01"/>
+    </REPORT>
+    <REPORT id="R000001" type="infotable 1.0" group="Information" name="Account Information (Customized)" comment="Custom Report" convertcurrency="0" favorite="0" skipZero="0" datelock="today" rowtype="accountinfo" showrowtotals="0">
+      <ACCOUNTGROUP group="asset"/>
+      <ACCOUNTGROUP group="liability"/>
     </REPORT>
   </REPORTS>
   <BUDGETS/>
