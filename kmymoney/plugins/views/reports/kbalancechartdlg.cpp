@@ -296,6 +296,7 @@ void KBalanceChartDlg::newReport()
     newReport.setName(newReport.name() + QString(" (%1)").arg(MyMoneyUtils::formatDate(today)));
     newReport.setDateFilter(eMyMoney::TransactionFilter::Date::UserDefined);
     newReport.setEvaluationDate(today);
+    newReport.setIsCustomReport();
 
     MyMoneyFileTransaction ft;
     try {

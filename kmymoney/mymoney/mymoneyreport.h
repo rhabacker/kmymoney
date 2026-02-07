@@ -129,6 +129,10 @@ public:
     QString group() const;
     void setGroup(const QString& group);
 
+    bool isDefaultReport() const;
+    bool isCustomReport() const;
+    void setIsCustomReport();
+
     bool isFavorite() const;
     void setFavorite(bool f);
 

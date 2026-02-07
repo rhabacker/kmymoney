@@ -15,6 +15,7 @@
 
 // ----------------------------------------------------------------------------
 // KDE Includes
+#include <KLocalizedString>
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -293,6 +294,21 @@ void MyMoneyReport::setGroup(const QString& group)
 {
     Q_D(MyMoneyReport);
     d->m_group = group;
+}
+
+bool MyMoneyReport::isDefaultReport() const
+{
+    return comment() == i18n("Default Report");
+}
+
+bool MyMoneyReport::isCustomReport() const
+{
+    return comment() == i18n("Generated Report") || comment() == i18n("Custom Report");
+}
+
+void MyMoneyReport::setIsCustomReport()
+{
+    setComment(i18n("Custom Report"));
 }
 
 bool MyMoneyReport::isFavorite() const

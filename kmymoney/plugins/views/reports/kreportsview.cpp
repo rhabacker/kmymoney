@@ -398,8 +398,9 @@ void KReportsView::doConfigure(ConfigureOption configureOption)
     tab->updateDataRange(); // range will be needed during configuration, but cannot be obtained earlier
 
     MyMoneyReport report = tab->report();
-    if (report.comment() == i18n("Default Report") || report.comment() == i18n("Generated Report")) {
-        report.setComment(i18n("Custom Report"));
+    // move to file fixes
+    if (report.isDefaultReport() || report.comment() == i18n("Generated Report")) {
+        report.setIsCustomReport();
         report.setName(i18n("%1 (Customized)", report.name()));
     }
 
@@ -471,8 +472,8 @@ void KReportsView::slotDuplicate()
 
     MyMoneyReport dupe = tab->report();
     dupe.setName(i18n("Copy of %1", dupe.name()));
-    if (dupe.comment() == i18n("Default Report"))
-        dupe.setComment(i18n("Custom Report"));
+    if (dupe.isDefaultReport())
+        dupe.setIsCustomReport();
     dupe.clearId();
 
     QPointer<KReportConfigurationFilterDlg> dlg = new KReportConfigurationFilterDlg(dupe);
