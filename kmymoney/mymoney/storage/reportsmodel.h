@@ -47,7 +47,7 @@ public:
 
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) final override;
 
-    void load(const QMap<QString, MyMoneyReport>& reports);
+    void load(const QMap<QString, MyMoneyReport>& reports) override;
 
 public Q_SLOTS:
 
