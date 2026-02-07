@@ -147,3 +147,19 @@ void ReportsModel::load(const QMap<QString, MyMoneyReport>& reports)
 
     qDebug() << "ReportsModel loaded with" << rowCount() << "groups in" << t.elapsed() << "ms";
 }
+
+Qt::ItemFlags ReportsModel::flags(const QModelIndex& index) const
+{
+    if (!index.isValid())
+        return Qt::NoItemFlags;
+
+    auto* item = static_cast<TreeItem<MyMoneyReport>*>(index.internalPointer());
+
+    if (item->dataRef().id().isEmpty()) {
+        // enabled (so it expands), but not selectable
+        return Qt::ItemIsEnabled;
+    }
+
+    // normal reports
+    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+}
