@@ -98,3 +98,52 @@ bool ReportsModel::setData(const QModelIndex& index, const QVariant& value, int 
     qDebug() << "setData(" << index.row() << index.column() << ")" << value << role;
     return QAbstractItemModel::setData(index, value, role);
 }
+
+void ReportsModel::load(const QMap<QString, MyMoneyReport>& reports)
+{
+    QElapsedTimer t;
+    t.start();
+
+    beginResetModel();
+
+    // clear any previous items
+    clearModelItems();
+
+    // map to hold group nodes
+    QMap<QString, TreeItem<MyMoneyReport>*> groupItems;
+
+    // create group items and reports
+    for (const auto& report : reports) {
+        const QString groupName = report.group();
+
+        // create group TreeItem if it doesn't exist yet
+        TreeItem<MyMoneyReport>* groupItem = nullptr;
+        if (!groupItems.contains(groupName)) {
+            // dummy report for the group node
+            MyMoneyReport groupReport;
+            groupReport.setName(groupName); // store group name
+            groupItem = new TreeItem<MyMoneyReport>(groupReport, m_rootItem);
+            m_rootItem->appendChild(groupItem); // pass pointer
+            groupItems[groupName] = groupItem;
+        } else {
+            groupItem = groupItems[groupName];
+        }
+
+        // create TreeItem for the actual report
+        TreeItem<MyMoneyReport>* reportItem = new TreeItem<MyMoneyReport>(report, groupItem);
+        groupItem->appendChild(reportItem); // pass pointer
+
+        // add to ID mapper
+        if (m_idToItemMapper)
+            m_idToItemMapper->insert(report.id(), reportItem);
+    }
+
+    // reset dirty flag
+    setDirty(false);
+    m_nextId = 0;
+
+    endResetModel();
+    Q_EMIT modelLoaded();
+
+    qDebug() << "ReportsModel loaded with" << rowCount() << "groups in" << t.elapsed() << "ms";
+}
