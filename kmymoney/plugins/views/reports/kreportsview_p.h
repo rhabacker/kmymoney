@@ -31,6 +31,7 @@
 #include <QMimeData>
 #include <QPointer>
 #include <QPrintPreviewDialog>
+#include <QSortFilterProxyModel>
 #include <QTimer>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
@@ -75,6 +76,8 @@
 #include "pivottable.h"
 #include "querytable.h"
 #include "reportcontrolimpl.h"
+#include "reportgroup.h"
+#include "reportsmodel.h"
 #include "reporttable.h"
 #include "tocitem.h"
 #include "tocitemgroup.h"
@@ -172,30 +175,6 @@ public:
 protected:
     void wheelEvent(QWheelEvent *event) override;
 
-};
-
-/**
-  * Helper class for KReportView.
-  *
-  * This is a named list of reports, which will be one section
-  * in the list of default reports
-  *
-  * @author Ace Jones
-  */
-class ReportGroup: public QList<MyMoneyReport>
-{
-private:
-    QString m_name;     ///< the title of the group in non-translated form
-    QString m_title;    ///< the title of the group in i18n-ed form
-public:
-    ReportGroup() {}
-    ReportGroup(const QString& name, const QString& title): m_name(name), m_title(title) {}
-    const QString& name() const {
-        return m_name;
-    }
-    const QString& title() const {
-        return m_title;
-    }
 };
 
 /**
@@ -490,6 +469,31 @@ void KReportTab::updateDataRange()
     m_report.setDataMinorTick(dims.at(3).first);
 }
 
+class NaturalSortProxy : public QSortFilterProxyModel
+{
+public:
+    explicit NaturalSortProxy(QObject* parent = nullptr)
+        : QSortFilterProxyModel(parent)
+    {
+    }
+
+protected:
+    bool lessThan(const QModelIndex& left, const QModelIndex& right) const override
+    {
+        QString l = sourceModel()->data(left).toString();
+        QString r = sourceModel()->data(right).toString();
+
+        static QRegularExpression re(R"(^(\d+))");
+        auto ml = re.match(l);
+        auto mr = re.match(r);
+
+        if (ml.hasMatch() && mr.hasMatch()) {
+            return ml.captured(1).toInt() < mr.captured(1).toInt();
+        }
+        return QString::localeAwareCompare(l, r) < 0;
+    }
+};
+
 class KReportsViewPrivate : public KMyMoneyViewBasePrivate
 {
     Q_DECLARE_PUBLIC(KReportsView)
@@ -505,6 +509,33 @@ public:
 
     ~KReportsViewPrivate()
     {
+        // delete m_defaultReports;
+    }
+
+    void setupView(QTreeView* view, ReportsModel* model)
+    {
+        Q_Q(KReportsView);
+        auto proxyModel = new NaturalSortProxy(view->parent());
+        proxyModel->setSourceModel(model);
+        // proxyModel->setRecursiveSortingEnabled(true); // Qt 5.10+
+        proxyModel->setDynamicSortFilter(true);
+        view->setModel(proxyModel);
+        view->setContextMenuPolicy(Qt::CustomContextMenu);
+        // multiple selections
+        view->setSelectionMode(QAbstractItemView::ExtendedSelection);
+        view->setSelectionBehavior(QAbstractItemView::SelectRows);
+        view->setContextMenuPolicy(Qt::CustomContextMenu);
+
+        // sorting
+        view->setSortingEnabled(true);
+        view->sortByColumn(0, Qt::AscendingOrder);
+        view->header()->setSectionsClickable(true);
+        view->header()->setSortIndicatorShown(true);
+        view->header()->setSectionResizeMode(ReportsModel::Columns::ReportName, QHeaderView::ResizeToContents);
+        view->header()->setStretchLastSection(true);
+
+        q->connect(view, &QTreeView::doubleClicked, q, &KReportsView::slotDoubleClicked);
+        q->connect(view, &QWidget::customContextMenuRequested, q, &KReportsView::slotContextMenu);
     }
 
     void init()
@@ -517,6 +548,15 @@ public:
 
         setColumnsAlreadyAdjusted(false);
         ui.setupUi(q);
+
+        setupView(ui.m_tocTreeViewCustom, MyMoneyFile::instance()->reportsModel());
+
+        QList<ReportGroup> defaultGroups;
+        defaultReports(defaultGroups);
+        m_builtInReports = new ReportsModel();
+        m_builtInReports->load(defaultGroups);
+        setupView(ui.m_tocTreeViewDefault, m_builtInReports);
+
         ui.m_tocTreeWidget->sortByColumn(0, Qt::AscendingOrder);
         ui.m_tocTreeWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
         ui.m_closeButton->setIcon(Icons::get(Icon::DialogClose));
@@ -657,8 +697,6 @@ public:
             QList<MyMoneyReport>::const_iterator it_report = (*it_group).begin();
             while (it_report != (*it_group).end()) {
                 MyMoneyReport report = *it_report;
-                report.setGroup(groupName);
-
                 TocItemReport* reportTocItemReport =
                     new TocItemReport(defaultTocItemGroup, report);
 
@@ -1392,6 +1430,24 @@ public:
             list.back().setConvertCurrency(false);
             groups.push_back(list);
         }
+        {
+            ReportGroup list("Charts", i18n("Charts"));
+            for (const auto& group : groups) {
+                for (const auto& report : group) {
+                    if (report.isChartByDefault()) {
+                        list.append(report);
+                    }
+                }
+            }
+            groups.push_back(list);
+        }
+
+        // In each report setup associated group, which is used in report configuration post steps
+        for (auto& group : groups) {
+            for (auto& report : group) {
+                report.setGroup(group.name());
+            }
+        }
     }
 
     bool columnsAlreadyAdjusted() const
@@ -1478,6 +1534,7 @@ public:
     bool m_columnsAlreadyAdjusted;
     MyMoneyAccount m_currentAccount;
     QMap<QString, bool> expandStatesBeforeSearch;
+    ReportsModel* m_builtInReports;
 };
 
 #endif

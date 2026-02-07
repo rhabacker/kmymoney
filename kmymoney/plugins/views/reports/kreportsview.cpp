@@ -612,6 +612,61 @@ void KReportsView::slotOpenReport(const MyMoneyReport& report)
         Q_EMIT switchViewRequested(View::Reports);
 }
 
+void KReportsView::slotDoubleClicked(const QModelIndex& index)
+{
+    Q_D(KReportsView);
+
+    QModelIndex sourceIndex;
+    auto* proxy = qobject_cast<const QSortFilterProxyModel*>(index.model());
+    const ReportsModel* sourceModel;
+    if (proxy) {
+        sourceIndex = proxy->mapToSource(index);
+        sourceModel = qobject_cast<const ReportsModel*>(proxy->sourceModel());
+    } else {
+        sourceIndex = index;
+        sourceModel = qobject_cast<const ReportsModel*>(index.model());
+    }
+
+    const auto& report = sourceModel->itemByIndex(sourceIndex);
+
+    if (!report.isBuiltIn() && !report.isCustom())
+        return;
+
+    KReportTab* page = nullptr;
+
+    // Find the tab which contains the report indicated by this list item
+    int i = 1;
+    while (i < d->ui.m_reportTabWidget->count()) {
+        auto current = dynamic_cast<KReportTab*>(d->ui.m_reportTabWidget->widget(i));
+        if (current) {
+            // If this report has an ID, we'll use the ID to match
+            if (!report.id().isEmpty()) {
+                if (current->report().id() == report.id()) {
+                    page = current;
+                    break;
+                }
+            }
+            // Otherwise, use the name to match.  THIS ASSUMES that no 2 default reports
+            // have the same name...but that would be pretty a boneheaded thing to do.
+            else {
+                if (current->report().name() == report.name()) {
+                    page = current;
+                    break;
+                }
+            }
+        }
+
+        ++i;
+    }
+
+    // Show the tab, or create a new one, as needed
+    if (page)
+        d->ui.m_reportTabWidget->setCurrentIndex(i);
+    else {
+        d->addReportTab(report, OpenImmediately);
+    }
+}
+
 void KReportsView::slotItemDoubleClicked(QTreeWidgetItem* item, int column)
 {
     doItemDoubleClicked(item, column, OpenImmediately);
@@ -720,6 +775,71 @@ void KReportsView::slotCloseAll()
     }
 }
 
+QModelIndexList selectedSourceIndexes(const QTreeView* view)
+{
+    QModelIndexList viewIndexes = view->selectionModel()->selectedIndexes();
+
+    QAbstractItemModel* viewModel = view->model();
+
+    if (auto* proxy = qobject_cast<QSortFilterProxyModel*>(viewModel)) {
+        QModelIndexList sourceIndexes;
+        sourceIndexes.reserve(viewIndexes.size());
+
+        for (const QModelIndex& idx : viewIndexes) {
+            QModelIndex src = proxy->mapToSource(idx);
+            if (src.isValid())
+                sourceIndexes << src;
+        }
+        return sourceIndexes;
+    }
+
+    return viewIndexes; // already source indexes
+}
+
+QModelIndexList selectedSourceIndexes(const QObject* sender)
+{
+    const auto* view = qobject_cast<const QTreeView*>(sender);
+    if (!view) {
+        return QModelIndexList();
+    }
+    return selectedSourceIndexes(view);
+}
+
+void KReportsView::slotContextMenu(const QPoint& p)
+{
+    Q_D(KReportsView);
+    const auto indexes = selectedSourceIndexes(sender());
+
+    if (indexes.isEmpty()) {
+        return;
+    }
+
+    auto contextmenu = new QMenu(this);
+
+    contextmenu->addSection(i18nc("@title:menu Report context menu", "Report options"));
+    contextmenu->addAction(i18nc("To open a new report", "&Open"), this, SLOT(slotOpenFromView()));
+
+    contextmenu->addAction(i18nc("To print a report", "&Print"), this, SLOT(slotPrintFromView()));
+
+    if (indexes.count() == 1) {
+        contextmenu->addAction(i18nc("To export a report", "&Export to PDF file"), this, SLOT(slotExportFromView()));
+        contextmenu->addAction(i18nc("Configure a report", "&Configure"), this, SLOT(slotConfigureFromView()));
+        contextmenu->addAction(i18n("&New report"), this, SLOT(slotNewFromView()));
+        contextmenu->addAction(i18n("&Delete"), [this, view = qobject_cast<QTreeView*>(sender())]() {
+            slotDeleteFromView(view);
+        });
+    } else {
+        contextmenu->addAction(i18nc("To export reports", "&Export to PDF files"), this, SLOT(slotExportFromView()));
+        contextmenu->addAction(i18n("&Delete"), [this, view = qobject_cast<QTreeView*>(sender())]() {
+            slotDeleteFromView(view);
+        });
+    }
+
+    auto* view = qobject_cast<QTreeView*>(sender());
+    if (view) {
+        contextmenu->popup(view->viewport()->mapToGlobal(p));
+    }
+}
 
 void KReportsView::slotListContextMenu(const QPoint & p)
 {
@@ -797,6 +917,21 @@ void KReportsView::slotOpenFromList()
     }
 }
 
+void KReportsView::slotOpenFromView()
+{
+    Q_D(KReportsView);
+
+    const auto indexes = selectedSourceIndexes(sender());
+
+    if (indexes.isEmpty()) {
+        return;
+    }
+
+    for (const auto& index : indexes) {
+        slotDoubleClicked(index);
+    }
+}
+
 void KReportsView::slotPrintFromList()
 {
     Q_D(KReportsView);
@@ -813,6 +948,22 @@ void KReportsView::slotPrintFromList()
             slotItemDoubleClicked(tocItem, 0);
             slotPrintView();
         }
+    }
+}
+
+void KReportsView::slotPrintFromView()
+{
+    Q_D(KReportsView);
+
+    const auto indexes = selectedSourceIndexes(sender());
+
+    if (indexes.isEmpty()) {
+        return;
+    }
+
+    for (const auto& index : indexes) {
+        slotDoubleClicked(index);
+        slotPrintView();
     }
 }
 
@@ -847,6 +998,33 @@ void KReportsView::slotExportFromList()
     }
 }
 
+void KReportsView::slotExportFromView()
+{
+    Q_D(KReportsView);
+
+    const auto indexes = selectedSourceIndexes(sender());
+
+    if (indexes.isEmpty()) {
+        return;
+    }
+
+    QString rootDir = QFileDialog::getExistingDirectory(this, i18n("Export into directory"), KRecentDirs::dir(":kmymoney-export"), QFileDialog::ShowDirsOnly);
+    if (rootDir.isEmpty())
+        return;
+
+    for (const auto& index : indexes) {
+        slotDoubleClicked(index);
+        const auto tab = dynamic_cast<KReportTab*>(d->ui.m_reportTabWidget->currentWidget());
+        if (!tab)
+            continue;
+
+        MyMoneyFile* file = MyMoneyFile::instance();
+        const auto& report = file->reportsModel()->itemByIndex(index);
+        auto name = createSaveFileName(rootDir, report.name(), QLatin1String(".pdf"));
+        tab->saveAs(name, "application/pdf");
+    }
+}
+
 void KReportsView::slotConfigureFromList()
 {
     Q_D(KReportsView);
@@ -856,11 +1034,43 @@ void KReportsView::slotConfigureFromList()
     }
 }
 
+void KReportsView::slotConfigureFromView()
+{
+    Q_D(KReportsView);
+
+    const auto indexes = selectedSourceIndexes(sender());
+
+    if (indexes.isEmpty()) {
+        return;
+    }
+
+    for (const auto& index : indexes) {
+        slotDoubleClicked(index);
+        slotConfigure();
+    }
+}
+
 void KReportsView::slotNewFromList()
 {
     Q_D(KReportsView);
     if (auto tocItem = dynamic_cast<TocItem*>(d->ui.m_tocTreeWidget->currentItem())) {
         slotItemDoubleClicked(tocItem, 0);
+        slotDuplicate();
+    }
+}
+
+void KReportsView::slotNewFromView()
+{
+    Q_D(KReportsView);
+
+    const auto indexes = selectedSourceIndexes(sender());
+
+    if (indexes.isEmpty()) {
+        return;
+    }
+
+    for (const auto& index : indexes) {
+        slotDoubleClicked(index);
         slotDuplicate();
     }
 }
@@ -902,6 +1112,37 @@ void KReportsView::slotDeleteFromList()
             MyMoneyFile::instance()->removeReport(*report);
         }
         ft.commit();
+    }
+}
+
+void KReportsView::slotDeleteFromView(QTreeView* view)
+{
+    Q_D(KReportsView);
+
+    const auto indexes = selectedSourceIndexes(view);
+
+    if (indexes.isEmpty()) {
+        return;
+    }
+
+    for (const auto& index : indexes) {
+        MyMoneyFile* file = MyMoneyFile::instance();
+        const auto& report = file->reportsModel()->itemByIndex(index);
+
+        // If this report does not have an ID, it's a default report and cannot be deleted
+        if (!report.id().isEmpty() && KMessageBox::Continue == d->deleteReportDialog(report.name())) {
+            // check if report's tab is open; start from 1 because 0 is toc tab
+            for (int i = 1; i < d->ui.m_reportTabWidget->count(); ++i) {
+                auto tab = dynamic_cast<KReportTab*>(d->ui.m_reportTabWidget->widget(i));
+                if (tab && tab->report().id() == report.id()) {
+                    slotClose(i); // if open, close it, so no crash when switching to it
+                    break;
+                }
+            }
+            MyMoneyFileTransaction ft;
+            MyMoneyFile::instance()->removeReport(report);
+            ft.commit();
+        }
     }
 }
 
