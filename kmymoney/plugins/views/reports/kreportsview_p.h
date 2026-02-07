@@ -31,6 +31,7 @@
 #include <QMimeData>
 #include <QPointer>
 #include <QPrintPreviewDialog>
+#include <QSortFilterProxyModel>
 #include <QTimer>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
@@ -506,6 +507,7 @@ public:
 
     ~KReportsViewPrivate()
     {
+        delete m_proxyModel;
     }
 
     void init()
@@ -519,10 +521,25 @@ public:
         setColumnsAlreadyAdjusted(false);
         ui.setupUi(q);
 
-        MyMoneyFile* file = MyMoneyFile::instance();
-        ui.m_tocTreeView->setModel(file->reportsModel());
+        m_proxyModel = new QSortFilterProxyModel(q);
+        m_proxyModel->setSourceModel(MyMoneyFile::instance()->reportsModel());
+        // proxyModel->setRecursiveSortingEnabled(true); // Qt 5.10+
+        m_proxyModel->setDynamicSortFilter(true);
+        ui.m_tocTreeView->setModel(m_proxyModel);
         ui.m_tocTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
+        // mult selection
         ui.m_tocTreeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+        ui.m_tocTreeView->setSelectionBehavior(QAbstractItemView::SelectRows);
+        ui.m_tocTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
+
+        // sorting
+        ui.m_tocTreeView->setSortingEnabled(true);
+        ui.m_tocTreeView->sortByColumn(0, Qt::AscendingOrder);
+        ui.m_tocTreeView->header()->setSectionsClickable(true);
+        ui.m_tocTreeView->header()->setSortIndicatorShown(true);
+        ui.m_tocTreeView->header()->setSectionResizeMode(ReportsModel::Columns::ReportName, QHeaderView::ResizeToContents);
+        ui.m_tocTreeView->header()->setStretchLastSection(true);
+
         q->connect(ui.m_tocTreeView, &QTreeView::doubleClicked, q, &KReportsView::slotDoubleClicked);
         q->connect(ui.m_tocTreeView, &QWidget::customContextMenuRequested, q, &KReportsView::slotContextMenu);
 
@@ -667,6 +684,8 @@ public:
             while (it_report != (*it_group).end()) {
                 MyMoneyReport report = *it_report;
                 report.setGroup(groupName);
+                if (!report.isDefaultReport())
+                    continue;
 
                 TocItemReport* reportTocItemReport =
                     new TocItemReport(defaultTocItemGroup, report);
@@ -686,7 +705,7 @@ public:
             ++it_group;
         }
 
-        // group for custom (favorite) reports
+        // group for favorite reports, -> TODO add to separate category
         int favoriteGroupNo = chartGroupNo + 1;
 
         groupName = kli18n("Favorite Reports").untranslatedText();
@@ -1529,6 +1548,7 @@ public:
     bool m_columnsAlreadyAdjusted;
     MyMoneyAccount m_currentAccount;
     QMap<QString, bool> expandStatesBeforeSearch;
+    QSortFilterProxyModel* m_proxyModel;
 };
 
 #endif
