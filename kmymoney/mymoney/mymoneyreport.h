@@ -130,6 +130,7 @@ public:
     void setGroup(const QString& group);
 
     bool isDefaultReport() const;
+    void setIsDefaultReport();
     bool isCustomReport() const;
     void setIsCustomReport();
 

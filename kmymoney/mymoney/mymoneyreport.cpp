@@ -301,6 +301,11 @@ bool MyMoneyReport::isDefaultReport() const
     return comment() == i18n("Default Report");
 }
 
+void MyMoneyReport::setIsDefaultReport()
+{
+    setComment(i18n("Default Report"));
+}
+
 bool MyMoneyReport::isCustomReport() const
 {
     return comment() == i18n("Generated Report") || comment() == i18n("Custom Report");
