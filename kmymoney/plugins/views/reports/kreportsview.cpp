@@ -613,17 +613,18 @@ void KReportsView::slotDoubleClicked(const QModelIndex& index)
 {
     Q_D(KReportsView);
 
-    MyMoneyFile* file = MyMoneyFile::instance();
     QModelIndex sourceIndex;
-    if (index.model() != file->reportsModel()) {
-        if (auto* proxy = qobject_cast<const QSortFilterProxyModel*>(index.model())) {
-            sourceIndex = proxy->mapToSource(index);
-        }
+    auto* proxy = qobject_cast<const QSortFilterProxyModel*>(index.model());
+    const ReportsModel* sourceModel;
+    if (proxy) {
+        sourceIndex = proxy->mapToSource(index);
+        sourceModel = qobject_cast<const ReportsModel*>(proxy->sourceModel());
     } else {
         sourceIndex = index;
+        sourceModel = qobject_cast<const ReportsModel*>(index.model());
     }
 
-    const auto& report = file->reportsModel()->itemByIndex(sourceIndex);
+    const auto& report = sourceModel->itemByIndex(sourceIndex);
 
 #if 0
     auto tocItem = dynamic_cast<TocItem*>(item);
@@ -803,10 +804,19 @@ QModelIndexList selectedSourceIndexes(const QTreeView* view)
     return viewIndexes; // already source indexes
 }
 
+QModelIndexList selectedSourceIndexes(const QObject* sender)
+{
+    const auto* view = qobject_cast<const QTreeView*>(sender);
+    if (!view) {
+        return QModelIndexList();
+    }
+    return selectedSourceIndexes(view);
+}
+
 void KReportsView::slotContextMenu(const QPoint& p)
 {
     Q_D(KReportsView);
-    const auto indexes = selectedSourceIndexes(d->ui.m_tocTreeView);
+    const auto indexes = selectedSourceIndexes(sender());
 
     if (indexes.isEmpty()) {
         return;
@@ -829,7 +839,10 @@ void KReportsView::slotContextMenu(const QPoint& p)
         contextmenu->addAction(i18n("&Delete"), this, SLOT(slotDeleteFromView()));
     }
 
-    contextmenu->popup(d->ui.m_tocTreeView->viewport()->mapToGlobal(p));
+    auto* view = qobject_cast<QTreeView*>(sender());
+    if (view) {
+        contextmenu->popup(view->viewport()->mapToGlobal(p));
+    }
 }
 
 void KReportsView::slotListContextMenu(const QPoint & p)
@@ -911,7 +924,7 @@ void KReportsView::slotOpenFromView()
 {
     Q_D(KReportsView);
 
-    const auto indexes = selectedSourceIndexes(d->ui.m_tocTreeView);
+    const auto indexes = selectedSourceIndexes(sender());
 
     if (indexes.isEmpty()) {
         return;
@@ -945,7 +958,7 @@ void KReportsView::slotPrintFromView()
 {
     Q_D(KReportsView);
 
-    const auto indexes = selectedSourceIndexes(d->ui.m_tocTreeView);
+    const auto indexes = selectedSourceIndexes(sender());
 
     if (indexes.isEmpty()) {
         return;
@@ -992,7 +1005,7 @@ void KReportsView::slotExportFromView()
 {
     Q_D(KReportsView);
 
-    const auto indexes = selectedSourceIndexes(d->ui.m_tocTreeView);
+    const auto indexes = selectedSourceIndexes(sender());
 
     if (indexes.isEmpty()) {
         return;
@@ -1028,7 +1041,7 @@ void KReportsView::slotConfigureFromView()
 {
     Q_D(KReportsView);
 
-    const auto indexes = selectedSourceIndexes(d->ui.m_tocTreeView);
+    const auto indexes = selectedSourceIndexes(sender());
 
     if (indexes.isEmpty()) {
         return;
@@ -1053,7 +1066,7 @@ void KReportsView::slotNewFromView()
 {
     Q_D(KReportsView);
 
-    const auto indexes = selectedSourceIndexes(d->ui.m_tocTreeView);
+    const auto indexes = selectedSourceIndexes(sender());
 
     if (indexes.isEmpty()) {
         return;
@@ -1095,7 +1108,7 @@ void KReportsView::slotDeleteFromView()
 {
     Q_D(KReportsView);
 
-    const auto indexes = selectedSourceIndexes(d->ui.m_tocTreeView);
+    const auto indexes = selectedSourceIndexes(sender());
 
     if (indexes.isEmpty()) {
         return;

@@ -484,7 +484,33 @@ public:
 
     ~KReportsViewPrivate()
     {
-        delete m_proxyModel;
+        delete m_defaultReports;
+    }
+
+    void setupView(QTreeView* view, ReportsModel* model)
+    {
+        Q_Q(KReportsView);
+        auto proxyModel = new QSortFilterProxyModel(view->parent());
+        proxyModel->setSourceModel(model);
+        // proxyModel->setRecursiveSortingEnabled(true); // Qt 5.10+
+        proxyModel->setDynamicSortFilter(true);
+        view->setModel(proxyModel);
+        view->setContextMenuPolicy(Qt::CustomContextMenu);
+        // mult selection
+        view->setSelectionMode(QAbstractItemView::ExtendedSelection);
+        view->setSelectionBehavior(QAbstractItemView::SelectRows);
+        view->setContextMenuPolicy(Qt::CustomContextMenu);
+
+        // sorting
+        view->setSortingEnabled(true);
+        view->sortByColumn(0, Qt::AscendingOrder);
+        view->header()->setSectionsClickable(true);
+        view->header()->setSortIndicatorShown(true);
+        view->header()->setSectionResizeMode(ReportsModel::Columns::ReportName, QHeaderView::ResizeToContents);
+        view->header()->setStretchLastSection(true);
+
+        q->connect(view, &QTreeView::doubleClicked, q, &KReportsView::slotDoubleClicked);
+        q->connect(view, &QWidget::customContextMenuRequested, q, &KReportsView::slotContextMenu);
     }
 
     void init()
@@ -498,27 +524,13 @@ public:
         setColumnsAlreadyAdjusted(false);
         ui.setupUi(q);
 
-        m_proxyModel = new QSortFilterProxyModel(q);
-        m_proxyModel->setSourceModel(MyMoneyFile::instance()->reportsModel());
-        // proxyModel->setRecursiveSortingEnabled(true); // Qt 5.10+
-        m_proxyModel->setDynamicSortFilter(true);
-        ui.m_tocTreeView->setModel(m_proxyModel);
-        ui.m_tocTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
-        // mult selection
-        ui.m_tocTreeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-        ui.m_tocTreeView->setSelectionBehavior(QAbstractItemView::SelectRows);
-        ui.m_tocTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
+        setupView(ui.m_tocTreeViewCustom, MyMoneyFile::instance()->reportsModel());
 
-        // sorting
-        ui.m_tocTreeView->setSortingEnabled(true);
-        ui.m_tocTreeView->sortByColumn(0, Qt::AscendingOrder);
-        ui.m_tocTreeView->header()->setSectionsClickable(true);
-        ui.m_tocTreeView->header()->setSortIndicatorShown(true);
-        ui.m_tocTreeView->header()->setSectionResizeMode(ReportsModel::Columns::ReportName, QHeaderView::ResizeToContents);
-        ui.m_tocTreeView->header()->setStretchLastSection(true);
-
-        q->connect(ui.m_tocTreeView, &QTreeView::doubleClicked, q, &KReportsView::slotDoubleClicked);
-        q->connect(ui.m_tocTreeView, &QWidget::customContextMenuRequested, q, &KReportsView::slotContextMenu);
+        QList<ReportGroup> defaultGroups;
+        defaultReports(defaultGroups);
+        m_defaultReports = new ReportsModel();
+        m_defaultReports->load(defaultGroups);
+        setupView(ui.m_tocTreeViewDefault, m_defaultReports);
 
         ui.m_tocTreeWidget->sortByColumn(0, Qt::AscendingOrder);
         ui.m_tocTreeWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
@@ -1525,7 +1537,7 @@ public:
     bool m_columnsAlreadyAdjusted;
     MyMoneyAccount m_currentAccount;
     QMap<QString, bool> expandStatesBeforeSearch;
-    QSortFilterProxyModel* m_proxyModel;
+    ReportsModel* m_defaultReports;
 };
 
 #endif
