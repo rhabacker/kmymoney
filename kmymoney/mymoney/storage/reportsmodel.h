@@ -20,14 +20,16 @@
 #include "kmm_mymoney_export.h"
 
 #include "mymoneyreport.h"
+#include "reportgroup.h"
 
+class ReportsModelPrivate;
 class QUndoStack;
+
 /**
   */
 class KMM_MYMONEY_EXPORT ReportsModel : public MyMoneyModel<MyMoneyReport>
 {
     Q_OBJECT
-
 public:
     enum Columns {
         ReportName,
@@ -48,13 +50,18 @@ public:
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) final override;
 
     void load(const QMap<QString, MyMoneyReport>& reports) override;
+    void loadWithGroups(const QMap<QString, MyMoneyReport>& reports);
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
+    bool useGroups() const;
+    void setUseGroups(bool state);
+
+    void load(const QList<ReportGroup>& reportGroups);
 public Q_SLOTS:
 
 private:
-    struct Private;
-    QScopedPointer<Private> d;
+    Q_DECLARE_PRIVATE(ReportsModel)
+    QScopedPointer<ReportsModelPrivate> d;
 };
 
 #endif // REPORTSMODEL_H

@@ -19,15 +19,19 @@
 // ----------------------------------------------------------------------------
 // Project Includes
 
+#include "reportgroup.h"
 
-struct ReportsModel::Private
-{
-    Private() {}
+struct ReportsModelPrivate {
+    ReportsModelPrivate()
+        : m_useGroups(false)
+    {
+    }
+    bool m_useGroups;
 };
 
 ReportsModel::ReportsModel(QObject* parent, QUndoStack* undoStack)
     : MyMoneyModel<MyMoneyReport>(parent, QStringLiteral("R"), ReportsModel::ID_SIZE, undoStack)
-    , d(new Private)
+    , d(new ReportsModelPrivate)
 {
     setObjectName(QLatin1String("ReportsModel"));
 }
@@ -101,6 +105,51 @@ bool ReportsModel::setData(const QModelIndex& index, const QVariant& value, int 
 
 void ReportsModel::load(const QMap<QString, MyMoneyReport>& reports)
 {
+    MyMoneyModel<MyMoneyReport>::load(reports);
+    setUseGroups(false);
+}
+
+void ReportsModel::load(const QList<ReportGroup>& reportGroups)
+{
+    QElapsedTimer t;
+    t.start();
+
+    beginResetModel();
+
+    // clear any previous items
+    clearModelItems();
+
+    // map to hold group nodes
+    QMap<QString, TreeItem<MyMoneyReport>*> groupItems;
+
+    for (const auto& group : reportGroups) {
+        MyMoneyReport groupReport;
+        groupReport.setName(group.name()); // store group name
+        TreeItem<MyMoneyReport>* groupItem = new TreeItem<MyMoneyReport>(groupReport, m_rootItem);
+        m_rootItem->appendChild(groupItem); // pass pointer
+        groupItems[group.name()] = groupItem;
+        for (const auto& report : group) {
+            TreeItem<MyMoneyReport>* reportItem = new TreeItem<MyMoneyReport>(report, groupItem);
+            groupItem->appendChild(reportItem); // pass pointer
+
+            // add to ID mapper
+            if (m_idToItemMapper)
+                m_idToItemMapper->insert(report.id(), reportItem);
+        }
+    }
+    // reset dirty flag
+    setDirty(false);
+    m_nextId = 0;
+
+    endResetModel();
+    Q_EMIT modelLoaded();
+
+    qDebug() << "ReportsModel loaded with" << rowCount() << "groups in" << t.elapsed() << "ms";
+    setUseGroups(true);
+}
+
+void ReportsModel::loadWithGroups(const QMap<QString, MyMoneyReport>& reports)
+{
     QElapsedTimer t;
     t.start();
 
@@ -146,6 +195,7 @@ void ReportsModel::load(const QMap<QString, MyMoneyReport>& reports)
     Q_EMIT modelLoaded();
 
     qDebug() << "ReportsModel loaded with" << rowCount() << "groups in" << t.elapsed() << "ms";
+    setUseGroups(true);
 }
 
 Qt::ItemFlags ReportsModel::flags(const QModelIndex& index) const
@@ -153,13 +203,28 @@ Qt::ItemFlags ReportsModel::flags(const QModelIndex& index) const
     if (!index.isValid())
         return Qt::NoItemFlags;
 
-    auto* item = static_cast<TreeItem<MyMoneyReport>*>(index.internalPointer());
+    if (index.row() < 0 || index.row() >= rowCount(index.parent()))
+        return Qt::NoItemFlags;
 
-    if (item->dataRef().id().isEmpty()) {
-        // enabled (so it expands), but not selectable
-        return Qt::ItemIsEnabled;
+    if (useGroups()) {
+        auto* item = static_cast<TreeItem<MyMoneyReport>*>(index.internalPointer());
+
+        if (item->dataRef().id().isEmpty()) {
+            // enabled (so it expands), but not selectable
+            return Qt::ItemIsEnabled;
+        }
     }
-
-    // normal reports
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+}
+
+bool ReportsModel::useGroups() const
+{
+    Q_D(const ReportsModel);
+    return d->m_useGroups;
+}
+
+void ReportsModel::setUseGroups(bool state)
+{
+    Q_D(ReportsModel);
+    d->m_useGroups = state;
 }
