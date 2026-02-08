@@ -137,6 +137,7 @@ class KMM_MYMONEY_EXPORT JournalModel : public MyMoneyModel<JournalEntry>
     Q_OBJECT
 
 public:
+    using MyMoneyModel<JournalEntry>::load;
     enum Column {
         // The invisible column is needed to fool a QTableView span logic a bit
         // which otherwise painted grid lines when columns where moved around.
@@ -318,6 +319,8 @@ class KMM_MYMONEY_EXPORT JournalModelNewTransaction : public JournalModel
     Q_OBJECT
 
 public:
+    using MyMoneyModel<JournalEntry>::load;
+
     explicit JournalModelNewTransaction(QObject* parent = nullptr);
     virtual ~JournalModelNewTransaction();
 
@@ -342,7 +345,8 @@ protected:
         return false;
     }
 
-    void load(const QMap<QString, MyMoneyTransaction>& list) {
+    void load(const QMap<QString, QSharedPointer<MyMoneyTransaction>>& list)
+    {
         Q_UNUSED(list);
     };
 };
