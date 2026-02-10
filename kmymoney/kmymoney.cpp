@@ -1867,6 +1867,82 @@ QString KMyMoneyApp::filename() const
     return d->m_storageInfo.url.url();
 }
 
+bool KMyMoneyApp::open(const QString& filename)
+{
+    QUrl url(filename);
+
+    KMSTATUS(i18n("Loading file..."));
+
+    if (!url.isValid()) {
+        sendErrorReply(QStringLiteral("org.kde.kmymoney.StorageError"), QString::fromLatin1("Invalid URL %1").arg(qPrintable(url.url())));
+        return false;
+    }
+
+    qDebug() << "Open file" << url;
+
+    if (url.scheme() != QLatin1String("sql") && !KMyMoneyUtils::fileExists(url)) {
+        sendErrorReply(QStringLiteral("org.kde.kmymoney.StorageError"), i18n("File not found"));
+        return false;
+    }
+
+    try {
+        if (d->m_storageInfo.isOpened)
+            if (!slotFileClose()) {
+                sendErrorReply(QStringLiteral("org.kde.kmymoney.StorageError"), i18n("Could not close actual file"));
+                return false;
+            }
+
+        // open the database
+        d->m_storageInfo.type = eKMyMoney::StorageType::None;
+        // Inform views that a new file will be loaded
+        // The information that the file is really open will
+        // be sent out in KMyMoneyView::switchToDefaultView()
+        d->executeCustomAction(eView::Action::BlockViewDuringFileOpen);
+        for (auto& plugin : pPlugins.storage) {
+            try {
+                if (plugin->open(QUrl(url))) {
+                    d->m_storageInfo.type = plugin->storageType();
+                    if (plugin->storageType() != eKMyMoney::StorageType::GNC) {
+                        d->m_storageInfo.url = plugin->openUrl();
+                        writeLastUsedFile(QUrl(url).toDisplayString(QUrl::PreferLocalFile));
+                        /* Don't use url variable after KRecentFilesAction::addUrl
+                         * as it might delete it.
+                         * More in API reference to this method
+                         */
+                        d->m_recentFiles->addUrl(QUrl(url));
+                    }
+                    d->m_storageInfo.isOpened = true;
+                    break;
+                } else {
+                    const auto msg = plugin->openErrorMessage();
+                    if (!msg.isEmpty()) {
+                        sendErrorReply(QStringLiteral("org.kde.kmymoney.StorageError"), i18nc("@title:window", "Problem opening storage"));
+                        d->executeCustomAction(eView::Action::UnblockViewAfterFileOpen);
+                        return false;
+                    }
+                }
+            } catch (const MyMoneyException& e) {
+                sendErrorReply(QStringLiteral("org.kde.kmymoney.StorageError"), i18n("Cannot open file as requested %1.", QString::fromUtf8(e.what())));
+                d->executeCustomAction(eView::Action::UnblockViewAfterFileOpen);
+                return false;
+            }
+        }
+
+        if (d->m_storageInfo.type == eKMyMoney::StorageType::None) {
+            sendErrorReply(QStringLiteral("org.kde.kmymoney.StorageError"),
+                           i18n("Could not read your data source. Please check the KMyMoney settings that the necessary plugin is enabled."));
+            d->executeCustomAction(eView::Action::UnblockViewAfterFileOpen);
+            return false;
+        }
+
+        d->fileAction(eKMyMoney::FileAction::Opened);
+        return true;
+    } catch (const MyMoneyException& e) {
+        sendErrorReply(QStringLiteral("org.kde.kmymoney.StorageError"), i18n("Failed to load the file: %1", QString::fromUtf8(e.what())));
+        return false;
+    }
+}
+
 bool KMyMoneyApp::saveAs(const QString& filename)
 {
     QUrl url = QUrl::fromUserInput(filename);

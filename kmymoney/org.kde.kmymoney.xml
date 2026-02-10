@@ -4,6 +4,10 @@
     <method name="filename">
       <arg type="s" direction="out"/>
     </method>
+    <method name="open">
+      <arg name="url" type="s" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.Error" value="org.kde.kmymoney.StorageError"/>
+    </method>
     <method name="saveAs">
       <arg name="url" type="s" direction="in"/>
       <annotation name="org.qtproject.QtDBus.Error" value="org.kde.kmymoney.StorageError"/>

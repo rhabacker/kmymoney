@@ -617,6 +617,7 @@ public:
     // D-Bus interface
     // Do not remove or rename without updating org.kde.kmymoney.xml
     QString filename() const;
+    bool open(const QString& filename);
     bool saveAs(const QString& filename);
     void webConnect(const QString& sourceUrl, const QByteArray& asn_id);
 
