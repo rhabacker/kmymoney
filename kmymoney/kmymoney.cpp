@@ -1862,6 +1862,86 @@ bool KMyMoneyApp::isActionToggled(const Action _a)
     return pActions[_a]->isChecked();
 }
 
+QString KMyMoneyApp::filename() const
+{
+    return d->m_storageInfo.url.url();
+}
+
+void KMyMoneyApp::webConnect(const QString& sourceUrl, const QByteArray& asn_id)
+{
+    //
+    // Web connect attempts to go through the known importers and see if the file
+    // can be importing using that method.  If so, it will import it using that
+    // plugin
+    //
+
+    Q_UNUSED(asn_id)
+
+    d->m_importUrlsQueue.enqueue(sourceUrl);
+
+    // only start processing if this is the only import so far
+    if (d->m_importUrlsQueue.count() == 1) {
+        KMyMoneyPlugin::pluginInterfaces().statementInterface->resetMessages();
+        MyMoneyStatementReader::clearImportResults();
+        while (!d->m_importUrlsQueue.isEmpty()) {
+            // get the value of the next item from the queue
+            // but leave it on the queue for now
+            QString url = d->m_importUrlsQueue.head();
+
+            // Bring this window to the forefront.  This method was suggested by
+            // Lubos Lunak <l.lunak@suse.cz> of the KDE core development team.
+            // KStartupInfo::setNewStartupId(this, asn_id);
+
+            // Make sure we have an open file
+            if (!d->m_storageInfo.isOpened
+                && KMessageBox::warningContinueCancel(this, i18n("You must first select a KMyMoney file before you can import a statement."))
+                    == KMessageBox::Continue)
+                slotFileOpen();
+
+            // only continue if the user really did open a file.
+            if (d->m_storageInfo.isOpened) {
+                KMSTATUS(i18n("Importing a statement via Web Connect"));
+
+                // remove the statement files
+                // d->unlinkStatementXML();
+
+                QMap<QString, KMyMoneyPlugin::ImporterPlugin*>::const_iterator it_plugin = pPlugins.importer.cbegin();
+                while (it_plugin != pPlugins.importer.cend()) {
+                    if ((*it_plugin)->isMyFormat(url)) {
+                        if (!(*it_plugin)->import(url) && !(*it_plugin)->lastError().isEmpty()) {
+                            QString pluginName;
+                            if (pPlugins.standard.contains(it_plugin.key()))
+                                pluginName = pPlugins.standard.value(it_plugin.key())->componentDisplayName();
+                            KMessageBox::error(this,
+                                               i18nc("%1 file location, %2 plugin name",
+                                                     "Unable to import %1 using %2 plugin. The plugin returned the following error: %3",
+                                                     url,
+                                                     pluginName,
+                                                     (*it_plugin)->lastError()),
+                                               i18n("Importing error"));
+                        }
+
+                        break;
+                    }
+                    ++it_plugin;
+                }
+
+                // If we did not find a match, try importing it as a KMM statement file,
+                // which is really just for testing.  the statement file is not exposed
+                // to users.
+                if (it_plugin == pPlugins.importer.cend()) {
+                    if (MyMoneyStatement::isStatementFile(url)) {
+                        MyMoneyStatementReader::importStatement(url);
+                    }
+                }
+            }
+            // remove the current processed item from the queue
+            d->m_importUrlsQueue.dequeue();
+        }
+        KMyMoneyPlugin::pluginInterfaces().statementInterface->showMessages();
+    }
+}
+
 void KMyMoneyApp::initStatusBar()
 {
     ///////////////////////////////////////////////////////////////////
@@ -4004,11 +4084,6 @@ QString KMyMoneyApp::readLastUsedFile() const
     return str;
 }
 
-QString KMyMoneyApp::filename() const
-{
-    return d->m_storageInfo.url.url();
-}
-
 QUrl KMyMoneyApp::filenameURL() const
 {
     return d->m_storageInfo.url;
@@ -4047,74 +4122,6 @@ void KMyMoneyApp::slotEquityPriceUpdate()
 void KMyMoneyApp::webConnectUrl(const QUrl url)
 {
     QMetaObject::invokeMethod(this, "webConnect", Qt::QueuedConnection, Q_ARG(QString, url.toLocalFile()), Q_ARG(QByteArray, QByteArray()));
-}
-
-void KMyMoneyApp::webConnect(const QString& sourceUrl, const QByteArray& asn_id)
-{
-    //
-    // Web connect attempts to go through the known importers and see if the file
-    // can be importing using that method.  If so, it will import it using that
-    // plugin
-    //
-
-    Q_UNUSED(asn_id)
-
-    d->m_importUrlsQueue.enqueue(sourceUrl);
-
-    // only start processing if this is the only import so far
-    if (d->m_importUrlsQueue.count() == 1) {
-        KMyMoneyPlugin::pluginInterfaces().statementInterface->resetMessages();
-        MyMoneyStatementReader::clearImportResults();
-        while (!d->m_importUrlsQueue.isEmpty()) {
-            // get the value of the next item from the queue
-            // but leave it on the queue for now
-            QString url = d->m_importUrlsQueue.head();
-
-            // Bring this window to the forefront.  This method was suggested by
-            // Lubos Lunak <l.lunak@suse.cz> of the KDE core development team.
-            //KStartupInfo::setNewStartupId(this, asn_id);
-
-            // Make sure we have an open file
-            if (! d->m_storageInfo.isOpened &&
-                    KMessageBox::warningContinueCancel(this, i18n("You must first select a KMyMoney file before you can import a statement.")) == KMessageBox::Continue)
-                slotFileOpen();
-
-            // only continue if the user really did open a file.
-            if (d->m_storageInfo.isOpened) {
-                KMSTATUS(i18n("Importing a statement via Web Connect"));
-
-                // remove the statement files
-                // d->unlinkStatementXML();
-
-                QMap<QString, KMyMoneyPlugin::ImporterPlugin*>::const_iterator it_plugin = pPlugins.importer.cbegin();
-                while (it_plugin != pPlugins.importer.cend()) {
-                    if ((*it_plugin)->isMyFormat(url)) {
-                        if (!(*it_plugin)->import(url) && !(*it_plugin)->lastError().isEmpty()) {
-                            QString pluginName;
-                            if (pPlugins.standard.contains(it_plugin.key()))
-                                pluginName = pPlugins.standard.value(it_plugin.key())->componentDisplayName();
-                            KMessageBox::error(this, i18nc("%1 file location, %2 plugin name", "Unable to import %1 using %2 plugin. The plugin returned the following error: %3", url, pluginName, (*it_plugin)->lastError()), i18n("Importing error"));
-                        }
-
-                        break;
-                    }
-                    ++it_plugin;
-                }
-
-                // If we did not find a match, try importing it as a KMM statement file,
-                // which is really just for testing.  the statement file is not exposed
-                // to users.
-                if (it_plugin == pPlugins.importer.cend()) {
-                    if (MyMoneyStatement::isStatementFile(url)) {
-                        MyMoneyStatementReader::importStatement(url);
-                    }
-                }
-            }
-            // remove the current processed item from the queue
-            d->m_importUrlsQueue.dequeue();
-        }
-        KMyMoneyPlugin::pluginInterfaces().statementInterface->showMessages();
-    }
 }
 
 void KMyMoneyApp::slotEnableMessages()

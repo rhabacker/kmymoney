@@ -330,7 +330,6 @@ public:
 
     void createAccount(MyMoneyAccount& newAccount, MyMoneyAccount& parentAccount, MyMoneyAccount& brokerageAccount, MyMoneyMoney openingBal);
 
-    QString filename() const;
     QUrl filenameURL() const;
     void writeFilenameURL(const QUrl &url);
 
@@ -534,7 +533,6 @@ public Q_SLOTS:
       */
     void slotAccountNew(MyMoneyAccount&);
 
-    void webConnect(const QString& sourceUrl, const QByteArray &asn_id);
     void webConnectUrl(const QUrl url);
 
 private:
@@ -607,6 +605,11 @@ public:
 
     bool isActionToggled(const eMenu::Action _a);
     static const QHash<eMenu::Action, QString> s_Actions;
+
+    // D-Bus interface
+    // Do not remove or rename without updating org.kde.kmymoney.xml
+    QString filename() const;
+    void webConnect(const QString& sourceUrl, const QByteArray& asn_id);
 
 private:
     /// \internal d-pointer class.
