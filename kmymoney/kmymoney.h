@@ -7,6 +7,8 @@
 #ifndef KMYMONEY_H
 #define KMYMONEY_H
 
+#include "config-kmymoney.h"
+
 // ----------------------------------------------------------------------------
 // QT Includes
 
@@ -14,6 +16,12 @@
 #include <QByteArray>
 #include <QFileDialog>
 #include <QUrl>
+#ifdef KMM_DBUS
+#include <QDBusContext>
+#define DBUSCONTEXT , protected QDBusContext
+#else
+#define DBUSCONTEXT
+#endif
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -88,7 +96,7 @@ enum class Menu;
   *
   * @short Main application class.
   */
-class KMyMoneyApp : public KXmlGuiWindow, public IMyMoneyProcessingCalendar, public MyMoneyFactory
+class KMyMoneyApp : public KXmlGuiWindow, public IMyMoneyProcessingCalendar, public MyMoneyFactory DBUSCONTEXT
 {
     Q_OBJECT
 
@@ -609,6 +617,7 @@ public:
     // D-Bus interface
     // Do not remove or rename without updating org.kde.kmymoney.xml
     QString filename() const;
+    bool saveAs(const QString& filename);
     void webConnect(const QString& sourceUrl, const QByteArray& asn_id);
 
 private:

@@ -1867,6 +1867,48 @@ QString KMyMoneyApp::filename() const
     return d->m_storageInfo.url.url();
 }
 
+bool KMyMoneyApp::saveAs(const QString& filename)
+{
+    QUrl url = QUrl::fromUserInput(filename);
+    if (url.scheme() == QLatin1String("file")) {
+        for (const auto& plugin : pPlugins.storage) {
+            if (plugin->storageType() == eKMyMoney::StorageType::XML) {
+                try {
+                    d->consistencyCheck(false);
+                    if (plugin->save(url)) {
+                        d->fileAction(eKMyMoney::FileAction::Saved);
+                        d->m_storageInfo.type = plugin->storageType();
+                        return true;
+                    } else {
+                        sendErrorReply(QStringLiteral("org.kde.kmymoney.StorageError"), i18n("Failed to save your storage: %1", url.toDisplayString()));
+                    }
+                } catch (const MyMoneyException& e) {
+                    sendErrorReply(QStringLiteral("org.kde.kmymoney.StorageError"), i18n("Failed to save your storage: %1", QString::fromUtf8(e.what())));
+                }
+            }
+        }
+    } else if (url.scheme() == QLatin1String("sql")) {
+        for (const auto& plugin : pPlugins.storage) {
+            if (plugin->storageType() == eKMyMoney::StorageType::SQL) {
+                try {
+                    d->consistencyCheck(false);
+                    // TODO database must be present
+                    if (plugin->save(url)) {
+                        d->fileAction(eKMyMoney::FileAction::Saved);
+                        d->m_storageInfo.type = plugin->storageType();
+                        return true;
+                    } else {
+                        sendErrorReply(QStringLiteral("org.kde.kmymoney.StorageError"), i18n("Failed to save your storage: %1", url.toDisplayString()));
+                    }
+                } catch (const MyMoneyException& e) {
+                    sendErrorReply(QStringLiteral("org.kde.kmymoney.StorageError"), i18n("Failed to save your storage: %1", QString::fromUtf8(e.what())));
+                }
+            }
+        }
+    }
+    return false;
+}
+
 void KMyMoneyApp::webConnect(const QString& sourceUrl, const QByteArray& asn_id)
 {
     //

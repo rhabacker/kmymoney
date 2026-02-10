@@ -22,10 +22,11 @@
 // ----------------------------------------------------------------------------
 // KDE Includes
 
-#include <KPluginFactory>
 #include <KActionCollection>
 #include <KLocalizedString>
 #include <KMessageBox>
+#include <KPluginFactory>
+#include <QFileInfo>
 
 // ----------------------------------------------------------------------------
 // Project Includes
@@ -194,8 +195,12 @@ bool SQLStorage::save(const QUrl &url)
         return (rc);
     }
     auto writer = new MyMoneyStorageSql(MyMoneyFile::instance(), url);
-    writer->open(url, QIODevice::ReadWrite);
-//  writer->setProgressCallback(&KMyMoneyView::progressCallback);
+    QFileInfo fi(url.toLocalFile());
+    if (fi.exists())
+        writer->open(url, QIODevice::ReadWrite);
+    else
+        writer->open(url, QIODevice::WriteOnly);
+    //  writer->setProgressCallback(&KMyMoneyView::progressCallback);
     if (!writer->writeFile()) {
         KMessageBox::detailedError(nullptr,
                                    i18n("An unrecoverable error occurred while writing to the database.\n"

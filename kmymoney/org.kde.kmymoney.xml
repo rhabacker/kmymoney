@@ -4,6 +4,10 @@
     <method name="filename">
       <arg type="s" direction="out"/>
     </method>
+    <method name="saveAs">
+      <arg name="url" type="s" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.Error" value="org.kde.kmymoney.StorageError"/>
+    </method>
     <method name="webConnect">
       <arg name="url" type="s" direction="in"/>
       <arg name="asn_id" type="ay" direction="in"/>
