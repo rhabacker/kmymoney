@@ -28,7 +28,21 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Default reports</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QTreeView" name="m_tocTreeViewDefault"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Custom reports</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QTreeView" name="m_tocTreeViewCustom"/>
