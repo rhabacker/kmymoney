@@ -557,6 +557,7 @@ public:
         m_builtInReports->load(defaultGroups);
         setupView(ui.m_tocTreeViewDefault, m_builtInReports);
 
+        ui.m_tocTreeWidget->setVisible(false);
         ui.m_tocTreeWidget->sortByColumn(0, Qt::AscendingOrder);
         ui.m_tocTreeWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
         ui.m_closeButton->setIcon(Icons::get(Icon::DialogClose));
