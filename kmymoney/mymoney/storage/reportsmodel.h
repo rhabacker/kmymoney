@@ -58,9 +58,6 @@ public:
     bool useGroups() const;
     void setUseGroups(bool state);
 
-Q_SIGNALS:
-    void modelChanged();
-
 public Q_SLOTS:
     void load(const QMap<QString, MyMoneyReport>& reports) override;
     void load(const QList<ReportGroup>& reportGroups);

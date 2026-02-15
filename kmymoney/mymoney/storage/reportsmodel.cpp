@@ -138,12 +138,10 @@ int ReportsModel::processItems(Worker* worker)
 {
     QModelIndexList indexes = match(index(0, 0), eMyMoney::Model::Roles::IdRole, m_idLeadin, -1, Qt::MatchStartsWith | Qt::MatchRecursive);
     int result = MyMoneyModel::processItems(worker, indexes);
-    bool changedModel = false;
     for (const auto& idx : indexes) {
         auto& report = static_cast<TreeItem<MyMoneyReport>*>(idx.internalPointer())->dataRef();
         if (report.isModified()) {
             report.setModified(false);
-            changedModel = true;
             int nCols = columnCount(idx.parent());
             QModelIndex first = index(idx.row(), 0, idx.parent());
             QModelIndex last = index(idx.row(), nCols - 1, idx.parent());
@@ -151,8 +149,6 @@ int ReportsModel::processItems(Worker* worker)
             Q_EMIT dataChanged(first, last, {Qt::DisplayRole, Qt::ForegroundRole, Qt::FontRole});
         }
     }
-    if (changedModel)
-        Q_EMIT modelChanged();
     return result;
 }
 

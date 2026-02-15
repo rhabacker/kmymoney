@@ -129,7 +129,6 @@ public Q_SLOTS:
     void slotDuplicate();
     void slotToggleChart();
     void slotDoubleClicked(const QModelIndex& index);
-    void slotItemDoubleClicked(QTreeWidgetItem* item, int column);
     void slotOpenReport(const QString&);
     void slotOpenReport(const MyMoneyReport&);
     void slotCloseCurrent();
@@ -137,20 +136,12 @@ public Q_SLOTS:
     void slotCloseAll();
     void slotContextMenu(const QPoint& p);
     void slotDelete();
-    void slotListContextMenu(const QPoint &);
-    void slotOpenFromList();
     void slotOpenFromView();
-    void slotPrintFromList();
     void slotPrintFromView();
-    void slotExportFromList();
     void slotExportFromView();
-    void slotConfigureFromList();
     void slotConfigureFromView();
-    void slotNewFromList();
     void slotNewFromView();
-    void slotDeleteFromList();
     void slotDeleteFromView(QTreeView* view);
-    void slotRefresh();
 
     void updateActions(const SelectedObjects& selections) override;
 
