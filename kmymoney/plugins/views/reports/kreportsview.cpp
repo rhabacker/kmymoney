@@ -159,12 +159,15 @@ void KReportsView::executeAction(eMenu::Action action, const SelectedObjects& se
 void KReportsView::refresh()
 {
     Q_D(KReportsView);
-    if (isVisible()) {
-        d->loadView();
-        d->m_needsRefresh = false;
-    } else {
+    if (!isVisible()) {
         d->m_needsRefresh = true;
+        return;
     }
+
+    d->loadView();
+    d->m_needsRefresh = false;
+    qobject_cast<QSortFilterProxyModel*>(d->ui.m_tocTreeViewDefault->model())->invalidate();
+    qobject_cast<QSortFilterProxyModel*>(d->ui.m_tocTreeViewCustom->model())->invalidate();
 }
 
 void KReportsView::showEvent(QShowEvent * event)
@@ -219,7 +222,8 @@ bool KReportsView::eventFilter(QObject* watched, QEvent* event)
     Q_D(KReportsView);
 
     if (event->type() == QEvent::KeyPress) {
-        if (watched == d->ui.m_searchWidget || watched == d->ui.m_tocTreeWidget) {
+        if (watched == d->ui.m_searchWidget || watched == d->ui.m_tocTreeWidget || watched == d->ui.m_tocTreeViewDefault
+            || watched == d->ui.m_tocTreeViewCustom) {
             const auto kev = static_cast<QKeyEvent*>(event);
             if (kev->modifiers() == Qt::NoModifier && kev->key() == Qt::Key_Escape) {
                 d->ui.m_closeButton->animateClick();

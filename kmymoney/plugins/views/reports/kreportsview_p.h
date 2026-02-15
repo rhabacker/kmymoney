@@ -475,6 +475,7 @@ public:
     explicit NaturalSortProxy(QObject* parent = nullptr)
         : QSortFilterProxyModel(parent)
     {
+        setFilterCaseSensitivity(Qt::CaseInsensitive);
     }
 
 protected:
@@ -491,6 +492,28 @@ protected:
             return ml.captured(1).toInt() < mr.captured(1).toInt();
         }
         return QString::localeAwareCompare(l, r) < 0;
+    }
+
+    bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override
+    {
+        const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
+
+        // 1. Direct match in any column
+        const int columns = sourceModel()->columnCount(index);
+        for (int col = 0; col < columns; ++col) {
+            const QModelIndex idx = sourceModel()->index(sourceRow, col, sourceParent);
+            if (sourceModel()->data(idx).toString().contains(filterRegularExpression()))
+                return true;
+        }
+
+        // 2. Accept parent if any child matches
+        const int rows = sourceModel()->rowCount(index);
+        for (int i = 0; i < rows; ++i) {
+            if (filterAcceptsRow(i, index))
+                return true;
+        }
+
+        return false;
     }
 };
 
@@ -536,6 +559,9 @@ public:
 
         q->connect(view, &QTreeView::doubleClicked, q, &KReportsView::slotDoubleClicked);
         q->connect(view, &QWidget::customContextMenuRequested, q, &KReportsView::slotContextMenu);
+
+        view->installEventFilter(q);
+        view->viewport()->installEventFilter(q);
     }
 
     void init()
@@ -606,6 +632,40 @@ public:
                     item->setExpanded(false);
                 }
             }
+        }
+    }
+
+    QMap<QString, bool> saveTocExpandState(QTreeView* view) const
+    {
+        QMap<QString, bool> expandStates;
+
+        auto* model = view->model();
+        if (!model)
+            return expandStates;
+
+        const int rows = model->rowCount();
+        for (int row = 0; row < rows; ++row) {
+            const QModelIndex idx = model->index(row, 0);
+            const QString label = model->data(idx, Qt::DisplayRole).toString();
+            expandStates.insert(label, view->isExpanded(idx));
+        }
+
+        return expandStates;
+    }
+
+    void restoreTocExpandState(const QMap<QString, bool>& expandStates, QTreeView* view)
+    {
+        auto* model = view->model();
+        if (!model)
+            return;
+
+        const int rows = model->rowCount();
+        for (int row = 0; row < rows; ++row) {
+            const QModelIndex idx = model->index(row, 0);
+            const QString label = model->data(idx, Qt::DisplayRole).toString();
+
+            const bool expanded = expandStates.value(label, false);
+            view->setExpanded(idx, expanded);
         }
     }
 
@@ -1461,8 +1521,31 @@ public:
         m_columnsAlreadyAdjusted = adjusted;
     }
 
+    void setFilter(const QString& text, QTreeView* view)
+    {
+        auto* proxy = qobject_cast<QSortFilterProxyModel*>(view->model());
+        if (text.isEmpty()) {
+            proxy->setFilterRegularExpression(QRegularExpression());
+            restoreTocExpandState(expandStatesBeforeSearch, view);
+            expandStatesBeforeSearch.clear();
+        } else {
+            if (expandStatesBeforeSearch.isEmpty())
+                expandStatesBeforeSearch = saveTocExpandState(view);
+
+            proxy->setFilterRegularExpression(QRegularExpression(text, QRegularExpression::CaseInsensitiveOption));
+
+            // Expand visible parents (like your old code)
+            for (int row = 0; row < proxy->rowCount(); ++row) {
+                view->setExpanded(proxy->index(row, 0), true);
+            }
+        }
+    }
+
     void setFilter(const QString& text)
     {
+        setFilter(text, ui.m_tocTreeViewDefault);
+        setFilter(text, ui.m_tocTreeViewCustom);
+
         const auto columns = ui.m_tocTreeWidget->columnCount();
         for (auto i = 0; i < ui.m_tocTreeWidget->topLevelItemCount(); ++i) {
             const auto toplevelItem = ui.m_tocTreeWidget->topLevelItem(i);
