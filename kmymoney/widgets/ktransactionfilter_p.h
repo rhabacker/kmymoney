@@ -80,6 +80,9 @@ public:
         // 'cause we don't have a separate setupTextPage
         q->connect(ui->m_textEdit, &QLineEdit::textChanged, q, &KTransactionFilter::slotUpdateSelections);
 
+        q->connect(ui->m_accountsView, &KMyMoneyAccountSelector::stateChanged, q, &KTransactionFilter::slotUpdateSelections);
+        q->connect(ui->m_categoriesView, &KMyMoneyAccountSelector::stateChanged, q, &KTransactionFilter::slotUpdateSelections);
+
         setupAccountsPage(withEquityAccounts, withInvestments);
         setupCategoriesPage();
         setupAmountPage();

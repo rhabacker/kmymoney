@@ -541,6 +541,12 @@ void KTransactionFilter::resetFilter(MyMoneyReport& rep)
 
 }
 
+KMyMoneyAccountSelector* KTransactionFilter::accountsView()
+{
+    Q_D(KTransactionFilter);
+    return d->ui->m_accountsView;
+}
+
 KMyMoneyAccountSelector* KTransactionFilter::categoriesView()
 {
     Q_D(KTransactionFilter);

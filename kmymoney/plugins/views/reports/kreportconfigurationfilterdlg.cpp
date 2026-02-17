@@ -125,7 +125,8 @@ KReportConfigurationFilterDlg::KReportConfigurationFilterDlg(MyMoneyReport repor
         d->m_tabFilters = new KTransactionFilter(this, (report.rowType() == eMyMoney::Report::RowType::Account), report.isInvestmentsOnly());
         d->m_dateRange = d->m_tabFilters->dateRange();
     }
-
+    d->m_tabFilters->accountsView()->setEnforceHierarchySelection(true);
+    d->m_tabFilters->categoriesView()->setEnforceHierarchySelection(true);
     d->ui->m_tabWidget->addTab(d->m_tabFilters, i18nc("Filters tab", "Filters"));
 
     d->m_tabGeneral = new ReportTabGeneral(d->ui->m_criteriaTab);

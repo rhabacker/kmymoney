@@ -46,6 +46,7 @@ public:
 
     MyMoneyTransactionFilter setupFilter();
     void resetFilter(MyMoneyReport& rep);
+    KMyMoneyAccountSelector* accountsView();
     KMyMoneyAccountSelector* categoriesView();
     DateRangeDlg* dateRange();
 

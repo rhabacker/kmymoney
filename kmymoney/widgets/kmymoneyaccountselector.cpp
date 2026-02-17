@@ -54,6 +54,8 @@ public:
     QPushButton*              m_expenseCategoriesButton;
     QList<int>                m_typeList;
     QStringList               m_accountList;
+    bool m_blockItemChanged = false;
+    bool m_enforceHierarchy = false;
 };
 
 KMyMoneyAccountSelector::KMyMoneyAccountSelector(QWidget *parent, Qt::WindowFlags flags, const bool createButtons) :
@@ -92,11 +94,18 @@ KMyMoneyAccountSelector::KMyMoneyAccountSelector(QWidget *parent, Qt::WindowFlag
         connect(d->m_noAccountButton, &QAbstractButton::clicked, this, &KMyMoneyAccountSelector::slotDeselectAllAccounts);
         connect(d->m_incomeCategoriesButton, &QAbstractButton::clicked, this, &KMyMoneyAccountSelector::slotSelectIncomeCategories);
         connect(d->m_expenseCategoriesButton, &QAbstractButton::clicked, this, &KMyMoneyAccountSelector::slotSelectExpenseCategories);
+        connect(d->m_treeWidget, &QTreeWidget::itemChanged, this, &KMyMoneyAccountSelector::slotItemChanged);
     }
 }
 
 KMyMoneyAccountSelector::~KMyMoneyAccountSelector()
 {
+}
+
+void KMyMoneyAccountSelector::setEnforceHierarchySelection(bool on)
+{
+    Q_D(KMyMoneyAccountSelector);
+    d->m_enforceHierarchy = on;
 }
 
 void KMyMoneyAccountSelector::removeButtons()
@@ -140,6 +149,61 @@ void KMyMoneyAccountSelector::slotSelectIncomeCategories()
 void KMyMoneyAccountSelector::slotSelectExpenseCategories()
 {
     selectCategories(false, true);
+}
+
+void KMyMoneyAccountSelector::slotItemChanged(QTreeWidgetItem* item, int column)
+{
+    if (column != 0)
+        return;
+
+    Q_D(KMyMoneyAccountSelector);
+    if (!d->m_enforceHierarchy)
+        return;
+
+    if (d->m_blockItemChanged)
+        return;
+
+    d->m_blockItemChanged = true;
+
+    const auto state = item->checkState(0);
+
+    // propagate to children only if user clicked "Select All" or explicitly wants it
+    // Here we skip child propagation for normal parent clicks
+    // and just update parent tri-state
+    for (int i = 0; i < item->childCount(); ++i) {
+        QTreeWidgetItem* child = item->child(i);
+        // Optionally skip automatic propagation
+        // child->setCheckState(0, state);
+        // <-- comment out to allow parent-only selection
+    }
+
+    // Update parent tri-state
+    QTreeWidgetItem* parent = item->parent();
+    while (parent) {
+        int checked = 0;
+        int partial = 0;
+        int total = parent->childCount();
+        for (int i = 0; i < total; ++i) {
+            Qt::CheckState cs = parent->child(i)->checkState(0);
+            if (cs == Qt::Checked)
+                ++checked;
+            else if (cs == Qt::PartiallyChecked)
+                ++partial;
+        }
+
+        if (checked == total)
+            parent->setCheckState(0, Qt::Checked);
+        else if (checked > 0 || partial > 0)
+            parent->setCheckState(0, Qt::PartiallyChecked);
+        else
+            parent->setCheckState(0, Qt::Unchecked);
+
+        parent = parent->parent();
+    }
+
+    d->m_blockItemChanged = false;
+
+    Q_EMIT stateChanged();
 }
 
 void KMyMoneyAccountSelector::setSelectionMode(QTreeWidget::SelectionMode mode)

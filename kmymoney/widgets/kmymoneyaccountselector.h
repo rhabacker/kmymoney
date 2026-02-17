@@ -58,6 +58,8 @@ public:
     explicit KMyMoneyAccountSelector(QWidget* parent = nullptr, Qt::WindowFlags flags = {}, const bool createButtons = true);
     ~KMyMoneyAccountSelector() override;
 
+    void setEnforceHierarchySelection(bool on);
+
     /**
       * This method returns a list of account ids of those accounts
       * currently loaded into the widget. It is possible to select
@@ -102,6 +104,9 @@ public:
 
     QSize sizeHint() const override;
 
+Q_SIGNALS:
+    void stateChanged();
+
 public Q_SLOTS:
     /**
       * This slot selects all items that are currently in
@@ -142,6 +147,8 @@ protected Q_SLOTS:
       * This slot selects all expense categories
       */
     void slotSelectExpenseCategories();
+
+    void slotItemChanged(QTreeWidgetItem* item, int column);
 
 private:
     Q_DECLARE_PRIVATE(KMyMoneyAccountSelector)
