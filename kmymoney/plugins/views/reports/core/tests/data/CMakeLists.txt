@@ -26,6 +26,7 @@ set(pivottable_test_files
   test-net-worth.xml
   test-pivottable.xml
   test-closed-account.xml
+  test-budget.xml
   test-budget-years.xml
   test-budget-months.xml
 )
