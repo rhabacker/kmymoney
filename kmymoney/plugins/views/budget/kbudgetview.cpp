@@ -46,6 +46,12 @@ KBudgetView::KBudgetView(QWidget* parent)
             }
         }
     });
+    connect(MyMoneyFile::instance()->budgetsModel(), &QAbstractItemModel::modelReset, this, [&]() {
+        Q_D(KBudgetView);
+        if (d->m_budgetProxyModel) {
+            slotResetBudget();
+        }
+    });
 }
 
 KBudgetView::~KBudgetView()
