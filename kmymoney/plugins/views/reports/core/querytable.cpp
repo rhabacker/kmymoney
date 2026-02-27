@@ -42,8 +42,18 @@
 
 constexpr QChar tagSeparator = QChar(QChar::ParagraphSeparator);
 
-namespace reports
+namespace reports {
+
+class ReportSettings
 {
+public:
+    bool hide_details;
+    bool use_summary;
+    bool use_transfers;
+    MyMoneyReport report;
+    // support for opening and closing balances
+    QMap<QString, MyMoneyAccount> accts;
+};
 
 // ****************************************************************************
 //
@@ -535,55 +545,69 @@ void QueryTable::constructTotalRows()
 
 void QueryTable::constructTransactionTable()
 {
-    MyMoneyFile* file = MyMoneyFile::instance();
-
-    //make sure we have all subaccounts of investment accounts
+    // make sure we have all subaccounts of investment accounts
     includeInvestmentSubAccounts();
 
-    MyMoneyReport report(m_config);
-    report.setReportAllSplits(false);
-    report.setConsiderCategory(true);
-    report.setConsiderCategorySplits(true);
+    ReportSettings settings;
+    prepareReport(settings);
 
-    bool use_transfers;
-    bool use_summary;
-    bool hide_details;
+    // get all transactions for this report
+    QList<MyMoneyTransaction> transactions;
+    MyMoneyFile* file = MyMoneyFile::instance();
+    file->transactionList(transactions, settings.report);
+
+    for (const auto& txn : transactions) {
+        processTransaction(txn, settings);
+    }
+
+    addOpeningClosingBalances(settings);
+}
+
+void QueryTable::prepareReport(ReportSettings& settings)
+{
+    settings.report = MyMoneyReport(m_config);
+    settings.report.setReportAllSplits(false);
+    settings.report.setConsiderCategory(true);
+    settings.report.setConsiderCategorySplits(true);
 
     switch (m_config.rowType()) {
     case eMyMoney::Report::RowType::Category:
     case eMyMoney::Report::RowType::TopCategory:
-        use_summary = false;
-        use_transfers = report.isIncludingTransfers();
-        report.setTreatTransfersAsIncomeExpense(use_transfers);
-        hide_details = false;
+        settings.use_summary = false;
+        settings.use_transfers = settings.report.isIncludingTransfers();
+        settings.report.setTreatTransfersAsIncomeExpense(settings.use_transfers);
+        settings.hide_details = false;
         break;
     case eMyMoney::Report::RowType::Payee:
-        use_summary = false;
-        use_transfers = report.isIncludingTransfers();
-        report.setTreatTransfersAsIncomeExpense(use_transfers);
-        hide_details = (m_config.detailLevel() == eMyMoney::Report::DetailLevel::None);
+        settings.use_summary = false;
+        settings.use_transfers = settings.report.isIncludingTransfers();
+        settings.report.setTreatTransfersAsIncomeExpense(settings.use_transfers);
+        settings.hide_details = (m_config.detailLevel() == eMyMoney::Report::DetailLevel::None);
         break;
     case eMyMoney::Report::RowType::Tag:
-        use_summary = false;
-        use_transfers = report.isIncludingTransfers();
-        report.setTreatTransfersAsIncomeExpense(use_transfers);
-        hide_details = (m_config.detailLevel() == eMyMoney::Report::DetailLevel::None);
+        settings.use_summary = false;
+        settings.use_transfers = settings.report.isIncludingTransfers();
+        settings.report.setTreatTransfersAsIncomeExpense(settings.use_transfers);
+        settings.hide_details = (m_config.detailLevel() == eMyMoney::Report::DetailLevel::None);
         break;
     default:
-        use_summary = true;
-        use_transfers = true;
-        hide_details = (m_config.detailLevel() == eMyMoney::Report::DetailLevel::None);
+        settings.use_summary = true;
+        settings.use_transfers = true;
+        settings.hide_details = (m_config.detailLevel() == eMyMoney::Report::DetailLevel::None);
         break;
     }
+}
 
-    // support for opening and closing balances
-    QMap<QString, MyMoneyAccount> accts;
-
-    //get all transactions for this report
-    QList<MyMoneyTransaction> transactions;
-    file->transactionList(transactions, report);
-
-    for (QList<MyMoneyTransaction>::const_iterator it_transaction = transactions.cbegin(); it_transaction != transactions.cend(); ++it_transaction) {
+void QueryTable::processTransaction(const MyMoneyTransaction& transaction, ReportSettings& settings)
+{
+    {
+        const MyMoneyFile* file = MyMoneyFile::instance();
+        const MyMoneyTransaction* it_transaction = &transaction;
+        const MyMoneyReport& report = settings.report;
+        QMap<QString, MyMoneyAccount>& accts = settings.accts;
+        const bool use_summary = settings.use_summary;
+        const bool use_transfers = settings.use_transfers;
+        const bool hide_details = settings.hide_details;
         TableRow qA, qS;
         QList<TableRow> qStack;
         QDate pd;
@@ -669,7 +693,7 @@ void QueryTable::constructTransactionTable()
         // and the transaction does not reference any tax related
         // account
         if (report.isTax() && !foundTaxAccount) {
-            continue;
+            return;
         }
 
         // select our "reference" split
@@ -682,7 +706,7 @@ void QueryTable::constructTransactionTable()
         // skip this transaction if we didn't find a valid base account - see the above description
         // for the base account's description - if we don't find it avoid a crash by skipping the transaction
         if (myBegin == splits.end())
-            continue;
+            return;
 
         // if the split is still unknown, use the first one. I have seen this
         // happen with a transaction that has only a single split referencing an income or expense
@@ -1116,8 +1140,12 @@ void QueryTable::constructTransactionTable()
             addRow(row);
         }
     }
+}
 
-    // now run through our accts list and add opening and closing balances
+// Run through our accts list and add opening and closing balances
+void QueryTable::addOpeningClosingBalances(ReportSettings& settings)
+{
+    MyMoneyFile* file = MyMoneyFile::instance();
 
     switch (m_config.rowType()) {
     case eMyMoney::Report::RowType::Account:
@@ -1135,12 +1163,12 @@ void QueryTable::constructTransactionTable()
 
     QDate startDate, endDate;
 
-    report.validDateRange(startDate, endDate);
+    settings.report.validDateRange(startDate, endDate);
     QString strStartDate = startDate.toString(Qt::ISODate);
     QString strEndDate = endDate.toString(Qt::ISODate);
     startDate = startDate.addDays(-1);
 
-    for (auto it_account = accts.cbegin(); it_account != accts.cend(); ++it_account) {
+    for (auto it_account = settings.accts.cbegin(); it_account != settings.accts.cend(); ++it_account) {
         TableRow qA;
 
         ReportAccount account(*it_account);
@@ -2232,7 +2260,5 @@ void QueryTable::constructSplitsTable()
         }
     }
 }
-
-
 
 }
