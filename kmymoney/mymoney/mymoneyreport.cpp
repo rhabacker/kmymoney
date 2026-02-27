@@ -773,6 +773,18 @@ void MyMoneyReport::setIncludingAveragePrice(bool f)
     d->m_includeAveragePrice = f;
 }
 
+bool MyMoneyReport::isIncludingClosedAccounts() const
+{
+    Q_D(const MyMoneyReport);
+    return d->m_includeClosedAccounts;
+}
+
+void MyMoneyReport::setIncludingClosedAccounts(bool f)
+{
+    Q_D(MyMoneyReport);
+    d->m_includeClosedAccounts = f;
+}
+
 eMyMoney::Report::DataLock MyMoneyReport::dataFilter() const
 {
     Q_D(const MyMoneyReport);

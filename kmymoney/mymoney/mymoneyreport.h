@@ -258,6 +258,9 @@ public:
     bool isIncludingAveragePrice() const;
     void setIncludingAveragePrice(bool f);
 
+    void setIncludingClosedAccounts(bool f);
+    bool isIncludingClosedAccounts() const;
+
     eMyMoney::Report::DataLock dataFilter() const;
     bool isDataUserDefined() const;
     void setDataFilter(eMyMoney::Report::DataLock u);

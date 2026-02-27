@@ -77,6 +77,7 @@ public:
         , m_movingAverageDays(0)
         , m_includePrice(false)
         , m_includeAveragePrice(false)
+        , m_includeClosedAccounts(false)
         , m_mixedTime(false)
         , m_currentDateColumn(0)
         , m_settlementPeriod(3)
@@ -341,6 +342,10 @@ public:
      * Whether this report should include moving average prices
      */
     bool m_includeAveragePrice;
+    /**
+     * Whether this report should include closed accounts
+     */
+    bool m_includeClosedAccounts;
     /**
      * Make the actual and forecast lines display as one
      */

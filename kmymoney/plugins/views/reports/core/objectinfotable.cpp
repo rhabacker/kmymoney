@@ -111,6 +111,13 @@ void ObjectInfoTable::init()
 
     QVector<cellTypeE> sort = QVector<cellTypeE>::fromList(m_group) << QVector<cellTypeE>::fromList(m_columns) << ctID << ctRank;
 
+    QList<cellTypeE> state;
+    QList<cellTypeE> closingDate;
+    if (m_config.isIncludingClosedAccounts()) {
+        state.append(ctState);
+        closingDate.append(ctClosingDate);
+    }
+
     switch (m_config.rowType()) {
     case eMyMoney::Report::RowType::Schedule:
         if (m_config.detailLevel() == eMyMoney::Report::DetailLevel::All) {
@@ -122,11 +129,11 @@ void ObjectInfoTable::init()
         }
         break;
     case eMyMoney::Report::RowType::AccountInfo:
-        m_columns << ctState << ctNumber << ctDescription << ctOpeningDate << ctClosingDate << ctCurrencyName << ctBalanceWarning << ctCreditWarning
+        m_columns << state << ctNumber << ctDescription << ctOpeningDate << closingDate << ctCurrencyName << ctBalanceWarning << ctCreditWarning
                   << ctMaxCreditLimit << ctTax << ctFavorite;
         break;
     case eMyMoney::Report::RowType::AccountLoanInfo:
-        m_columns << ctState << ctNumber << ctDescription << ctOpeningDate << ctCurrencyName << ctPayee << ctLoanAmount << ctInterestRate
+        m_columns << state << ctNumber << ctDescription << ctOpeningDate << closingDate << ctCurrencyName << ctPayee << ctLoanAmount << ctInterestRate
                   << ctNextInterestChange << ctPeriodicPayment << ctFinalPayment << ctFavorite;
         break;
     default:
@@ -252,7 +259,11 @@ void ObjectInfoTable::constructAccountTable()
         TableRow accountRow;
         ReportAccount account(*it_account);
 
-        if (m_config.includes(account) && account.accountType() != eMyMoney::Account::Type::Stock) {
+        const bool isIncluded = m_config.includes(account);
+        const bool isNotStock = account.accountType() != eMyMoney::Account::Type::Stock;
+        const bool isOpenOrAllowedClosed = m_config.isIncludingClosedAccounts() || !account.isClosed();
+
+        if (isIncluded && isNotStock && isOpenOrAllowedClosed) {
             MyMoneyMoney value;
             accountRow[ctRank] = FIRST_SPLIT_RANK;
             accountRow[ctTopCategory] = MyMoneyAccount::accountTypeToString(account.accountGroup());

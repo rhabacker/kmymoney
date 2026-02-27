@@ -76,6 +76,7 @@ enum class Report {
     IncludesForecast,
     IncludesPrice,
     IncludesAveragePrice,
+    IncludesClosedAccounts,
     IncludesMovingAverage,
     IncludesSchedules,
     IncludesTransfers,

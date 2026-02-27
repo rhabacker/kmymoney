@@ -184,6 +184,13 @@ KReportConfigurationFilterDlg::KReportConfigurationFilterDlg(MyMoneyReport repor
 
     connect(d->m_tabGeneral->ui->m_checkCurrency, &QCheckBox::stateChanged, this, &KReportConfigurationFilterDlg::slotConvertCurrencyChanged);
 
+    if (d->m_initialState.rowType() == eMyMoney::Report::RowType::AccountInfo || d->m_initialState.rowType() == eMyMoney::Report::RowType::AccountLoanInfo) {
+        d->m_tabGeneral->ui->m_checkClosed->setVisible(true);
+        d->m_tabGeneral->ui->m_checkClosed->setChecked(d->m_initialState.isIncludingClosedAccounts());
+    } else {
+        d->m_tabGeneral->ui->m_checkClosed->setVisible(false);
+    }
+
     d->ui->m_criteriaTab->setCurrentIndex(d->ui->m_criteriaTab->indexOf(d->m_tabGeneral));
     d->ui->m_criteriaTab->setMinimumSize(500, 200);
 
@@ -270,6 +277,8 @@ void KReportConfigurationFilterDlg::slotSearch()
     d->m_currentState.setConvertCurrency(d->m_tabGeneral->ui->m_checkCurrency->isChecked());
     d->m_currentState.setFavorite(d->m_tabGeneral->ui->m_checkFavorite->isChecked());
     d->m_currentState.setSkipZero(d->m_tabGeneral->ui->m_skipZero->isChecked());
+    if (d->m_currentState.rowType() == eMyMoney::Report::RowType::AccountInfo || d->m_currentState.rowType() == eMyMoney::Report::RowType::AccountLoanInfo)
+        d->m_currentState.setIncludingClosedAccounts(d->m_tabGeneral->ui->m_checkClosed->isChecked());
 
     if (d->m_tabRowColPivot) {
         eMyMoney::Report::DetailLevel dl[4] = { eMyMoney::Report::DetailLevel::All, eMyMoney::Report::DetailLevel::Top, eMyMoney::Report::DetailLevel::Group, eMyMoney::Report::DetailLevel::Total };
@@ -459,6 +468,7 @@ void KReportConfigurationFilterDlg::slotReset()
     d->m_tabGeneral->ui->m_editComment->setText(d->m_initialState.comment());
     d->m_tabGeneral->ui->m_checkCurrency->setChecked(d->m_initialState.isConvertCurrency());
     d->m_tabGeneral->ui->m_checkFavorite->setChecked(d->m_initialState.isFavorite());
+    d->m_tabGeneral->ui->m_checkClosed->setChecked(d->m_initialState.isIncludingClosedAccounts());
 
     if (d->m_initialState.isIncludingPrice() || d->m_initialState.isSkippingZero()) {
         d->m_tabGeneral->ui->m_skipZero->setChecked(d->m_initialState.isSkippingZero());

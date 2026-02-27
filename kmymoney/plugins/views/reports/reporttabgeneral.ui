@@ -118,6 +118,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="m_checkClosed">
+     <property name="text">
+      <string>Include closed accounts</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="spacer15">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

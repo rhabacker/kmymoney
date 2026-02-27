@@ -80,6 +80,7 @@ QString attributeName(Attribute::Report attributeID)
         {Attribute::Report::IncludesForecast,       QStringLiteral("includesforecast")},
         {Attribute::Report::IncludesPrice,          QStringLiteral("includesprice")},
         {Attribute::Report::IncludesAveragePrice,   QStringLiteral("includesaverageprice")},
+        {Attribute::Report::IncludesClosedAccounts, QStringLiteral("includesclosedaccounts")},
         {Attribute::Report::IncludesMovingAverage,  QStringLiteral("includesmovingaverage")},
         {Attribute::Report::IncludesSchedules,      QStringLiteral("includeschedules")},
         {Attribute::Report::IncludesTransfers,      QStringLiteral("includestransfers")},
@@ -823,6 +824,7 @@ MyMoneyReport readReport(QXmlStreamReader* reader)
         report.setIncludingForecast(readBoolAttribute(reader, attributeName(Attribute::Report::IncludesForecast), false));
         report.setIncludingPrice(readBoolAttribute(reader, attributeName(Attribute::Report::IncludesPrice), false));
         report.setIncludingAveragePrice(readBoolAttribute(reader, attributeName(Attribute::Report::IncludesAveragePrice), false));
+        report.setIncludingClosedAccounts(readBoolAttribute(reader, attributeName(Attribute::Report::IncludesClosedAccounts), false));
         report.setMixedTime(readBoolAttribute(reader, attributeName(Attribute::Report::MixedTime), false));
         report.setInvestmentsOnly(readBoolAttribute(reader, attributeName(Attribute::Report::Investments), false));
 
@@ -1118,6 +1120,8 @@ void writeReport(const MyMoneyReport& report, QXmlStreamWriter* writer)
         if (report.isStaticEvaluation())
             writer->writeAttribute(attributeName(Attribute::Report::EvaluationDate), attrValue(report.evaluationDate()));
         writer->writeAttribute(attributeName(Attribute::Report::IncludesAveragePrice), attrValue(report.isIncludingAveragePrice()));
+        if (report.isIncludingClosedAccounts())
+            writer->writeAttribute(attributeName(Attribute::Report::IncludesClosedAccounts), attrValue(report.isIncludingClosedAccounts()));
         writer->writeAttribute(attributeName(Attribute::Report::MixedTime), attrValue(report.isMixedTime()));
         writer->writeAttribute(attributeName(Attribute::Report::Investments),
                                attrValue(report.isInvestmentsOnly())); // it's setable in rows/columns tab of querytable, but here it is internal setting
