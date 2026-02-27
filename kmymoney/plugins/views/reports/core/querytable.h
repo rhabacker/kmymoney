@@ -29,6 +29,7 @@ namespace reports
 {
 
 class ReportAccount;
+class ReportSettings;
 
 /**
   * Calculates a query of information about the transaction database.
@@ -54,6 +55,9 @@ protected:
     void constructAccountTable();
     void constructTotalRows();
     void constructTransactionTable();
+    void prepareReport(ReportSettings& settings);
+    void processTransaction(const MyMoneyTransaction& txn, ReportSettings& settings);
+    void addOpeningClosingBalances(ReportSettings& settings);
     void sumInvestmentValues(const ReportAccount &account, QList<CashFlowList> &cfList, QList<MyMoneyMoney> &shList) const;
     void constructPerformanceRow(const ReportAccount& account, TableRow& result, CashFlowList &all) const;
     void constructCapitalGainRow(const ReportAccount& account, TableRow& result) const;
