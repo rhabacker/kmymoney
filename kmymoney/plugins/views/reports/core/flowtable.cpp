@@ -1,5 +1,6 @@
 #include "flowtable.h"
 
+#include "kreportchartview.h"
 #include "mymoneyaccount.h"
 #include "mymoneyenums.h"
 #include "mymoneyfile.h"
@@ -13,6 +14,14 @@
 #include <QDate>
 
 #include <KLocalizedString>
+#include <QProcess>
+#include <QUrl>
+
+#include <views/reports/sankeydiagram.h>
+#include <views/reports/sankeyroles.h>
+
+#include <KChartAbstractCoordinatePlane>
+#include <KChartChart>
 
 constexpr QChar tagSeparator = QChar(QChar::ParagraphSeparator);
 
@@ -197,4 +206,59 @@ void FlowTable::constructFlowTable()
     std::sort(m_rows.begin(), m_rows.end());
 }
 
+void FlowTable::drawChart(KReportChartView& chartView) const
+{
+#if 0
+    auto& model = chartView.model(); // accessor to m_model
+    model.clear();
+
+    buildSankeyModel(model);  // FlowTable responsibility
+
+    //chartView.clearChart();
+
+    auto* diagram = new SankeyDiagram(&chartView);
+    chartView.coordinatePlane()->replaceDiagram(diagram);
+
+    diagram->setModel(&model);
+#endif
+}
+
+void FlowTable::buildSankeyModel(QStandardItemModel& model) const
+{
+    model.clear();
+
+    // Optional: headers (mostly for debugging / inspection)
+    model.setColumnCount(1);
+    model.setHeaderData(0, Qt::Horizontal, tr("Flow"));
+
+    int row = 0;
+
+#if 0
+   for (const TableRow& tr : qAsConst(rows())) {
+       // Mandatory fields
+       const int sourceId = tr.value(csFromID).toInt();
+       const int targetId = tr.value(csToID).toInt();
+       const double value =
+           tr.value(ctValue).toDouble();   // <-- adjust to your amount cell
+
+       if (value == 0.0)
+           continue;
+
+       auto* item = new QStandardItem;
+
+       item->setData(sourceId, SankeyRoles::SourceRole);
+       item->setData(targetId, SankeyRoles::TargetRole);
+       item->setData(value,    SankeyRoles::ValueRole);
+
+       // Optional but useful
+       const QString label =
+           tr.value(ctFromAccount) + QStringLiteral(" → ")
+         + tr.value(ctToAccount);
+
+       item->setData(label, SankeyRoles::LabelRole);
+
+       model.setItem(row++, 0, item);
+    }
+#endif
+}
 }

@@ -2,6 +2,8 @@ if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
 
+add_definitions(-DCMAKE_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+
 set (libreports_a_SOURCES
   cashflowlist.cpp
   kreportchartview.cpp

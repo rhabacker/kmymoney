@@ -3,6 +3,7 @@
 
 #include "listtable.h"
 
+class QStandardItemModel;
 namespace reports {
 
 class ReportAccount;
@@ -17,9 +18,13 @@ public:
     QString fromNodeName(const ReportAccount& acc) const;
     QString toNodeName(const ReportAccount& acc) const;
 
+Q_SIGNALS:
+    void sankeyGenerated(const QUrl& url) const;
+
 protected:
     void init();
     void constructFlowTable();
+    void drawChart(KReportChartView& chartView) const override;
     bool linkEntries() const final override
     {
         return true;
@@ -29,6 +34,7 @@ protected:
     {
         return QStringLiteral("FlowTable");
     }
+    void buildSankeyModel(QStandardItemModel& model) const;
 };
 
 }

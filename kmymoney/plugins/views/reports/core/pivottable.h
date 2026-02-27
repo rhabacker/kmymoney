@@ -21,6 +21,7 @@
 // ----------------------------------------------------------------------------
 // Project Includes
 
+#include "kreportchartview.h"
 #include "mymoneyforecast.h"
 #include "pivotgrid.h"
 #include "reportaccount.h"
