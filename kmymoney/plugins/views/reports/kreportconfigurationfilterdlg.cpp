@@ -499,7 +499,7 @@ void KReportConfigurationFilterDlg::slotReset()
         }
         d->m_tabRowColPivot->ui->m_checkTotalColumn->setChecked(d->m_initialState.isShowingRowTotals());
         d->m_tabRowColPivot->ui->m_checkTotalRow->setChecked(d->m_initialState.isShowingColumnTotals());
-        d->m_tabRowColPivot->ui->m_propagateRemainder->setEnabled(d->m_initialState.rowType() == eMyMoney::Report::RowType::BudgetActual);
+        d->m_tabRowColPivot->ui->m_propagateRemainder->setVisible(d->m_initialState.rowType() == eMyMoney::Report::RowType::BudgetActual);
         d->m_tabRowColPivot->ui->m_propagateRemainder->setChecked(d->m_initialState.isPropagateBudgetDifference());
         d->m_tabRowColPivot->ui->m_checkTotalRow->setDisabled(d->m_initialState.isPropagateBudgetDifference());
         d->m_tabRowColPivot->ui->m_prorateByReportRange->setVisible(d->m_initialState.rowType() == eMyMoney::Report::RowType::Budget
@@ -522,10 +522,12 @@ void KReportConfigurationFilterDlg::slotReset()
         slotRowTypeChanged(combo->currentIndex());
 
         //load budgets combo
-        d->m_tabRowColPivot->ui->m_comboBudget->setDisabled(true);
+        d->m_tabRowColPivot->ui->m_comboBudget->setVisible(false);
+        d->m_tabRowColPivot->ui->m_comboBudgetLabel->setVisible(false);
         if (d->m_initialState.rowType() == eMyMoney::Report::RowType::Budget
                 || d->m_initialState.rowType() == eMyMoney::Report::RowType::BudgetActual) {
-            d->m_tabRowColPivot->ui->m_comboBudget->setEnabled(true);
+            d->m_tabRowColPivot->ui->m_comboBudget->setVisible(true);
+            d->m_tabRowColPivot->ui->m_comboBudgetLabel->setVisible(true);
             d->m_tabRowColPivot->ui->m_comboRows->setEnabled(false);
             d->m_tabRowColPivot->ui->m_rowsLabel->setEnabled(false);
             d->m_tabRowColPivot->ui->m_budgetFrame->setEnabled(!d->m_budgets.empty());
