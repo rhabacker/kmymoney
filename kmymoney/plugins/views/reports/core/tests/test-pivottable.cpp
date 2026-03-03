@@ -1269,3 +1269,55 @@ void PivotTableTest::testCurrentDateColumnUsesEvaluationDateMonthly()
         QVERIFY(evalDate >= prevBoundary);
     }
 }
+
+void PivotTableTest::testProratedBudgetValueForReportRange()
+{
+    MyMoneyReport report;
+
+    // Enable prorating via report configuration
+    report.setIsProrateByReportRange(true);
+
+    // Report period: 16.01.2026 – 16.05.2026
+    report.setDateFilter(QDate(2026, 1, 16), QDate(2026, 5, 16));
+
+    PivotTable pivot(report);
+
+    const MyMoneyMoney monthlyBudget(10); // 10 €
+
+    //
+    // January 2026 (31 days, overlap 16 days)
+    //
+    {
+        QDate periodStart(2026, 1, 1);
+        QDate periodEnd(2026, 1, 31);
+
+        MyMoneyMoney result = pivot.proratedBudgetValueForReportRange(monthlyBudget, periodStart, periodEnd, QDate(2026, 1, 16), QDate(2026, 5, 16));
+
+        // 10 * 16 / 31 = 5.16 €
+        QCOMPARE(result, MyMoneyMoney(160, 31));
+    }
+
+    //
+    // February 2026 (full month)
+    //
+    {
+        QDate periodStart(2026, 2, 1);
+        QDate periodEnd(2026, 2, 28);
+
+        MyMoneyMoney result = pivot.proratedBudgetValueForReportRange(monthlyBudget, periodStart, periodEnd, QDate(2026, 1, 16), QDate(2026, 5, 16));
+
+        QCOMPARE(result, MyMoneyMoney(10));
+    }
+
+    //
+    // May 2026 (31 days, overlap 16 days)
+    //
+    {
+        QDate periodStart(2026, 5, 1);
+        QDate periodEnd(2026, 5, 31);
+
+        MyMoneyMoney result = pivot.proratedBudgetValueForReportRange(monthlyBudget, periodStart, periodEnd, QDate(2026, 1, 16), QDate(2026, 5, 16));
+
+        QCOMPARE(result, MyMoneyMoney(160, 31));
+    }
+}

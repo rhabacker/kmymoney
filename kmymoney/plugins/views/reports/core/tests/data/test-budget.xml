@@ -3,10 +3,10 @@
 <KMYMONEY-FILE>
   <FILEINFO>
     <CREATION_DATE date=""/>
-    <LAST_MODIFIED_DATE date="2026-02-24T20:43:32+01:00"/>
+    <LAST_MODIFIED_DATE date="2026-03-03T20:51:52+01:00"/>
     <VERSION id="1"/>
     <FIXVERSION id="10"/>
-    <APPVERSION id="5.2.70-f45263f4f"/>
+    <APPVERSION id="5.2.70-4737d711a"/>
   </FILEINFO>
   <USER name="" email="">
     <ADDRESS street="" city="" state="" zip="" telephone="" country="" county="" zipcode="" postcode=""/>
@@ -29,7 +29,7 @@
   </ACCOUNTS>
   <TRANSACTIONS/>
   <KEYVALUEPAIRS>
-    <PAIR key="LastModificationDate" value="2026-02-24T20:43:32+01:00"/>
+    <PAIR key="LastModificationDate" value="2026-03-03T20:51:52+01:00"/>
     <PAIR key="kmm-baseCurrency" value="GBP"/>
     <PAIR key="kmm-id" value="{6e5ce436-70db-4068-b704-a3351cab560f}"/>
   </KEYVALUEPAIRS>
@@ -40,30 +40,35 @@
   </CURRENCIES>
   <PRICES/>
   <REPORTS>
-    <REPORT id="R000003" type="pivottable 1.16" group="Budgeting" name="Yearly Budget - constant - monthly" comment="Custom Report" convertcurrency="1" favorite="0" skipZero="0" datelock="userdefined" rowtype="budget" includesactuals="0" includesforecast="0" includesprice="0" includesaverageprice="0" mixedtime="0" investments="0" budget="B000002" showrowtotals="1" showcolumntotals="1" detail="all" includesmovingaverage="0" includeschedules="0" includestransfers="0" includeunused="0" columnsaredays="0" charttype="line" chartpalette="application" chartchgridlines="1" chartsvgridlines="1" chartdatalabels="1" chartbydefault="0" logYaxis="0" negexpenses="0" chartlinewidth="2" columntype="months" datalock="automatic" dataRangeStart="1" dataRangeEnd="10" dataMajorTick="1" dataMinorTick="0" yLabelsPrecision="2">
+    <REPORT id="R000003" type="pivottable 1.16" group="Budgeting" name="Yearly Budget - constant - monthly" comment="Custom Report" convertcurrency="1" favorite="0" prorate="0" skipZero="0" datelock="userdefined" rowtype="budget" includesactuals="0" includesforecast="0" includesprice="0" includesaverageprice="0" mixedtime="0" investments="0" budget="B000002" showrowtotals="1" showcolumntotals="1" detail="all" includesmovingaverage="0" includeschedules="0" includestransfers="0" includeunused="0" columnsaredays="0" charttype="line" chartpalette="application" chartchgridlines="1" chartsvgridlines="1" chartdatalabels="1" chartbydefault="0" logYaxis="0" negexpenses="0" chartlinewidth="2" columntype="months" datalock="automatic" dataRangeStart="1" dataRangeEnd="10" dataMajorTick="1" dataMinorTick="0" yLabelsPrecision="2">
       <ACCOUNTGROUP group="expense"/>
       <ACCOUNTGROUP group="income"/>
       <DATES from="2024-01-01" to="2024-12-31"/>
     </REPORT>
-    <REPORT id="R000004" type="pivottable 1.16" group="Budgeting" name="Yearly Budget - constant - yearly" comment="Custom Report" convertcurrency="1" favorite="0" skipZero="0" datelock="userdefined" rowtype="budget" includesactuals="0" includesforecast="0" includesprice="0" includesaverageprice="0" mixedtime="0" investments="0" budget="B000003" showrowtotals="1" showcolumntotals="1" detail="all" includesmovingaverage="0" includeschedules="0" includestransfers="0" includeunused="0" columnsaredays="0" charttype="line" chartpalette="application" chartchgridlines="1" chartsvgridlines="1" chartdatalabels="1" chartbydefault="0" logYaxis="0" negexpenses="0" chartlinewidth="2" columntype="months" datalock="automatic" dataRangeStart="1" dataRangeEnd="10" dataMajorTick="1" dataMinorTick="0" yLabelsPrecision="2">
+    <REPORT id="R000004" type="pivottable 1.16" group="Budgeting" name="Yearly Budget - constant - yearly" comment="Custom Report" convertcurrency="1" favorite="0" prorate="0" skipZero="0" datelock="userdefined" rowtype="budget" includesactuals="0" includesforecast="0" includesprice="0" includesaverageprice="0" mixedtime="0" investments="0" budget="B000003" showrowtotals="1" showcolumntotals="1" detail="all" includesmovingaverage="0" includeschedules="0" includestransfers="0" includeunused="0" columnsaredays="0" charttype="line" chartpalette="application" chartchgridlines="1" chartsvgridlines="1" chartdatalabels="1" chartbydefault="0" logYaxis="0" negexpenses="0" chartlinewidth="2" columntype="months" datalock="automatic" dataRangeStart="1" dataRangeEnd="10" dataMajorTick="1" dataMinorTick="0" yLabelsPrecision="2">
       <ACCOUNTGROUP group="expense"/>
       <ACCOUNTGROUP group="income"/>
       <DATES from="2024-01-01" to="2024-12-31"/>
     </REPORT>
-    <REPORT id="R000005" type="pivottable 1.16" group="Budgeting" name="Yearly Budget - increasing-full-year" comment="Custom Report" convertcurrency="1" favorite="0" skipZero="0" datelock="userdefined" rowtype="budget" includesactuals="0" includesforecast="0" includesprice="0" includesaverageprice="0" mixedtime="0" investments="0" budget="B000003" showrowtotals="1" showcolumntotals="1" detail="all" includesmovingaverage="0" includeschedules="0" includestransfers="0" includeunused="0" columnsaredays="0" charttype="line" chartpalette="application" chartchgridlines="1" chartsvgridlines="1" chartdatalabels="1" chartbydefault="0" logYaxis="0" negexpenses="0" chartlinewidth="2" columntype="months" datalock="automatic" dataRangeStart="1" dataRangeEnd="10" dataMajorTick="1" dataMinorTick="0" yLabelsPrecision="2">
+    <REPORT id="R000005" type="pivottable 1.16" group="Budgeting" name="Yearly Budget - increasing-full-year" comment="Custom Report" convertcurrency="1" favorite="0" prorate="0" skipZero="0" datelock="userdefined" rowtype="budget" includesactuals="0" includesforecast="0" includesprice="0" includesaverageprice="0" mixedtime="0" investments="0" budget="B000003" showrowtotals="1" showcolumntotals="1" detail="all" includesmovingaverage="0" includeschedules="0" includestransfers="0" includeunused="0" columnsaredays="0" charttype="line" chartpalette="application" chartchgridlines="1" chartsvgridlines="1" chartdatalabels="1" chartbydefault="0" logYaxis="0" negexpenses="0" chartlinewidth="2" columntype="months" datalock="automatic" dataRangeStart="1" dataRangeEnd="10" dataMajorTick="1" dataMinorTick="0" yLabelsPrecision="2">
       <ACCOUNTGROUP group="expense"/>
       <ACCOUNTGROUP group="income"/>
       <DATES from="2027-01-01" to="2027-12-31"/>
     </REPORT>
-    <REPORT id="R000006" type="pivottable 1.16" group="Budgeting" name="Yearly Budget - increasing-partial-year" comment="Custom Report" convertcurrency="1" favorite="0" skipZero="0" datelock="userdefined" rowtype="budget" includesactuals="0" includesforecast="0" includesprice="0" includesaverageprice="0" mixedtime="0" investments="0" budget="B000004" showrowtotals="1" showcolumntotals="1" detail="all" includesmovingaverage="0" includeschedules="0" includestransfers="0" includeunused="0" columnsaredays="0" charttype="line" chartpalette="application" chartchgridlines="1" chartsvgridlines="1" chartdatalabels="1" chartbydefault="0" logYaxis="0" negexpenses="0" chartlinewidth="2" columntype="months" datalock="automatic" dataRangeStart="1" dataRangeEnd="10" dataMajorTick="1" dataMinorTick="0" yLabelsPrecision="2">
+    <REPORT id="R000006" type="pivottable 1.16" group="Budgeting" name="Yearly Budget - increasing-partial-year" comment="Custom Report" convertcurrency="1" favorite="0" prorate="0" skipZero="0" datelock="userdefined" rowtype="budget" includesactuals="0" includesforecast="0" includesprice="0" includesaverageprice="0" mixedtime="0" investments="0" budget="B000004" showrowtotals="1" showcolumntotals="1" detail="all" includesmovingaverage="0" includeschedules="0" includestransfers="0" includeunused="0" columnsaredays="0" charttype="line" chartpalette="application" chartchgridlines="1" chartsvgridlines="1" chartdatalabels="1" chartbydefault="0" logYaxis="0" negexpenses="0" chartlinewidth="2" columntype="months" datalock="automatic" dataRangeStart="1" dataRangeEnd="10" dataMajorTick="1" dataMinorTick="0" yLabelsPrecision="2">
       <ACCOUNTGROUP group="expense"/>
       <ACCOUNTGROUP group="income"/>
       <DATES from="2026-01-01" to="2026-12-31"/>
     </REPORT>
-    <REPORT id="R000007" type="pivottable 1.16" group="Budgeting" name="Yearly Budget - increasing-full-year-partial-month" comment="Custom Report" convertcurrency="1" favorite="0" skipZero="0" datelock="userdefined" rowtype="budget" includesactuals="0" includesforecast="0" includesprice="0" includesaverageprice="0" mixedtime="0" investments="0" budget="B000003" showrowtotals="1" showcolumntotals="1" detail="all" includesmovingaverage="0" includeschedules="0" includestransfers="0" includeunused="0" columnsaredays="0" charttype="line" chartpalette="application" chartchgridlines="1" chartsvgridlines="1" chartdatalabels="1" chartbydefault="0" logYaxis="0" negexpenses="0" chartlinewidth="2" columntype="months" datalock="automatic" dataRangeStart="1" dataRangeEnd="10" dataMajorTick="1" dataMinorTick="0" yLabelsPrecision="2">
+    <REPORT id="R000007" type="pivottable 1.16" group="Budgeting" name="Yearly Budget - increasing-full-year-partial-month" comment="Custom Report" convertcurrency="1" favorite="0" prorate="0" skipZero="0" datelock="userdefined" rowtype="budget" includesactuals="0" includesforecast="0" includesprice="0" includesaverageprice="0" mixedtime="0" investments="0" budget="B000003" showrowtotals="1" showcolumntotals="1" detail="all" includesmovingaverage="0" includeschedules="0" includestransfers="0" includeunused="0" columnsaredays="0" charttype="line" chartpalette="application" chartchgridlines="1" chartsvgridlines="1" chartdatalabels="1" chartbydefault="0" logYaxis="0" negexpenses="0" chartlinewidth="2" columntype="months" datalock="automatic" dataRangeStart="1" dataRangeEnd="10" dataMajorTick="1" dataMinorTick="0" yLabelsPrecision="2">
       <ACCOUNTGROUP group="expense"/>
       <ACCOUNTGROUP group="income"/>
       <DATES from="2027-01-02" to="2027-12-31"/>
+    </REPORT>
+    <REPORT id="R000008" type="pivottable 1.16" group="Budgeting" name="Yearly Budget - constant - monthly-partial-month" comment="Custom Report" convertcurrency="1" favorite="0" prorate="1" skipZero="0" datelock="userdefined" rowtype="budget" includesactuals="0" includesforecast="0" includesprice="0" includesaverageprice="0" mixedtime="0" investments="0" budget="B000002" showrowtotals="1" showcolumntotals="1" detail="all" includesmovingaverage="0" includeschedules="0" includestransfers="0" includeunused="0" columnsaredays="0" charttype="line" chartpalette="application" chartchgridlines="1" chartsvgridlines="1" chartdatalabels="1" chartbydefault="0" logYaxis="0" negexpenses="0" chartlinewidth="2" columntype="months" datalock="automatic" dataRangeStart="1" dataRangeEnd="10" dataMajorTick="1" dataMinorTick="0" yLabelsPrecision="2">
+      <ACCOUNTGROUP group="expense"/>
+      <ACCOUNTGROUP group="income"/>
+      <DATES from="2024-01-16" to="2024-05-16"/>
     </REPORT>
   </REPORTS>
   <BUDGETS>

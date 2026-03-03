@@ -380,6 +380,12 @@ protected:
      * @sa KMyMoneySettings::firstFiscalDay(), KMyMoneySettings::firstFiscalMonth()
      */
     bool fiscalYearIsCalendarYear() const;
+
+    MyMoneyMoney proratedBudgetValueForReportRange(const MyMoneyMoney& monthlyValue,
+                                                   const QDate& budgetPeriodStart,
+                                                   const QDate& budgetPeriodEnd,
+                                                   const QDate& reportBegin,
+                                                   const QDate& reportEnd) const;
 };
 
 

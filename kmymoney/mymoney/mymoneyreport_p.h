@@ -86,6 +86,7 @@ public:
         , m_tseparator(QDate::currentDate().addYears(-1))
         , m_skipZero(false)
         , m_modified(false)
+        , m_isProrateByReportRange(false)
     {
     }
 
@@ -409,6 +410,8 @@ public:
      * The origin of this report
      */
     eMyMoney::Report::Origin m_origin;
+
+    bool m_isProrateByReportRange;
 };
 
 #endif

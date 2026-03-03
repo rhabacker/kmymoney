@@ -773,6 +773,18 @@ void MyMoneyReport::setIncludingAveragePrice(bool f)
     d->m_includeAveragePrice = f;
 }
 
+bool MyMoneyReport::isProrateByReportRange() const
+{
+    Q_D(const MyMoneyReport);
+    return d->m_isProrateByReportRange;
+}
+
+void MyMoneyReport::setIsProrateByReportRange(bool state)
+{
+    Q_D(MyMoneyReport);
+    d->m_isProrateByReportRange = state;
+}
+
 eMyMoney::Report::DataLock MyMoneyReport::dataFilter() const
 {
     Q_D(const MyMoneyReport);

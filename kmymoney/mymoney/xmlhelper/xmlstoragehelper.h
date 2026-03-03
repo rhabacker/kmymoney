@@ -121,6 +121,7 @@ enum class Report {
     Validity,
     ChartPalette,
     EvaluationDate,
+    Prorate,
     // insert new entries above this line
     LastAttribute,
 };

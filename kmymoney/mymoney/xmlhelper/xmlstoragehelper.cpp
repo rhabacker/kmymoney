@@ -70,6 +70,7 @@ QString attributeName(Attribute::Report attributeID)
         {Attribute::Report::Name,                   QStringLiteral("name")},
         {Attribute::Report::Comment,                QStringLiteral("comment")},
         {Attribute::Report::ConvertCurrency,        QStringLiteral("convertcurrency")},
+        {Attribute::Report::Prorate,                QStringLiteral("prorate")},
         {Attribute::Report::Favorite,               QStringLiteral("favorite")},
         {Attribute::Report::SkipZero,               QStringLiteral("skipZero")},
         {Attribute::Report::DateLock,               QStringLiteral("datelock")},
@@ -813,6 +814,7 @@ MyMoneyReport readReport(QXmlStreamReader* reader)
     report.setComment(readStringAttribute(reader, attributeName(Attribute::Report::Comment), "Extremely old report"));
     report.setConvertCurrency(readBoolAttribute(reader, attributeName(Attribute::Report::ConvertCurrency), true));
     report.setFavorite(readBoolAttribute(reader, attributeName(Attribute::Report::Favorite), false));
+    report.setIsProrateByReportRange(readBoolAttribute(reader, attributeName(Attribute::Report::Prorate), false));
     report.setSkipZero(readBoolAttribute(reader, attributeName(Attribute::Report::SkipZero), false));
     const auto rowTypeFromXML = stringToRowType(readStringAttribute(reader, attributeName(Attribute::Report::RowType)));
 
@@ -1105,6 +1107,7 @@ void writeReport(const MyMoneyReport& report, QXmlStreamWriter* writer)
 
     writer->writeAttribute(attributeName(Attribute::Report::ConvertCurrency), attrValue(report.isConvertCurrency()));
     writer->writeAttribute(attributeName(Attribute::Report::Favorite), attrValue(report.isFavorite()));
+    writer->writeAttribute(attributeName(Attribute::Report::Prorate), attrValue(report.isProrateByReportRange()));
     writer->writeAttribute(attributeName(Attribute::Report::SkipZero), attrValue(report.isSkippingZero()));
 
     writer->writeAttribute(attributeName(Attribute::Report::DateLock), dateLockAttributeToString(report.dateRange()));

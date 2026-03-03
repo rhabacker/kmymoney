@@ -913,6 +913,35 @@ MyMoneyMoney PivotTable::cellBalance(const QString& outergroup, const ReportAcco
     return balance;
 }
 
+MyMoneyMoney PivotTable::proratedBudgetValueForReportRange(const MyMoneyMoney& monthlyValue,
+                                                           const QDate& budgetPeriodStart,
+                                                           const QDate& budgetPeriodEnd,
+                                                           const QDate& reportBegin,
+                                                           const QDate& reportEnd) const
+{
+    if (!m_config.isProrateByReportRange()) {
+        return monthlyValue;
+    }
+
+    if (budgetPeriodStart > budgetPeriodEnd)
+        return MyMoneyMoney();
+
+    const QDate overlapStart = std::max(budgetPeriodStart, reportBegin);
+    const QDate overlapEnd = std::min(budgetPeriodEnd, reportEnd);
+
+    if (overlapStart > overlapEnd) {
+        return MyMoneyMoney();
+    }
+
+    const int budgetDays = budgetPeriodStart.daysTo(budgetPeriodEnd) + 1;
+    const int overlapDays = overlapStart.daysTo(overlapEnd) + 1;
+
+    if (budgetDays <= 0)
+        return MyMoneyMoney();
+
+    return monthlyValue * MyMoneyMoney(overlapDays, budgetDays);
+}
+
 void PivotTable::calculateBudgetMapping()
 {
     DEBUG_ENTER(Q_FUNC_INFO);
@@ -1065,7 +1094,14 @@ void PivotTable::calculateBudgetMapping()
                             }
 
                             if (budgetDate >= beginDate && budgetDate <= endDate) {
-                                assignCell(outergroup, splitAccount, column, value, true /*budget*/);
+                                const QDate budgetStart = QDate(budgetDate.year(), budgetDate.month(), 1);
+                                const QDate budgetEnd = budgetStart.addMonths(1).addDays(-1);
+
+                                const MyMoneyMoney applied = proratedBudgetValueForReportRange(value, budgetStart, budgetEnd, m_beginDate, m_endDate);
+
+                                if (!applied.isZero()) {
+                                    assignCell(outergroup, splitAccount, column, applied, true /*budget*/);
+                                }
                             }
 
                             ++column;
@@ -1096,8 +1132,19 @@ void PivotTable::calculateBudgetMapping()
                                     if (periodStart >= beginDate && periodStart <= endDate
                                         && periodStart > (colDate.addMonths(-static_cast<int>(m_config.columnType())))) {
                                         // no currency conversion is done here because that is done for all columns later
+                                        const QDate periodStart = (*it_period).startDate();
+                                        const QDate budgetStart = QDate(periodStart.year(), periodStart.month(), 1);
+                                        const QDate budgetEnd = budgetStart.addMonths(1).addDays(-1);
+
+                                        // value already includes reverse sign
                                         value = (*it_period).amount() * reverse;
-                                        assignCell(outergroup, splitAccount, column, value, true /*budget*/);
+
+                                        const MyMoneyMoney appliedValue =
+                                            proratedBudgetValueForReportRange(value, budgetStart, budgetEnd, m_beginDate, m_endDate);
+
+                                        if (!appliedValue.isZero()) {
+                                            assignCell(outergroup, splitAccount, column, appliedValue, true /*budget*/);
+                                        }
                                     }
                                     ++it_period;
                                     break;

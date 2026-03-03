@@ -258,6 +258,9 @@ public:
     bool isIncludingAveragePrice() const;
     void setIncludingAveragePrice(bool f);
 
+    bool isProrateByReportRange() const;
+    void setIsProrateByReportRange(bool state);
+
     eMyMoney::Report::DataLock dataFilter() const;
     bool isDataUserDefined() const;
     void setDataFilter(eMyMoney::Report::DataLock u);
