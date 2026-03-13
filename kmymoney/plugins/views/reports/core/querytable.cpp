@@ -598,6 +598,72 @@ void QueryTable::prepareReport(ReportSettings& settings)
     }
 }
 
+bool findTaxAccount(const QList<MyMoneySplit>& splits)
+{
+    QList<MyMoneySplit>::const_iterator it_split;
+
+    bool foundTaxAccount = false;
+    for (it_split = splits.cbegin(); it_split != splits.cend(); ++it_split) {
+        ReportAccount splitAcc((*it_split).accountId());
+        // always put split with a "stock" account if it exists
+        if (splitAcc.isInvest())
+            break;
+
+        // remember if we have found a tax related account
+        foundTaxAccount |= splitAcc.isInTaxReports();
+    }
+    return foundTaxAccount;
+}
+
+// to handle splits, we decide on which account to base the split
+// (a reference point or point of view so to speak). here we take the
+// first account that is a stock account or loan account (or the first account
+// that is not an income or expense account if there is no stock or loan account)
+// to be the account (qA) that will have the sub-item "split" entries. we add
+// one transaction entry (qS) for each subsequent entry in the split.
+QList<MyMoneySplit>::const_iterator selectReferenceSplit(const QList<MyMoneySplit>& splits, const MyMoneyReport& report)
+{
+    QList<MyMoneySplit>::const_iterator myBegin = splits.cend();
+    QList<MyMoneySplit>::const_iterator it_split;
+
+    // iterate to pick the best split
+    for (it_split = splits.cbegin(); it_split != splits.cend(); ++it_split) {
+        ReportAccount splitAcc((*it_split).accountId());
+
+        // highest priority: stock account
+        if (splitAcc.isInvest())
+            break;
+
+        // next: loan account
+        if (splitAcc.isLoan())
+            myBegin = it_split;
+
+        // fallback: any non-income/expense account included in report
+        if ((myBegin == splits.end()) && !splitAcc.isIncomeExpense()) {
+            if (report.includesAccount(splitAcc.id()))
+                myBegin = it_split;
+        }
+    }
+
+    // finalize reference split
+    if (it_split == splits.end()) {
+        it_split = myBegin;
+    } else {
+        myBegin = it_split;
+    }
+
+    // no valid base account found
+    if (myBegin == splits.end())
+        return splits.end();
+
+    // edge case: single split with zero amount/value
+    if (it_split == splits.end()) {
+        it_split = splits.begin();
+    }
+
+    return it_split;
+}
+
 void QueryTable::processTransaction(const MyMoneyTransaction& transaction, ReportSettings& settings)
 {
     {
@@ -657,65 +723,27 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
         else
             qA[ctCurrency] = qS[ctCurrency] = (*it_transaction).commodity();
 
-        // to handle splits, we decide on which account to base the split
-        // (a reference point or point of view so to speak). here we take the
-        // first account that is a stock account or loan account (or the first account
-        // that is not an income or expense account if there is no stock or loan account)
-        // to be the account (qA) that will have the sub-item "split" entries. we add
-        // one transaction entry (qS) for each subsequent entry in the split.
-
         const QList<MyMoneySplit>& splits = (*it_transaction).splits();
-        QList<MyMoneySplit>::const_iterator myBegin, it_split;
-
-        bool foundTaxAccount = false;
-        for (it_split = splits.cbegin(), myBegin = splits.cend(); it_split != splits.cend(); ++it_split) {
-            ReportAccount splitAcc((*it_split).accountId());
-            // always put split with a "stock" account if it exists
-            if (splitAcc.isInvest())
-                break;
-
-            // remember if we have found a tax related account
-            foundTaxAccount |= splitAcc.isInTaxReports();
-
-            // prefer to put splits with a "loan" account if it exists
-            if (splitAcc.isLoan())
-                myBegin = it_split;
-
-            if ((myBegin == splits.end()) && ! splitAcc.isIncomeExpense()) {
-                // continue if split references an unselected account
-                if (report.includesAccount(splitAcc.id())) {
-                    myBegin = it_split;
-                }
-            }
-        }
 
         // we can skip the transaction in case it is a tax report
         // and the transaction does not reference any tax related
         // account
-        if (report.isTax() && !foundTaxAccount) {
+        if (report.isTax() && !findTaxAccount(splits)) {
             return;
         }
 
-        // select our "reference" split
-        if (it_split == splits.end()) {
-            it_split = myBegin;
-        } else {
-            myBegin = it_split;
-        }
+        QList<MyMoneySplit>::const_iterator myBegin, it_split;
+        auto refSplitIt = selectReferenceSplit(splits, report);
 
         // skip this transaction if we didn't find a valid base account - see the above description
         // for the base account's description - if we don't find it avoid a crash by skipping the transaction
-        if (myBegin == splits.end())
+        if (refSplitIt == splits.end()) {
             return;
-
-        // if the split is still unknown, use the first one. I have seen this
-        // happen with a transaction that has only a single split referencing an income or expense
-        // account and has an amount and value of 0. Such a transaction will fall through
-        // the above logic and leave 'it_split' pointing to splits.end() which causes the remainder
-        // of this to end in an infinite loop.
-        if (it_split == splits.end()) {
-            it_split = splits.begin();
         }
+
+        // use refSplitIt as your reference split
+        myBegin = refSplitIt;
+        it_split = refSplitIt;
 
         // for "loan" reports, the loan transaction gets special treatment.
         // the splits of a loan transaction are placed on one line in the
