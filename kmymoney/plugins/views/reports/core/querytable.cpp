@@ -664,6 +664,39 @@ QList<MyMoneySplit>::const_iterator selectReferenceSplit(const QList<MyMoneySpli
     return it_split;
 }
 
+void QueryTable::addRow(const ListTable::TableRow& row)
+{
+    const MyMoneyFile* file = MyMoneyFile::instance();
+    const auto tagIds = row[ctTag].split(tagSeparator, Qt::SkipEmptyParts);
+    auto qT = row;
+    if (m_config.rowType() == eMyMoney::Report::RowType::Tag) {
+        // if group by tags, we add the row for each tag we found
+        if (!tagIds.isEmpty()) {
+            for (const auto& tagId : qAsConst(tagIds)) {
+                qT[ctTag] = file->tag(tagId).name().simplified();
+                m_rows += qT;
+            }
+        } else {
+            qT[ctTag] = i18n("[No Tag]");
+            m_rows += qT;
+        }
+    } else {
+        // otherwise, we combine the tags into one list
+        QString tags;
+        for (const auto& tagId : qAsConst(tagIds)) {
+            if (!tags.isEmpty()) {
+                tags.append(QLatin1Char(','));
+            }
+            tags.append(file->tag(tagId).name().simplified());
+        }
+        if (tags.isEmpty()) {
+            tags = i18n("[No Tag]");
+        }
+        qT[ctTag] = tags;
+        m_rows += qT;
+    }
+}
+
 void QueryTable::processTransaction(const MyMoneyTransaction& transaction, ReportSettings& settings)
 {
     {
@@ -677,37 +710,6 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
         TableRow qA, qS;
         QList<TableRow> qStack;
         QDate pd;
-
-        auto addRow = [&](const TableRow& row) {
-            const auto tagIds = row[ctTag].split(tagSeparator, Qt::SkipEmptyParts);
-            auto qT = row;
-            if (m_config.rowType() == eMyMoney::Report::RowType::Tag) {
-                // if group by tags, we add the row for each tag we found
-                if (!tagIds.isEmpty()) {
-                    for (const auto& tagId : qAsConst(tagIds)) {
-                        qT[ctTag] = file->tag(tagId).name().simplified();
-                        m_rows += qT;
-                    }
-                } else {
-                    qT[ctTag] = i18n("[No Tag]");
-                    m_rows += qT;
-                }
-            } else {
-                // otherwise, we combine the tags into one list
-                QString tags;
-                for (const auto& tagId : qAsConst(tagIds)) {
-                    if (!tags.isEmpty()) {
-                        tags.append(QLatin1Char(','));
-                    }
-                    tags.append(file->tag(tagId).name().simplified());
-                }
-                if (tags.isEmpty()) {
-                    tags = i18n("[No Tag]");
-                }
-                qT[ctTag] = tags;
-                m_rows += qT;
-            }
-        };
 
         qA[ctID] = qS[ctID] = (* it_transaction).id();
         qA[ctEntryDate] = qS[ctEntryDate] = (* it_transaction).entryDate().toString(Qt::ISODate);

@@ -106,6 +106,8 @@ protected:
     bool linkEntries() const final override {
         return true;
     }
+    void addRow(const ListTable::TableRow& row);
+
 private:
     enum InvestmentValue {Buys = 0, Sells, BuysOfSells, SellsOfBuys, LongTermBuysOfSells, LongTermSellsOfBuys, BuysOfOwned, ReinvestIncome, CashIncome, End};
 
