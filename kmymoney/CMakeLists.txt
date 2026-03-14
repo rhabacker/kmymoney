@@ -94,7 +94,7 @@ add_dependencies(wizardpages kmm_widgets)
 
 if(USE_MODELTEST)
   set( kmymoney_common_LIBS ${kmymoney_common_LIBS} ${QT_QTTEST_LIBRARY})
-endif(USE_MODELTEST)
+endif()
 
 # remove these generated files, they are in the way and leftovers from 5.0
 if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/kmymoneysettings.h)

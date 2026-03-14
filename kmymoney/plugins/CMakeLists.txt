@@ -20,7 +20,7 @@ endif()
 
 if(ENABLE_KBANKING)
   add_subdirectory( kbanking )
-endif(ENABLE_KBANKING)
+endif()
 
 if(ENABLE_SQLCIPHER)
   add_subdirectory(sqlcipher)

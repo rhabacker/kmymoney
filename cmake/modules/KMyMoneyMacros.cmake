@@ -9,7 +9,7 @@
 
 if(NOT EXISTS ${KMyMoney_BINARY_DIR}/kmymoney)
   file(MAKE_DIRECTORY ${KMyMoney_BINARY_DIR}/kmymoney)
-endif(NOT EXISTS ${KMyMoney_BINARY_DIR}/kmymoney)
+endif()
 
 macro(KMM_CREATE_LINKS)
   foreach(c_FILE ${ARGV})
@@ -21,9 +21,9 @@ macro(KMM_CREATE_LINKS)
       execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink
         ${CMAKE_CURRENT_SOURCE_DIR}/${c_FILE}
         ${KMyMoney_BINARY_DIR}/kmymoney/${c_FILE})
-    endif(WIN32)
-  endforeach(c_FILE)
-endmacro(KMM_CREATE_LINKS)
+    endif()
+  endforeach()
+endmacro()
 
 
 function(kmymoney_add_plugin name)
