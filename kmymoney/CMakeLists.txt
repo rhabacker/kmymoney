@@ -145,7 +145,8 @@ if(ENABLE_SQLCIPHER)
   if(CMAKE_SYSTEM_NAME MATCHES "FreeBSD" OR CMAKE_SYSTEM_NAME MATCHES "Windows")
     target_include_directories(kmymoney
       PRIVATE
-        ${SQLCIPHER_INCLUDE_DIRS})
+        ${SQLCIPHER_INCLUDE_DIRS}
+    )
   endif()
 endif()
 

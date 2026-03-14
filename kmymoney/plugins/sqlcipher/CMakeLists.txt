@@ -12,21 +12,24 @@ if(BUILD_STATIC_PLUGINS)
 else()
     kcoreaddons_add_plugin(qsqlcipher
                         SOURCES ${qsqlcipher_SOURCES}
-                        INSTALL_NAMESPACE "sqldrivers")
+                        INSTALL_NAMESPACE "sqldrivers"
+    )
 endif()
 
 #otherwise "fatal error: 'sqlite3.h' file not found"
 if(CMAKE_SYSTEM_NAME MATCHES "FreeBSD" OR CMAKE_SYSTEM_NAME MATCHES "Windows" OR CMAKE_VERSION VERSION_LESS 3.5.2)
   target_include_directories(qsqlcipher
     PRIVATE
-      ${SQLCIPHER_INCLUDE_DIRS})
+      ${SQLCIPHER_INCLUDE_DIRS}
+  )
 endif()
 
 target_compile_definitions(qsqlcipher
   PRIVATE
   QT_PLUGIN # fails to build on MS Windows without this
   SQLITE_HAS_CODEC
-  SQLITE_TEMP_STORE=2)
+  SQLITE_TEMP_STORE=2
+)
 
 target_link_libraries(qsqlcipher
   PRIVATE
