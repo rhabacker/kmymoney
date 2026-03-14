@@ -135,15 +135,15 @@ add_library(kmm_base_widgets ${kmm_base_widgets_SOURCES})
 
 target_link_libraries(kmm_base_widgets
   PUBLIC
-  KF${QT_MAJOR_VERSION}::Completion
-  KF${QT_MAJOR_VERSION}::Notifications
-  KF${QT_MAJOR_VERSION}::TextWidgets
-  Alkimia::alkimia
-  kmm_selections
-  kmm_mymoney
-  kmm_settings
-  kmm_models
-  $<$<BOOL:${ENABLE_GPG}>:kmm_gpgfile>
+    KF${QT_MAJOR_VERSION}::Completion
+    KF${QT_MAJOR_VERSION}::Notifications
+    KF${QT_MAJOR_VERSION}::TextWidgets
+    Alkimia::alkimia
+    kmm_selections
+    kmm_mymoney
+    kmm_settings
+    kmm_models
+    $<$<BOOL:${ENABLE_GPG}>:kmm_gpgfile>
 )
 
 set_target_properties(kmm_base_widgets PROPERTIES
@@ -161,30 +161,30 @@ add_library(kmm_widgets ${kmm_widgets_SOURCES})
 
 target_link_libraries(kmm_widgets
   PUBLIC
-  KF${QT_MAJOR_VERSION}::TextWidgets
-  KF${QT_MAJOR_VERSION}::KIOWidgets
-  KF${QT_MAJOR_VERSION}::Completion
-  KF${QT_MAJOR_VERSION}::Notifications
-  KF${QT_MAJOR_VERSION}::ItemViews
-  KF${QT_MAJOR_VERSION}::I18n
-  KF${QT_MAJOR_VERSION}::XmlGui
-  KF${QT_MAJOR_VERSION}::ConfigWidgets
-  KF${QT_MAJOR_VERSION}::ConfigCore
-  KF${QT_MAJOR_VERSION}::ItemModels
-  KF${QT_MAJOR_VERSION}::Service
-  Qt::Gui
-  Qt::Core
-  Qt::Widgets
-  Qt::Xml
-  Alkimia::alkimia
-  converter
-  kmm_mymoney
-  kmm_models
-  kmm_plugin
-  kmm_settings
-  kmm_base_dialogs
-  kmm_base_widgets
-  kmm_selections
+    KF${QT_MAJOR_VERSION}::TextWidgets
+    KF${QT_MAJOR_VERSION}::KIOWidgets
+    KF${QT_MAJOR_VERSION}::Completion
+    KF${QT_MAJOR_VERSION}::Notifications
+    KF${QT_MAJOR_VERSION}::ItemViews
+    KF${QT_MAJOR_VERSION}::I18n
+    KF${QT_MAJOR_VERSION}::XmlGui
+    KF${QT_MAJOR_VERSION}::ConfigWidgets
+    KF${QT_MAJOR_VERSION}::ConfigCore
+    KF${QT_MAJOR_VERSION}::ItemModels
+    KF${QT_MAJOR_VERSION}::Service
+    Qt::Gui
+    Qt::Core
+    Qt::Widgets
+    Qt::Xml
+    Alkimia::alkimia
+    converter
+    kmm_mymoney
+    kmm_models
+    kmm_plugin
+    kmm_settings
+    kmm_base_dialogs
+    kmm_base_widgets
+    kmm_selections
 )
 
 set_target_properties(kmm_widgets PROPERTIES

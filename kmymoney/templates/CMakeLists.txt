@@ -50,10 +50,10 @@ add_library(kmm_templates ${kmm_templates_SOURCES})
 
 target_link_libraries(kmm_templates
   PUBLIC
-  KF${QT_MAJOR_VERSION}::TextWidgets
-  KF${QT_MAJOR_VERSION}::I18n
-  kmm_models
-  kmm_widgets
+    KF${QT_MAJOR_VERSION}::TextWidgets
+    KF${QT_MAJOR_VERSION}::I18n
+    kmm_models
+    kmm_widgets
 )
 
 set_target_properties(kmm_templates PROPERTIES

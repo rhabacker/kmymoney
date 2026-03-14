@@ -7,13 +7,13 @@ set(sqlstoragestatic_SOURCES
 add_library(sqlstoragestatic STATIC ${sqlstoragestatic_SOURCES} )
 kde_target_enable_exceptions(sqlstoragestatic PUBLIC)
 target_link_libraries(sqlstoragestatic
-PUBLIC
-  Qt::Sql
-  KF${QT_MAJOR_VERSION}::CoreAddons
-  kmm_plugin
-  kmm_widgets
-  onlinetask_interfaces
-  xmlstoragehelper
+  PUBLIC
+    Qt::Sql
+    KF${QT_MAJOR_VERSION}::CoreAddons
+    kmm_plugin
+    kmm_widgets
+    onlinetask_interfaces
+    xmlstoragehelper
 )
 
 file(GLOB tests_sources "test-*.cpp")

@@ -196,9 +196,9 @@ kgpgfile.cpp
 )
 add_library(kmm_gpgfile ${kmm_gpgfile_SRCS})
 target_link_libraries(kmm_gpgfile
-    PUBLIC
-      Qt::Core
-      ${GPG_LIBRARY}
+  PUBLIC
+    Qt::Core
+    ${GPG_LIBRARY}
 )
 
 set_target_properties(kmm_gpgfile PROPERTIES

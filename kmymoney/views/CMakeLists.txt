@@ -79,14 +79,14 @@ add_library(views STATIC ${libviews_a_SOURCES})
 # This should be replaced by virtual methods in a pure abstract object.
 target_link_libraries(views
   PUBLIC
-  newaccountwizard
-  KF${QT_MAJOR_VERSION}::TextWidgets
-  Qt::PrintSupport
-  kmm_mymoney # needed to load payeeIdentifier
-  kmm_widgets
-  kmm_printer
-  kmm_textbrowser
-  Alkimia::alkimia
+    newaccountwizard
+    KF${QT_MAJOR_VERSION}::TextWidgets
+    Qt::PrintSupport
+    kmm_mymoney#neededto
+    kmm_widgets
+    kmm_printer
+    kmm_textbrowser
+    Alkimia::alkimia
 )
 
 # we rely on some of the dialogs to be generated

@@ -81,9 +81,9 @@ target_link_libraries(kmymoney_common
     kmm_yesno
     kmm_menuactionexchanger
     $<$<BOOL:${ENABLE_ADDRESSBOOK}>:${PIMPREFIX}::AkonadiCore>
-    PRIVATE
-      KF${QT_MAJOR_VERSION}::I18n
-      kmm_settings
+  PRIVATE
+    KF${QT_MAJOR_VERSION}::I18n
+    kmm_settings
 )
 
 # must build kmymoney/transactionsortoption.h

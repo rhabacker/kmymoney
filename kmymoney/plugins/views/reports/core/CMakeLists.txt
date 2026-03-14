@@ -24,8 +24,8 @@ target_link_libraries(reports
     Qt::PrintSupport
     kmymoney_common
     kmm_settings
-    PRIVATE
-      KF${QT_MAJOR_VERSION}::I18n
+  PRIVATE
+    KF${QT_MAJOR_VERSION}::I18n
 )
 
 add_dependencies(reports kmm_settings)

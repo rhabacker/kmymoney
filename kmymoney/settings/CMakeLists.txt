@@ -8,9 +8,7 @@ set_target_properties(kmm_settings PROPERTIES
 
 generate_export_header(kmm_settings BASE_NAME kmm_settings)
 
-target_link_libraries(kmm_settings
-                      PRIVATE
-                        KF${QT_MAJOR_VERSION}::ConfigWidgets)
+target_link_libraries(kmm_settings PRIVATE KF${QT_MAJOR_VERSION}::ConfigWidgets)
 
 set(kmm_settings_HEADERS
     ${CMAKE_CURRENT_BINARY_DIR}/kmm_settings_export.h

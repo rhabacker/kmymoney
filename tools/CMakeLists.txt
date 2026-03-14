@@ -6,11 +6,11 @@ if(BUILD_TESTING AND ENABLE_REPORTSVIEW)
     kmmreport-export.cpp
     )
     target_link_libraries(kmmreport-export
-    PRIVATE
-      kmm_mymoney
-      kmm_testutilities
-      reports
-      xmlstorage_static
-      Qt::Core
+      PRIVATE
+        kmm_mymoney
+        kmm_testutilities
+        reports
+        xmlstorage_static
+        Qt::Core
     )
 endif()

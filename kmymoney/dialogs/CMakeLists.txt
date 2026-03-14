@@ -86,10 +86,10 @@ target_link_libraries(kmm_base_dialogs
 
 target_link_libraries(kmm_base_dialogs
   LINK_PUBLIC
-  kmm_base_widgets
-  kmm_yesno
-  kmm_mymoney
-  onlinetask_interfaces
+    kmm_base_widgets
+    kmm_yesno
+    kmm_mymoney
+    onlinetask_interfaces
 )
 
 set_target_properties(kmm_base_dialogs PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR})
@@ -136,9 +136,9 @@ target_link_libraries(kmm_extended_dialogs
 
 target_link_libraries(kmm_extended_dialogs
   LINK_PUBLIC
-  kmm_base_widgets
-  kmm_mymoney
-  onlinetask_interfaces
+    kmm_base_widgets
+    kmm_mymoney
+    onlinetask_interfaces
 )
 
 set_target_properties(kmm_extended_dialogs PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR})

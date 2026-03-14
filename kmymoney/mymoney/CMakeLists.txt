@@ -114,25 +114,25 @@ endif()
 generate_export_header(kmm_mymoney BASE_NAME kmm_mymoney)
 
 target_link_libraries(kmm_mymoney
-                      PUBLIC
-                        kmm_icons
-                        Qt::Xml
-                        Qt::Core
-                        Qt::Gui
-                        KF${QT_MAJOR_VERSION}::Service
-                        KF${QT_MAJOR_VERSION}::I18n
-                        KF${QT_MAJOR_VERSION}::ItemModels
-                        KF${QT_MAJOR_VERSION}::ConfigCore
-                        $<$<BOOL:${BUILD_WITH_QT6}>:KF${QT_MAJOR_VERSION}::CoreAddons>
-                        Alkimia::alkimia
-                        kmm_payeeidentifier
-                        kmm_plugin
-                        # TODO: fix this
-                        KF${QT_MAJOR_VERSION}::XmlGui
-                      PRIVATE
-                        kmm_keychain
-                        onlinetask_interfaces
-                        $<$<BOOL:${USE_MODELTEST}>:Qt::Test>
+  PUBLIC
+    kmm_icons
+    Qt::Xml
+    Qt::Core
+    Qt::Gui
+    KF${QT_MAJOR_VERSION}::Service
+    KF${QT_MAJOR_VERSION}::I18n
+    KF${QT_MAJOR_VERSION}::ItemModels
+    KF${QT_MAJOR_VERSION}::ConfigCore
+    $<$<BOOL:${BUILD_WITH_QT6}>:KF${QT_MAJOR_VERSION}::CoreAddons>
+    Alkimia::alkimia
+    kmm_payeeidentifier
+    kmm_plugin
+    #TODO:fixthis
+    KF${QT_MAJOR_VERSION}::XmlGui
+  PRIVATE
+    kmm_keychain
+    onlinetask_interfaces
+    $<$<BOOL:${USE_MODELTEST}>:Qt::Test>
 )
 
 if(ENABLE_ADDRESSBOOK)
