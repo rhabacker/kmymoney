@@ -216,7 +216,7 @@ install(TARGETS
         kmm_selections
         kmm_yesno
         kmm_menuactionexchanger
-	kmm_codec
+        kmm_codec
         ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 install(FILES
