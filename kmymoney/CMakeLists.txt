@@ -82,8 +82,8 @@ target_link_libraries(kmymoney_common
     kmm_menuactionexchanger
     $<$<BOOL:${ENABLE_ADDRESSBOOK}>:${PIMPREFIX}::AkonadiCore>
     PRIVATE
-    KF${QT_MAJOR_VERSION}::I18n
-    kmm_settings
+      KF${QT_MAJOR_VERSION}::I18n
+      kmm_settings
 )
 
 # must build kmymoney/transactionsortoption.h
@@ -152,33 +152,33 @@ endif()
 
 target_link_libraries(kmymoney
   PUBLIC
-  views
-  kmymoney_common
-  newuserwizard
-  newaccountwizard
-  newinvestmentwizard
-  newloanwizard
-  endingbalancedlg
-  wizardpages
-  kmm_extended_dialogs
-  kmm_base_dialogs
-  settings
-  kmm_models
-  kmm_settings
-  kmm_menus
-  kmm_widgets
-  kmm_mymoney
-  interfaces
-  kmm_plugin
-  Qt::Core
-  KF${QT_MAJOR_VERSION}::ConfigGui
-  KF${QT_MAJOR_VERSION}::WidgetsAddons
-  KF${QT_MAJOR_VERSION}::CoreAddons
-  KF${QT_MAJOR_VERSION}::Crash
-  kmm_templates
-  $<$<BOOL:${USE_MODELTEST}>:Qt::Test>
-  $<$<BOOL:${ENABLE_HOLIDAYS}>:KF${QT_MAJOR_VERSION}::Holidays>
-  $<$<BOOL:${ENABLE_ACTIVITIES}>:KF${QT_MAJOR_VERSION}::Activities>
+    views
+    kmymoney_common
+    newuserwizard
+    newaccountwizard
+    newinvestmentwizard
+    newloanwizard
+    endingbalancedlg
+    wizardpages
+    kmm_extended_dialogs
+    kmm_base_dialogs
+    settings
+    kmm_models
+    kmm_settings
+    kmm_menus
+    kmm_widgets
+    kmm_mymoney
+    interfaces
+    kmm_plugin
+    Qt::Core
+    KF${QT_MAJOR_VERSION}::ConfigGui
+    KF${QT_MAJOR_VERSION}::WidgetsAddons
+    KF${QT_MAJOR_VERSION}::CoreAddons
+    KF${QT_MAJOR_VERSION}::Crash
+    kmm_templates
+    $<$<BOOL:${USE_MODELTEST}>:Qt::Test>
+    $<$<BOOL:${ENABLE_HOLIDAYS}>:KF${QT_MAJOR_VERSION}::Holidays>
+    $<$<BOOL:${ENABLE_ACTIVITIES}>:KF${QT_MAJOR_VERSION}::Activities>
   PRIVATE
     kmm_selections
     $<$<BOOL:${ENABLE_SQLCIPHER}>:PkgConfig::SQLCIPHER>

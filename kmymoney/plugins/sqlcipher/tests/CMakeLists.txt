@@ -8,7 +8,7 @@ kmm_add_tests(${tests_sources}
 
 target_compile_definitions(test-qsqlcipher
   PRIVATE
-  QSQLCIPHERPATH="${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTALL_DIR}")
+    QSQLCIPHERPATH="${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTALL_DIR}")
 
 # the test application is stored in CMAKE_RUNTIME_OUTPUT_DIRECTORY and
 # the plugin is stored in CMAKE_LIBRARY_OUTPUT_DIRECTORY. On FreeBSD

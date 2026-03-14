@@ -20,10 +20,10 @@ kmymoney_add_plugin(woob SOURCES ${woob_PART_SRCS})
 target_link_libraries(
   woob
   PRIVATE
-  woob_interface
-  woob_dialogs
-  kmm_mymoney
-  kmm_widgets
-  kmm_plugin
-  Qt::Concurrent
+    woob_interface
+    woob_dialogs
+    kmm_mymoney
+    kmm_widgets
+    kmm_plugin
+    Qt::Concurrent
 )

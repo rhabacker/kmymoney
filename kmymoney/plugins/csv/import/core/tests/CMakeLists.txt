@@ -4,8 +4,8 @@ add_library(csvimport_testcommon STATIC
 
 target_link_libraries(csvimport_testcommon
   PUBLIC
-  Qt::Core
-  kmm_mymoney
+    Qt::Core
+    kmm_mymoney
 )
 
 file(GLOB tests_sources "test-*.cpp")

@@ -79,8 +79,8 @@ add_library(kmm_codec ${kmm_codec_SRCS})
 
 target_link_libraries( kmm_utils_validators
   PUBLIC
-  Qt::Core
-  Qt::Gui
+    Qt::Core
+    Qt::Gui
 )
 
 target_link_libraries( kmm_webconnect
@@ -101,30 +101,30 @@ target_link_libraries( kmm_webconnect
 
 target_link_libraries( kmm_keychain
   PUBLIC
-  Qt::Core
-  qt${QT_MAJOR_VERSION}keychain
+    Qt::Core
+    qt${QT_MAJOR_VERSION}keychain
 )
 
 target_link_libraries( kmm_url
   PUBLIC
-  Qt::Core
+    Qt::Core
 )
 
 target_link_libraries( kmm_textbrowser
   PUBLIC
-  Qt::Core
-  Qt::Widgets
+    Qt::Core
+    Qt::Widgets
 )
 
 target_link_libraries(kmm_printer
   PUBLIC
-  Qt::Core
-  Qt::PrintSupport
+    Qt::Core
+    Qt::PrintSupport
 )
 
 target_link_libraries( kmm_selections
   PUBLIC
-  Qt::Core
+    Qt::Core
 )
 
 target_link_libraries(kmm_yesno
@@ -197,8 +197,8 @@ kgpgfile.cpp
 add_library(kmm_gpgfile ${kmm_gpgfile_SRCS})
 target_link_libraries(kmm_gpgfile
     PUBLIC
-        Qt::Core
-        ${GPG_LIBRARY}
+      Qt::Core
+      ${GPG_LIBRARY}
 )
 
 set_target_properties(kmm_gpgfile PROPERTIES

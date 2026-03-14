@@ -33,6 +33,6 @@ target_link_libraries(ofximporter
 
 target_include_directories(ofximporter
   PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}/dialogs
-  ${CMAKE_CURRENT_BINARY_DIR}/dialogs
+    ${CMAKE_CURRENT_SOURCE_DIR}/dialogs
+    ${CMAKE_CURRENT_BINARY_DIR}/dialogs
 )

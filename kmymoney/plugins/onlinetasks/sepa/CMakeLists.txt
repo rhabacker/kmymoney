@@ -28,11 +28,11 @@ add_library(konlinetasks_sepa_interface INTERFACE)
 # TODO some dependencies can be moved to konlinetasks_sepa
 target_link_libraries( konlinetasks_sepa_interface
   INTERFACE
-  kmm_mymoney
-  kmm_base_widgets
-  kmm_plugin
-  onlinetask_interfaces
-  Qt::Xml
-  Qt::Core
-  Qt::Gui
+    kmm_mymoney
+    kmm_base_widgets
+    kmm_plugin
+    onlinetask_interfaces
+    Qt::Xml
+    Qt::Core
+    Qt::Gui
 )

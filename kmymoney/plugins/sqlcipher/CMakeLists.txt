@@ -26,9 +26,9 @@ endif()
 
 target_compile_definitions(qsqlcipher
   PRIVATE
-  QT_PLUGIN # fails to build on MS Windows without this
-  SQLITE_HAS_CODEC
-  SQLITE_TEMP_STORE=2
+    QT_PLUGIN # fails to build on MS Windows without this
+    SQLITE_HAS_CODEC
+    SQLITE_TEMP_STORE=2
 )
 
 target_link_libraries(qsqlcipher

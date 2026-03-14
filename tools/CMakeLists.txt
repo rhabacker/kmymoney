@@ -7,10 +7,10 @@ if(BUILD_TESTING AND ENABLE_REPORTSVIEW)
     )
     target_link_libraries(kmmreport-export
     PRIVATE
-        kmm_mymoney
-        kmm_testutilities
-        reports
-        xmlstorage_static
-        Qt::Core
+      kmm_mymoney
+      kmm_testutilities
+      reports
+      xmlstorage_static
+      Qt::Core
     )
 endif()
