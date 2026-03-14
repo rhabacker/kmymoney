@@ -122,16 +122,16 @@ file(GLOB_RECURSE KMYMONEY_APP_ICONS "${CMAKE_CURRENT_SOURCE_DIR}/icons/kmymoney
 ecm_add_app_icon(kmymoney_SRCS ICONS ${KMYMONEY_APP_ICONS})
 
 add_executable( kmymoney ${kmymoney_SRCS} )
-if (BUILD_STATIC_PLUGINS)
+if(BUILD_STATIC_PLUGINS)
     kcoreaddons_target_static_plugins(kmymoney "kmymoney_plugins" LINK_OPTION PRIVATE)
     kcoreaddons_target_static_plugins(kmymoney "kmymoney_plugins/kcms" LINK_OPTION PRIVATE)
-    if (ENABLE_SQLCIPHER)
+    if(ENABLE_SQLCIPHER)
         target_link_libraries(kmymoney PRIVATE qsqlcipher)
         target_compile_definitions(kmymoney PRIVATE -DIMPORT_SQLCIPHER_PLUGIN)
     endif()
 endif()
 
-if (ENABLE_SQLCIPHER)
+if(ENABLE_SQLCIPHER)
   message( STATUS "     SQLCIPHER INCLUDE   :  " ${SQLCIPHER_INCLUDE_DIRS}) #just for testing it on MS Windows
   message( STATUS "     SQLCIPHER LIBRARIES :  " ${SQLCIPHER_LIBRARY_DIRS}) #just for testing it on MS Windows
   link_directories(${SQLCIPHER_LIBRARY_DIRS})

@@ -1,5 +1,5 @@
 
-set ( onlinetask_interfaces_HEADER
+set( onlinetask_interfaces_HEADER
   converter/onlinetaskconverter.h
   tasks/onlinetask.h
   tasks/credittransfer.h
@@ -8,7 +8,7 @@ set ( onlinetask_interfaces_HEADER
   ui/ionlinejobedit.h
 )
 
-set ( onlinetask_interfaces_SRCS
+set( onlinetask_interfaces_SRCS
   converter/onlinetaskconverter.cpp
   tasks/onlinetask.cpp
   tasks/credittransfer.cpp

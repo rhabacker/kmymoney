@@ -7,7 +7,7 @@
 # Create Links
 #############################################################################
 
-IF (NOT EXISTS ${KMyMoney_BINARY_DIR}/kmymoney)
+if(NOT EXISTS ${KMyMoney_BINARY_DIR}/kmymoney)
   FILE(MAKE_DIRECTORY ${KMyMoney_BINARY_DIR}/kmymoney)
 ENDIF (NOT EXISTS ${KMyMoney_BINARY_DIR}/kmymoney)
 
@@ -27,7 +27,7 @@ ENDMACRO(KMM_CREATE_LINKS)
 
 
 function(kmymoney_add_plugin name)
-    if (BUILD_STATIC_PLUGINS)
+    if(BUILD_STATIC_PLUGINS)
         kcoreaddons_add_plugin(${name} ${ARGN} STATIC INSTALL_NAMESPACE "kmymoney_plugins")
     else()
         kcoreaddons_add_plugin(${name} ${ARGN} INSTALL_NAMESPACE "kmymoney_plugins")
@@ -35,7 +35,7 @@ function(kmymoney_add_plugin name)
 endfunction()
 
 function(kmymoney_add_plugin_kcm name)
-    if (BUILD_STATIC_PLUGINS)
+    if(BUILD_STATIC_PLUGINS)
         kcoreaddons_add_plugin(${name} ${ARGN} STATIC INSTALL_NAMESPACE "kmymoney_plugins/kcms")
     else()
         kcoreaddons_add_plugin(${name} ${ARGN} INSTALL_NAMESPACE "kmymoney_plugins/kcms")

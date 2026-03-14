@@ -1,5 +1,5 @@
 
-set (libsettings_a_SOURCES
+set(libsettings_a_SOURCES
   ksettingscolors.cpp
   ksettingsfonts.cpp
   ksettingsicons.cpp
@@ -12,7 +12,7 @@ set (libsettings_a_SOURCES
   ksettingsplugins.cpp
   )
 
-set (libsettings_a_UI
+set(libsettings_a_UI
   ksettingscolors.ui
   ksettingsfonts.ui
   ksettingsicons.ui
@@ -39,7 +39,7 @@ target_link_libraries(settings PUBLIC
   Alkimia::alkimia
 )
 
-if (ENABLE_HOLIDAYS)
+if(ENABLE_HOLIDAYS)
   target_link_libraries(settings PUBLIC KF${QT_MAJOR_VERSION}::Holidays)
 endif()
 

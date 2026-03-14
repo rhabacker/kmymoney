@@ -1,6 +1,6 @@
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} )
 
-set (libnewaccountwizard_a_SOURCES
+set(libnewaccountwizard_a_SOURCES
   knewaccountwizard.cpp
   kaccountsummarypage.cpp
   kaccounttypepage.cpp
@@ -15,7 +15,7 @@ set (libnewaccountwizard_a_SOURCES
   kloanschedulepage.cpp
   )
 
-set (libnewaccountwizard_a_UI
+set(libnewaccountwizard_a_UI
   kaccountsummarypage.ui kaccounttypepage.ui
   kbrokeragepage.ui kgeneralloaninfopage.ui
   kgeneralloaninfopage.ui kinstitutionpage.ui

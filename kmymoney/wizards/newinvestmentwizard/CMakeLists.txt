@@ -1,13 +1,13 @@
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} )
 
-set (libnewinvestmentwizard_a_SOURCES
+set(libnewinvestmentwizard_a_SOURCES
   knewinvestmentwizard.cpp
   konlineupdatewizardpage.cpp
   kinvestmentdetailswizardpage.cpp
   kinvestmenttypewizardpage.cpp
   )
 
-set (libnewinvestmentwizard_a_UI
+set(libnewinvestmentwizard_a_UI
   knewinvestmentwizard.ui
   kinvestmentdetailswizardpage.ui
   kinvestmenttypewizardpage.ui

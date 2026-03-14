@@ -1,4 +1,4 @@
-set ( kbanking_tasksettings_SRCS
+set( kbanking_tasksettings_SRCS
   credittransfersettingsbase.cpp
 )
 

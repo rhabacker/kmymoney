@@ -6,7 +6,7 @@
 configure_file(ibanbicdata.desktop.in ibanbicdata.desktop)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ibanbicdata.json.cmake ${CMAKE_CURRENT_BINARY_DIR}/ibanbicdata.json @ONLY)
 
-set ( IBANBICDATA_SCRS
+set( IBANBICDATA_SCRS
   ibanbicdata.cpp
   bicmodel.cpp
 )

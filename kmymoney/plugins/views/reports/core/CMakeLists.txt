@@ -2,7 +2,7 @@ if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
 
-set (libreports_a_SOURCES
+set(libreports_a_SOURCES
   cashflowlist.cpp
   kreportchartview.cpp
   reportaccount.cpp

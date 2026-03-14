@@ -3,7 +3,7 @@ set(libwizardpages_a_SOURCES
   accounts.cpp currency.cpp userinfo.cpp
   )
 
-set (libwizardpages_a_UI
+set(libwizardpages_a_UI
   accounts.ui currency.ui userinfo.ui
   )
 

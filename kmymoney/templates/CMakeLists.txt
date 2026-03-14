@@ -1,4 +1,4 @@
-set (kmm_templates_SOURCES
+set(kmm_templates_SOURCES
   templateloader.cpp
   templatewriter.cpp
   kloadtemplatedlg.cpp

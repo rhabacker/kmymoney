@@ -20,7 +20,7 @@ target_compile_definitions(test-qsqlcipher
 # Windows and MacOS may also need some adjustments, but I leave that
 # to a developer under these system to make additions here
 if(CMAKE_SYSTEM_NAME MATCHES "FreeBSD" OR CMAKE_SYSTEM_NAME MATCHES "Linux")
-  if (NOT EXISTS "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sqldrivers")
+  if(NOT EXISTS "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sqldrivers")
     FILE(MAKE_DIRECTORY
         ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
         ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}

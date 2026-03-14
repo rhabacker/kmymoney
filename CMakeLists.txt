@@ -21,7 +21,7 @@ set(KF_MIN_VERSION ${KF${QT_MAJOR_VERSION}_MIN_VERSION})
 set(QT_MIN_VERSION ${QT${QT_MAJOR_VERSION}_MIN_VERSION})
 set(KDE_COMPILERSETTINGS_LEVEL ${KDE${QT_MAJOR_VERSION}_MIN_LEVEL})
 
-if (NOT BUILD_STATIC_PLUGINS)
+if(NOT BUILD_STATIC_PLUGINS)
     set(AKONADI_MIN_VERSION 5.14.2)
     if(BUILD_WITH_QT6)
         set(AKONADI_MIN_VERSION 6.0.0)
@@ -80,10 +80,10 @@ elseif(DEFINED VERSION_SUFFIX)
   set(${PROJECT_NAME}_VERSION_SUFFIX "-${DASHFREE_SUFFIX}")
 endif()
 
-if (POLICY CMP0063)
+if(POLICY CMP0063)
   cmake_policy(SET CMP0063 NEW) # Policy introduced in CMake version 3.3
 endif()
-if (POLICY CMP0127)
+if(POLICY CMP0127)
   cmake_policy(SET CMP0127 NEW) # Policy introduced in CMake version 3.22
 endif()
 
@@ -91,7 +91,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 ######################### General Requirements ##########################
 
-if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.0.0)
+if(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.0.0)
     message(FATAL_ERROR "This version of KMyMoney requires at least gcc 6.0.0 to be built successfully")
 endif()
 
@@ -154,14 +154,14 @@ if(BUILD_WITH_QT6)
     endif()
 else()
     find_package(QGpgme)
-    if (QGpgme_FOUND)
+    if(QGpgme_FOUND)
         set(GPG_FOUND TRUE)
         set(GPG_DIR ${QGpgme_DIR})
         set(GPG_LIBRARY QGpgme)
         set(GPG_VERSION ${QGpgme_VERSION})
     else()
         find_package(Gpgmepp)
-        if (Gpgmepp_FOUND)
+        if(Gpgmepp_FOUND)
             set(GPG_FOUND TRUE)
             set(GPG_DIR ${Gpgmepp_DIR})
             set(GPG_LIBRARY Gpgmepp)
@@ -175,7 +175,7 @@ if(GPG_FOUND)
     file(READ "${GPGMEPP_HEADER_DIR}/gpgme++/error.h" GPGMEPP_ERROR_H_CONTENT)
     string(FIND "${GPGMEPP_ERROR_H_CONTENT}" "std::string asStdString() const" FOUND_AS_STD_STRING)
     set(HAVE_GPGMEPP_AS_STD_STRING FALSE)
-    if (${FOUND_AS_STD_STRING} GREATER 0)
+    if(${FOUND_AS_STD_STRING} GREATER 0)
         set(HAVE_GPGMEPP_AS_STD_STRING TRUE)
         message(STATUS "Found GpgME::Error::asStdString")
     endif()
@@ -191,14 +191,14 @@ add_feature_info("Encryption" ENABLE_GPG "Allows to store your financial data us
 
 
 find_package(PkgConfig)
-if (PkgConfig_FOUND)
+if(PkgConfig_FOUND)
   pkg_check_modules(SQLCIPHER sqlcipher IMPORTED_TARGET)
 endif()
 
 find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} REQUIRED COMPONENTS Core DBus Widgets Svg Xml PrintSupport)
 find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} OPTIONAL_COMPONENTS Sql Concurrent QuickWidgets)
 
-if (Qt6Sql_VERSION VERSION_GREATER_EQUAL "6.10.0")
+if(Qt6Sql_VERSION VERSION_GREATER_EQUAL "6.10.0")
   find_package(Qt6 REQUIRED COMPONENTS SqlPrivate)
 endif()
 
@@ -212,8 +212,8 @@ find_package(KF${QT_MAJOR_VERSION} ${KF_MIN_VERSION} REQUIRED COMPONENTS Archive
 # have been deprecated but are not available before that version.
 # Once the KF_MIN_VERSION of this project is >= 5.100 this
 # whole block can be removed
-if (${KF_MIN_VERSION} VERSION_LESS "5.100")
-    if (${KF5_VERSION} VERSION_LESS "5.100")
+if(${KF_MIN_VERSION} VERSION_LESS "5.100")
+    if(${KF5_VERSION} VERSION_LESS "5.100")
         add_definitions(
             -DquestionTwoActions=questionYesNo
             -DquestionTwoActionsCancel=questionYesNoCancel
@@ -233,7 +233,7 @@ else()
     set(KF_ACTIVITIES Activities)
 endif()
 find_package(KF${QT_MAJOR_VERSION} ${KF_MIN_VERSION} OPTIONAL_COMPONENTS DocTools Holidays Contacts ${KF_ACTIVITIES})
-if (DEFINED AKONADI_MIN_VERSION)
+if(DEFINED AKONADI_MIN_VERSION)
   # Akonadi 23.04 moved to KPim5 prefix, deprecating KF5
   set(PIMPREFIX KPim${QT_MAJOR_VERSION})
   find_package(${PIMPREFIX}Akonadi ${AKONADI_MIN_VERSION} QUIET)
@@ -258,7 +258,7 @@ if(LibAlkimia${QT_MAJOR_VERSION}_DIR)
   set(_LibAlkimia${QT_MAJOR_VERSION}_DIR ${LibAlkimia${QT_MAJOR_VERSION}_DIR})
 endif()
 find_package(LibAlkimia${QT_MAJOR_VERSION} ${KMM_ALKIMIA_MIN_VERSION} REQUIRED)
-if (NOT LibAlkimia${QT_MAJOR_VERSION}_FOUND)
+if(NOT LibAlkimia${QT_MAJOR_VERSION}_FOUND)
   # restore LibAlkimia5_DIR set to NOTFOUND by first find_package call
   if(_LibAlkimia${QT_MAJOR_VERSION}_DIR)
     set(LibAlkimia${QT_MAJOR_VERSION}_DIR ${_LibAlkimia${QT_MAJOR_VERSION}_DIR})
@@ -282,7 +282,7 @@ if(NOT libofx_FOUND)
         pkg_check_modules(libofx IMPORTED_TARGET libofx)
 
         if(libofx_FOUND)
-            if (${libofx_VERSION} VERSION_GREATER_EQUAL ${KMM_LIBOFX_MIN_VERSION})
+            if(${libofx_VERSION} VERSION_GREATER_EQUAL ${KMM_LIBOFX_MIN_VERSION})
                 set(libofx_FOUND TRUE)
                 add_library(libofx::libofx INTERFACE IMPORTED)
                 target_link_libraries(libofx::libofx INTERFACE PkgConfig::libofx)
@@ -303,7 +303,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # freeBSD error: passing no argument for the '...' parameter of a
 # variadic macro is a C++20 extension [-Werror,-Wc++20-extensions]
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wno-c++20-extensions)
 endif()
 
@@ -329,10 +329,10 @@ add_feature_info("Doxygen" DOXYGEN_FOUND "Generate API documentation with Doxyge
 
 # check some include files exists
 set(CMAKE_REQUIRED_DEFINITIONS -D_XOPEN_SOURCE=500 -D_BSD_SOURCE)
-include (CheckIncludeFileCXX)
+include(CheckIncludeFileCXX)
 
 # include check for members in structs
-include (CheckStructHasMember)
+include(CheckStructHasMember)
 
 ######################### Special Requirements ##########################
 
@@ -564,7 +564,7 @@ add_subdirectory( tools )
 add_subdirectory( kmymoney )
 if(KF${QT_MAJOR_VERSION}DocTools_FOUND)
   add_subdirectory( doc )
-  if (${KMM_I18N_GENERATION})
+  if(${KMM_I18N_GENERATION})
     kdoctools_install( po )
   endif()
 endif()

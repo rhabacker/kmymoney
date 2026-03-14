@@ -1,12 +1,12 @@
 # qsql_sqlite between Qt versions aren't necessarily compatible and can fail to compile
 # qsql_sqlite is copied from https://github.com/sjemens/qsqlcipher-qt5
 
-set ( qsqlcipher_SOURCES
+set( qsqlcipher_SOURCES
   smain.cpp
   qsql_sqlite.cpp
 )
 
-if (BUILD_STATIC_PLUGINS)
+if(BUILD_STATIC_PLUGINS)
     add_library(qsqlcipher STATIC ${qsqlcipher_SOURCES})
     target_compile_definitions(qsqlcipher PRIVATE QT_STATICPLUGIN)
 else()
@@ -32,7 +32,7 @@ target_link_libraries(qsqlcipher
   PRIVATE
     PkgConfig::SQLCIPHER
 )
-if (TARGET Qt::SqlPrivate)
+if(TARGET Qt::SqlPrivate)
   target_link_libraries(qsqlcipher PRIVATE Qt::SqlPrivate)
 endif()
 target_link_libraries(qsqlcipher PRIVATE Qt::Sql)

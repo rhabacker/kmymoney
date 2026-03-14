@@ -1,4 +1,4 @@
-set (menus_SOURCES
+set(menus_SOURCES
   menuenums.cpp
 )
 

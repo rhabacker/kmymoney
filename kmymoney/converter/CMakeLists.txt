@@ -2,7 +2,7 @@ if(BUILD_TESTING)
   add_subdirectory( tests )
 endif()
 
-set (libconverter_a_SOURCES
+set(libconverter_a_SOURCES
   mymoneystatementreader.cpp
   transactionmatchfinder.cpp
   existingtransactionmatchfinder.cpp

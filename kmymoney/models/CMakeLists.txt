@@ -39,7 +39,7 @@ target_link_libraries(kmm_models PUBLIC
 )
 set_target_properties(kmm_models PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR})
 
-if (USE_MODELTEST)
+if(USE_MODELTEST)
   target_compile_definitions(kmm_models PRIVATE -DKMM_MODELTEST)
   target_link_libraries(kmm_models PRIVATE Qt::Test)
 endif()

@@ -9,7 +9,7 @@ set(sqlstorage_SOURCES
   kgeneratesqldlg.cpp
   )
 
-if (ENABLE_SQLTRACER)
+if(ENABLE_SQLTRACER)
   list(APPEND sqlstorage_SOURCES
     kmmsqlquery.cpp
   )

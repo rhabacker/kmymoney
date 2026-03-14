@@ -1,10 +1,10 @@
-set ( PAYEEIDENTIFIER_HEADER
+set( PAYEEIDENTIFIER_HEADER
   payeeidentifier.h
   payeeidentifiertyped.h
   payeeidentifierdata.h
 )
 
-set ( PAYEEIDENTIFIER_SCRS
+set( PAYEEIDENTIFIER_SCRS
   payeeidentifier.cpp
 )
 

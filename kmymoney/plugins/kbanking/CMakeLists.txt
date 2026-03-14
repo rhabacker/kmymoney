@@ -2,11 +2,11 @@
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/kbanking.json.cmake ${CMAKE_CURRENT_BINARY_DIR}/kbanking.json @ONLY)
 
 file(STRINGS "${AQBANKING_INCLUDE_DIRS}/aqbanking/banking.h" HAVE_REGISTRATION_FEATURE REGEX "AB_Banking_RuntimeConfig_SetCharValue")
-if (NOT ${HAVE_REGISTRATION_FEATURE} STREQUAL "")
+if(NOT ${HAVE_REGISTRATION_FEATURE} STREQUAL "")
   add_definitions(-DENABLE_FINTS_REGISTRATION)
 endif()
 
-if ("${gwenhywfar_VERSION}" VERSION_LESS "5.11.0")
+if("${gwenhywfar_VERSION}" VERSION_LESS "5.11.0")
   add_definitions(-UQT_DISABLE_DEPRECATED_BEFORE)
 endif()
 

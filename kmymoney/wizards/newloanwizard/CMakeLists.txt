@@ -1,6 +1,6 @@
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} )
 
-set (libnewloanwizard_a_SOURCES
+set(libnewloanwizard_a_SOURCES
   additionalfeeswizardpage.cpp       lendborrowwizardpage.cpp
   assetaccountwizardpage.cpp         loanamountwizardpage.cpp
   loanattributeswizardpage.cpp
@@ -20,7 +20,7 @@ set (libnewloanwizard_a_SOURCES
   knewloanwizard.cpp                 variableinterestdatewizardpage.cpp
   )
 
-set (libnewloanwizard_a_UI
+set(libnewloanwizard_a_UI
   knewloanwizard.ui
   additionalfeeswizardpage.ui       loanamountwizardpage.ui
   loanattributeswizardpage.ui

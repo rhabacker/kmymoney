@@ -9,7 +9,7 @@ ecm_install_icons(
   DESTINATION ${KDE_INSTALL_ICONDIR}
 )
 
-set (icons_SOURCES
+set(icons_SOURCES
   icons.cpp
 )
 

@@ -15,11 +15,11 @@ set( kmm_webconnect_SRCS
   kmmonlinequotesprofilemanager.cpp
 )
 
-set ( kmm_keychain_SRCS
+set( kmm_keychain_SRCS
   kmmkeychain.cpp
 )
 
-set ( kmm_yesno_SRCS
+set( kmm_yesno_SRCS
   kmmyesno.cpp
 )
 
@@ -33,7 +33,7 @@ set( kmm_webconnect_HEADER
   webconnect.h
 )
 
-set ( kmm_keychain_HEADER
+set( kmm_keychain_HEADER
   kmmkeychain.h
 )
 

@@ -17,18 +17,18 @@ about the major Qt version.
 Since 5.82.0.
 #]=======================================================================]
 
-if (DEFINED QT_MAJOR_VERSION)
+if(DEFINED QT_MAJOR_VERSION)
     return()
 endif()
 
-if (TARGET Qt5::Core)
+if(TARGET Qt5::Core)
     set(QT_MAJOR_VERSION 5)
-elseif (TARGET Qt6::Core)
+elseif(TARGET Qt6::Core)
     set(QT_MAJOR_VERSION 6)
 else()
     option(BUILD_WITH_QT6 "Build against Qt 6" OFF)
 
-    if (BUILD_WITH_QT6)
+    if(BUILD_WITH_QT6)
         set(QT_MAJOR_VERSION 6)
     else()
         set(QT_MAJOR_VERSION 5)

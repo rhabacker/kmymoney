@@ -1,6 +1,6 @@
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} )
 
-set (libnewuserwizard_a_SOURCES
+set(libnewuserwizard_a_SOURCES
   knewuserwizard.cpp
   kaccountpage.cpp
   kcategoriespage.cpp
@@ -10,7 +10,7 @@ set (libnewuserwizard_a_SOURCES
   kpreferencepage.cpp
   )
 
-set (libnewuserwizard_a_UI
+set(libnewuserwizard_a_UI
   kaccountpage.ui kcurrencypage.ui
   kgeneralpage.ui
   kintropage.ui kpreferencepage.ui

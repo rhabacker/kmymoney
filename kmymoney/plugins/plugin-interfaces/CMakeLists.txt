@@ -1,4 +1,4 @@
-set (libinterfaces_a_SOURCES
+set(libinterfaces_a_SOURCES
   kmmappinterface.cpp
   kmmimportinterface.cpp
   kmmstatementinterface.cpp

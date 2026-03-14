@@ -1,6 +1,6 @@
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} )
 
-set (libendingbalancedlg_a_SOURCES
+set(libendingbalancedlg_a_SOURCES
   kendingbalancedlg.cpp
   checkingstartwizardpage.cpp
   checkingstatementinfowizardpage.cpp
@@ -8,7 +8,7 @@ set (libendingbalancedlg_a_SOURCES
   previouspostponewizardpage.cpp
   )
 
-set (libendingbalancedlg_a_UI
+set(libendingbalancedlg_a_UI
   kendingbalancedlg.ui
   checkingstartwizardpage.ui
   checkingstatementinfowizardpage.ui
