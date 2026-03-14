@@ -48,7 +48,8 @@ add_library(kmm_templates ${kmm_templates_SOURCES})
 #  kmm_mymoney
 
 
-target_link_libraries(kmm_templates PUBLIC
+target_link_libraries(kmm_templates
+  PUBLIC
   KF${QT_MAJOR_VERSION}::TextWidgets
   KF${QT_MAJOR_VERSION}::I18n
   kmm_models

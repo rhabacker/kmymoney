@@ -28,7 +28,8 @@ ki18n_wrap_ui(libsettings_a_SOURCES ${libsettings_a_UI} )
 add_library(settings STATIC ${libsettings_a_SOURCES})
 
 # TODO: cleanup dependencies
-target_link_libraries(settings PUBLIC
+target_link_libraries(settings
+  PUBLIC
   KF${QT_MAJOR_VERSION}::Completion
   KF${QT_MAJOR_VERSION}::KIOWidgets
   KF${QT_MAJOR_VERSION}::TextWidgets

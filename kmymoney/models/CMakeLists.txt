@@ -29,7 +29,8 @@ add_library(kmm_models ${libmodels_a_SOURCES} ${libmodels_a_HEADER})
 
 generate_export_header(kmm_models BASE_NAME kmm_models)
 
-target_link_libraries(kmm_models PUBLIC
+target_link_libraries(kmm_models
+  PUBLIC
     Qt::Core
     kmm_mymoney
     kmm_settings

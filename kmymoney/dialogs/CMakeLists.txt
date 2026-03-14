@@ -84,7 +84,8 @@ target_link_libraries(kmm_base_dialogs
     KF${QT_MAJOR_VERSION}::KIOGui
 )
 
-target_link_libraries(kmm_base_dialogs LINK_PUBLIC
+target_link_libraries(kmm_base_dialogs
+  LINK_PUBLIC
   kmm_base_widgets
   kmm_yesno
   kmm_mymoney
@@ -133,7 +134,8 @@ target_link_libraries(kmm_extended_dialogs
     KF${QT_MAJOR_VERSION}::KIOGui
 )
 
-target_link_libraries(kmm_extended_dialogs LINK_PUBLIC
+target_link_libraries(kmm_extended_dialogs
+  LINK_PUBLIC
   kmm_base_widgets
   kmm_mymoney
   onlinetask_interfaces

@@ -133,7 +133,8 @@ ki18n_wrap_ui(kmm_widgets_SOURCES
 
 add_library(kmm_base_widgets ${kmm_base_widgets_SOURCES})
 
-target_link_libraries(kmm_base_widgets PUBLIC
+target_link_libraries(kmm_base_widgets
+  PUBLIC
   KF${QT_MAJOR_VERSION}::Completion
   KF${QT_MAJOR_VERSION}::Notifications
   KF${QT_MAJOR_VERSION}::TextWidgets
@@ -158,7 +159,8 @@ generate_export_header(kmm_base_widgets BASE_NAME kmm_base_widgets)
 
 add_library(kmm_widgets ${kmm_widgets_SOURCES})
 
-target_link_libraries(kmm_widgets PUBLIC
+target_link_libraries(kmm_widgets
+  PUBLIC
   KF${QT_MAJOR_VERSION}::TextWidgets
   KF${QT_MAJOR_VERSION}::KIOWidgets
   KF${QT_MAJOR_VERSION}::Completion
