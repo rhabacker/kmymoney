@@ -142,7 +142,7 @@ public:
         }
     }
 
-    void startReconciliation()
+    void startReconciliation(const QString& journalEntryId)
     {
         delete endingBalanceDlg;
         endingBalanceDlg = nullptr;
@@ -151,6 +151,10 @@ public:
         try {
             auto account = file->account(accountId);
             endingBalanceDlg = new KEndingBalanceDlg(account, q);
+            if (!journalEntryId.isEmpty()) {
+                const JournalEntry& item = file->journalModel()->itemById(journalEntryId);
+                endingBalanceDlg->setStatementDate(item.transaction().postDate());
+            }
             if (account.isAssetLiability()) {
                 if (endingBalanceDlg->exec() == QDialog::Accepted) {
                     if (KMyMoneySettings::autoReconciliation()) {
@@ -449,7 +453,7 @@ bool ReconciliationLedgerViewPage::executeAction(eMenu::Action action, const Sel
     auto dd = static_cast<ReconciliationLedgerViewPage::Private*>(d);
     switch (action) {
     case eMenu::Action::StartReconciliation:
-        dd->startReconciliation();
+        dd->startReconciliation(selections.firstSelection(SelectedObjects::JournalEntry));
         break;
 
     case eMenu::Action::PostponeReconciliation:

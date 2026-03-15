@@ -367,6 +367,11 @@ QDate KEndingBalanceDlg::statementDate() const
     return field("statementDate").toDate();
 }
 
+void KEndingBalanceDlg::setStatementDate(const QDate& date)
+{
+    setField("statementDate", date);
+}
+
 MyMoneyMoney KEndingBalanceDlg::adjustedReturnValue(const MyMoneyMoney& v) const
 {
     Q_D(const KEndingBalanceDlg);

@@ -52,10 +52,20 @@ public:
     MyMoneyMoney endingBalance() const;
     MyMoneyMoney previousBalance() const;
 
+    /**
+     * This returns the date stored internally
+     * for a bank statement.
+     */
     QDate statementDate() const;
 
     /**
-     * This returns the date of the last statement or the
+     * Set the date of the statement for example
+     * from a selected transaction.
+     */
+    void setStatementDate(const QDate& date);
+
+    /**
+     * This returns the date of the last reconciled statement or the
      * first non-cleared, non-reconciled transaction
      * whichever is older.
      */
