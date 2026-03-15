@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-13 00:44+0000\n"
+"POT-Creation-Date: 2026-03-15 00:45+0000\n"
 "PO-Revision-Date: 2016-10-23 22:14+0200\n"
 "Last-Translator: Petros Vidalis <pvidalis@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-doc@kde.org>\n"
@@ -1996,8 +1996,8 @@ msgstr "Λογαριασμοί/Κατηγορίες"
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_4)
 #: kmymoney/dialogs/kmymoneyfileinfodlg.ui:148
 #: kmymoney/dialogs/settings/ksettingsgeneral.ui:516
-#: kmymoney/plugins/views/reports/kreportsview_p.h:428
-#: kmymoney/plugins/views/reports/kreportsview_p.h:945
+#: kmymoney/plugins/views/reports/kreportsview_p.h:434
+#: kmymoney/plugins/views/reports/kreportsview_p.h:951
 #: kmymoney/views/kpayeesview.ui:117 kmymoney/views/ktagsview.ui:121
 #: kmymoney/views/ktagsview.ui:127
 #, kde-format
@@ -6494,7 +6494,7 @@ msgid "Budget"
 msgstr "Προϋπολογισμός"
 
 #: kmymoney/kmymoneyutils.cpp:128
-#: kmymoney/plugins/views/reports/kreportsview_p.h:496
+#: kmymoney/plugins/views/reports/kreportsview_p.h:502
 #, kde-format
 msgid "Cash Flow"
 msgstr "Ταμειακή ρευστότητα"
@@ -9724,7 +9724,7 @@ msgstr "Όνομα χαρτοφυλακίου"
 msgid "Source"
 msgstr "Πηγή"
 
-#: kmymoney/mymoney/storage/reportsmodel.cpp:56
+#: kmymoney/mymoney/storage/reportsmodel.cpp:59
 #, fuzzy, kde-format
 #| msgctxt "@title header of the currency name column"
 #| msgid "Name"
@@ -9732,28 +9732,42 @@ msgctxt "Reportname"
 msgid "Name"
 msgstr "Όνομα"
 
-#: kmymoney/mymoney/storage/reportsmodel.cpp:59
+#: kmymoney/mymoney/storage/reportsmodel.cpp:62
 #, fuzzy, kde-format
 #| msgid "Comment"
 msgctxt "Report comment"
 msgid "Comment"
 msgstr "Σχόλιο"
 
-#: kmymoney/mymoney/storage/reportsmodel.cpp:62
+#: kmymoney/mymoney/storage/reportsmodel.cpp:65
+#, fuzzy, kde-format
+#| msgid "Start Date"
+msgctxt "Report date range"
+msgid "Start Date"
+msgstr "Ημερομηνία έναρξης"
+
+#: kmymoney/mymoney/storage/reportsmodel.cpp:68
+#, fuzzy, kde-format
+#| msgid "Date"
+msgctxt "Report date range"
+msgid "End Date"
+msgstr "Ημερομηνία"
+
+#: kmymoney/mymoney/storage/reportsmodel.cpp:71
 #, fuzzy, kde-format
 #| msgid "Favorites"
 msgctxt "Report favorite"
 msgid "Favorite"
 msgstr "Προτιμώμενοι"
 
-#: kmymoney/mymoney/storage/reportsmodel.cpp:65
+#: kmymoney/mymoney/storage/reportsmodel.cpp:74
 #, fuzzy, kde-format
 #| msgid "Groups"
 msgctxt "Report group"
 msgid "Group"
 msgstr "Ομάδες"
 
-#: kmymoney/mymoney/storage/reportsmodel.cpp:68
+#: kmymoney/mymoney/storage/reportsmodel.cpp:77
 #, fuzzy, kde-format
 #| msgid "Modify"
 msgctxt "Report state"
@@ -16211,7 +16225,7 @@ msgstr "Όνομα"
 #. i18n: ectx: property (text), widget (QPushButton, m_forecastButton)
 #: kmymoney/plugins/views/forecast/forecastview.cpp:53
 #: kmymoney/plugins/views/forecast/kforecastview.ui:272
-#: kmymoney/plugins/views/reports/kreportsview_p.h:794
+#: kmymoney/plugins/views/reports/kreportsview_p.h:800
 #, kde-format
 msgid "Forecast"
 msgstr "Πρόβλεψη"
@@ -17678,7 +17692,7 @@ msgstr ""
 "Η <b>%1</b> είναι μια προκαθορισμένη αναφορά, δεν μπορείτε να τη διαγράψετε."
 
 #: kmymoney/plugins/views/reports/kreportsview.cpp:514
-#: kmymoney/plugins/views/reports/kreportsview_p.h:290
+#: kmymoney/plugins/views/reports/kreportsview_p.h:296
 #, kde-format
 msgid "Delete Report?"
 msgstr "Διαγραφή της αναφοράς;"
@@ -17725,7 +17739,7 @@ msgstr "Προεπιλεγμένη αναφορά"
 msgid "Custom reports"
 msgstr "Προσαρμοσμένη αναφορά"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:289
+#: kmymoney/plugins/views/reports/kreportsview_p.h:295
 #, fuzzy, kde-format
 #| msgid ""
 #| "Are you sure you want to delete report <b>%1</b>?  There is no way to "
@@ -17737,387 +17751,387 @@ msgstr ""
 "Επιθυμείτε σίγουρα την διαγραφή της αναφοράς <b>%1</b>; Δεν θα είναι δυνατή "
 "η ανάκτησή της."
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:303
+#: kmymoney/plugins/views/reports/kreportsview_p.h:309
 #, kde-format
 msgid "Income and Expenses"
 msgstr "Έσοδα και έξοδα"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:310
+#: kmymoney/plugins/views/reports/kreportsview_p.h:316
 #, kde-format
 msgid "Income and Expenses This Month"
 msgstr "Έσοδα και έξοδα αυτόν το μήνα"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:311
-#: kmymoney/plugins/views/reports/kreportsview_p.h:318
-#: kmymoney/plugins/views/reports/kreportsview_p.h:325
-#: kmymoney/plugins/views/reports/kreportsview_p.h:333
-#: kmymoney/plugins/views/reports/kreportsview_p.h:344
-#: kmymoney/plugins/views/reports/kreportsview_p.h:356
-#: kmymoney/plugins/views/reports/kreportsview_p.h:372
-#: kmymoney/plugins/views/reports/kreportsview_p.h:379
-#: kmymoney/plugins/views/reports/kreportsview_p.h:386
-#: kmymoney/plugins/views/reports/kreportsview_p.h:393
-#: kmymoney/plugins/views/reports/kreportsview_p.h:403
-#: kmymoney/plugins/views/reports/kreportsview_p.h:415
-#: kmymoney/plugins/views/reports/kreportsview_p.h:423
-#: kmymoney/plugins/views/reports/kreportsview_p.h:437
-#: kmymoney/plugins/views/reports/kreportsview_p.h:446
-#: kmymoney/plugins/views/reports/kreportsview_p.h:453
-#: kmymoney/plugins/views/reports/kreportsview_p.h:460
-#: kmymoney/plugins/views/reports/kreportsview_p.h:468
-#: kmymoney/plugins/views/reports/kreportsview_p.h:476
-#: kmymoney/plugins/views/reports/kreportsview_p.h:483
-#: kmymoney/plugins/views/reports/kreportsview_p.h:492
-#: kmymoney/plugins/views/reports/kreportsview_p.h:503
-#: kmymoney/plugins/views/reports/kreportsview_p.h:515
-#: kmymoney/plugins/views/reports/kreportsview_p.h:524
-#: kmymoney/plugins/views/reports/kreportsview_p.h:533
-#: kmymoney/plugins/views/reports/kreportsview_p.h:542
-#: kmymoney/plugins/views/reports/kreportsview_p.h:551
-#: kmymoney/plugins/views/reports/kreportsview_p.h:560
-#: kmymoney/plugins/views/reports/kreportsview_p.h:569
-#: kmymoney/plugins/views/reports/kreportsview_p.h:578
-#: kmymoney/plugins/views/reports/kreportsview_p.h:591
-#: kmymoney/plugins/views/reports/kreportsview_p.h:605
-#: kmymoney/plugins/views/reports/kreportsview_p.h:626
-#: kmymoney/plugins/views/reports/kreportsview_p.h:647
-#: kmymoney/plugins/views/reports/kreportsview_p.h:663
-#: kmymoney/plugins/views/reports/kreportsview_p.h:684
-#: kmymoney/plugins/views/reports/kreportsview_p.h:693
-#: kmymoney/plugins/views/reports/kreportsview_p.h:701
-#: kmymoney/plugins/views/reports/kreportsview_p.h:710
-#: kmymoney/plugins/views/reports/kreportsview_p.h:723
-#: kmymoney/plugins/views/reports/kreportsview_p.h:733
-#: kmymoney/plugins/views/reports/kreportsview_p.h:747
-#: kmymoney/plugins/views/reports/kreportsview_p.h:756
-#: kmymoney/plugins/views/reports/kreportsview_p.h:766
-#: kmymoney/plugins/views/reports/kreportsview_p.h:775
-#: kmymoney/plugins/views/reports/kreportsview_p.h:784
-#: kmymoney/plugins/views/reports/kreportsview_p.h:802
-#: kmymoney/plugins/views/reports/kreportsview_p.h:811
-#: kmymoney/plugins/views/reports/kreportsview_p.h:821
-#: kmymoney/plugins/views/reports/kreportsview_p.h:830
-#: kmymoney/plugins/views/reports/kreportsview_p.h:848
-#: kmymoney/plugins/views/reports/kreportsview_p.h:856
-#: kmymoney/plugins/views/reports/kreportsview_p.h:864
-#: kmymoney/plugins/views/reports/kreportsview_p.h:872
+#: kmymoney/plugins/views/reports/kreportsview_p.h:317
+#: kmymoney/plugins/views/reports/kreportsview_p.h:324
+#: kmymoney/plugins/views/reports/kreportsview_p.h:331
+#: kmymoney/plugins/views/reports/kreportsview_p.h:339
+#: kmymoney/plugins/views/reports/kreportsview_p.h:350
+#: kmymoney/plugins/views/reports/kreportsview_p.h:362
+#: kmymoney/plugins/views/reports/kreportsview_p.h:378
+#: kmymoney/plugins/views/reports/kreportsview_p.h:385
+#: kmymoney/plugins/views/reports/kreportsview_p.h:392
+#: kmymoney/plugins/views/reports/kreportsview_p.h:399
+#: kmymoney/plugins/views/reports/kreportsview_p.h:409
+#: kmymoney/plugins/views/reports/kreportsview_p.h:421
+#: kmymoney/plugins/views/reports/kreportsview_p.h:429
+#: kmymoney/plugins/views/reports/kreportsview_p.h:443
+#: kmymoney/plugins/views/reports/kreportsview_p.h:452
+#: kmymoney/plugins/views/reports/kreportsview_p.h:459
+#: kmymoney/plugins/views/reports/kreportsview_p.h:466
+#: kmymoney/plugins/views/reports/kreportsview_p.h:474
+#: kmymoney/plugins/views/reports/kreportsview_p.h:482
+#: kmymoney/plugins/views/reports/kreportsview_p.h:489
+#: kmymoney/plugins/views/reports/kreportsview_p.h:498
+#: kmymoney/plugins/views/reports/kreportsview_p.h:509
+#: kmymoney/plugins/views/reports/kreportsview_p.h:521
+#: kmymoney/plugins/views/reports/kreportsview_p.h:530
+#: kmymoney/plugins/views/reports/kreportsview_p.h:539
+#: kmymoney/plugins/views/reports/kreportsview_p.h:548
+#: kmymoney/plugins/views/reports/kreportsview_p.h:557
+#: kmymoney/plugins/views/reports/kreportsview_p.h:566
+#: kmymoney/plugins/views/reports/kreportsview_p.h:575
+#: kmymoney/plugins/views/reports/kreportsview_p.h:584
+#: kmymoney/plugins/views/reports/kreportsview_p.h:597
+#: kmymoney/plugins/views/reports/kreportsview_p.h:611
+#: kmymoney/plugins/views/reports/kreportsview_p.h:632
+#: kmymoney/plugins/views/reports/kreportsview_p.h:653
+#: kmymoney/plugins/views/reports/kreportsview_p.h:669
+#: kmymoney/plugins/views/reports/kreportsview_p.h:690
+#: kmymoney/plugins/views/reports/kreportsview_p.h:699
+#: kmymoney/plugins/views/reports/kreportsview_p.h:707
+#: kmymoney/plugins/views/reports/kreportsview_p.h:716
+#: kmymoney/plugins/views/reports/kreportsview_p.h:729
+#: kmymoney/plugins/views/reports/kreportsview_p.h:739
+#: kmymoney/plugins/views/reports/kreportsview_p.h:753
+#: kmymoney/plugins/views/reports/kreportsview_p.h:762
+#: kmymoney/plugins/views/reports/kreportsview_p.h:772
+#: kmymoney/plugins/views/reports/kreportsview_p.h:781
+#: kmymoney/plugins/views/reports/kreportsview_p.h:790
+#: kmymoney/plugins/views/reports/kreportsview_p.h:808
+#: kmymoney/plugins/views/reports/kreportsview_p.h:817
+#: kmymoney/plugins/views/reports/kreportsview_p.h:827
+#: kmymoney/plugins/views/reports/kreportsview_p.h:836
+#: kmymoney/plugins/views/reports/kreportsview_p.h:854
+#: kmymoney/plugins/views/reports/kreportsview_p.h:862
+#: kmymoney/plugins/views/reports/kreportsview_p.h:870
+#: kmymoney/plugins/views/reports/kreportsview_p.h:878
 #, kde-format
 msgid "Default Report"
 msgstr "Προεπιλεγμένη αναφορά"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:317
+#: kmymoney/plugins/views/reports/kreportsview_p.h:323
 #, kde-format
 msgid "Income and Expenses This Year"
 msgstr "Έσοδα και έξοδα αυτό το έτος"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:324
+#: kmymoney/plugins/views/reports/kreportsview_p.h:330
 #, kde-format
 msgid "Income and Expenses By Year"
 msgstr "Έσοδα και έξοδα ανά έτος"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:332
+#: kmymoney/plugins/views/reports/kreportsview_p.h:338
 #, kde-format
 msgid "Income and Expenses Graph"
 msgstr "Γράφημα εσόδων και εξόδων"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:343
+#: kmymoney/plugins/views/reports/kreportsview_p.h:349
 #, fuzzy, kde-format
 #| msgid "Income and Expenses Graph"
 msgid "Income and Expenses Bar Graph"
 msgstr "Γράφημα εσόδων και εξόδων"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:355
+#: kmymoney/plugins/views/reports/kreportsview_p.h:361
 #, kde-format
 msgid "Income and Expenses Pie Chart"
 msgstr "Διάγραμμα πίτας εσόδων και εξόδων"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:364
+#: kmymoney/plugins/views/reports/kreportsview_p.h:370
 #: kmymoney/views/khomeview_p.h:1559
 #, kde-format
 msgid "Net Worth"
 msgstr "Καθαρή αξία"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:371
+#: kmymoney/plugins/views/reports/kreportsview_p.h:377
 #, kde-format
 msgid "Net Worth By Month"
 msgstr "Καθαρή αξία ανά μήνα"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:378
+#: kmymoney/plugins/views/reports/kreportsview_p.h:384
 #, kde-format
 msgid "Net Worth Today"
 msgstr "Καθαρή αξία σήμερα"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:385
+#: kmymoney/plugins/views/reports/kreportsview_p.h:391
 #, kde-format
 msgid "Net Worth By Year"
 msgstr "Καθαρή αξία ανά έτος"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:392
+#: kmymoney/plugins/views/reports/kreportsview_p.h:398
 #, kde-format
 msgid "7-day Cash Flow Forecast"
 msgstr "Πρόβλεψη ταμειακής ρευστότητας 7 ημερών"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:402
+#: kmymoney/plugins/views/reports/kreportsview_p.h:408
 #, kde-format
 msgid "Net Worth Graph"
 msgstr "Γράφημα καθαρής αξίας"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:414
+#: kmymoney/plugins/views/reports/kreportsview_p.h:420
 #, kde-format
 msgid "Account Balances by Institution"
 msgstr "Υπόλοιπο λογαριασμού ανά ίδρυμα"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:422
+#: kmymoney/plugins/views/reports/kreportsview_p.h:428
 #, kde-format
 msgid "Account Balances by Type"
 msgstr "Υπόλοιπο λογαριασμού ανά τύπο"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:436
+#: kmymoney/plugins/views/reports/kreportsview_p.h:442
 #, kde-format
 msgid "Transactions by Account"
 msgstr "Συναλλαγές ανά λογαριασμό"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:445
+#: kmymoney/plugins/views/reports/kreportsview_p.h:451
 #, kde-format
 msgid "Transactions by Category"
 msgstr "Συναλλαγές ανά κατηγορία"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:452
+#: kmymoney/plugins/views/reports/kreportsview_p.h:458
 #, kde-format
 msgid "Transactions by Payee"
 msgstr "Συναλλαγές ανά δικαιούχο"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:459
+#: kmymoney/plugins/views/reports/kreportsview_p.h:465
 #, kde-format
 msgid "Transactions by Tag"
 msgstr "Συναλλαγές ανά ετικέτα"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:467
+#: kmymoney/plugins/views/reports/kreportsview_p.h:473
 #, kde-format
 msgid "Transactions by Month"
 msgstr "Συναλλαγές ανά μήνα"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:475
+#: kmymoney/plugins/views/reports/kreportsview_p.h:481
 #, kde-format
 msgid "Transactions by Week"
 msgstr "Συναλλαγές ανά εβδομάδα"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:482
+#: kmymoney/plugins/views/reports/kreportsview_p.h:488
 #, kde-format
 msgid "Loan Transactions"
 msgstr "Συναλλαγές δανείου"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:491
+#: kmymoney/plugins/views/reports/kreportsview_p.h:497
 #, kde-format
 msgid "Transactions by Reconciliation Status"
 msgstr "Συναλλαγές ανά κατάσταση συμφωνίας"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:502
+#: kmymoney/plugins/views/reports/kreportsview_p.h:508
 #, kde-format
 msgid "Cash Flow Transactions This Month"
 msgstr "Συναλλαγές ταμειακής ρευστότητας για αυτό το μήνα"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:507
+#: kmymoney/plugins/views/reports/kreportsview_p.h:513
 #: kmymoney/views/kmymoneyview.cpp:194
 #, kde-format
 msgid "Investments"
 msgstr "Επενδύσεις"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:514
+#: kmymoney/plugins/views/reports/kreportsview_p.h:520
 #, kde-format
 msgid "Investment Transactions"
 msgstr "Επενδυτικές συναλλαγές"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:523
+#: kmymoney/plugins/views/reports/kreportsview_p.h:529
 #, kde-format
 msgid "Investment Holdings by Account"
 msgstr "Επενδύσεις συμμετοχών ανά λογαριασμό"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:532
+#: kmymoney/plugins/views/reports/kreportsview_p.h:538
 #, kde-format
 msgid "Investment Holdings by Type"
 msgstr "Επενδύσεις συμμετοχών ανά είδος"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:541
+#: kmymoney/plugins/views/reports/kreportsview_p.h:547
 #, kde-format
 msgid "Investment Performance by Account"
 msgstr "Επενδυτικές επιδόσεις ανά λογαριασμό"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:550
+#: kmymoney/plugins/views/reports/kreportsview_p.h:556
 #, kde-format
 msgid "Investment Performance by Type"
 msgstr "Απόδοση των επενδύσεων ανά είδος"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:559
+#: kmymoney/plugins/views/reports/kreportsview_p.h:565
 #, fuzzy, kde-format
 #| msgid "Investment Holdings by Account"
 msgid "Investment Capital Gains by Account"
 msgstr "Επενδύσεις συμμετοχών ανά λογαριασμό"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:568
+#: kmymoney/plugins/views/reports/kreportsview_p.h:574
 #, fuzzy, kde-format
 #| msgid "Investment Holdings by Type"
 msgid "Investment Capital Gains by Type"
 msgstr "Επενδύσεις συμμετοχών ανά είδος"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:577
+#: kmymoney/plugins/views/reports/kreportsview_p.h:583
 #, kde-format
 msgid "Investment Holdings Pie"
 msgstr "Πίτα επενδύσεων συμμετοχών"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:590
+#: kmymoney/plugins/views/reports/kreportsview_p.h:596
 #, kde-format
 msgid "Investment Worth Graph"
 msgstr "Γράφημα καθαρής αξίας επενδύσεων"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:604
+#: kmymoney/plugins/views/reports/kreportsview_p.h:610
 #, kde-format
 msgid "Investment Price Graph"
 msgstr "Γράφημα τιμών επένδυσης"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:625
+#: kmymoney/plugins/views/reports/kreportsview_p.h:631
 #, kde-format
 msgid "Investment Moving Average Price Graph"
 msgstr "Γράφημα κινητού μέσου όρου των τιμών επένδυσης"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:646
+#: kmymoney/plugins/views/reports/kreportsview_p.h:652
 #, kde-format
 msgid "Investment Moving Average"
 msgstr "Κινητός μέσος όρος της επένδυσης"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:662
+#: kmymoney/plugins/views/reports/kreportsview_p.h:668
 #, kde-format
 msgid "Investment Moving Average vs Actual"
 msgstr "Σύγκριση κινητού μέσου και πραγματικού επένδυσης"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:676
+#: kmymoney/plugins/views/reports/kreportsview_p.h:682
 #, kde-format
 msgid "Taxes"
 msgstr "Φόροι"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:683
+#: kmymoney/plugins/views/reports/kreportsview_p.h:689
 #, kde-format
 msgid "Tax Transactions by Category"
 msgstr "Συναλλαγές φόρου ανά κατηγορία"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:692
+#: kmymoney/plugins/views/reports/kreportsview_p.h:698
 #, kde-format
 msgid "Tax Transactions by Payee"
 msgstr "Συναλλαγές φόρου ανά δικαιούχο"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:700
+#: kmymoney/plugins/views/reports/kreportsview_p.h:706
 #, kde-format
 msgid "Tax Transactions by Category Last Fiscal Year"
 msgstr "Συναλλαγές φόρου ανά κατηγορία το προηγούμενο οικονομικό έτος"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:709
+#: kmymoney/plugins/views/reports/kreportsview_p.h:715
 #, kde-format
 msgid "Tax Transactions by Payee Last Fiscal Year"
 msgstr "Συναλλαγές φόρου ανά δικαιούχο το προηγούμενο οικονομικό έτος"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:715
+#: kmymoney/plugins/views/reports/kreportsview_p.h:721
 #, kde-format
 msgid "Budgeting"
 msgstr "Προϋπολογισμός"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:722
+#: kmymoney/plugins/views/reports/kreportsview_p.h:728
 #, kde-format
 msgid "Budgeted vs. Actual This Year"
 msgstr "Σύγκριση προϋπολογισθέντων και πραγματικών του τρέχοντος έτους"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:732
+#: kmymoney/plugins/views/reports/kreportsview_p.h:738
 #, kde-format
 msgid "Budgeted vs. Actual This Year (YTM)"
 msgstr ""
 "Σύγκριση προϋπολογισθέντων και πραγματικών του τρέχοντος έτους (απόδοση στη "
 "λήξη)"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:746
+#: kmymoney/plugins/views/reports/kreportsview_p.h:752
 #: kmymoney/plugins/views/reports/reportsview.cpp:177
 #, kde-format
 msgid "Monthly Budgeted vs. Actual"
 msgstr "Σύγκριση προϋπολογισθέντων και πραγματικών ανά μήνα"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:755
+#: kmymoney/plugins/views/reports/kreportsview_p.h:761
 #, kde-format
 msgid "Yearly Budgeted vs. Actual"
 msgstr "Σύγκριση προϋπολογισθέντων και πραγματικών ανά έτος"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:765
+#: kmymoney/plugins/views/reports/kreportsview_p.h:771
 #, kde-format
 msgid "Monthly Budget"
 msgstr "Μηνιαίος προϋπολογισμός"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:774
+#: kmymoney/plugins/views/reports/kreportsview_p.h:780
 #, kde-format
 msgid "Yearly Budget"
 msgstr "Ετήσιος προϋπολογισμός"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:783
+#: kmymoney/plugins/views/reports/kreportsview_p.h:789
 #, kde-format
 msgid "Yearly Budgeted vs Actual Graph"
 msgstr "Συγκριτικό γράφημα προϋπολογισθέντων και πραγματικών"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:801
+#: kmymoney/plugins/views/reports/kreportsview_p.h:807
 #, kde-format
 msgid "Forecast By Month"
 msgstr "Πρόβλεψη ανά μήνα"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:810
+#: kmymoney/plugins/views/reports/kreportsview_p.h:816
 #, kde-format
 msgid "Forecast Next Quarter"
 msgstr "Πρόβλεψη του επόμενου τριμήνου"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:820
+#: kmymoney/plugins/views/reports/kreportsview_p.h:826
 #, kde-format
 msgid "Income and Expenses Forecast This Year"
 msgstr "Πρόβλεψη εσόδων και εξόδων αυτού του έτους"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:829
+#: kmymoney/plugins/views/reports/kreportsview_p.h:835
 #, kde-format
 msgid "Net Worth Forecast Graph"
 msgstr "Γράφημα πρόβλεψης καθαρής αξίας"
 
 #. i18n: ectx: attribute (title), widget (QWizardPage, NewGeneralInfoWizardPage)
 #. i18n: ectx: property (title), widget (QWizardPage, CheckingStartWizardPage)
-#: kmymoney/plugins/views/reports/kreportsview_p.h:840
+#: kmymoney/plugins/views/reports/kreportsview_p.h:846
 #: kmymoney/wizards/endingbalancedlg/checkingstartwizardpage.ui:14
 #: kmymoney/wizards/newloanwizard/newgeneralinfowizardpage.ui:6
 #, kde-format
 msgid "General Information"
 msgstr "Γενικές πληροφορίες"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:847
+#: kmymoney/plugins/views/reports/kreportsview_p.h:853
 #, kde-format
 msgid "Schedule Information"
 msgstr "Πληροφορίες προγραμματισμένων συναλλαγών"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:855
+#: kmymoney/plugins/views/reports/kreportsview_p.h:861
 #, kde-format
 msgid "Schedule Summary Information"
 msgstr "Συνοπτικές πληροφορίες για τις ημερομηνίες πληρωμών"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:863
+#: kmymoney/plugins/views/reports/kreportsview_p.h:869
 #, kde-format
 msgid "Account Information"
 msgstr "Πληροφορίες λογαριασμού"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:871
+#: kmymoney/plugins/views/reports/kreportsview_p.h:877
 #, kde-format
 msgid "Loan Information"
 msgstr "Πληροφορίες δανείου"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:877
+#: kmymoney/plugins/views/reports/kreportsview_p.h:883
 #, kde-format
 msgid "Charts"
 msgstr "Διαγράμματα"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:943
+#: kmymoney/plugins/views/reports/kreportsview_p.h:949
 #, kde-format
 msgid "%1 YTD Account Transactions"
 msgstr "%1 συναλλαγές λογαριασμού YTD"
 
-#: kmymoney/plugins/views/reports/kreportsview_p.h:944
+#: kmymoney/plugins/views/reports/kreportsview_p.h:950
 #: kmymoney/plugins/views/reports/reportsview.cpp:84
 #: kmymoney/plugins/views/reports/reportsview.cpp:120
 #: kmymoney/plugins/views/reports/reportsview.cpp:178
