@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-15 00:45+0000\n"
+"POT-Creation-Date: 2026-03-16 00:44+0000\n"
 "PO-Revision-Date: 2026-03-01 08:10+0100\n"
 "Last-Translator: Vincenzo Reale <smart2128vr@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -21690,14 +21690,14 @@ msgid "The amount entered is different from the sum of all splits by %1."
 msgstr ""
 "L'importo digitato è diverso dalla somma di tutte le suddivisioni di %1."
 
-#: kmymoney/views/newtransactioneditor.cpp:638
+#: kmymoney/views/newtransactioneditor.cpp:642
 #, kde-format
 msgctxt "@title:window Autofill selection dialog"
 msgid "Select autofill transaction"
 msgstr "Seleziona completamento automatico transazione"
 
 #. i18n: ectx: property (text), widget (QLabel, linkLabel)
-#: kmymoney/views/newtransactioneditor.cpp:1159
+#: kmymoney/views/newtransactioneditor.cpp:1163
 #: kmymoney/views/newtransactioneditor.ui:320
 #: kmymoney/views/newtransactionform.cpp:104
 #: kmymoney/views/newtransactionform.ui:179
@@ -21705,7 +21705,7 @@ msgstr "Seleziona completamento automatico transazione"
 msgid "Link"
 msgstr "Collegamento"
 
-#: kmymoney/views/newtransactioneditor.cpp:1354
+#: kmymoney/views/newtransactioneditor.cpp:1358
 #, kde-format
 msgctxt "@info Question for confirmation of operation"
 msgid ""
@@ -21717,7 +21717,7 @@ msgstr ""
 "volta memorizzato nel registro, non è possibile ripristinarlo.</p><p>Sei "
 "sicuro di voler continuare?</p>"
 
-#: kmymoney/views/newtransactioneditor.cpp:1703
+#: kmymoney/views/newtransactioneditor.cpp:1707
 #, kde-format
 msgid ""
 "Do you want to replace memo<p><i>%1</i></p>with memo<p><i>%2</i></p>in the "
@@ -21726,7 +21726,7 @@ msgstr ""
 "Vuoi sostituire la nota <p><i>%1</i></p>con la nota<p><i>%2</i></"
 "p>nell'altra suddivisione?"
 
-#: kmymoney/views/newtransactioneditor.cpp:1704
+#: kmymoney/views/newtransactioneditor.cpp:1708
 #, kde-format
 msgid "Copy memo"
 msgstr "Copia nota"

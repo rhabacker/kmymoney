@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-15 00:45+0000\n"
-"PO-Revision-Date: 2026-03-01 10:11+0100\n"
+"POT-Creation-Date: 2026-03-16 00:44+0000\n"
+"PO-Revision-Date: 2026-03-14 10:09+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -30,7 +30,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Accelerator-Marker: &\n"
 "X-Environment: kde\n"
-"X-Generator: Lokalize 25.12.2\n"
+"X-Generator: Lokalize 25.12.3\n"
 "X-Text-Markup: kde4\n"
 
 #, kde-format
@@ -9355,8 +9355,7 @@ msgid "Name"
 msgstr "Nom"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:62
-#, fuzzy, kde-format
-#| msgid "Comment"
+#, kde-format
 msgctxt "Report comment"
 msgid "Comment"
 msgstr "Commentaire"
@@ -9376,22 +9375,19 @@ msgid "End Date"
 msgstr "Date d'exécution"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:71
-#, fuzzy, kde-format
-#| msgid "Favorite"
+#, kde-format
 msgctxt "Report favorite"
 msgid "Favorite"
-msgstr "Favoris"
+msgstr "Préféré"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:74
-#, fuzzy, kde-format
-#| msgid "Groups"
+#, kde-format
 msgctxt "Report group"
 msgid "Group"
-msgstr "Groupes"
+msgstr "Groupe"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:77
-#, fuzzy, kde-format
-#| msgid "Modified"
+#, kde-format
 msgctxt "Report state"
 msgid "Modified"
 msgstr "Modifié"
@@ -17036,17 +17032,15 @@ msgstr "Rapports"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: kmymoney/plugins/views/reports/kreportsview.ui:40
-#, fuzzy, kde-format
-#| msgid "Default Report"
+#, kde-format
 msgid "Default reports"
-msgstr "Rapport par Défaut"
+msgstr "Rapports par défaut"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: kmymoney/plugins/views/reports/kreportsview.ui:54
-#, fuzzy, kde-format
-#| msgid "Custom Report"
+#, kde-format
 msgid "Custom reports"
-msgstr "Rapport Personnalisé"
+msgstr "Rapports personnalisés"
 
 #: kmymoney/plugins/views/reports/kreportsview_p.h:295
 #, kde-format
@@ -21847,14 +21841,14 @@ msgid "The amount entered is different from the sum of all splits by %1."
 msgstr ""
 "Le montant saisi est différent de la somme de toutes les parties de %1."
 
-#: kmymoney/views/newtransactioneditor.cpp:638
+#: kmymoney/views/newtransactioneditor.cpp:642
 #, kde-format
 msgctxt "@title:window Autofill selection dialog"
 msgid "Select autofill transaction"
 msgstr "Sélectionner une opération pour la saisie automatique"
 
 #. i18n: ectx: property (text), widget (QLabel, linkLabel)
-#: kmymoney/views/newtransactioneditor.cpp:1159
+#: kmymoney/views/newtransactioneditor.cpp:1163
 #: kmymoney/views/newtransactioneditor.ui:320
 #: kmymoney/views/newtransactionform.cpp:104
 #: kmymoney/views/newtransactionform.ui:179
@@ -21862,7 +21856,7 @@ msgstr "Sélectionner une opération pour la saisie automatique"
 msgid "Link"
 msgstr "Lier"
 
-#: kmymoney/views/newtransactioneditor.cpp:1354
+#: kmymoney/views/newtransactioneditor.cpp:1358
 #, kde-format
 msgctxt "@info Question for confirmation of operation"
 msgid ""
@@ -21874,7 +21868,7 @@ msgstr ""
 "<br/>Une fois enregistré dans le grand livre, cela ne pourra pas être annulé."
 "</p><p>Voulez-vous vraiment continuer ?</p>"
 
-#: kmymoney/views/newtransactioneditor.cpp:1703
+#: kmymoney/views/newtransactioneditor.cpp:1707
 #, kde-format
 msgid ""
 "Do you want to replace memo<p><i>%1</i></p>with memo<p><i>%2</i></p>in the "
@@ -21883,7 +21877,7 @@ msgstr ""
 "Voulez-vous remplacer le mémo<p><i>%1</i></p>par le mémo<p><i>%2</i></p>dans "
 "l'autre répartition ?"
 
-#: kmymoney/views/newtransactioneditor.cpp:1704
+#: kmymoney/views/newtransactioneditor.cpp:1708
 #, kde-format
 msgid "Copy memo"
 msgstr "Copier le mémo"

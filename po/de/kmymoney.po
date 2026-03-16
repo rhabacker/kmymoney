@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-15 00:45+0000\n"
+"POT-Creation-Date: 2026-03-16 00:44+0000\n"
 "PO-Revision-Date: 2026-02-24 22:25+0100\n"
 "Last-Translator: Alois Spitzbart <spitz234@hotmail.com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -21793,14 +21793,14 @@ msgstr ""
 "Der eingegebene Betrag unterscheidet sich von der Summe aller Split-"
 "Buchungen um %1."
 
-#: kmymoney/views/newtransactioneditor.cpp:638
+#: kmymoney/views/newtransactioneditor.cpp:642
 #, kde-format
 msgctxt "@title:window Autofill selection dialog"
 msgid "Select autofill transaction"
 msgstr "Automatisch ausgefüllte Buchung wählen"
 
 #. i18n: ectx: property (text), widget (QLabel, linkLabel)
-#: kmymoney/views/newtransactioneditor.cpp:1159
+#: kmymoney/views/newtransactioneditor.cpp:1163
 #: kmymoney/views/newtransactioneditor.ui:320
 #: kmymoney/views/newtransactionform.cpp:104
 #: kmymoney/views/newtransactionform.ui:179
@@ -21808,7 +21808,7 @@ msgstr "Automatisch ausgefüllte Buchung wählen"
 msgid "Link"
 msgstr "Verknüpfung"
 
-#: kmymoney/views/newtransactioneditor.cpp:1354
+#: kmymoney/views/newtransactioneditor.cpp:1358
 #, kde-format
 msgctxt "@info Question for confirmation of operation"
 msgid ""
@@ -21817,7 +21817,7 @@ msgid ""
 "continue?</p>"
 msgstr ""
 
-#: kmymoney/views/newtransactioneditor.cpp:1703
+#: kmymoney/views/newtransactioneditor.cpp:1707
 #, kde-format
 msgid ""
 "Do you want to replace memo<p><i>%1</i></p>with memo<p><i>%2</i></p>in the "
@@ -21826,7 +21826,7 @@ msgstr ""
 "Möchten Sie die Notiz <p><i>%1</i></p> durch die Notiz <p><i>%2</i></p> aus "
 "der anderen Split-Buchung ersetzen."
 
-#: kmymoney/views/newtransactioneditor.cpp:1704
+#: kmymoney/views/newtransactioneditor.cpp:1708
 #, kde-format
 msgid "Copy memo"
 msgstr "Notiz kopieren"
