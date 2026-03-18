@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-16 00:44+0000\n"
-"PO-Revision-Date: 2026-03-14 10:09+0100\n"
+"PO-Revision-Date: 2026-03-16 09:01+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -9361,18 +9361,16 @@ msgid "Comment"
 msgstr "Commentaire"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:65
-#, fuzzy, kde-format
-#| msgid "Start Date"
+#, kde-format
 msgctxt "Report date range"
 msgid "Start Date"
 msgstr "Date de début"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:68
-#, fuzzy, kde-format
-#| msgid "Date"
+#, kde-format
 msgctxt "Report date range"
 msgid "End Date"
-msgstr "Date d'exécution"
+msgstr "Date de fin"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:71
 #, kde-format
