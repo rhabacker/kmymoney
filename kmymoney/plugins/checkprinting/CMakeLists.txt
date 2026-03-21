@@ -52,5 +52,5 @@ file(GLOB TEMPLATE_FILES
     templates/*.html
 )
 
-install(FILES ${TEMPLATE_FILES} 
+install(FILES ${TEMPLATE_FILES}
   DESTINATION ${KDE_INSTALL_DATADIR}/checkprinting)
