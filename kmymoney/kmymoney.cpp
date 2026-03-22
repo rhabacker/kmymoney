@@ -1483,6 +1483,7 @@ QHash<Action, QAction *> KMyMoneyApp::initActions()
             {Action::CombineTransactions,           QStringLiteral("transaction_combine"),            i18nc("Combine transactions", "Combine"),           Icon::Empty},
             {Action::MoveToToday,                   QStringLiteral("transaction_move_to_today"),      i18n("Move to today"),                              Icon::Empty},
             {Action::CopySplits,                    QStringLiteral("transaction_copy_splits"),        i18n("Copy splits"),                                Icon::Empty},
+            {Action::CopyTransactionsToClipboard,   QStringLiteral("transaction_copy_clipboard"),     i18n("Copy selected transactions"),                 Icon::EditCopy},
             {Action::ShowFilterWidget,              QStringLiteral("filter_show_widget"),             i18n("Show filter widget"),                         Icon::Empty},
             //Investment
             {Action::NewInvestment,                 QStringLiteral("investment_new"),                 i18n("New investment..."),                          Icon::InvestmentNew},
@@ -1632,6 +1633,7 @@ QHash<Action, QAction *> KMyMoneyApp::initActions()
             {Action::AddReversingTransaction,       &KMyMoneyApp::slotDuplicateTransactions},
             {Action::DisplayTransactionDetails,     &KMyMoneyApp::slotDisplayTransactionDetails},
             {Action::DisplayScheduleDetails,        &KMyMoneyApp::slotDisplayTransactionDetails},
+            {Action::CopyTransactionsToClipboard,   &KMyMoneyApp::slotCopyTransactionsToClipboard},
             {Action::CopySplits,                    &KMyMoneyApp::slotCopySplits},
             {Action::MarkCleared,                   &KMyMoneyApp::slotMarkTransactions},
             {Action::MarkReconciled,                &KMyMoneyApp::slotMarkTransactions},
@@ -1741,6 +1743,7 @@ QHash<Action, QAction *> KMyMoneyApp::initActions()
             {qMakePair(Action::DeleteTransaction,           Qt::CTRL | Qt::Key_Delete)},
             {qMakePair(Action::EditTransaction,             Qt::CTRL | Qt::Key_E)},
             {qMakePair(Action::EditSplits,                  Qt::CTRL | Qt::SHIFT | Qt::Key_E)},
+            {qMakePair(Action::CopyTransactionsToClipboard, Qt::CTRL | Qt::Key_C)},
             {qMakePair(Action::CopySplits,                  Qt::CTRL | Qt::SHIFT | Qt::Key_C)},
             {qMakePair(Action::AddReversingTransaction,     Qt::CTRL | Qt::SHIFT | Qt::Key_R)},
             {qMakePair(Action::AddReversingTransaction,     Qt::CTRL | Qt::SHIFT | Qt::Key_Backspace)},
@@ -2529,6 +2532,47 @@ void KMyMoneyApp::slotCopySplits()
                 qDebug() << "transactionCopySplits() failed";
             }
         }
+    }
+}
+
+void KMyMoneyApp::slotCopyTransactionsToClipboard()
+{
+    const auto file = MyMoneyFile::instance();
+    const auto journalEntryIds = d->m_selections.selection(SelectedObjects::JournalEntry);
+    if (journalEntryIds.isEmpty()) {
+        d->executeAction(eMenu::Action::CopyTransactionsToClipboard);
+        return;
+    }
+
+    QStringList lines;
+    lines << i18nc("@title:column tab separated transaction export for clipboard", "Date\tAccount\tPayee\tMemo\tNumber\tPayment\tDeposit\tBalance");
+
+    for (const auto& journalEntryId : journalEntryIds) {
+        auto idx = file->journalModel()->indexById(journalEntryId);
+        const auto model = idx.model();
+        if (!idx.isValid() || model == nullptr) {
+            continue;
+        }
+
+        const auto textFor = [model, &idx](const JournalModel::Column column) {
+            return model->index(idx.row(), column).data(Qt::DisplayRole).toString().simplified();
+        };
+
+        QStringList fields{
+            textFor(JournalModel::Column::Date),
+            textFor(JournalModel::Column::Account),
+            textFor(JournalModel::Column::Payee),
+            textFor(JournalModel::Column::Detail),
+            textFor(JournalModel::Column::Number),
+            textFor(JournalModel::Column::Payment),
+            textFor(JournalModel::Column::Deposit),
+            textFor(JournalModel::Column::Balance),
+        };
+        lines.append(fields.join(QLatin1Char('\t')));
+    }
+
+    if (lines.count() > 1) {
+        QApplication::clipboard()->setText(lines.join(QLatin1Char('\n')));
     }
 }
 

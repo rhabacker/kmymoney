@@ -4,6 +4,8 @@
 // ----------------------------------------------------------------------------
 // QT Includes
 
+#include <QApplication>
+#include <QClipboard>
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <kmm_codec.h>
@@ -55,6 +57,7 @@ KReportTab::KReportTab(QTabWidget* parent, const MyMoneyReport& report, const KR
     m_control->ui->buttonConfigure->setDefaultAction(pActions[eMenu::Action::ReportConfigure]);
     m_control->ui->buttonDelete->setDefaultAction(pActions[eMenu::Action::ReportDelete]);
     m_control->ui->buttonExport->setDefaultAction(pActions[eMenu::Action::ReportExport]);
+    m_control->ui->buttonCopy->setDefaultAction(pActions[eMenu::Action::CopyTransactionsToClipboard]);
     m_control->ui->buttonNew->setDefaultAction(pActions[eMenu::Action::ReportNew]);
 
     m_chartView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -190,6 +193,20 @@ void KReportTab::saveAs(const QString& filename, const QString& selectedMimeType
     }
 }
 
+void KReportTab::copyToClipboard()
+{
+    QString copyData;
+    if (m_table) {
+        copyData = m_table->renderReport(QLatin1String("csv"), m_encoding, QString());
+    }
+    if (copyData.isEmpty() && m_tableView) {
+        copyData = m_tableView->toPlainText();
+    }
+    if (!copyData.isEmpty()) {
+        QApplication::clipboard()->setText(copyData);
+    }
+}
+
 void KReportTab::loadTab()
 {
     m_needReload = true;
@@ -247,6 +264,7 @@ void KReportTab::enableAllReportActions()
     pActions[eMenu::Action::ReportNew]->setEnabled(true);
     pActions[eMenu::Action::ReportConfigure]->setEnabled(true);
     pActions[eMenu::Action::ReportExport]->setEnabled(true);
+    pActions[eMenu::Action::CopyTransactionsToClipboard]->setEnabled(true);
     pActions[eMenu::Action::ReportDelete]->setEnabled(true);
     pActions[eMenu::Action::ReportClose]->setEnabled(true);
 }

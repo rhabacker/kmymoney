@@ -81,6 +81,7 @@
    <Action name="transaction_delete" />
    <Action name="transaction_duplicate" />
    <Action name="transaction_add_reversing" />
+   <Action name="transaction_copy_clipboard" />
    <Action name="transaction_move_to_today" />
    <Action name="transaction_open_url" />
    <Menu name="transaction_mark_menu">
@@ -223,6 +224,7 @@
   <Action name="transaction_delete" />
   <Action name="transaction_duplicate" />
   <Action name="transaction_add_reversing" />
+  <Action name="transaction_copy_clipboard" />
   <Action name="transaction_copy_splits" />
   <Action name="transaction_move_to_today" />
   <Action name="transaction_open_url" />

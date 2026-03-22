@@ -262,6 +262,7 @@ protected Q_SLOTS:
     void slotDeleteTransactions();
     void slotDuplicateTransactions();
     void slotDisplayTransactionDetails();
+    void slotCopyTransactionsToClipboard();
     void slotCopySplits();
     void slotMarkTransactions();
     void slotMoveTransactionTo();

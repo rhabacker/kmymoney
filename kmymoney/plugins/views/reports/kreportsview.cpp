@@ -143,6 +143,14 @@ void KReportsView::executeAction(eMenu::Action action, const SelectedObjects& se
         d->showTransactionReport();
         break;
 
+    case eMenu::Action::CopyTransactionsToClipboard:
+        if (d->isActiveView()) {
+            if (auto tab = dynamic_cast<KReportTab*>(d->ui.m_reportTabWidget->currentWidget())) {
+                tab->copyToClipboard();
+            }
+        }
+        break;
+
     default:
         break;
     }
@@ -275,6 +283,8 @@ void KReportsView::updateActions(const SelectedObjects& selections)
 
     // only access the widgets if they are initialized
     if (!d->m_needLoad) {
+        pActions[eMenu::Action::CopyTransactionsToClipboard]->setEnabled(d->isActiveView()
+                                                                         && dynamic_cast<KReportTab*>(d->ui.m_reportTabWidget->currentWidget()));
         if (auto tab = dynamic_cast<KReportTab*>(d->ui.m_reportTabWidget->currentWidget())) {
             tab->enableAllReportActions();
         }
