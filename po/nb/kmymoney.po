@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-16 00:44+0000\n"
+"POT-Creation-Date: 2026-03-23 00:44+0000\n"
 "PO-Revision-Date: 2026-03-01 12:31+0100\n"
 "Last-Translator: Kjetil Sorlund <translate@sorlund.no>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -21667,7 +21667,7 @@ msgctxt "@label:textbox Difference to statement"
 msgid "Difference: %1"
 msgstr "Forskjell: %1"
 
-#: kmymoney/views/simpleledgerview.cpp:405
+#: kmymoney/views/simpleledgerview.cpp:404
 #, kde-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -21677,7 +21677,7 @@ msgstr ""
 "Lukk-knappen for denne kontoen er fjernet fordi du avstemmer den. Fullfør, "
 "avbryt eller utsett avstemmingen for å få den tilbake."
 
-#: kmymoney/views/simpleledgerview.cpp:516
+#: kmymoney/views/simpleledgerview.cpp:515
 #, kde-format
 msgctxt "@label displayed when no ledger is open"
 msgid ""
@@ -21687,7 +21687,7 @@ msgstr ""
 "Denne siden viser kontobøkene. For øyeblikket finnes det ingen konti så "
 "denne teksten vises i stedet."
 
-#: kmymoney/views/simpleledgerview.cpp:519
+#: kmymoney/views/simpleledgerview.cpp:518
 #, kde-format
 msgctxt "@label displayed when no ledger is open"
 msgid ""
@@ -21697,12 +21697,12 @@ msgstr ""
 "Denne siden viser kontobøkene. For øyeblikket er ingen konti valgt så denne "
 "teksten vises i stedet."
 
-#: kmymoney/views/simpleledgerview.cpp:798
+#: kmymoney/views/simpleledgerview.cpp:797
 #, kde-format
 msgid "Open website of <b>%1</b> in your browser."
 msgstr "Åpne nettsiden til <b>%1</b> i nettleseren din."
 
-#: kmymoney/views/simpleledgerview.cpp:990
+#: kmymoney/views/simpleledgerview.cpp:989
 #, kde-format
 msgid ""
 "You cannot close this view because you are reconciling the account. Finish, "
@@ -21711,7 +21711,7 @@ msgstr ""
 "Du kan ikke lukke denne visningen fordi du avstemmer kontoen. Fullfør, "
 "avbryt eller utsett avstemmingen først."
 
-#: kmymoney/views/simpleledgerview.cpp:991
+#: kmymoney/views/simpleledgerview.cpp:990
 #, kde-format
 msgctxt "@title:info In reconciliation"
 msgid "View cannot be closed"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-16 00:44+0000\n"
+"POT-Creation-Date: 2026-03-23 00:44+0000\n"
 "PO-Revision-Date: 2026-03-15 07:53+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -21057,7 +21057,7 @@ msgctxt "@label:textbox Difference to statement"
 msgid "Difference: %1"
 msgstr "სხვაობა: %1"
 
-#: kmymoney/views/simpleledgerview.cpp:405
+#: kmymoney/views/simpleledgerview.cpp:404
 #, kde-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -21067,7 +21067,7 @@ msgstr ""
 "ამ ანგარიშის დახურვის ღილაკი მოცილებულია, რადგან მიმდინარეობს მისი "
 "შეთანხმება. დასაბრუნებლად ჯერ დაასრულეთ, გააუქმეთ, ან გადადეთ შეთანხმება."
 
-#: kmymoney/views/simpleledgerview.cpp:516
+#: kmymoney/views/simpleledgerview.cpp:515
 #, kde-format
 msgctxt "@label displayed when no ledger is open"
 msgid ""
@@ -21075,7 +21075,7 @@ msgid ""
 "text is shown instead."
 msgstr ""
 
-#: kmymoney/views/simpleledgerview.cpp:519
+#: kmymoney/views/simpleledgerview.cpp:518
 #, kde-format
 msgctxt "@label displayed when no ledger is open"
 msgid ""
@@ -21083,12 +21083,12 @@ msgid ""
 "this text is shown instead."
 msgstr ""
 
-#: kmymoney/views/simpleledgerview.cpp:798
+#: kmymoney/views/simpleledgerview.cpp:797
 #, kde-format
 msgid "Open website of <b>%1</b> in your browser."
 msgstr "<b>%1</b>-ის ვებგვერდის გახსნა ბრაუზერში."
 
-#: kmymoney/views/simpleledgerview.cpp:990
+#: kmymoney/views/simpleledgerview.cpp:989
 #, kde-format
 msgid ""
 "You cannot close this view because you are reconciling the account. Finish, "
@@ -21097,7 +21097,7 @@ msgstr ""
 "ამ ხედის დახურვა შეუძლებელია, რადგან მიმდინარეობს ანგარიშის შეთანხმება. ჯერ "
 "დაასრულეთ, გააუქმეთ, ან გადადეთ შეთანხმება."
 
-#: kmymoney/views/simpleledgerview.cpp:991
+#: kmymoney/views/simpleledgerview.cpp:990
 #, kde-format
 msgctxt "@title:info In reconciliation"
 msgid "View cannot be closed"

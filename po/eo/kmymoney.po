@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-03-16 00:44+0000\n"
+"POT-Creation-Date: 2026-03-23 00:44+0000\n"
 "PO-Revision-Date: 2025-02-15 14:15+0100\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-doc@kde.org>\n"
@@ -21690,7 +21690,7 @@ msgctxt "@label:textbox Difference to statement"
 msgid "Difference: %1"
 msgstr "Diferenco: %1"
 
-#: kmymoney/views/simpleledgerview.cpp:405
+#: kmymoney/views/simpleledgerview.cpp:404
 #, kde-format
 msgctxt "@info:tooltip"
 msgid ""
@@ -21700,7 +21700,7 @@ msgstr ""
 "La fermbutono por ĉi tiu konto estis forigita ĉar vi akordigas ĝin. Finu, "
 "nuligi aŭ prokrasti la repaciĝon por reakiri ĝin."
 
-#: kmymoney/views/simpleledgerview.cpp:516
+#: kmymoney/views/simpleledgerview.cpp:515
 #, kde-format
 msgctxt "@label displayed when no ledger is open"
 msgid ""
@@ -21710,7 +21710,7 @@ msgstr ""
 "Ĉi tiu paĝo montras la kontolibron. Nuntempe, neniuj kontoj ekzistas do ĉi "
 "tiu teksto estas montrita anstataŭe."
 
-#: kmymoney/views/simpleledgerview.cpp:519
+#: kmymoney/views/simpleledgerview.cpp:518
 #, kde-format
 msgctxt "@label displayed when no ledger is open"
 msgid ""
@@ -21720,12 +21720,12 @@ msgstr ""
 "Ĉi tiu paĝo montras la kontolibron. Nuntempe, neniuj kontoj estas elektitaj "
 "do ĉi tiu teksto estas montrita anstataŭe."
 
-#: kmymoney/views/simpleledgerview.cpp:798
+#: kmymoney/views/simpleledgerview.cpp:797
 #, kde-format
 msgid "Open website of <b>%1</b> in your browser."
 msgstr "Malfermi retejon de <b>%1</b> en via retumilo."
 
-#: kmymoney/views/simpleledgerview.cpp:990
+#: kmymoney/views/simpleledgerview.cpp:989
 #, kde-format
 msgid ""
 "You cannot close this view because you are reconciling the account. Finish, "
@@ -21734,7 +21734,7 @@ msgstr ""
 "Vi ne povas fermi ĉi tiun vidon ĉar vi akordigas la konton. Unue fini, "
 "nuligi aŭ prokrasti la repaciĝon."
 
-#: kmymoney/views/simpleledgerview.cpp:991
+#: kmymoney/views/simpleledgerview.cpp:990
 #, kde-format
 msgctxt "@title:info In reconciliation"
 msgid "View cannot be closed"
