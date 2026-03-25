@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-23 00:44+0000\n"
-"PO-Revision-Date: 2026-03-14 11:30+0400\n"
+"PO-Revision-Date: 2026-03-24 11:19+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -3455,7 +3455,7 @@ msgstr "أظهر الفئات في عرض قائمة الحسابات"
 #: kmymoney/dialogs/settings/ksettingshome.ui:238
 #, kde-format
 msgid "Hide accounts with a zero balance from Home"
-msgstr "أخف الحسابات ذات الرصيد الصفري من الرئيسية"
+msgstr "أخف الحسابات ذات الرصيد الصفري من الرئيسة"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_HideZeroBalanceAccounts)
 #: kmymoney/dialogs/settings/ksettingsgeneral.ui:480
@@ -3601,7 +3601,7 @@ msgstr ""
 #: kmymoney/dialogs/settings/ksettingshome.ui:132
 #, kde-format
 msgid "Homepage/Summary page scaling"
-msgstr "قياس الصفحة الرئيسية/الملخص"
+msgstr "قياس الصفحة الرئيسة/الملخص"
 
 #. i18n: ectx: property (text), widget (QLabel, percentageLabel)
 #: kmymoney/dialogs/settings/ksettingshome.ui:138
@@ -9164,18 +9164,16 @@ msgid "Comment"
 msgstr "التعليق"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:65
-#, fuzzy, kde-format
-#| msgid "Start Date"
+#, kde-format
 msgctxt "Report date range"
 msgid "Start Date"
 msgstr "تاريخ البدء"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:68
-#, fuzzy, kde-format
-#| msgid "Date"
+#, kde-format
 msgctxt "Report date range"
 msgid "End Date"
-msgstr "التّاريخ"
+msgstr "تاريخ الانتهاء"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:71
 #, kde-format
@@ -17503,7 +17501,7 @@ msgstr ""
 #: kmymoney/plugins/views/reports/reporttabchart.ui:149
 #, kde-format
 msgid "Logarithmic vertical axis"
-msgstr "محور رأسي لوغاريتمي"
+msgstr "محور عمودي لوغاريتمي"
 
 #. i18n: ectx: property (text), widget (QCheckBox, m_negExpenses)
 #: kmymoney/plugins/views/reports/reporttabchart.ui:156
@@ -17769,7 +17767,7 @@ msgstr "من"
 #: kmymoney/plugins/views/reports/reporttabrange.ui:145
 #, kde-format
 msgid "Major tick length"
-msgstr "طول النقطة الرئيسية"
+msgstr "طول النقطة الرئيسة"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, m_dataLock)
 #: kmymoney/plugins/views/reports/reporttabrange.ui:179
