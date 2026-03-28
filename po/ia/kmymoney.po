@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-27 00:45+0000\n"
-"PO-Revision-Date: 2026-03-17 11:15+0100\n"
+"PO-Revision-Date: 2026-03-27 10:30+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -4993,11 +4993,9 @@ msgid "Copy splits"
 msgstr ""
 
 #: kmymoney/kmymoney.cpp:1487
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Skip scheduled transaction"
+#, kde-format
 msgid "Copy selected transactions"
-msgstr "Salta transaction planificate"
+msgstr "Copia transactiones selectionate"
 
 #: kmymoney/kmymoney.cpp:1488
 #, kde-format
@@ -16529,8 +16527,7 @@ msgid "Generated Report"
 msgstr ""
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:63
-#, fuzzy, kde-format
-#| msgid "CSV"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "CSV"
 msgstr "CSV"
@@ -16542,8 +16539,7 @@ msgid "HTML"
 msgstr ""
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:65
-#, fuzzy, kde-format
-#| msgid "XML"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "XML"
 msgstr "XML"
@@ -16599,10 +16595,9 @@ msgstr ""
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, buttonCopy)
 #: kmymoney/plugins/views/reports/reportcontrol.ui:135
-#, fuzzy, kde-format
-#| msgid "Copy to clipboard"
+#, kde-format
 msgid "Copy this report to the clipboard"
-msgstr "Copia in area de transferentia"
+msgstr "Copia iste reporto  in area de transferentia"
 
 #. i18n: ectx: property (text), widget (QToolButton, buttonCopy)
 #: kmymoney/plugins/views/reports/reportcontrol.ui:138

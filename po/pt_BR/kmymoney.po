@@ -11,14 +11,14 @@
 # Maj Gama <marcus.gama@gmail.com>, 2011, 2012.
 # Antonio Henrique L. Rodrigues <ahlr_2000@yahoo.com>, 2020.
 # Geraldo Simiao <geraldosimiao@fedoraproject.org>, 2023.
-# SPDX-FileCopyrightText: 2025 Guilherme Marçal Silva <guimarcalsilva@gmail.com>
+# SPDX-FileCopyrightText: 2025, 2026 Guilherme Marçal Silva <guimarcalsilva@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-27 00:45+0000\n"
-"PO-Revision-Date: 2026-03-15 06:48-0300\n"
-"Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
+"PO-Revision-Date: 2026-03-27 02:32-0300\n"
+"Last-Translator: Guilherme Marçal Silva <guimarcalsilva@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -5302,10 +5302,9 @@ msgid "Copy splits"
 msgstr "Copiar parcelas"
 
 #: kmymoney/kmymoney.cpp:1487
-#, fuzzy, kde-format
-#| msgid "Delete transaction"
+#, kde-format
 msgid "Copy selected transactions"
-msgstr "Excluir transação"
+msgstr "Copiar transações selecionadas"
 
 #: kmymoney/kmymoney.cpp:1488
 #, kde-format
@@ -17275,8 +17274,7 @@ msgid "Generated Report"
 msgstr "Relatório Criado"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:63
-#, fuzzy, kde-format
-#| msgid "CSV"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "CSV"
 msgstr "CSV"
@@ -17285,21 +17283,19 @@ msgstr "CSV"
 #, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:65
-#, fuzzy, kde-format
-#| msgid "XML"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "XML"
 msgstr "XML"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:66
-#, fuzzy, kde-format
-#| msgid "Copy this report to the clipboard"
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "Format used when copying the report to the clipboard"
-msgstr "Copiar este relatório para a área de transferência"
+msgstr "Formato utilizado ao copiar o relatório para a área de transferência"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, buttonChart)
 #: kmymoney/plugins/views/reports/kreporttab.cpp:297

@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-27 00:45+0000\n"
-"PO-Revision-Date: 2026-03-15 09:52+0100\n"
+"PO-Revision-Date: 2026-03-27 10:51+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 25.04.0\n"
+"X-Generator: Lokalize 25.12.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
 
@@ -216,17 +216,17 @@ msgstr "<b>Heu baixat un extracte per al compte següent:</b><br/><br/>"
 #: kmymoney/converter/mymoneystatementreader.cpp:1494
 #, kde-format
 msgid " - Account Name: %1"
-msgstr " - Nom del compte: %1"
+msgstr " – Nom del compte: %1"
 
 #: kmymoney/converter/mymoneystatementreader.cpp:1495
 #, kde-format
 msgid " - Account Type: %1"
-msgstr " - Tipus de compte: %1"
+msgstr " – Tipus de compte: %1"
 
 #: kmymoney/converter/mymoneystatementreader.cpp:1496
 #, kde-format
 msgid " - Account Number: %1"
-msgstr " - Número del compte: %1"
+msgstr " – Número del compte: %1"
 
 #: kmymoney/converter/mymoneystatementreader.cpp:1501
 #, kde-format
@@ -5321,10 +5321,9 @@ msgid "Copy splits"
 msgstr "Copia els desglossaments"
 
 #: kmymoney/kmymoney.cpp:1487
-#, fuzzy, kde-format
-#| msgid "Delete transaction"
+#, kde-format
 msgid "Copy selected transactions"
-msgstr "Elimina operació"
+msgstr "Copia les operacions seleccionades"
 
 #: kmymoney/kmymoney.cpp:1488
 #, kde-format
@@ -11760,7 +11759,7 @@ msgstr "Font de les cotitzacions: %1"
 #: kmymoney/plugins/gnc/import/kgncpricesourcedlg.ui:20
 #, kde-format
 msgid "Online Quotes - Select price source"
-msgstr "Cotitzacions en línia - Trieu la font de les cotitzacions"
+msgstr "Cotitzacions en línia – Trieu la font de les cotitzacions"
 
 #. i18n: ectx: property (text), widget (QLabel, textLabel4)
 #: kmymoney/plugins/gnc/import/kgncpricesourcedlg.ui:46
@@ -14887,7 +14886,7 @@ msgstr ""
 #: kmymoney/plugins/sql/kgeneratesqldlg.ui:32
 #, kde-format
 msgid "KMyMoney - Generate SQL"
-msgstr "KMyMoney - Genera SQL"
+msgstr "KMyMoney – Genera SQL"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox1)
 #. i18n: ectx: property (text), widget (QLabel, label_6)
@@ -14942,7 +14941,7 @@ msgstr "El controlador SQL de les Qt %1 no està instal·lat en el sistema"
 #: kmymoney/plugins/sql/kselectdatabasedlg.ui:26
 #, kde-format
 msgid "KMyMoney - Select Database"
-msgstr "KMyMoney - Trieu la base de dades"
+msgstr "KMyMoney – Trieu la base de dades"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox6)
 #: kmymoney/plugins/sql/kselectdatabasedlg.ui:75
@@ -17343,8 +17342,7 @@ msgid "Generated Report"
 msgstr "Informe generat"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:63
-#, fuzzy, kde-format
-#| msgid "CSV"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "CSV"
 msgstr "CSV"
@@ -17353,11 +17351,10 @@ msgstr "CSV"
 #, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:65
-#, fuzzy, kde-format
-#| msgid "XML"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "XML"
 msgstr "XML"
@@ -17366,7 +17363,7 @@ msgstr "XML"
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Format used when copying the report to the clipboard"
-msgstr ""
+msgstr "Format utilitzat en copiar l'informe a dins del porta-retalls"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, buttonChart)
 #: kmymoney/plugins/views/reports/kreporttab.cpp:297
@@ -17413,17 +17410,15 @@ msgstr "Exporta este informe com un fitxer HTML o CSV"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, buttonCopy)
 #: kmymoney/plugins/views/reports/reportcontrol.ui:135
-#, fuzzy, kde-format
-#| msgid "Copy to clipboard"
+#, kde-format
 msgid "Copy this report to the clipboard"
-msgstr "Copia a dins del porta-retalls"
+msgstr "Copia este informe al porta-retalls"
 
 #. i18n: ectx: property (text), widget (QToolButton, buttonCopy)
 #: kmymoney/plugins/views/reports/reportcontrol.ui:138
-#, fuzzy, kde-format
-#| msgid "Copy memo"
+#, kde-format
 msgid "Copy"
-msgstr "Copia el recordatori"
+msgstr "Copia"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, buttonDelete)
 #: kmymoney/plugins/views/reports/reportcontrol.ui:153

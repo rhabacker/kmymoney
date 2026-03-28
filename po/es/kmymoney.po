@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-27 00:45+0000\n"
-"PO-Revision-Date: 2026-03-15 19:47+0100\n"
+"PO-Revision-Date: 2026-03-27 11:38+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -5310,10 +5310,9 @@ msgid "Copy splits"
 msgstr "Copiar partidas"
 
 #: kmymoney/kmymoney.cpp:1487
-#, fuzzy, kde-format
-#| msgid "Delete transaction"
+#, kde-format
 msgid "Copy selected transactions"
-msgstr "Borrar asiento"
+msgstr "Borrar asientos seleccionados"
 
 #: kmymoney/kmymoney.cpp:1488
 #, kde-format
@@ -17320,8 +17319,7 @@ msgid "Generated Report"
 msgstr "Informe generado"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:63
-#, fuzzy, kde-format
-#| msgid "CSV"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "CSV"
 msgstr "CSV"
@@ -17330,11 +17328,10 @@ msgstr "CSV"
 #, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:65
-#, fuzzy, kde-format
-#| msgid "XML"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "XML"
 msgstr "XML"
@@ -17343,7 +17340,7 @@ msgstr "XML"
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Format used when copying the report to the clipboard"
-msgstr ""
+msgstr "Formato que se usa para copiar el informe al portapapeles"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, buttonChart)
 #: kmymoney/plugins/views/reports/kreporttab.cpp:297
@@ -17390,17 +17387,15 @@ msgstr "Exportar este informe en formato HTML o CSV"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, buttonCopy)
 #: kmymoney/plugins/views/reports/reportcontrol.ui:135
-#, fuzzy, kde-format
-#| msgid "Copy to clipboard"
+#, kde-format
 msgid "Copy this report to the clipboard"
-msgstr "Copiar al portapapeles"
+msgstr "Copiar este informe al portapapeles"
 
 #. i18n: ectx: property (text), widget (QToolButton, buttonCopy)
 #: kmymoney/plugins/views/reports/reportcontrol.ui:138
-#, fuzzy, kde-format
-#| msgid "Copy memo"
+#, kde-format
 msgid "Copy"
-msgstr "Copiar memorando"
+msgstr "Copiar"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, buttonDelete)
 #: kmymoney/plugins/views/reports/reportcontrol.ui:153

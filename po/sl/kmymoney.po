@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-27 00:45+0000\n"
-"PO-Revision-Date: 2026-03-15 08:35+0100\n"
+"PO-Revision-Date: 2026-03-27 06:46+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -5279,10 +5279,9 @@ msgid "Copy splits"
 msgstr "Kopiraj dele"
 
 #: kmymoney/kmymoney.cpp:1487
-#, fuzzy, kde-format
-#| msgid "Delete transaction"
+#, kde-format
 msgid "Copy selected transactions"
-msgstr "Zbriši transakcijo"
+msgstr "Kopiraj izbrane transakcije"
 
 #: kmymoney/kmymoney.cpp:1488
 #, kde-format
@@ -17256,8 +17255,7 @@ msgid "Generated Report"
 msgstr "Zgenerirano poročilo"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:63
-#, fuzzy, kde-format
-#| msgid "CSV"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "CSV"
 msgstr "CSV"
@@ -17266,21 +17264,19 @@ msgstr "CSV"
 #, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:65
-#, fuzzy, kde-format
-#| msgid "XML"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "XML"
 msgstr "XML"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:66
-#, fuzzy, kde-format
-#| msgid "Copy this report to the clipboard"
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "Format used when copying the report to the clipboard"
-msgstr "Kopiraj to poročilo na odlagališče"
+msgstr "Format uporabljen pri kopiranju poročila na odložišče"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, buttonChart)
 #: kmymoney/plugins/views/reports/kreporttab.cpp:297

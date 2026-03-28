@@ -16854,7 +16854,7 @@ msgstr "Zkopírovat do schránky"
 #: kmymoney/plugins/views/reports/reportcontrol.ui:138
 #, kde-format
 msgid "Copy"
-msgstr ""
+msgstr "Kopírovat"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, buttonDelete)
 #: kmymoney/plugins/views/reports/reportcontrol.ui:153

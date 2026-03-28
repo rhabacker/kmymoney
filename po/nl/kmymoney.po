@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-27 00:45+0000\n"
-"PO-Revision-Date: 2026-03-15 14:31+0100\n"
+"PO-Revision-Date: 2026-03-27 11:41+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -5317,10 +5317,9 @@ msgid "Copy splits"
 msgstr "Splitsing kopiëren"
 
 #: kmymoney/kmymoney.cpp:1487
-#, fuzzy, kde-format
-#| msgid "Delete transaction"
+#, kde-format
 msgid "Copy selected transactions"
-msgstr "Transactie verwijderen"
+msgstr "Geselecteerde transacties kopiëren"
 
 #: kmymoney/kmymoney.cpp:1488
 #, kde-format
@@ -17302,8 +17301,7 @@ msgid "Generated Report"
 msgstr "Aangemaakt rapport"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:63
-#, fuzzy, kde-format
-#| msgid "CSV"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "CSV"
 msgstr "CSV"
@@ -17312,21 +17310,19 @@ msgstr "CSV"
 #, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:65
-#, fuzzy, kde-format
-#| msgid "XML"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "XML"
 msgstr "XML"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:66
-#, fuzzy, kde-format
-#| msgid "Copy this report to the clipboard"
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "Format used when copying the report to the clipboard"
-msgstr "Kopiëer dit rapport naar het klembord"
+msgstr "Gebruikte indeling bij kopiëren van dit rapport naar het klembord"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, buttonChart)
 #: kmymoney/plugins/views/reports/kreporttab.cpp:297
