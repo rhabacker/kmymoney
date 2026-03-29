@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-27 00:45+0000\n"
-"PO-Revision-Date: 2026-03-24 11:19+0400\n"
+"PO-Revision-Date: 2026-03-28 18:03+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -5227,10 +5227,9 @@ msgid "Copy splits"
 msgstr "انسخ التجزئات"
 
 #: kmymoney/kmymoney.cpp:1487
-#, fuzzy, kde-format
-#| msgid "Delete transaction"
+#, kde-format
 msgid "Copy selected transactions"
-msgstr "احذف المعاملة"
+msgstr "انسخ المعاملات المحددة"
 
 #: kmymoney/kmymoney.cpp:1488
 #, kde-format
@@ -17184,8 +17183,7 @@ msgid "Generated Report"
 msgstr "تقرير مولّد"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:63
-#, fuzzy, kde-format
-#| msgid "CSV"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "CSV"
 msgstr "CSV"
@@ -17194,21 +17192,19 @@ msgstr "CSV"
 #, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "HTML"
-msgstr ""
+msgstr "HTML"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:65
-#, fuzzy, kde-format
-#| msgid "XML"
+#, kde-format
 msgctxt "@item:inlistbox Report clipboard format"
 msgid "XML"
 msgstr "XML"
 
 #: kmymoney/plugins/views/reports/kreporttab.cpp:66
-#, fuzzy, kde-format
-#| msgid "Copy this report to the clipboard"
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "Format used when copying the report to the clipboard"
-msgstr "انسخ التّقرير إلى الحافظة"
+msgstr "التنسيق المستخدم عند نسخ التقرير إلى الحافظة"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, buttonChart)
 #: kmymoney/plugins/views/reports/kreporttab.cpp:297
@@ -17257,7 +17253,7 @@ msgstr "صدّر هذا التقرير إلى ملف HTML أو CSV"
 #: kmymoney/plugins/views/reports/reportcontrol.ui:135
 #, kde-format
 msgid "Copy this report to the clipboard"
-msgstr "انسخ التّقرير إلى الحافظة"
+msgstr "انسخ التقرير إلى الحافظة"
 
 #. i18n: ectx: property (text), widget (QToolButton, buttonCopy)
 #: kmymoney/plugins/views/reports/reportcontrol.ui:138

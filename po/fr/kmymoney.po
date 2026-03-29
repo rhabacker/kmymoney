@@ -17512,15 +17512,13 @@ msgstr "Exporter ce rapport comme un fichier HTML ou CSV"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, buttonCopy)
 #: kmymoney/plugins/views/reports/reportcontrol.ui:135
-#, fuzzy, kde-format
-#| msgid "Copy this report to the clipboard"
+#, kde-format
 msgid "Copy this report to the clipboard"
 msgstr "Copier ce rapport dans le presse-papier"
 
 #. i18n: ectx: property (text), widget (QToolButton, buttonCopy)
 #: kmymoney/plugins/views/reports/reportcontrol.ui:138
-#, fuzzy, kde-format
-#| msgid "Copy"
+#, kde-format
 msgid "Copy"
 msgstr "Copier"
 
