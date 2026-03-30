@@ -844,8 +844,8 @@
 
               <listitem>
                 <para
->La importació d'operacions des d'una institució en una zona horària diferent de vegades pot portar a una data incorrecta en una operació importada. Si això passa, podeu establir un <guilabel
->Decalatge de la zona horària</guilabel
+>La importació d'operacions des d'una institució en un fus horari diferent de vegades pot portar a una data incorrecta en una operació importada. Si això passa, podeu establir un <guilabel
+>Decalatge del fus horari</guilabel
 > per a ajustar la diferència. </para>
               </listitem>
 
