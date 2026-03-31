@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-30 00:43+0000\n"
-"PO-Revision-Date: 2026-03-27 11:41+0100\n"
+"PO-Revision-Date: 2026-03-30 10:49+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -19177,10 +19177,9 @@ msgstr "Sorteervolgorde in het standaard kasboek overzicht"
 
 #. i18n: ectx: label, entry (sortReconcileView), group (List Options)
 #: kmymoney/settings/kmymoney.kcfg:352
-#, fuzzy, kde-format
-#| msgid "Sort order of register in normal view"
+#, kde-format
 msgid "Sort order of register in reconcile view"
-msgstr "Sorteervolgorde in het standaard kasboek overzicht"
+msgstr "Sorteervolgorde van registers in de weergave van controles"
 
 #. i18n: ectx: label, entry (sortSearchView), group (List Options)
 #: kmymoney/settings/kmymoney.kcfg:356

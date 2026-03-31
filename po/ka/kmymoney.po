@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-30 00:43+0000\n"
-"PO-Revision-Date: 2026-03-27 05:08+0100\n"
+"PO-Revision-Date: 2026-03-30 07:15+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -18530,10 +18530,9 @@ msgstr "რეესტრის დალაგების მიმდევ�
 
 #. i18n: ectx: label, entry (sortReconcileView), group (List Options)
 #: kmymoney/settings/kmymoney.kcfg:352
-#, fuzzy, kde-format
-#| msgid "Sort order of register in normal view"
+#, kde-format
 msgid "Sort order of register in reconcile view"
-msgstr "რეესტრის დალაგების მიმდევრობა ნორმალურ ხედში"
+msgstr "რეესტრის დალაგების მიმდევრობა შეთანხმების ხედში"
 
 #. i18n: ectx: label, entry (sortSearchView), group (List Options)
 #: kmymoney/settings/kmymoney.kcfg:356

@@ -18484,10 +18484,9 @@ msgstr "在标准视图中账簿的排序顺序"
 
 #. i18n: ectx: label, entry (sortReconcileView), group (List Options)
 #: kmymoney/settings/kmymoney.kcfg:352
-#, fuzzy, kde-format
-#| msgid "Sort order of register in normal view"
+#, kde-format
 msgid "Sort order of register in reconcile view"
-msgstr "在标准视图中账簿的排序顺序"
+msgstr ""
 
 #. i18n: ectx: label, entry (sortSearchView), group (List Options)
 #: kmymoney/settings/kmymoney.kcfg:356

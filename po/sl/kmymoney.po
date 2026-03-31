@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-03-30 00:43+0000\n"
-"PO-Revision-Date: 2026-03-27 06:46+0100\n"
+"PO-Revision-Date: 2026-03-30 07:12+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -19118,10 +19118,9 @@ msgstr "Vrstni red registra v običajnem pogledu"
 
 #. i18n: ectx: label, entry (sortReconcileView), group (List Options)
 #: kmymoney/settings/kmymoney.kcfg:352
-#, fuzzy, kde-format
-#| msgid "Sort order of register in normal view"
+#, kde-format
 msgid "Sort order of register in reconcile view"
-msgstr "Vrstni red registra v običajnem pogledu"
+msgstr "Vrstni red registra v pogledu usklajevanja"
 
 #. i18n: ectx: label, entry (sortSearchView), group (List Options)
 #: kmymoney/settings/kmymoney.kcfg:356
