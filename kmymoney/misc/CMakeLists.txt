@@ -206,7 +206,7 @@ set_target_properties(kmm_gpgfile PROPERTIES
 )
 generate_export_header(kmm_gpgfile)
 
-install(TARGETS kmm_gpgfile ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS kmm_gpgfile ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kmm_gpgfile_export.h DESTINATION ${KDE_INSTALL_INCLUDEDIR}/kmymoney COMPONENT Devel)
 
 install(TARGETS
@@ -217,7 +217,7 @@ install(TARGETS
         kmm_yesno
         kmm_menuactionexchanger
 	kmm_codec
-        ${INSTALL_TARGETS_DEFAULT_ARGS} )
+        ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
 
 install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/kmm_printer_export.h

@@ -61,7 +61,7 @@ set_target_properties(kmm_templates PROPERTIES
 
 generate_export_header(kmm_templates)
 
-install(TARGETS kmm_templates ${INSTALL_TARGETS_DEFAULT_ARGS} )
+install(TARGETS kmm_templates ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
 
 ########### test files ###############
 #

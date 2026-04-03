@@ -203,7 +203,7 @@ endif()
 
 ########### install files ###############
 
-install(TARGETS kmymoney ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS kmymoney ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES ${_HEADERS}
   DESTINATION ${KDE_INSTALL_INCLUDEDIR}/kmymoney

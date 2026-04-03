@@ -11,4 +11,4 @@ set_target_properties(kmm_menus PROPERTIES
 )
 
 install(TARGETS kmm_menus
-  ${INSTALL_TARGETS_DEFAULT_ARGS} )
+  ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )

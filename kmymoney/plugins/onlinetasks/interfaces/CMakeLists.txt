@@ -29,7 +29,7 @@ set_target_properties(onlinetask_interfaces PROPERTIES VERSION ${PROJECT_VERSION
 
 generate_export_header(onlinetask_interfaces BASE_NAME onlinetask_interfaces)
 
-install(TARGETS onlinetask_interfaces ${INSTALL_TARGETS_DEFAULT_ARGS} )
+install(TARGETS onlinetask_interfaces ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
 
 install(FILES ${onlinetask_interfaces_HEADER}
     DESTINATION ${KDE_INSTALL_INCLUDEDIR}/kmymoney/onlinetasks/interfaces/ COMPONENT Devel)

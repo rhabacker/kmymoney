@@ -40,4 +40,4 @@ set_target_properties(kmm_icons PROPERTIES
 )
 
 install(TARGETS kmm_icons
-  ${INSTALL_TARGETS_DEFAULT_ARGS} )
+  ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )

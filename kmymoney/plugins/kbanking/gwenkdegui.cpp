@@ -201,8 +201,9 @@ int gwenKdeGui::getPassword(uint32_t flags, const char* token, const char* title
                             GWEN_DB_NODE *methodParams,
                             uint32_t guiid)
 {
-
-
+    if ((methodId & GWEN_Gui_PasswordMethod_Mask) != GWEN_Gui_PasswordMethod_OpticalHHD) {
+        qDebug() << "Token:" << token << "Method:" << (methodId & GWEN_Gui_PasswordMethod_Mask);
+    }
     switch( (methodId & GWEN_Gui_PasswordMethod_Mask)) {
     case GWEN_Gui_PasswordMethod_Unknown:
     case GWEN_Gui_PasswordMethod_Mask:
@@ -222,6 +223,7 @@ int gwenKdeGui::getPassword(uint32_t flags, const char* token, const char* title
 
     case GWEN_Gui_PasswordMethod_OpticalHHD:
         int tanMethodId = GWEN_DB_GetIntValue(methodParams, "tanMethodId", 0, 0);
+        qDebug() << "Token:" << token << "Method:" << (methodId & GWEN_Gui_PasswordMethod_Mask) << "TAN Method:" << tanMethodId;
         switch(tanMethodId) {
         case AB_BANKING_TANMETHOD_CHIPTAN_OPTIC:
             return getPasswordHhd(flags,

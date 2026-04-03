@@ -25,4 +25,4 @@ set_target_properties(kmm_csvimportercore PROPERTIES
 ########### install files ###############
 
 install(TARGETS kmm_csvimportercore
-  ${INSTALL_TARGETS_DEFAULT_ARGS} )
+  ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )

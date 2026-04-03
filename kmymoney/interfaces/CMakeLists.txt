@@ -39,7 +39,7 @@ set_target_properties(kmm_plugin PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION
 ########### install files ###############
 
 install(TARGETS kmm_plugin
-  ${INSTALL_TARGETS_DEFAULT_ARGS} )
+  ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
 
 install(FILES ${plugin_HEADERS}
   DESTINATION ${KDE_INSTALL_INCLUDEDIR}/kmymoney  COMPONENT Devel)
