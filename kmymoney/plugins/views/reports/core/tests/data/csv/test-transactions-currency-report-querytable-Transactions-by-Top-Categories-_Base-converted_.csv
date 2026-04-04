@@ -1,0 +1,27 @@
+Date,Num,Category,Account,Price,Amount,Balance
+"Expense"
+"expense (EUR)"
+"2024-01-01","","expense (EUR)","checking (EUR)"," 1.0000"," -10,124.00"," -10,124.00"
+"2024-02-04","","expense (EUR)","checking (USD)"," 0.8640"," -34,756.76"," -44,880.76"
+Total expense (EUR),,,,," -44,880.76",
+"expense (USD)"
+"2024-01-04","","expense (USD)","checking (USD)"," 0.8640"," -29,957.97"," -74,838.73"
+"2024-02-01","","expense (USD)","checking (EUR)"," 1.0000"," -8,834.36"," -83,673.09"
+Total expense (USD),,,,," -8,834.36",
+,,,," -29,957.97",
+Total Expense,,,,," -53,715.12",
+,,,," -29,957.97",
+"Income"
+"income (EUR)"
+"2024-01-02","","income (EUR)","checking (EUR)"," 1.0000"," 20,124.00"," -63,549.09"
+"2024-02-05","","income (EUR)","checking (USD)"," 0.8640"," 43,397.56"," -20,151.53"
+Total income (EUR),,,,," 63,521.56",
+"income (USD)"
+"2024-01-05","","income (USD)","checking (USD)"," 0.8640"," 37,424.31"," 17,272.78"
+"2024-02-02","","income (USD)","checking (EUR)"," 1.0000"," 17,475.16"," 34,747.94"
+Total income (USD),,,,," 17,475.16",
+,,,," 37,424.31",
+Total Income,,,,," 80,996.72",
+,,,," 37,424.31",
+Grand Total,,,,," 27,281.60",
+,,,," 7,466.34",
