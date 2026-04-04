@@ -1,0 +1,42 @@
+Date,Num,Payee,Tags,Category,Account,Action,Shares,Price,Amount,Balance
+"A (USD)"
+"2024-01-01","","Initial Market Value","","","A (USD)","","0.00","$ 0.0000","","$ 0.00"
+"2024-01-27","","[Empty Payee]","[No Tag]","Transfer from Investment (Brokerage)","A (USD)","Buy shares","200.00","$ 5.0000","$ 1,000.00","$ 1,000.00"
+"2024-10-01","","Ending Market Value","","","A (USD)","","200.00","$ 7.0000","","$ 1,400.00"
+Total A (USD),,,,,,,,,"$ 1,000.00",
+"B (USD)"
+"2024-01-01","","Initial Market Value","","","B (USD)","","0.00","$ 0.0000","","$ 0.00"
+"2024-01-27","","[Empty Payee]","[No Tag]","Transfer from Investment (Brokerage)","B (USD)","Buy shares","30.00","$ 20.0000","$ 600.00","$ 600.00"
+"2024-10-01","","[Empty Payee]","[No Tag]","Transfer from Investment (Brokerage)","B (USD)","Buy shares","15.00","$ 20.0000","$ 300.00","$ 900.00"
+"2024-10-01","","Ending Market Value","","","B (USD)","","45.00","$ 25.0000","","$ 1,125.00"
+Total B (USD),,,,,,,,,"$ 900.00",
+"C (JPY)"
+"2024-01-01","","Initial Market Value","","","C (JPY)","","0.00","¥ 0.0000","","¥ 0"
+"2024-01-27","","[Empty Payee]","[No Tag]","Transfer from Investment (JPY) (Brokerage)","C (JPY)","Buy shares","110.00","¥ 25.0000","¥ 2,750","¥ 2,750"
+"2024-10-01","","Ending Market Value","","","C (JPY)","","110.00","¥ 27.0000","","¥ 2,970"
+Total C (JPY),,,,,,,,,"¥ 2,750",
+"E (EUR)"
+"2024-01-01","","Initial Market Value","","","E (EUR)","","0.00","€ 0.0000","","€ 0.00"
+"2024-01-01","","[Empty Payee]","[No Tag]","Transfer from Investment (EUR) (Brokerage)","E (EUR)","Buy shares","5.00","€ 15.0000","€ 75.00","€ 75.00"
+"2024-10-01","","Ending Market Value","","","E (EUR)","","5.00","€ 15.0000","","€ 75.00"
+Total E (EUR),,,,,,,,,"€ 75.00",
+"Investment (Brokerage)"
+"2024-01-01","","Opening Balance","","","Investment (Brokerage)","","","","","$ 0.00"
+"2024-01-27","","[Empty Payee]","[No Tag]","Transfer to Investment: A (USD)","Investment (Brokerage)","","","","$ -1,000.00","$ -1,000.00"
+"2024-01-27","","[Empty Payee]","[No Tag]","Transfer to Investment: B (USD)","Investment (Brokerage)","","","","$ -600.00","$ -1,600.00"
+"2024-10-01","","[Empty Payee]","[No Tag]","Transfer to Investment: B (USD)","Investment (Brokerage)","","","","$ -300.00","$ -1,900.00"
+"2024-10-01","","Closing Balance","","","Investment (Brokerage)","","","","","$ -1,900.00"
+Total Investment (Brokerage),,,,,,,,,"$ -1,900.00",
+"Investment (EUR) (Brokerage)"
+"2024-01-01","","Opening Balance","","","Investment (EUR) (Brokerage)","","","","","€ 0.00"
+"2024-01-01","","[Empty Payee]","[No Tag]","Transfer to Investment (EUR): E (EUR)","Investment (EUR) (Brokerage)","","","","€ -75.00","€ -75.00"
+"2024-10-01","","Closing Balance","","","Investment (EUR) (Brokerage)","","","","","€ -75.00"
+Total Investment (EUR) (Brokerage),,,,,,,,,"€ -75.00",
+"Investment (JPY) (Brokerage)"
+"2024-01-01","","Opening Balance","","","Investment (JPY) (Brokerage)","","","","","¥ 0"
+"2024-01-27","","[Empty Payee]","[No Tag]","Transfer to Investment (JPY): C (JPY)","Investment (JPY) (Brokerage)","","","","¥ -2,750","¥ -2,750"
+"2024-10-01","","Closing Balance","","","Investment (JPY) (Brokerage)","","","","","¥ -2,750"
+Total Investment (JPY) (Brokerage),,,,,,,,,"¥ -2,750",
+Grand Total,,,,,,,,,"€ 0.00",
+,,,,,,,,"¥ 0",
+,,,,,,,,"$ 0.00",
