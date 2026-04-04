@@ -17,6 +17,7 @@ set(querytable_test_files
   test-net-worth.xml
   test-refinance-loan.xml
   test-transactions.xml
+  test-transactions-currency.xml
   test-transactions-multi-currency.xml
 )
 
