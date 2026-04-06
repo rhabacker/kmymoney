@@ -256,75 +256,37 @@ public:
 
     /**
      * Adjust the day of the @a date by the amount provided by @a delta
-     * in days. In case the resulting day is not within the bounds of
-     * the month of @a date an invalid date is returned.
+     * in days.
      */
     QDate adjustDay(QDate date, int delta)
     {
-        const auto minValue(1);
-        const auto maxValue(date.daysInMonth());
-        const auto newDay(date.day() + delta);
-        if ((newDay >= minValue) && (newDay <= maxValue)) {
-            return QDate(date.year(), date.month(), newDay);
-        }
-        return {};
+        return date.addDays(delta);
     }
 
     /**
      * Adjust the month of the @a date by the amount provided by @a delta
-     * in months. In case the resulting month is not within the bounds of
-     * valid months (1..12) an invalid date is returned. In case the
-     * original day is larger than the current day, it will be used
-     * instead. In case the day is not within the range of valid days
-     * for the resulting month the day will be adjusted to the last day
-     * of the month.
+     * in months. Uses the original day. In case the original day is not within
+     * the range of valid days for the resulting, post-adjustment month, the day
+     * will be adjusted to the last day of that month.
      */
     QDate adjustMonth(QDate date, int delta)
     {
-        const auto minValue(1);
-        const auto maxValue(12);
-        const auto newMonth(date.month() + delta);
+        QDate newDate = date.addMonths(delta);
 
-        if ((newMonth >= minValue) && (newMonth <= maxValue)) {
-            auto day = date.day();
-            if (m_originalDay > day)
-                day = m_originalDay;
-            auto newDate = QDate(date.year(), newMonth, day);
-            if (!newDate.isValid()) {
-                const auto maxDays(QDate(date.year(), newMonth, 1).daysInMonth());
-                newDate = QDate(date.year(), newMonth, maxDays);
-            }
-            return newDate;
-        }
-        return {};
+        return QDate(newDate.year(), newDate.month(), qMin(m_originalDay, newDate.daysInMonth()));
     }
 
     /**
      * Adjust the year of the @a date by the amount provided by @a delta
-     * in years. In case the resulting year is not within the bounds of
-     * valid years (1..4000) an invalid date is returned. In case the
-     * original day is larger than the current day, it will be used
-     * instead. In case the day is not within the range of valid days
-     * for the resulting month the day will be adjusted to the last day
-     * of the month.
+     * in year. Uses the original day. In case the original day is not within
+     * the range of valid days for the resulting, post-adjustment month, the day
+     * will be adjusted to the last day of that month.
      */
     QDate adjustYear(QDate date, int delta)
     {
-        const auto minValue(1);
-        const auto maxValue(4000);
-        const auto newYear(date.year() + delta);
-        if ((newYear >= minValue) && (newYear <= maxValue)) {
-            auto day = date.day();
-            if (m_originalDay > day)
-                day = m_originalDay;
-            auto newDate = QDate(newYear, date.month(), day);
-            if (!newDate.isValid()) {
-                const auto maxDays(QDate(newYear, date.month(), 1).daysInMonth());
-                newDate = QDate(newYear, date.month(), maxDays);
-            }
-            return newDate;
-        }
-        return {};
+        QDate newDate = date.addYears(delta);
+
+        return QDate(newDate.year(), newDate.month(), qMin(m_originalDay, newDate.daysInMonth()));
     }
 
     /**
@@ -387,21 +349,16 @@ public:
             auto date = fixupDate();
             if (date.isValid()) {
                 switch (section) {
-                case QDateEdit::DaySection:
-                    date = adjustDay(date, delta);
-                    if (date.isValid()) {
-                        m_originalDay = date.day();
-                    }
-                    break;
                 case QDateEdit::MonthSection:
                     date = adjustMonth(date, delta);
                     break;
                 case QDateEdit::YearSection:
                     date = adjustYear(date, delta);
                     break;
+                case QDateEdit::DaySection:
                 case QDateEdit::NoSection:
                 default:
-                    date = date.addDays(delta);
+                    date = adjustDay(date, delta);
                     m_originalDay = date.day();
                     break;
                 }
@@ -608,7 +565,35 @@ void KMyMoneyDateEdit::keyPressEvent(QKeyEvent* keyEvent)
     case Qt::Key_Minus:
     case Qt::Key_Equal:
         if (isValid()) {
-            d->adjustDate(key != Qt::Key_Minus ? 1 : -1, QDateEdit::NoSection);
+            d->adjustDate(key != Qt::Key_Minus ? 1 : -1, QDateEdit::DaySection);
+        }
+        break;
+
+    case Qt::Key_BracketLeft:
+    case Qt::Key_BraceLeft:
+        if (isValid()) {
+            d->adjustDate(-1, QDateEdit::MonthSection);
+        }
+        break;
+
+    case Qt::Key_BracketRight:
+    case Qt::Key_BraceRight:
+        if (isValid()) {
+            d->adjustDate(1, QDateEdit::MonthSection);
+        }
+        break;
+
+    case Qt::Key_Colon:
+    case Qt::Key_Semicolon:
+        if (isValid()) {
+            d->adjustDate(-1, QDateEdit::YearSection);
+        }
+        break;
+
+    case Qt::Key_QuoteDbl:
+    case Qt::Key_Apostrophe:
+        if (isValid()) {
+            d->adjustDate(1, QDateEdit::YearSection);
         }
         break;
 
@@ -650,6 +635,38 @@ void KMyMoneyDateEdit::keyPressEvent(QKeyEvent* keyEvent)
             QComboBox::keyPressEvent(keyEvent);
         }
         QComboBox::keyPressEvent(keyEvent);
+        break;
+
+    case Qt::Key_M:
+        date = d->fixupDate();
+        if (date.isValid()) {
+            setDate(QDate(date.year(), date.month(), 1));
+            d->selectSection(QDateEdit::MonthSection);
+        }
+        break;
+
+    case Qt::Key_H:
+        date = d->fixupDate();
+        if (date.isValid()) {
+            setDate(QDate(date.year(), date.month(), date.daysInMonth()));
+            d->selectSection(QDateEdit::MonthSection);
+        }
+        break;
+
+    case Qt::Key_Y:
+        date = d->fixupDate();
+        if (date.isValid()) {
+            setDate(QDate(date.year(), 1, 1));
+            d->selectSection(QDateEdit::YearSection);
+        }
+        break;
+
+    case Qt::Key_R:
+        date = d->fixupDate();
+        if (date.isValid()) {
+            setDate(QDate(date.year(), 12, 31));
+            d->selectSection(QDateEdit::YearSection);
+        }
         break;
 
     case Qt::Key_T:

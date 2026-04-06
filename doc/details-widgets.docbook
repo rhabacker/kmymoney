@@ -46,10 +46,38 @@
   Within the date entry widget, the &Left;/&Right; cursor keys can be used to switch
   between the <emphasis>day</emphasis>, the <emphasis>month</emphasis>, and the
   <emphasis>year</emphasis> fields. Using the &Up;/&Down; cursor keys, the value of
-  the selected field can be incremented/decremented.  The <keycap>+</keycap> and
-  <keycap>-</keycap> keys can be used to increment/decrement a single day.  Month and
-  year boundaries are considered and incremented/decremented if necessary.  Pressing
-  <keycap>T</keycap> will set the date to today's date.
+  the selected field can be incremented/decremented.  The <keycap>+</keycap> or
+  <keycap>=</keycap> and <keycap>-</keycap> keys can be used to increment/decrement a
+  single day.  The <keycap>]</keycap> or <keycap>}</keycap> and <keycap>[</keycap> or
+  <keycap>{</keycap> keys can be used to increment/decrement a single month.
+  The <keycap>'</keycap> or <keycap>"</keycap> and <keycap>;</keycap> or <keycap>:</keycap>
+  keys can be used to increment/decrement a single year. Month and year boundaries
+  are considered and incremented/decremented if necessary, e.g. using <keycap>+</keycap>
+  to increment the date of January 31th will change it to February 1st.
+</para>
+
+<para>
+  The following additional shortcuts can also be used:
+</para>
+
+<para>
+  <itemizedlist>
+    <listitem>
+      <para><keycap>M</keycap> to set the date to the first day of the current month</para>
+    </listitem>
+    <listitem>
+      <para><keycap>H</keycap> to set the date to the last day of the current month</para>
+    </listitem>
+    <listitem>
+      <para><keycap>Y</keycap> to set the date to the first day of the current year</para>
+    </listitem>
+    <listitem>
+      <para><keycap>R</keycap> to set the date to the last day of the current year</para>
+    </listitem>
+    <listitem>
+      <para><keycap>T</keycap> to set the date to today's date</para>
+    </listitem>
+  </itemizedlist>
 </para>
 
 <para>
