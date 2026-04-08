@@ -49,6 +49,7 @@
         "Description[fi]": "Jos kytketty tiliin, teeskentelee voivansa käsitellä kaikki verkkotehtävät (vain kehittäjille).",
         "Description[fr]": "S'il est associé à un compte en ligne, prétend qu'il peut traiter toutes les tâches en ligne (uniquement pour les développeurs).",
         "Description[gl]": "Se está asociado cunha conta pretende que pode xestionar todas as onlineTasks (só para desenvolvedores).",
+        "Description[he]": "אם ממופה לחשבון, הוא מעמיד פנים שהוא יכול לטפל בכל ה־onlineTasks (משימות מקוונות) - למפתחים בלבד.",
         "Description[it]": "Se associato a un conto, simula di poter gestire tutte le attività in linea (solo per sviluppatori).",
         "Description[ka]": "თუ მიბმულია ანგარიშზე, ის ამტკიცებს, რომ ყველა ონლაინ ამოცანის შესრულება შეუძლია (მხოლოდ პროგრამისტებისთვის).",
         "Description[ko]": "계정에 매핑해 두면 모든 온라인 작업을 처리하는 것처럼 표시합니다(개발자 전용).",

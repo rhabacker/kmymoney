@@ -68,6 +68,7 @@
         "Description[fi]": "Maksutyypit Euroopan yhtenäismaksualueen (SEPA) maksumääräyksille",
         "Description[fr]": "Types de virements pour les virements SEPA (espace unique de paiement en euros)",
         "Description[gl]": "Tipos das ordes da área europea única de pagos (SEPA)",
+        "Description[he]": "סוגי הזמנות להזמנות באזור תשלום אירופי אחיד (SEPA)",
         "Description[it]": "Tipi per gli ordini dell'area unica dei pagamenti in euro (SEPA)",
         "Description[ka]": "ერთიანი ევროპული გადახდის (SEPA) შეკვეთების ტიპები",
         "Description[ko]": "SEPA(단일유로결제지역) 주문에 대한 주문 형식",

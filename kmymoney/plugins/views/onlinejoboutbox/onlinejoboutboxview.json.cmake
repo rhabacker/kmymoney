@@ -49,6 +49,7 @@
         "Description[fi]": "Lisää KMyMoneyyn lähtevien verkkotöiden näkymän",
         "Description[fr]": "Ajoute la vue boite d'envoi des tâches en ligne à KMyMoney",
         "Description[gl]": "Engade unha vista fóra da caixa de traballo por Internet a KMyMoney",
+        "Description[he]": "נוספה תצוגת תיבת משימות מקוונות יוצאות ל־KMyMoney",
         "Description[it]": "Aggiunge la vista delle operazioni in linea in uscita a KMyMoney",
         "Description[ka]": "KMyMoney-ში გამავალი ქსელური დავალებების ხედის დამატება",
         "Description[ko]": "KMyMoney에 온라인 보낼 작업함 보기 추가",
