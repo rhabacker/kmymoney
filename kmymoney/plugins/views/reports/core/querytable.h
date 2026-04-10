@@ -56,7 +56,7 @@ protected:
     void constructTotalRows();
     void constructTransactionTable();
     void prepareReport(ReportSettings& settings);
-    void processTransaction(const MyMoneyTransaction& txn, ReportSettings& settings);
+    void processTransaction(const MyMoneyTransaction& t, ReportSettings& settings);
     void addOpeningClosingBalances(ReportSettings& settings);
     void sumInvestmentValues(const ReportAccount &account, QList<CashFlowList> &cfList, QList<MyMoneyMoney> &shList) const;
     void constructPerformanceRow(const ReportAccount& account, TableRow& result, CashFlowList &all) const;
