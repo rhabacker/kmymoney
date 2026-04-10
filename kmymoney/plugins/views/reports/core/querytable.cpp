@@ -11,8 +11,9 @@
 // ----------------------------------------------------------------------------
 // QT Includes
 
-#include <QList>
 #include <QDebug>
+#include <QList>
+#include <accountsmodel.h>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -859,9 +860,18 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                     qA[ctPrice] = shares.isZero() ? QString() : xr.convertPrecision(pricePrecision).toString();
                     qA.addSourceLine(ctPrice, __LINE__);
 
+                    qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
+                    qA.addSourceLine(ctValue, __LINE__);
+
                     qA[ctInvestAccount] = splitAcc.parent().name();
                 } else {
-                    qA[ctPrice] = xr.toString();
+                    const MyMoneySplit& s = *it_split;
+                    auto acc = MyMoneyFile::instance()->accountsModel()->itemById(s.accountId());
+                    auto value = s.value(t.commodity(), acc.currencyId());
+                    qDebug() << s.id() << "account currency" << acc.currencyId() << "transaction currency"  << t.commodity() << "base currency" << baseCurrency  << s.value() << value << s.shares();
+                    qA[ctValue] = value.formatMoney(acc.fraction());
+                    qA.addSourceLine(ctValue, __LINE__);
+                    qA[ctPrice] = (value / s.value()).toString();
                     qA.addSourceLine(ctPrice, __LINE__);
                 }
 
@@ -883,10 +893,6 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                 qA[ctNumber] = (*it_split).number();
 
                 qA[ctMemo] = a_memo;
-
-                qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
-                qA.addSourceLine(ctValue, __LINE__);
-
                 qS[ctReconcileDate] = qA[ctReconcileDate];
                 qS[ctReconcileFlag] = qA[ctReconcileFlag];
                 qS[ctNumber] = qA[ctNumber];
