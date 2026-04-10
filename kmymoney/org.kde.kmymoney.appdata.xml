@@ -70,6 +70,7 @@
   <summary xml:lang="pt">Gestor de finanças pessoais com base na contabilidade por duplo registo</summary>
   <summary xml:lang="pt-BR">Gerenciador de finanças pessoais com base na contabilidade de entrada dupla</summary>
   <summary xml:lang="ru">Программа учёта личных финансов, в которой используется стандарт двойной записи</summary>
+  <summary xml:lang="sk">Osobný finančný správca založený na podvojnom účtovníctve</summary>
   <summary xml:lang="sl">Osebni finančni upravitelj na osnovi dvostavnega knjigovodstva</summary>
   <summary xml:lang="sv">Hemekonomihantering baserad på dubbel bokföring</summary>
   <summary xml:lang="tr">Çift girişli muhasebeye dayalı kişisel finans yöneticisi</summary>
@@ -102,6 +103,7 @@
     <p xml:lang="pt">O KMyMoney é um gestor de finanças pessoais do KDE. Vem com um grande conjunto de funcionalidades, embora seja simples de usar com um utilizador não técnico.</p>
     <p xml:lang="pt-BR">O KMyMoney é um gerenciador de finanças pessoal do KDE. Ele vem com um grande conjunto de recursos sendo fácil de usar para o usuário não técnico.</p>
     <p xml:lang="ru">KMyMoney — программа учёта личных финансов, разработанная KDE. Она предоставляет широкий набор функций. Работа с программой очень проста и не требует знания технических вопросов.</p>
+    <p xml:lang="sk">KMyMomney je osobný správca financií od KDE. Prichádza s veľkou sadou funkcií, pričom je jednoduchý na používanie pre netechnického používateľa.</p>
     <p xml:lang="sl">KMyMoney je osebni finančni upravitelj namizja KDE. Priložen je velik nabor zmožnosti, ki so enostavne za uporabo za netehničnega uporabnika.</p>
     <p xml:lang="sv">KMyMoney är en hemekonomihanterare av KDE. Den levereras med ett stort antal funktioner, medan den är lätt att använda för den icke-tekniska användaren.</p>
     <p xml:lang="tr">K Param, KDE tarafından yapılmış bir kişisel finans yöneticisidir. Teknik olmayan kullanıcılar için kullanımı kolaydır ve büyük bir özellik kümesiyle birlikte gelir.</p>
@@ -245,6 +247,7 @@
       <caption xml:lang="pt">Faz a gestão das contas p.ex. das instituições onde estão guardadas</caption>
       <caption xml:lang="pt-BR">Gerencie contas por ex. pelas instituições em que estão guardadas</caption>
       <caption xml:lang="ru">Управление счетами (например, по учреждениям, в которых они ведутся)</caption>
+      <caption xml:lang="sk">Spravovať účtu napríklad podľa inštitúcií, ktoré ich držia</caption>
       <caption xml:lang="sl">Upravlja račune, npr. po institucijah, kjer imajo sedež</caption>
       <caption xml:lang="sv">Hantera konton, t.ex. enligt institution som de hör till</caption>
       <caption xml:lang="tr">Hesapları bulundukları kurumlardan yönetin</caption>
