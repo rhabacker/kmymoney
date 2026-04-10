@@ -701,7 +701,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
 {
     {
         const MyMoneyFile* file = MyMoneyFile::instance();
-        const MyMoneyTransaction* it_transaction = &transaction;
+        const MyMoneyTransaction& t = transaction;
         const MyMoneyReport& report = settings.report;
         QMap<QString, MyMoneyAccount>& accts = settings.accts;
         const bool use_summary = settings.use_summary;
@@ -711,21 +711,21 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
         QList<TableRow> qStack;
         QDate pd;
 
-        qA[ctID] = qS[ctID] = (* it_transaction).id();
-        qA[ctEntryDate] = qS[ctEntryDate] = (* it_transaction).entryDate().toString(Qt::ISODate);
-        qA[ctPostDate] = qS[ctPostDate] = (* it_transaction).postDate().toString(Qt::ISODate);
-        qA[ctCommodity] = qS[ctCommodity] = (* it_transaction).commodity();
+        qA[ctID] = qS[ctID] = t.id();
+        qA[ctEntryDate] = qS[ctEntryDate] = t.entryDate().toString(Qt::ISODate);
+        qA[ctPostDate] = qS[ctPostDate] = t.postDate().toString(Qt::ISODate);
+        qA[ctCommodity] = qS[ctCommodity] = t.commodity();
 
-        pd = (* it_transaction).postDate();
+        pd = t.postDate();
         qA[ctMonth] = qS[ctMonth] = i18n("Month of %1", QDate(pd.year(), pd.month(), 1).toString(Qt::ISODate));
         qA[ctWeek] = qS[ctWeek] = i18n("Week of %1", pd.addDays(1 - pd.dayOfWeek()).toString(Qt::ISODate));
 
         if (report.isConvertCurrency())
             qA[ctCurrency] = qS[ctCurrency] = file->baseCurrency().id();
         else
-            qA[ctCurrency] = qS[ctCurrency] = (*it_transaction).commodity();
+            qA[ctCurrency] = qS[ctCurrency] = t.commodity();
 
-        const QList<MyMoneySplit>& splits = (*it_transaction).splits();
+        const QList<MyMoneySplit>& splits = t.splits();
 
         // we can skip the transaction in case it is a tax report
         // and the transaction does not reference any tax related
@@ -804,7 +804,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
 
                 if (myBeginCurrency != baseCurrency) {                             // myBeginCurrency can differ from baseCurrency...
                     MyMoneyPrice price = file->price(myBeginCurrency, baseCurrency,
-                                                     (*it_transaction).postDate());  // ...so check conversion rate...
+                                                     t.postDate()); // ...so check conversion rate...
                     if (price.isValid()) {
                         xr *= price.rate(baseCurrency);                                // ...and multiply it by current price...
                         qA[ctCurrency] = qS[ctCurrency] = baseCurrency;
@@ -1004,7 +1004,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                                     // then convert to the currency of the main split
                                     MyMoneyMoney ieXr(xr);
                                     if (m_config.isConvertCurrency() && splitAcc.currency().id() != baseCurrency) {
-                                        ieXr = (xr * splitAcc.foreignCurrencyPrice(baseCurrency, (*it_transaction).postDate())).reduce();
+                                        ieXr = (xr * splitAcc.foreignCurrencyPrice(baseCurrency, t.postDate())).reduce();
                                         qA[ctCurrency] = file->account((*myBegin).accountId()).currencyId();
                                     } else {
                                         // make sure we use the right currency of the category
