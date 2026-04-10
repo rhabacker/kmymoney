@@ -22,6 +22,7 @@
 // ----------------------------------------------------------------------------
 // Project Includes
 
+#include "accountsmodel.h"
 #include "cashflowlist.h"
 #include "kmymoneyutils.h"
 #include "mymoneyaccount.h"
@@ -860,9 +861,6 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                     qA.addSourceLine(ctPrice, __LINE__);
 
                     qA[ctInvestAccount] = splitAcc.parent().name();
-                } else {
-                    qA[ctPrice] = xr.toString();
-                    qA.addSourceLine(ctPrice, __LINE__);
                 }
 
                 a_fullname = splitAcc.fullName();
@@ -883,9 +881,16 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                 qA[ctNumber] = (*it_split).number();
 
                 qA[ctMemo] = a_memo;
-
-                qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
+                const MyMoneySplit& s = *it_split;
+                const MyMoneyTransaction& t = transaction;
+                auto acc = MyMoneyFile::instance()->accountsModel()->itemById(s.accountId());
+                auto value = s.value(t.commodity(), acc.currencyId());
+                qA[ctValue] = value.formatMoney(acc.fraction());
                 qA.addSourceLine(ctValue, __LINE__);
+                if (!splitAcc.isInvest()) {
+                    qA[ctPrice] = (value / s.value()).toString();
+                    qA.addSourceLine(ctPrice, __LINE__);
+                }
 
                 qS[ctReconcileDate] = qA[ctReconcileDate];
                 qS[ctReconcileFlag] = qA[ctReconcileFlag];
