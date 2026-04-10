@@ -531,6 +531,7 @@ void QueryTable::constructTotalRows()
 void QueryTable::constructTransactionTable()
 {
     MyMoneyFile* file = MyMoneyFile::instance();
+    const auto baseCurrencyId = file->baseCurrency().id();
 
     //make sure we have all subaccounts of investment accounts
     includeInvestmentSubAccounts();
@@ -611,6 +612,18 @@ void QueryTable::constructTransactionTable()
                 }
                 qT[ctTag] = tags;
                 m_rows += qT;
+            }
+        };
+        const auto appendRow = [&](const TableRow& row) {
+            addRow(row);
+            if (!m_containsNonBaseCurrency && row[ctCurrency] != baseCurrencyId) {
+                m_containsNonBaseCurrency = true;
+            }
+        };
+        const auto appendStackedRow = [&](const TableRow& row) {
+            qStack += row;
+            if (!m_containsNonBaseCurrency && row[ctCurrency] != baseCurrencyId) {
+                m_containsNonBaseCurrency = true;
             }
         };
 
@@ -706,7 +719,7 @@ void QueryTable::constructTransactionTable()
         int pass = 1;
 
         QString myBeginCurrency;
-        QString baseCurrency = file->baseCurrency().id();
+        QString baseCurrency = baseCurrencyId;
 
         QMap<QString, MyMoneyMoney> xrMap; // container for conversion rates from given currency to myBeginCurrency
 
@@ -738,10 +751,14 @@ void QueryTable::constructTransactionTable()
             //convert to base currency
             if (m_config.isConvertCurrency()) {
                 xr = xrMap.value(splitCurrency, xr);  // check if there is conversion rate to myBeginCurrency already stored...
-                if (xr == MyMoneyMoney())             // ...if not...
+                if (xr == MyMoneyMoney()) {           // ...if not...
                     xr = (*it_split).possiblyCalculatedPrice(); // ...take conversion rate to myBeginCurrency from split
-                else if (splitAcc.isInvest())         // if it's stock split...
+                    if (!splitAcc.isInvest()) {
+                        xrMap.insert(splitCurrency, xr);
+                    }
+                } else if (splitAcc.isInvest()) {     // if it's stock split...
                     xr *= (*it_split).possiblyCalculatedPrice(); // ...multiply it by stock price stored in split
+                }
 
                 if (myBeginCurrency != baseCurrency) {                             // myBeginCurrency can differ from baseCurrency...
                     MyMoneyPrice price = file->price(myBeginCurrency, baseCurrency,
@@ -853,10 +870,7 @@ void QueryTable::constructTransactionTable()
                             qA[ctCategory] = i18n("[Split Transaction]");
                             qA[ctTopCategory] = i18nc("Split transaction", "Split");
                             qA[ctCategoryType] = i18nc("Split transaction", "Split");
-                            addRow(qA);
-                            if (!m_containsNonBaseCurrency && qA[ctCurrency] != file->baseCurrency().id()) {
-                                m_containsNonBaseCurrency = true;
-                            }
+                            appendRow(qA);
                         } else if (splits.count() > 2) {
                             // this applies when the transaction has more than 2 splits
                             // and each is shown separately
@@ -880,7 +894,7 @@ void QueryTable::constructTransactionTable()
                             qA[ctRank] = FIRST_SPLIT_RANK;
                             // keep it for now and don't add the data immediately
                             // as we may find a better match in one of the other splits
-                            qStack += qA;
+                            appendStackedRow(qA);
                         }
                     }
                 }
@@ -994,10 +1008,7 @@ void QueryTable::constructTransactionTable()
                                         || (!m_config.isInvertingText()
                                             && (transaction_text
                                                 || m_config.match((*it_split))))) {
-                                    addRow(qA);
-                                    if (!m_containsNonBaseCurrency && qA[ctCurrency] != file->baseCurrency().id()) {
-                                        m_containsNonBaseCurrency = true;
-                                    }
+                                    appendRow(qA);
 
                                     // we don't need the stacked data
                                     qStack.clear();
@@ -1060,11 +1071,8 @@ void QueryTable::constructTransactionTable()
                                 || (!m_config.isInvertingText()
                                     && (transaction_text
                                         || m_config.match((*it_split))))) {
-                            addRow(qS);
+                            appendRow(qS);
                             qStack.clear();
-                            if (!m_containsNonBaseCurrency && qS[ctCurrency] != file->baseCurrency().id()) {
-                                m_containsNonBaseCurrency = true;
-                            }
 
                             // track accts that will need opening and closing balances
                             accts.insert(splitAcc.id(), splitAcc);
@@ -1092,23 +1100,13 @@ void QueryTable::constructTransactionTable()
         } while (it_split != myBegin);
 
         if (loan_special_case) {
-            addRow(qA);
-            if (!m_containsNonBaseCurrency && qA[ctCurrency] != file->baseCurrency().id()) {
-                m_containsNonBaseCurrency = true;
-            }
+            appendRow(qA);
             qStack.clear();
-        }
-        // check if the stack contains a foreign currency
-        for (const auto& row : qAsConst(qStack)) {
-            if (!m_containsNonBaseCurrency && row[ctCurrency] != file->baseCurrency().id()) {
-                m_containsNonBaseCurrency = true;
-                break;
-            }
         }
 
         // add any pending rows
         for (const auto& row : qAsConst(qStack)) {
-            addRow(row);
+            appendRow(row);
         }
     }
 
@@ -1211,7 +1209,7 @@ void QueryTable::constructTransactionTable()
         qA[ctRank] = END_BALANCE_RANK;
         qA[ctID] = LAST_ID_SORT;
         m_rows += qA;
-        if (!m_containsNonBaseCurrency && qA[ctCurrency] != file->baseCurrency().id()) {
+        if (!m_containsNonBaseCurrency && qA[ctCurrency] != baseCurrencyId) {
             m_containsNonBaseCurrency = true;
         }
     }
