@@ -10,9 +10,9 @@ Date,Category,Account,Memo,Amount,Balance
 "2024-02-03","Transfer to liabilities (USD)","checking (EUR)","","€ -30,224.00","€ -30,225.00"
 "2024-03-01","Transfer to checking (USD)","checking (EUR)","round trip in EUR","€ -10,324.00","€ -40,549.00"
 "2024-04-01","Transfer from checking (USD)","checking (EUR)","in EUR","€ 10,424.00","€ -30,125.00"
-"2024-10-14","Transfer from checking (USD)","checking (EUR)","in USD","€ 121,856.04","€ 91,731.04"
+"2024-10-14","Transfer from checking (USD)","checking (EUR)","in USD","€ 121,856.00","€ 91,731.00"
 "2024-10-14","Closing Balance","checking (EUR)","","","€ 91,731.04"
-Total checking (EUR),,,,"€ 91,731.04",
+Total checking (EUR),,,,"€ 91,731.00",
 "checking (USD)"
 "2023-01-01","Opening Balance","checking (USD)","","","$ 0.00"
 "2023-01-01","Transfer from Opening Balances (USD)","checking (USD)","","$ 10,123.00","$ 10,123.00"
@@ -41,5 +41,5 @@ Total liabilities (EUR),,,,"€ 19,901.00",
 "2024-02-06","Transfer from checking (USD)","liabilities (USD)","","$ 60,224.00","$ 145,103.23"
 "2024-10-14","Closing Balance","liabilities (USD)","","","$ 145,103.23"
 Total liabilities (USD),,,,"$ 145,103.23",
-Grand Total,,,,"€ 111,632.04",
+Grand Total,,,,"€ 111,632.00",
 ,,,"$ -86,261.50",
