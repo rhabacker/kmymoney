@@ -746,7 +746,6 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
         // use refSplitIt as your reference split
         myBegin = refSplitIt;
         it_split = refSplitIt;
-        const MyMoneySplit& s = *it_split;
 
         // for "loan" reports, the loan transaction gets special treatment.
         // the splits of a loan transaction are placed on one line in the
@@ -755,7 +754,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
 
         bool loan_special_case = false;
         if (m_config.queryColumns() & eMyMoney::Report::QueryColumn::Loan) {
-            ReportAccount splitAcc(s.accountId());
+            ReportAccount splitAcc((*it_split).accountId());
             loan_special_case = splitAcc.isLoan();
         }
 
@@ -773,13 +772,13 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
         do {
             MyMoneyMoney xr;
             ReportAccount splitAcc((* it_split).accountId());
-            qA[csID] = qS[csID] = s.id();
+            qA[csID] = qS[csID] = (*it_split).id();
 
             QString splitCurrency;
             if (splitAcc.isInvest())
-                splitCurrency = file->account(file->account(s.accountId()).parentAccountId()).currencyId();
+                splitCurrency = file->account(file->account((*it_split).accountId()).parentAccountId()).currencyId();
             else
-                splitCurrency = file->account(s.accountId()).currencyId();
+                splitCurrency = file->account((*it_split).accountId()).currencyId();
             if (it_split == myBegin)
                 myBeginCurrency = splitCurrency;
 
@@ -791,17 +790,17 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                 fraction = file->baseCurrency().smallestAccountFraction();
 
             QString institution = splitAcc.institutionId();
-            QString payee = s.payeeId();
+            QString payee = (*it_split).payeeId();
 
-            const QList<QString> tagIdList = s.tagIdList();
+            const QList<QString> tagIdList = (*it_split).tagIdList();
 
             //convert to base currency
             if (m_config.isConvertCurrency()) {
                 xr = xrMap.value(splitCurrency, xr);  // check if there is conversion rate to myBeginCurrency already stored...
                 if (xr == MyMoneyMoney())             // ...if not...
-                    xr = s.possiblyCalculatedPrice(); // ...take conversion rate to myBeginCurrency from split
+                    xr = (*it_split).possiblyCalculatedPrice(); // ...take conversion rate to myBeginCurrency from split
                 else if (splitAcc.isInvest())         // if it's stock split...
-                    xr *= s.possiblyCalculatedPrice(); // ...multiply it by stock price stored in split
+                    xr *= (*it_split).possiblyCalculatedPrice(); // ...multiply it by stock price stored in split
 
                 if (myBeginCurrency != baseCurrency) {                             // myBeginCurrency can differ from baseCurrency...
                     MyMoneyPrice price = file->price(myBeginCurrency, baseCurrency,
@@ -813,7 +812,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                         qA[ctCurrency] = qS[ctCurrency] = myBeginCurrency;             // ...and set information about non-baseCurrency
                 }
             } else if (splitAcc.isInvest())
-                xr = s.possiblyCalculatedPrice();
+                xr = (*it_split).possiblyCalculatedPrice();
             else {
                 // for the very first split we adjust the currency to the
                 // currency used for the split to make sure the right one
@@ -825,7 +824,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                 xr = MyMoneyMoney::ONE;
             }
 
-            qA[ctTag] = s.tagIdList().join(tagSeparator);
+            qA[ctTag] = (*it_split).tagIdList().join(tagSeparator);
 
             if (it_split == myBegin && splits.count() > 1) {
                 include_me = m_config.includes(splitAcc);
@@ -849,13 +848,13 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                 if (splitAcc.isInvest()) {
                     // use the institution of the parent for stock accounts
                     institution = splitAcc.parent().institutionId();
-                    MyMoneyMoney shares = s.shares();
+                    MyMoneyMoney shares = (*it_split).shares();
 
                     int pricePrecision = file->security(splitAcc.currencyId()).pricePrecision();
-                    if ((s.action() == MyMoneySplit::actionName(eMyMoney::Split::Action::BuyShares)) && shares.isNegative())
+                    if (((*it_split).action() == MyMoneySplit::actionName(eMyMoney::Split::Action::BuyShares)) && shares.isNegative())
                         qA[ctAction] = i18nc("Investment action", "Sell shares");
                     else
-                        qA[ctAction] = MyMoneySplit::actionI18nName(s.action());
+                        qA[ctAction] = MyMoneySplit::actionI18nName((*it_split).action());
                     qA[ctShares] = shares.isZero() ? QString() : shares.toString();
                     qA[ctPrice] = shares.isZero() ? QString() : xr.convertPrecision(pricePrecision).toString();
                     qA.addSourceLine(ctPrice, __LINE__);
@@ -867,9 +866,9 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                 }
 
                 a_fullname = splitAcc.fullName();
-                a_memo = s.memo();
+                a_memo = (*it_split).memo();
 
-                transaction_text = m_config.match(s);
+                transaction_text = m_config.match((*it_split));
 
                 qA[ctInstitution] = institution.isEmpty()
                                     ? i18n("No Institution")
@@ -879,9 +878,10 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                               ? i18n("[Empty Payee]")
                               : file->payee(payee).name().simplified();
 
-                qA[ctReconcileDate] = s.reconcileDate().toString(Qt::ISODate);
-                qA[ctReconcileFlag] = KMyMoneyUtils::reconcileStateToString(s.reconcileFlag(), true);
-                qA[ctNumber] = s.number();
+                qA[ctReconcileDate] = (*it_split).reconcileDate().toString(Qt::ISODate);
+                qA[ctReconcileFlag] = KMyMoneyUtils::reconcileStateToString((*it_split).reconcileFlag(), true);
+                qA[ctNumber] = (*it_split).number();
+
                 qA[ctMemo] = a_memo;
 
                 qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
@@ -898,7 +898,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                 if (include_me) {
                     if (loan_special_case) {
                         // put the principal amount in the "value" column and convert to lowest fraction
-                        qA[ctValue] = (s.shares() * xr).convert(fraction).toString();
+                        qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
                         qA.addSourceLine(ctValue, __LINE__);
                         qA[ctRank] = FIRST_SPLIT_RANK;
                         qA[ctSplit].clear();
@@ -925,9 +925,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                             case eMyMoney::Report::RowType::Tag:
                             case eMyMoney::Report::RowType::Payee:
                                 if (splitAcc.isAssetLiability()) {
-                                    qA[ctValue] = (s.shares() * xr)
-                                                      .convert(fraction)
-                                                      .toString(); // needed for category reports, in case of multicurrency transaction it breaks it
+                                    qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString(); // needed for category reports, in case of multicurrency transaction it breaks it
                                     qA.addSourceLine(ctValue, __LINE__);
                                     // make sure we use the right currency of the category
                                     // (will be ignored when converting to base currency)
@@ -951,15 +949,15 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                 if (include_me) {
 
                     if (loan_special_case) {
-                        MyMoneyMoney value = -((s.shares() * xr).convert(fraction));
+                        MyMoneyMoney value = -(((*it_split).shares() * xr).convert(fraction));
 
-                        if (s.action() == MyMoneySplit::actionName(eMyMoney::Split::Action::Amortization)) {
+                        if ((*it_split).action() == MyMoneySplit::actionName(eMyMoney::Split::Action::Amortization)) {
                             // put the amortization in the "payment" column. Since the split for
                             // the loan account is processed as the first split, this is the opposite
                             // side of the transfer and is treated as payment
                             MyMoneyMoney n0 = MyMoneyMoney(qA[ctPayment]);
                             qA[ctPayment] = (n0 + value).toString();
-                        } else if (s.action() == MyMoneySplit::actionName(eMyMoney::Split::Action::Interest)) {
+                        } else if ((*it_split).action() == MyMoneySplit::actionName(eMyMoney::Split::Action::Interest)) {
                             // put the interest in the "interest" column and convert to lowest fraction
                             qA[ctInterest] = value.toString();
                         } else {
@@ -991,7 +989,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                             qA.addSourceLine(ctValue, __LINE__);
 
                             //convert to lowest fraction
-                            qA[ctSplit] = (-s.shares() * xr).convert(fraction).toString();
+                            qA[ctSplit] = (-(*it_split).shares() * xr).convert(fraction).toString();
                             qA[ctRank] = SECONDARY_SPLIT_RANK;
                         } else {
                             // this applies when the transaction has only 2 splits, or each split is going to be
@@ -1013,7 +1011,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                                         // (will be ignored when converting to base currency)
                                         qA[ctCurrency] = splitAcc.currencyId();
                                     }
-                                    qA[ctValue] = ((-s.shares()) * ieXr).convert(fraction).toString();
+                                    qA[ctValue] = ((-(*it_split).shares()) * ieXr).convert(fraction).toString();
                                     qA.addSourceLine(ctValue, __LINE__);
                                 }
                                 break;
@@ -1024,7 +1022,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                             qA[ctRank] = FIRST_SPLIT_RANK;
                         }
 
-                        qA[ctMemo] = s.memo();
+                        qA [ctMemo] = (*it_split).memo();
 
                         if (report.isConvertCurrency())
                             qS[ctCurrency] = file->baseCurrency().id();
@@ -1032,8 +1030,9 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                             qS[ctCurrency] = splitAcc.currency().id();
 
                         if (! splitAcc.isIncomeExpense()) {
-                            qA[ctCategory] =
-                                (s.shares().isNegative()) ? i18n("Transfer from %1", splitAcc.fullName()) : i18n("Transfer to %1", splitAcc.fullName());
+                            qA[ctCategory] = ((*it_split).shares().isNegative()) ?
+                                             i18n("Transfer from %1", splitAcc.fullName())
+                                             : i18n("Transfer to %1", splitAcc.fullName());
                             qA[ctTopCategory] = splitAcc.topParentName();
                             qA[ctCategoryType] = i18n("Transfer");
                         } else {
@@ -1049,8 +1048,11 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                                 //otherwise, skip it
                                 //if the filter is "does not contain" exclude the split if it does not match
                                 //even it matches the whole split
-                                if ((m_config.isInvertingText() && m_config.match(s))
-                                    || (!m_config.isInvertingText() && (transaction_text || m_config.match(s)))) {
+                                if ((m_config.isInvertingText() &&
+                                        m_config.match((*it_split)))
+                                        || (!m_config.isInvertingText()
+                                            && (transaction_text
+                                                || m_config.match((*it_split))))) {
                                     addRow(qA);
                                     if (!m_containsNonBaseCurrency && qA[ctCurrency] != file->baseCurrency().id()) {
                                         m_containsNonBaseCurrency = true;
@@ -1069,13 +1071,13 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                     if (! splitAcc.isIncomeExpense()) {
                         // Add/Remove shares
                         if (splitAcc.isInvest()) {
-                            qS[ctShares] = s.shares().convert(fraction).toString();
+                            qS[ctShares] = (*it_split).shares().convert(fraction).toString();
                         }
                         qS[ctPrice] = xr.convert(fraction).toString();
                         qS.addSourceLine(ctPrice, __LINE__);
 
                         //multiply by currency and convert to lowest fraction
-                        qS[ctValue] = (s.shares() * xr).convert(fraction).toString();
+                        qS[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
                         qS.addSourceLine(ctValue, __LINE__);
 
                         // also keep the value in the "payment" column for loan payment reports
@@ -1088,15 +1090,19 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                         qS[ctTopAccount] = splitAcc.topParentName();
 
                         if (splits.count() > 1) {
-                            qS[ctCategory] = (s.shares().isNegative()) ? i18n("Transfer to %1", a_fullname) : i18n("Transfer from %1", a_fullname);
-                        } else if (s.action() != MyMoneySplit::actionName(eMyMoney::Split::Action::AddShares)) {
+                            qS[ctCategory] = ((*it_split).shares().isNegative())
+                                             ? i18n("Transfer to %1", a_fullname)
+                                             : i18n("Transfer from %1", a_fullname);
+                        } else if ((*it_split).action() != MyMoneySplit::actionName(eMyMoney::Split::Action::AddShares)) {
                             qS[ctCategory] = i18n("*** UNASSIGNED ***");
                         }
                         qS[ctInstitution] = institution.isEmpty()
                                             ? i18n("No Institution")
                                             : file->institution(institution).name();
 
-                        qS[ctMemo] = s.memo().isEmpty() ? a_memo : s.memo();
+                        qS[ctMemo] = (*it_split).memo().isEmpty()
+                                     ? a_memo
+                                     : (*it_split).memo();
 
                         qS[ctTag] = tagIdList.join(tagSeparator);
 
@@ -1108,7 +1114,11 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                         //TODO this should be done at the engine, but I have no clear idea how -- asoliverez
                         //if the filter is "does not contain" exclude the split if it does not match
                         //even it matches the whole split
-                        if ((m_config.isInvertingText() && m_config.match(s)) || (!m_config.isInvertingText() && (transaction_text || m_config.match(s)))) {
+                        if ((m_config.isInvertingText() &&
+                                m_config.match((*it_split)))
+                                || (!m_config.isInvertingText()
+                                    && (transaction_text
+                                        || m_config.match((*it_split))))) {
                             addRow(qS);
                             qStack.clear();
                             if (!m_containsNonBaseCurrency && qS[ctCurrency] != file->baseCurrency().id()) {
