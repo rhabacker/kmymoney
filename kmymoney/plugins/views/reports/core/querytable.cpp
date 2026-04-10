@@ -11,9 +11,8 @@
 // ----------------------------------------------------------------------------
 // QT Includes
 
-#include <QDebug>
 #include <QList>
-#include <accountsmodel.h>
+#include <QDebug>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -861,18 +860,9 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                     qA[ctPrice] = shares.isZero() ? QString() : xr.convertPrecision(pricePrecision).toString();
                     qA.addSourceLine(ctPrice, __LINE__);
 
-                    qA[ctValue] = (s.shares() * xr).convert(fraction).toString();
-                    qA.addSourceLine(ctValue, __LINE__);
-
                     qA[ctInvestAccount] = splitAcc.parent().name();
                 } else {
-                    const MyMoneySplit& s = *it_split;
-                    auto acc = MyMoneyFile::instance()->accountsModel()->itemById(s.accountId());
-                    auto value = s.value(t.commodity(), acc.currencyId());
-                    qA[ctValue] = value.formatMoney(acc.fraction());
-                    qA[ctValue] = (s.shares() * xr).convert(fraction).toString();
-                    qA.addSourceLine(ctValue, __LINE__);
-                    qA[ctPrice] = (value / s.value()).toString();
+                    qA[ctPrice] = xr.toString();
                     qA.addSourceLine(ctPrice, __LINE__);
                 }
 
@@ -893,6 +883,10 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                 qA[ctReconcileFlag] = KMyMoneyUtils::reconcileStateToString(s.reconcileFlag(), true);
                 qA[ctNumber] = s.number();
                 qA[ctMemo] = a_memo;
+
+                qA[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
+                qA.addSourceLine(ctValue, __LINE__);
+
                 qS[ctReconcileDate] = qA[ctReconcileDate];
                 qS[ctReconcileFlag] = qA[ctReconcileFlag];
                 qS[ctNumber] = qA[ctNumber];
