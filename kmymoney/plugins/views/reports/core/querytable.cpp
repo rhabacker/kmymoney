@@ -541,34 +541,23 @@ void QueryTable::constructTransactionTable()
     report.setConsiderCategory(true);
     report.setConsiderCategorySplits(true);
 
-    bool use_transfers;
-    bool use_summary;
-    bool hide_details;
+    bool use_transfers = true;
+    bool use_summary = true;
+    bool hide_details = (m_config.detailLevel() == eMyMoney::Report::DetailLevel::None);
 
     switch (m_config.rowType()) {
     case eMyMoney::Report::RowType::Category:
     case eMyMoney::Report::RowType::TopCategory:
-        use_summary = false;
-        use_transfers = report.isIncludingTransfers();
-        report.setTreatTransfersAsIncomeExpense(use_transfers);
-        hide_details = false;
-        break;
     case eMyMoney::Report::RowType::Payee:
-        use_summary = false;
-        use_transfers = report.isIncludingTransfers();
-        report.setTreatTransfersAsIncomeExpense(use_transfers);
-        hide_details = (m_config.detailLevel() == eMyMoney::Report::DetailLevel::None);
-        break;
     case eMyMoney::Report::RowType::Tag:
         use_summary = false;
         use_transfers = report.isIncludingTransfers();
         report.setTreatTransfersAsIncomeExpense(use_transfers);
-        hide_details = (m_config.detailLevel() == eMyMoney::Report::DetailLevel::None);
+        if (m_config.rowType() == eMyMoney::Report::RowType::Category || m_config.rowType() == eMyMoney::Report::RowType::TopCategory) {
+            hide_details = false;
+        }
         break;
     default:
-        use_summary = true;
-        use_transfers = true;
-        hide_details = (m_config.detailLevel() == eMyMoney::Report::DetailLevel::None);
         break;
     }
 
@@ -616,12 +605,6 @@ void QueryTable::constructTransactionTable()
         };
         const auto appendRow = [&](const TableRow& row) {
             addRow(row);
-            if (!m_containsNonBaseCurrency && row[ctCurrency] != baseCurrencyId) {
-                m_containsNonBaseCurrency = true;
-            }
-        };
-        const auto appendStackedRow = [&](const TableRow& row) {
-            qStack += row;
             if (!m_containsNonBaseCurrency && row[ctCurrency] != baseCurrencyId) {
                 m_containsNonBaseCurrency = true;
             }
@@ -894,7 +877,7 @@ void QueryTable::constructTransactionTable()
                             qA[ctRank] = FIRST_SPLIT_RANK;
                             // keep it for now and don't add the data immediately
                             // as we may find a better match in one of the other splits
-                            appendStackedRow(qA);
+                            qStack += qA;
                         }
                     }
                 }
@@ -1102,6 +1085,14 @@ void QueryTable::constructTransactionTable()
         if (loan_special_case) {
             appendRow(qA);
             qStack.clear();
+        }
+
+        // check if the stack contains a foreign currency
+        for (const auto& row : qAsConst(qStack)) {
+            if (!m_containsNonBaseCurrency && row[ctCurrency] != baseCurrencyId) {
+                m_containsNonBaseCurrency = true;
+                break;
+            }
         }
 
         // add any pending rows
