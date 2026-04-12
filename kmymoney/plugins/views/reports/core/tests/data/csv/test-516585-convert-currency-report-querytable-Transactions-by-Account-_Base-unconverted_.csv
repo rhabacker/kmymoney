@@ -1,0 +1,15 @@
+Date,Category,Account,Memo,Amount,Balance
+"checking (EUR)"
+"2024-01-01","Opening Balance","checking (EUR)","","","€ 0.00"
+"2024-01-01","expense (EUR)","checking (EUR)","","€ -10,124.00","€ -10,124.00"
+"2024-10-14","Transfer from checking (USD)","checking (EUR)","in USD","€ 121,856.00","€ 111,732.00"
+"2024-10-14","Closing Balance","checking (EUR)","","","€ 111,732.04"
+Total checking (EUR),,,,"€ 111,732.00",
+"checking (USD)"
+"2024-01-01","Opening Balance","checking (USD)","","","$ 0.00"
+"2024-01-04","expense (USD)","checking (USD)","","$ -40,124.00","$ -40,124.00"
+"2024-10-14","Transfer to checking (EUR)","checking (USD)","in USD","$ -141,024.00","$ -181,148.00"
+"2024-10-14","Closing Balance","checking (USD)","","","$ -181,148.00"
+Total checking (USD),,,,"$ -181,148.00",
+Grand Total,,,,"€ 111,732.00",
+,,,"$ -181,148.00",

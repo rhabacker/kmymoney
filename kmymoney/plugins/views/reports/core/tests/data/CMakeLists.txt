@@ -10,6 +10,7 @@ set(querytable_test_files
   test-453033.xml
   test-469195.xml
   test-511104.xml
+  test-516585-convert-currency.xml
   test-cash-flow.xml
   test-investment.xml
   test-investment-no-sold.xml
