@@ -317,27 +317,16 @@ void KReportTab::showConfigurationSidebar(QWidget* widget)
         return;
     }
 
-    restoreState();
+    if (!m_configurationWidget->isVisible())
+        restoreState();
     m_configurationWidget->show();
     m_configurationWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     m_contentSplitter->setStretchFactor(1, 0);
 }
 
-QByteArray KReportTab::sidebarSplitterState() const
-{
-    return m_contentSplitter->saveState();
-}
-
-void KReportTab::restoreSidebarSplitterState(const QByteArray& state)
-{
-    if (m_contentSplitter->count() > 1 && !state.isEmpty()) {
-        m_contentSplitter->restoreState(state);
-    }
-}
-
 void KReportTab::saveState()
 {
-    const auto state = sidebarSplitterState();
+    const auto state = m_contentSplitter->saveState();
     if (state.isEmpty()) {
         return;
     }
@@ -351,7 +340,10 @@ void KReportTab::restoreState()
 {
     const auto config = KSharedConfig::openConfig();
     const auto group = config->group("Last Use Settings");
-    restoreSidebarSplitterState(group.readEntry("ReportTabSplitterState", QByteArray()));
+    QByteArray state = group.readEntry("ReportTabSplitterState", QByteArray());
+    if (m_contentSplitter->count() > 1 && !state.isEmpty()) {
+        m_contentSplitter->restoreState(state);
+    }
 }
 
 void KReportTab::closeConfigurationSidebar()

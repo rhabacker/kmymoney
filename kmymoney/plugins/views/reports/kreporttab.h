@@ -103,8 +103,6 @@ public:
     void showConfigurationSidebar(QWidget* widget = nullptr);
     void closeConfigurationSidebar();
     QWidget* configurationSidebar() const;
-    QByteArray sidebarSplitterState() const;
-    void restoreSidebarSplitterState(const QByteArray& state);
 
     void showEvent(QShowEvent* event) final override;
     void loadTab();
