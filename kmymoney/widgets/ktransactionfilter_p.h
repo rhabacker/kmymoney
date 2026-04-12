@@ -364,6 +364,7 @@ public:
         categorySet.addAccountGroup(eMyMoney::Account::Type::Income);
         categorySet.addAccountGroup(eMyMoney::Account::Type::Expense);
         categorySet.load(ui->m_categoriesView);
+        ui->m_categoriesView->setNumberOfVisibleRows(10);
         q->connect(ui->m_categoriesView, &KMyMoneyAccountSelector::stateChanged, q, &KTransactionFilter::slotUpdateSelections);
     }
 
@@ -381,6 +382,7 @@ public:
         accountSet.setHideClosedAccounts(!KMyMoneySettings::showAllAccounts());
         accountSet.setShowInvestments(withInvestments);
         accountSet.load(ui->m_accountsView);
+        ui->m_accountsView->setNumberOfVisibleRows(10);
         q->connect(ui->m_accountsView, &KMyMoneyAccountSelector::stateChanged, q, &KTransactionFilter::slotUpdateSelections);
     }
 
