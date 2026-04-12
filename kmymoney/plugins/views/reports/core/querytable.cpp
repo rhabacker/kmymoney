@@ -868,13 +868,17 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                     const MyMoneySplit& s = *it_split;
                     auto acc = MyMoneyFile::instance()->accountsModel()->itemById(s.accountId());
                     auto value = s.value(t.commodity(), acc.currencyId());
-                    qDebug() << s.id() << "account currency" << acc.currencyId() << "transaction currency" << t.commodity() << "base currency" << baseCurrency
-                             << "convert currency" << m_config.isConvertCurrency()
-                             << "split value" << s.value() << "split share" << s.shares() << "converted value" << value;
+                    qDebug() << __LINE__ << s.id() << "account currency" << acc.currencyId() << "transaction currency" << t.commodity() << "base currency" << baseCurrency
+                             << "convert currency" << m_config.isConvertCurrency() << "split value" << s.value() << "split share" << s.shares()
+                             << "converted value" << value;
                     qA[ctValue] = value.formatMoney(acc.fraction());
                     qA.addSourceLine(ctValue, __LINE__);
                     qA[ctPrice] = (value / s.value()).toString();
                     qA.addSourceLine(ctPrice, __LINE__);
+                    qS[ctValue] = value.formatMoney(acc.fraction());
+                    qS.addSourceLine(ctValue, __LINE__);
+                    qS[ctPrice] = (value / s.value()).toString();
+                    qS.addSourceLine(ctPrice, __LINE__);
                 }
 
                 a_fullname = splitAcc.fullName();
@@ -1083,16 +1087,16 @@ void QueryTable::processTransaction(const MyMoneyTransaction& transaction, Repor
                             qS[ctPrice] = xr.convert(fraction).toString();
                             qS.addSourceLine(ctPrice, __LINE__);
 
-                            //multiply by currency and convert to lowest fraction
+                            // multiply by currency and convert to lowest fraction
                             qS[ctValue] = ((*it_split).shares() * xr).convert(fraction).toString();
                             qS.addSourceLine(ctValue, __LINE__);
                         } else {
                             const MyMoneySplit& s = *it_split;
                             auto acc = MyMoneyFile::instance()->accountsModel()->itemById(s.accountId());
                             auto value = s.value(t.commodity(), acc.currencyId());
-                            qDebug() << s.id() << "account currency" << acc.currencyId() << "transaction currency" << t.commodity() << "base currency" << baseCurrency
-                                     << "convert currency" << m_config.isConvertCurrency()
-                                     << "split value" << s.value() << "split share" << s.shares() << "converted value" << value;
+                            qDebug() << __LINE__ << s.id() << "account currency" << acc.currencyId() << "transaction currency" << t.commodity() << "base currency"
+                                     << baseCurrency << "convert currency" << m_config.isConvertCurrency() << "split value" << s.value() << "split share"
+                                     << s.shares() << "converted value" << value;
                             qS[ctValue] = value.formatMoney(acc.fraction());
                             qS.addSourceLine(ctValue, __LINE__);
                             qS[ctPrice] = (value / s.value()).toString();
