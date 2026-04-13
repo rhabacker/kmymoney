@@ -19,6 +19,8 @@ apps:
       - home
       - audio-playback
       - browser-support
+    environment:
+      LD_LIBRARY_PATH: "/snap/kf6-core24/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:/snap/kf6-core24/current/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libexec/kf6:$SNAP/usr/lib:$SNAP/lib/:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:/usr/lib:/lib"
 slots:
   session-dbus-interface:
     interface: dbus
@@ -89,39 +91,70 @@ parts:
     override-build: |
       craftctl default
       rsync -a --ignore-existing $CRAFT_PART_INSTALL/ /
-  libplasma:
-    plugin: cmake
-    source: https://invent.kde.org/plasma/libplasma.git
+  wayland:
+    source: https://gitlab.freedesktop.org/wayland/wayland.git
+    source-branch: 1.23
+    plugin: meson
+    meson-parameters:
+      - --prefix=/usr
     build-snaps:
       - kde-qt6-core24-sdk/latest/beta
       - kf6-core24-sdk/latest/beta
+    build-packages:
+      - meson
+      - pkgconf
+      - xsltproc
+      - xmlto
+      - libexpat1-dev
+      - libffi-dev
+      - libxml2-dev
+      - doxygen
+      - graphviz
+    build-environment:
+      - PKG_CONFIG_PATH: "$CRAFT_STAGE/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig:/snap/kde-qt6-core24-sdk/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig:/snap/kf6-core24-sdk/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig"
+  wayland-protocols:
+    after:
+      - wayland
+    source: https://gitlab.freedesktop.org/wayland/wayland-protocols.git
+    source-tag: 1.47
+    plugin: meson
+    meson-parameters:
+      - --prefix=/usr
+    build-snaps:
+      - kde-qt6-core24-sdk/latest/beta
+      - kf6-core24-sdk/latest/beta
+    build-packages:
+      - meson
+      - pkgconf
+    build-environment:
+      - PKG_CONFIG_PATH: "$CRAFT_STAGE/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig:/snap/kde-qt6-core24-sdk/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig:/snap/kf6-core24-sdk/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig"
+      - LD_LIBRARY_PATH: "$CRAFT_STAGE/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:/snap/ffmpeg-2404-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:/snap/kde-qt6-core24-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libproxy:$LD_LIBRARY_PATH"
+  libplasma:
+    after: [wayland-protocols]
+    source: https://invent.kde.org/plasma/libplasma.git
+    source-branch: Plasma/6.6
+    plugin: cmake
+    build-packages:
+      - libpulse0
+      - rsync
+    stage-packages:
+      - libpulse0
+    build-snaps:
+      - kde-qt6-core24-sdk/latest/beta
+      - kf6-core24-sdk/latest/beta
+    cmake-generator: Ninja
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DCMAKE_BUILD_TYPE=Release
-      - -DBUILD_DESKTOPTHEMES=OFF
+      - -DQT_MAJOR_VERSION=6
+      - -DENABLE_QT5=OFF
+      - -DENABLE_QT6=ON
       - -DBUILD_TESTING=OFF
-    build-packages:
-      - libxcb-composite0-dev
-      - libxcb-damage0-dev
-      - libxcb-shape0-dev
-      - libxcb-glx0-dev
-      - libvulkan-dev
-      - libxkbcommon-dev
-      - libwayland-dev
-      - doxygen
-      - gettext
-      - graphviz
-      - pkg-config
-      - libgl-dev
-      - libgl1-mesa-dev
-      - libgles-dev
-      - libglvnd-dev
-      - libglx-dev
-      - libegl-dev
-      - libsm-dev
-      - docbook
-      - docbook-xml
-      - docbook-xsl
+    override-build: |
+      craftctl default
+      rsync -a --ignore-existing $CRAFT_PART_INSTALL/ /
+    prime:
+      - -usr/bin/rsync
   alkimia:
     after:
       - mpir
