@@ -37,6 +37,9 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     )
 
 add_subdirectory( mymoney )
+if(BUILD_PYTHON_BINDINGS)
+  add_subdirectory( python )
+endif()
 add_subdirectory( settings )
 add_subdirectory( models  )
 add_subdirectory( interfaces )

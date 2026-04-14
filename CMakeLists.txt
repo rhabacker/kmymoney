@@ -6,6 +6,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 option(BUILD_STATIC_PLUGINS "Build the plugins statically" OFF)
+option(BUILD_PYTHON_BINDINGS "Build experimental SWIG-based Python bindings" OFF)
 
 set(KF6_MIN_VERSION 6.1)
 set(KF5_MIN_VERSION 5.90)
