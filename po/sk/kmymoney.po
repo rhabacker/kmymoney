@@ -1949,17 +1949,15 @@ msgstr "Rozvrhy"
 
 #. i18n: ectx: property (text), widget (QLabel, textLabel19)
 #: kmymoney/dialogs/kmymoneyfileinfodlg.ui:208
-#, fuzzy, kde-format
-#| msgid "Stock p&rices"
+#, kde-format
 msgid "Stock prices"
-msgstr "Cena akcií"
+msgstr "Ceny akcií"
 
 #. i18n: ectx: property (text), widget (QLabel, textLabel20)
 #: kmymoney/dialogs/kmymoneyfileinfodlg.ui:228
-#, fuzzy, kde-format
-#| msgid "Exchange &rate / Price"
+#, kde-format
 msgid "Exchange rates"
-msgstr "Výmenný kurz / Cena"
+msgstr "Výmenné kurzy"
 
 #. i18n: ectx: attribute (title), widget (QWidget, m_securitiesTab)
 #. i18n: ectx: property (text), widget (QLabel, textLabel11)
@@ -5110,13 +5108,12 @@ msgstr "Meny..."
 #: kmymoney/kmymoney.cpp:1443
 #, kde-format
 msgid "Stock prices and exchange rates..."
-msgstr ""
+msgstr "Ceny akcií a výmenné kurzy..."
 
 #: kmymoney/kmymoney.cpp:1444
-#, fuzzy, kde-format
-#| msgid "Update Stock and Currency Prices..."
+#, kde-format
 msgid "Update stock prices and exchange rates..."
-msgstr "Aktualizovať akciové a menové ceny..."
+msgstr "Aktualizovať ceny akcií a výmenné kurzy..."
 
 #: kmymoney/kmymoney.cpp:1445
 #, kde-format
@@ -16316,13 +16313,13 @@ msgstr "Koncová tržná hodnota"
 #, kde-format
 msgctxt "Exchange rate"
 msgid "Rate"
-msgstr ""
+msgstr "Kurz"
 
 #: kmymoney/plugins/views/reports/core/listtable.cpp:843
 #, kde-format
 msgctxt "Exchange rate"
 msgid "The applied currency exchange rate used in the conversion"
-msgstr ""
+msgstr "Použitý devízový kurz pri konverzii"
 
 #: kmymoney/plugins/views/reports/core/objectinfotable.cpp:217
 #: kmymoney/plugins/views/reports/core/querytable.cpp:991
@@ -18103,7 +18100,7 @@ msgstr "<p>Vybrať túto voľbu na zobrazenie stĺpca pre akciu</p>"
 #: kmymoney/plugins/views/reports/reporttabrowcolquery.ui:310
 #, kde-format
 msgid "Rate"
-msgstr ""
+msgstr "Kurz"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, m_checkBalance)
 #: kmymoney/plugins/views/reports/reporttabrowcolquery.ui:317

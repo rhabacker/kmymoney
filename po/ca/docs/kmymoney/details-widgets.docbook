@@ -59,11 +59,67 @@
 >any</emphasis
 >. Utilitzant les tecles de cursor &Up;/&Down;, es pot incrementar/disminuir el valor del camp seleccionat. Es poden utilitzar les tecles <keycap
 >+</keycap
+> o <keycap
+>=</keycap
 > i <keycap
 >-</keycap
-> per a incrementar/disminuir un sol dia. Es tindran en consideració els límits de mes i any, i si cal s'incrementaran/disminuiran. Prement <keycap
+> per a incrementar/disminuir un dia individual. Els tecles <keycap
+>]</keycap
+> o <keycap
+>}</keycap
+> i <keycap
+>[</keycap
+> o <keycap
+>{</keycap
+> es poden utilitzar per a incrementar/disminuir un mes individual. Les tecles <keycap
+>'</keycap
+> o <keycap
+>"</keycap
+> i <keycap
+>;</keycap
+> o <keycap
+>:</keycap
+> es poden utilitzar per a incrementar/disminuir un any individual. Es tindran en consideració els límits de mes i any, i si cal s'incrementaran/disminuiran, p. ex., fent servir <keycap
+>+</keycap
+> per a incrementar la data del 31 de gener es canviarà a l'1 de febrer. </para>
+
+<para
+>Es poden utilitzar les dreceres addicionals següents: </para>
+
+<para>
+  <itemizedlist>
+    <listitem>
+      <para
+><keycap
+>M</keycap
+> per a establir la data al primer dia del mes actual</para>
+    </listitem>
+    <listitem>
+      <para
+><keycap
+>H</keycap
+> per a establir la data a l'últim dia del mes actual</para>
+    </listitem>
+    <listitem>
+      <para
+><keycap
+>Y</keycap
+> per a establir la data al primer dia de l'any actual</para>
+    </listitem>
+    <listitem>
+      <para
+><keycap
+>R</keycap
+> per a establir la data a l'últim dia de l'any actual</para>
+    </listitem>
+    <listitem>
+      <para
+><keycap
 >T</keycap
-> s'establirà la data a avui. </para>
+> per a establir la data a la data d'avui</para>
+    </listitem>
+  </itemizedlist>
+</para>
 
 <para
 >La data també es pot canviar amb el ratolí. Fent clic al camp de <emphasis

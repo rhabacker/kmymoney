@@ -1870,17 +1870,15 @@ msgstr "计划表"
 
 #. i18n: ectx: property (text), widget (QLabel, textLabel19)
 #: kmymoney/dialogs/kmymoneyfileinfodlg.ui:208
-#, fuzzy, kde-format
-#| msgid "Stock p&rices"
+#, kde-format
 msgid "Stock prices"
-msgstr "股票价格(&R)"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, textLabel20)
 #: kmymoney/dialogs/kmymoneyfileinfodlg.ui:228
-#, fuzzy, kde-format
-#| msgid "Exchange &rate / Price"
+#, kde-format
 msgid "Exchange rates"
-msgstr "汇率、外汇价格(&R)"
+msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, m_securitiesTab)
 #. i18n: ectx: property (text), widget (QLabel, textLabel11)
@@ -4936,10 +4934,9 @@ msgid "Stock prices and exchange rates..."
 msgstr ""
 
 #: kmymoney/kmymoney.cpp:1444
-#, fuzzy, kde-format
-#| msgid "Update Stock and Currency Prices..."
+#, kde-format
 msgid "Update stock prices and exchange rates..."
-msgstr "更新股票和货币价格..."
+msgstr ""
 
 #: kmymoney/kmymoney.cpp:1445
 #, kde-format
@@ -25311,9 +25308,3 @@ msgstr ""
 #, kde-format
 msgid "Only one of --csv and --html is supported"
 msgstr ""
-
-#~ msgid "Prices"
-#~ msgstr "价格"
-
-#~ msgid "Prices..."
-#~ msgstr "价格..."

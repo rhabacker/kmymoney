@@ -17632,7 +17632,7 @@ msgstr "<p>Vyberte tuto volbu pro zobrazení sloupce \"Činnost\"</p>"
 #: kmymoney/plugins/views/reports/reporttabrowcolquery.ui:310
 #, kde-format
 msgid "Rate"
-msgstr ""
+msgstr "Míra"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, m_checkBalance)
 #: kmymoney/plugins/views/reports/reporttabrowcolquery.ui:317

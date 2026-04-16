@@ -51,19 +51,75 @@
 </para>
 
 <para
->No campo de inserção de datas, as teclas de cursores para a &Left;/&Right; poderão ser usadas para mudar entre os campos do <emphasis
+>Dentro do widget de entrada de data, as teclas de cursor &Left;/&Right; podem ser usadas para alternar entre os campos de <emphasis
 >dia</emphasis
->, do <emphasis
+>, <emphasis
 >mês</emphasis
-> e do <emphasis
+> e <emphasis
 >ano</emphasis
->. Se usar as teclas de cursores para &Up;/&Down;,o valor do campo selecionado poderá ser aumentado/diminuído. As teclas <keycap
+>. Usando as teclas de cursor &Up;/&Down;, o valor do campo selecionado pode ser incrementado/decrementado. As teclas <keycap
 >+</keycap
+> ou <keycap
+>=</keycap
 > e <keycap
 >-</keycap
-> poderão ser usadas para aumentar/diminuir um dia. Os limites dos meses e anos são levados em consideração e são aumentados/diminuídos se necessário. Clicar em <keycap
+> podem ser usadas para incrementar/decrementar um único dia. As teclas <keycap
+>]</keycap
+> ou <keycap
+>}</keycap
+> e <keycap
+>[</keycap
+> ou <keycap
+>{</keycap
+> podem ser usadas para incrementar/decrementar um único mês. As teclas <keycap
+>'</keycap
+> ou <keycap
+>"</keycap
+> e <keycap
+>;</keycap
+> ou <keycap
+>:</keycap
+> podem ser usadas para incrementar/decrementar um único ano. Os limites de mês e ano são considerados e incrementados/decrementados, se necessário; por exemplo, usar <keycap
+>+</keycap
+> para incrementar a data de 31 de janeiro a alterará para 1º de fevereiro. </para>
+
+<para
+>Os seguintes atalhos adicionais também podem ser usados: </para>
+
+<para>
+  <itemizedlist>
+    <listitem>
+      <para
+><keycap
+>M</keycap
+> para definir a data para o primeiro dia do mês atual</para>
+    </listitem>
+    <listitem>
+      <para
+><keycap
+>H</keycap
+> para definir a data para o último dia do mês atual</para>
+    </listitem>
+    <listitem>
+      <para
+><keycap
+>Y</keycap
+> para definir a data para o primeiro dia do ano atual</para>
+    </listitem>
+    <listitem>
+      <para
+><keycap
+>R</keycap
+> para definir a data para o último dia do ano atual</para>
+    </listitem>
+    <listitem>
+      <para
+><keycap
 >T</keycap
->, irá configurar o campo com a data de hoje. </para>
+> para definir a data para a data de hoje</para>
+    </listitem>
+  </itemizedlist>
+</para>
 
 <para
 >A data também pode ser alterada usando o mouse. Clicar no campo <emphasis
