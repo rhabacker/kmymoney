@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-15 00:46+0000\n"
-"PO-Revision-Date: 2026-04-01 17:46+0400\n"
+"PO-Revision-Date: 2026-04-16 09:33+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -1934,17 +1934,15 @@ msgstr "الجداول"
 
 #. i18n: ectx: property (text), widget (QLabel, textLabel19)
 #: kmymoney/dialogs/kmymoneyfileinfodlg.ui:208
-#, fuzzy, kde-format
-#| msgid "Stock p&rices"
+#, kde-format
 msgid "Stock prices"
-msgstr "أ&سعار الأسهم"
+msgstr "أسعار الأسهم"
 
 #. i18n: ectx: property (text), widget (QLabel, textLabel20)
 #: kmymoney/dialogs/kmymoneyfileinfodlg.ui:228
-#, fuzzy, kde-format
-#| msgid "Exchange &rate / Price"
+#, kde-format
 msgid "Exchange rates"
-msgstr "سعر &الصرف / السعر"
+msgstr "أسعار صرف العملات"
 
 #. i18n: ectx: attribute (title), widget (QWidget, m_securitiesTab)
 #. i18n: ectx: property (text), widget (QLabel, textLabel11)
@@ -5066,13 +5064,12 @@ msgstr "العملات..."
 #: kmymoney/kmymoney.cpp:1443
 #, kde-format
 msgid "Stock prices and exchange rates..."
-msgstr ""
+msgstr "أسعار الأسهم وأسعار صرف العملات..."
 
 #: kmymoney/kmymoney.cpp:1444
-#, fuzzy, kde-format
-#| msgid "Update Stock and Currency Prices..."
+#, kde-format
 msgid "Update stock prices and exchange rates..."
-msgstr "حدّث المخزون وأثمان العملة..."
+msgstr "حدّث أسعار الأسهم وأسعار صرف العملات..."
 
 #: kmymoney/kmymoney.cpp:1445
 #, kde-format
@@ -16281,13 +16278,13 @@ msgstr "قيمة السوق البدائية"
 #, kde-format
 msgctxt "Exchange rate"
 msgid "Rate"
-msgstr ""
+msgstr "المعدل"
 
 #: kmymoney/plugins/views/reports/core/listtable.cpp:843
 #, kde-format
 msgctxt "Exchange rate"
 msgid "The applied currency exchange rate used in the conversion"
-msgstr ""
+msgstr "سعر صرف العملة المطبق المستخدم في التحويل"
 
 #: kmymoney/plugins/views/reports/core/objectinfotable.cpp:217
 #: kmymoney/plugins/views/reports/core/querytable.cpp:991
@@ -18061,7 +18058,7 @@ msgstr "<p>حدّد هذا الخيار لإظهار عمود الإجراء</p>
 #: kmymoney/plugins/views/reports/reporttabrowcolquery.ui:310
 #, kde-format
 msgid "Rate"
-msgstr ""
+msgstr "المعدل"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, m_checkBalance)
 #: kmymoney/plugins/views/reports/reporttabrowcolquery.ui:317

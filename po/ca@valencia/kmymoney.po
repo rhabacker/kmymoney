@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: kmymoney\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-15 00:46+0000\n"
-"PO-Revision-Date: 2026-03-30 11:09+0200\n"
+"PO-Revision-Date: 2026-04-15 09:53+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 25.12.3\n"
+"X-Generator: Lokalize 25.04.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
 
@@ -1960,17 +1960,15 @@ msgstr "Planificacions"
 
 #. i18n: ectx: property (text), widget (QLabel, textLabel19)
 #: kmymoney/dialogs/kmymoneyfileinfodlg.ui:208
-#, fuzzy, kde-format
-#| msgid "Stock p&rices"
+#, kde-format
 msgid "Stock prices"
-msgstr "Co&titzacions dels valors"
+msgstr "Cotitzacions dels valors"
 
 #. i18n: ectx: property (text), widget (QLabel, textLabel20)
 #: kmymoney/dialogs/kmymoneyfileinfodlg.ui:228
-#, fuzzy, kde-format
-#| msgid "Exchange &rate / Price"
+#, kde-format
 msgid "Exchange rates"
-msgstr "Tipus de canvi/p&reu"
+msgstr "Tipus de canvi"
 
 #. i18n: ectx: attribute (title), widget (QWidget, m_securitiesTab)
 #. i18n: ectx: property (text), widget (QLabel, textLabel11)
@@ -5160,13 +5158,12 @@ msgstr "Divises…"
 #: kmymoney/kmymoney.cpp:1443
 #, kde-format
 msgid "Stock prices and exchange rates..."
-msgstr ""
+msgstr "Cotització dels valors i els tipus de canvi…"
 
 #: kmymoney/kmymoney.cpp:1444
-#, fuzzy, kde-format
-#| msgid "Update Stock and Currency Prices..."
+#, kde-format
 msgid "Update stock prices and exchange rates..."
-msgstr "Actualitza la cotització dels valors i divises…"
+msgstr "Actualitza la cotització dels valors i els tipus de canvi…"
 
 #: kmymoney/kmymoney.cpp:1445
 #, kde-format
@@ -16437,13 +16434,13 @@ msgstr "Valor inicial de mercat"
 #, kde-format
 msgctxt "Exchange rate"
 msgid "Rate"
-msgstr ""
+msgstr "Canvi"
 
 #: kmymoney/plugins/views/reports/core/listtable.cpp:843
 #, kde-format
 msgctxt "Exchange rate"
 msgid "The applied currency exchange rate used in the conversion"
-msgstr ""
+msgstr "El tipus de canvi de divisa aplicat utilitzat en la conversió"
 
 #: kmymoney/plugins/views/reports/core/objectinfotable.cpp:217
 #: kmymoney/plugins/views/reports/core/querytable.cpp:991
@@ -18245,7 +18242,7 @@ msgstr "<p>Trieu esta opció per a mostrar la columna «Acció»</p>"
 #: kmymoney/plugins/views/reports/reporttabrowcolquery.ui:310
 #, kde-format
 msgid "Rate"
-msgstr ""
+msgstr "Canvi"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, m_checkBalance)
 #: kmymoney/plugins/views/reports/reporttabrowcolquery.ui:317
@@ -26422,9 +26419,3 @@ msgstr "Processa un informe específic"
 #, kde-format
 msgid "Only one of --csv and --html is supported"
 msgstr "Només s'admet un d'entre --csv o --html"
-
-#~ msgid "Prices"
-#~ msgstr "Preus"
-
-#~ msgid "Prices..."
-#~ msgstr "Cotitzacions…"
