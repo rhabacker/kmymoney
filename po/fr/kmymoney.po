@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-15 00:46+0000\n"
-"PO-Revision-Date: 2026-03-31 07:16+0200\n"
+"PO-Revision-Date: 2026-04-17 09:01+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: fr\n"
 "Language: fr\n"
@@ -1994,17 +1994,15 @@ msgstr "Opérations récurrentes"
 
 #. i18n: ectx: property (text), widget (QLabel, textLabel19)
 #: kmymoney/dialogs/kmymoneyfileinfodlg.ui:208
-#, fuzzy, kde-format
-#| msgid "Stock p&rices"
+#, kde-format
 msgid "Stock prices"
-msgstr "Cou&rs des actions"
+msgstr "Cours des actions"
 
 #. i18n: ectx: property (text), widget (QLabel, textLabel20)
 #: kmymoney/dialogs/kmymoneyfileinfodlg.ui:228
-#, fuzzy, kde-format
-#| msgid "Exchange &rate / Price"
+#, kde-format
 msgid "Exchange rates"
-msgstr "Taux de change / Cou&rs"
+msgstr "Taux de change"
 
 #. i18n: ectx: attribute (title), widget (QWidget, m_securitiesTab)
 #. i18n: ectx: property (text), widget (QLabel, textLabel11)
@@ -5211,14 +5209,13 @@ msgstr "Devises…"
 #: kmymoney/kmymoney.cpp:1443
 #, kde-format
 msgid "Stock prices and exchange rates..."
-msgstr ""
+msgstr "Les cours des actions et taux de change..."
 
 # actions -> titres
 #: kmymoney/kmymoney.cpp:1444
-#, fuzzy, kde-format
-#| msgid "Update Stock and Currency Prices..."
+#, kde-format
 msgid "Update stock prices and exchange rates..."
-msgstr "Mettre à jour le cours des titres et devises…"
+msgstr "Mettre à jour le cours des actions et les taux de change"
 
 #: kmymoney/kmymoney.cpp:1445
 #, kde-format
@@ -16540,13 +16537,13 @@ msgstr "Valeur de marché de départ"
 #, kde-format
 msgctxt "Exchange rate"
 msgid "Rate"
-msgstr ""
+msgstr "Taux"
 
 #: kmymoney/plugins/views/reports/core/listtable.cpp:843
 #, kde-format
 msgctxt "Exchange rate"
 msgid "The applied currency exchange rate used in the conversion"
-msgstr ""
+msgstr "Le taux de change appliqué utilisé dans la conversion"
 
 #: kmymoney/plugins/views/reports/core/objectinfotable.cpp:217
 #: kmymoney/plugins/views/reports/core/querytable.cpp:991
@@ -18342,7 +18339,7 @@ msgstr "<p>Sélectionnez cette option pour afficher la colonne Titre</p>"
 #: kmymoney/plugins/views/reports/reporttabrowcolquery.ui:310
 #, kde-format
 msgid "Rate"
-msgstr ""
+msgstr "Taux"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, m_checkBalance)
 #: kmymoney/plugins/views/reports/reporttabrowcolquery.ui:317

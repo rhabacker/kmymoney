@@ -3673,7 +3673,7 @@ msgstr "ფერები"
 #: kmymoney/dialogs/settings/ksettingskmymoney.cpp:59
 #, kde-format
 msgid "Fonts"
-msgstr "შრიფტები"
+msgstr "ფონტები"
 
 #: kmymoney/dialogs/settings/ksettingskmymoney.cpp:61
 #, kde-format
