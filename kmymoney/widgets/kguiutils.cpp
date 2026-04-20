@@ -294,11 +294,17 @@ void KGuiUtils::setupExpandCollapseButton(QPushButton* button, QTreeWidget* widg
     QObject::connect(button, &QPushButton::clicked, button, [=]() {
         bool expanded = button->property("expanded").toBool();
 
+        // Determine number of rows if rows == -1
+        int rowCount = rows;
+        if (rowCount == -1) {
+            rowCount = widget->topLevelItemCount();
+        }
+
         int rowHeight = widget->sizeHintForRow(0);
         int headerHeight = widget->header()->height();
 
         if (!expanded) {
-            widget->setMinimumHeight(rows * rowHeight + headerHeight);
+            widget->setMinimumHeight(rowCount * rowHeight + headerHeight);
             button->setText(i18nc("@action:button", "Collapse"));
         } else {
             widget->setMinimumHeight(0);

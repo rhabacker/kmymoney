@@ -103,6 +103,7 @@ KMyMoneyAccountSelector::KMyMoneyAccountSelector(QWidget *parent, Qt::WindowFlag
         connect(d->m_noAccountButton, &QAbstractButton::clicked, this, &KMyMoneyAccountSelector::slotDeselectAllAccounts);
         connect(d->m_incomeCategoriesButton, &QAbstractButton::clicked, this, &KMyMoneyAccountSelector::slotSelectIncomeCategories);
         connect(d->m_expenseCategoriesButton, &QAbstractButton::clicked, this, &KMyMoneyAccountSelector::slotSelectExpenseCategories);
+        // automatic setup of height does not work as expected
         KGuiUtils::setupExpandCollapseButton(d->m_expandButton, d->m_treeWidget, d->m_collapsedRowCount * 4);
     }
 }

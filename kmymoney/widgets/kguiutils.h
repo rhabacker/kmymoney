@@ -97,7 +97,7 @@ private:
 };
 
 namespace KGuiUtils {
-void KMM_BASE_WIDGETS_EXPORT setupExpandCollapseButton(QPushButton* button, QTreeWidget* widget, int rows);
+void KMM_BASE_WIDGETS_EXPORT setupExpandCollapseButton(QPushButton* button, QTreeWidget* widget, int rows = -1);
 }
 
 #endif // KGUIUTILS_H
