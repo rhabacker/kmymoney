@@ -25,6 +25,7 @@
 #include "ledgeraccountfilter.h"
 #include "ledgerfilter.h"
 #include "ledgerviewsettings.h"
+#include "menuenums.h"
 #include "mymoneyexception.h"
 #include "mymoneyfile.h"
 #include "mymoneymoney.h"
@@ -88,6 +89,16 @@ public:
         connect(ui->m_splitter, &QSplitter::splitterMoved, q, &LedgerViewPage::splitterChanged);
 
         ui->m_ledgerView->setColumnSelectorGroupName(configGroupName);
+        ui->m_transactionToolBar->addAction(pActions[eMenu::Action::NewTransaction]);
+        ui->m_transactionToolBar->addAction(pActions[eMenu::Action::EditTransaction]);
+        ui->m_transactionToolBar->addAction(pActions[eMenu::Action::EditSplits]);
+        ui->m_transactionToolBar->addAction(pActions[eMenu::Action::DeleteTransaction]);
+        ui->m_transactionToolBar->addAction(pActions[eMenu::Action::DuplicateTransaction]);
+        ui->m_transactionToolBar->addAction(pActions[eMenu::Action::AddReversingTransaction]);
+        ui->m_transactionToolBar->addSeparator();
+        ui->m_transactionToolBar->addAction(pActions[eMenu::Action::MatchTransaction]);
+        ui->m_transactionToolBar->addAction(pActions[eMenu::Action::AcceptTransaction]);
+        ui->m_transactionToolBar->setVisible(true);
 
         needModelInit = true;
     }

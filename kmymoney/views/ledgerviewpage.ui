@@ -43,6 +43,25 @@
         <widget class="LedgerView" name="m_ledgerView"/>
        </item>
        <item>
+        <widget class="QToolBar" name="m_transactionToolBar">
+         <property name="movable">
+          <bool>true</bool>
+         </property>
+         <property name="floatable">
+          <bool>true</bool>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>22</width>
+           <height>22</height>
+          </size>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextBesideIcon</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QWidget" name="m_reconciliationContainer" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <property name="topMargin">
