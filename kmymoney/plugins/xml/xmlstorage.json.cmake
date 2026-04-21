@@ -16,6 +16,7 @@
                 "Name[fi]": "Kevin Tambascio, Thomas Baumgart, Ace Jones, Łukasz Wojniłowicz",
                 "Name[fr]": "Kevin Tambascio,Thomas Baumgart,Ace Jones,Łukasz Wojniłowicz",
                 "Name[gl]": "Kevin Tambascio,Thomas Baumgart,Ace Jones,Łukasz Wojniłowicz",
+                "Name[he]": "קווין טמבשיו,תומאס באומגרט,אייס ג׳ונס,לוקאש ווינילוביץ׳",
                 "Name[ia]": "Kevin Tambascio,Thomas Baumgart,Ace Jones,Łukasz Wojniłowicz",
                 "Name[it]": "Kevin Tambascio,Thomas Baumgart,Ace Jones,Łukasz Wojniłowicz",
                 "Name[ka]": "Kevin Tambascio,Thomas Baumgart,Ace Jones,Łukasz Wojniłowicz",

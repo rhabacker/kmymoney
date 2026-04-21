@@ -16,6 +16,7 @@
                 "Name[fi]": "Martin Preuss, Thomas Baumgart, Christian Dávid",
                 "Name[fr]": "Martin Preuss,Thomas Baumgart,Christian Dávid",
                 "Name[gl]": "Martin Preuss,Thomas Baumgart,Christian Dávid",
+                "Name[he]": "מרטין פריוס,תומאס באומגרט,כריסטיאן דוד",
                 "Name[ia]": "Martin Preuss,Thomas Baumgart,Christian Dávid",
                 "Name[it]": "Martin Preuss,Thomas Baumgart,Christian Dávid",
                 "Name[ka]": "Martin Preuss,Thomas Baumgart,Christian Dávid",
