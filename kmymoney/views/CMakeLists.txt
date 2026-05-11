@@ -28,6 +28,7 @@ set(libviews_a_SOURCES
   multitransactioneditor.cpp
   journaldelegate.cpp
   onlinebalancedelegate.cpp
+  statementbalancedelegate.cpp
   reconciliationdelegate.cpp
   reconciliationledgerviewpage.cpp
   specialdatedelegate.cpp

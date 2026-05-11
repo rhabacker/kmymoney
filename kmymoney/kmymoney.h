@@ -473,7 +473,6 @@ public Q_SLOTS:
       */
     void slotShowAllAccounts();
 
-
     /**
       * changes the statusbar contents for the standard label permanently,
       * used to indicate current actions. Returns the previous value for

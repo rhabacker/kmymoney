@@ -533,6 +533,7 @@ namespace Delegates {
 enum class Types {
     JournalDelegate,
     OnlineBalanceDelegate,
+    StatementBalanceDelegate,
     SpecialDateDelegate,
     ReconciliationDelegate,
     SecurityAccountNameDelegate,
@@ -721,6 +722,7 @@ enum Roles {
     ReconciliationCurrentRole, // set for current reconciliation entry
     LastReconciliationRole, // set for the last reconciliation of an account
     ReconciliationBackgroundRole, // the background color for the current reconciliation entry
+    ReconciliationTypeRole, // the reconciliation type
 
     // General state
     ClosedRole,

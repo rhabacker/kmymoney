@@ -216,6 +216,7 @@ Q_SIGNALS:
     void reparentAccountRequest(const QString& accountId, const QString& newParentId);
     void aboutToRemoveAccounts();
     void accountsRemoved();
+    void statementBalanceInfoChanged();
 
 private:
     struct Private;

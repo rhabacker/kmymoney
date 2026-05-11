@@ -62,6 +62,7 @@
 #include "specialdatedelegate.h"
 #include "specialdatesmodel.h"
 #include "specialledgeritemfilter.h"
+#include "statementbalancedelegate.h"
 #include "transactioneditorbase.h"
 
 struct GlobalEditData {
@@ -82,6 +83,7 @@ public:
         : q(qq)
         , journalDelegate(new JournalDelegate(q))
         , onlineBalanceDelegate(new OnlineBalanceDelegate(q))
+        , statementBalanceDelegate(new StatementBalanceDelegate(q))
         , specialDatesDelegate(new SpecialDateDelegate(q))
         , reconciliationDelegate(new ReconciliationDelegate(q))
         , securityAccuntNameDelegate(new SecurityAccountNameDelegate(q))
@@ -103,6 +105,7 @@ public:
 
         delegateProxy->addDelegate(eMyMoney::Delegates::Types::JournalDelegate, journalDelegate);
         delegateProxy->addDelegate(eMyMoney::Delegates::Types::OnlineBalanceDelegate, onlineBalanceDelegate);
+        delegateProxy->addDelegate(eMyMoney::Delegates::Types::StatementBalanceDelegate, statementBalanceDelegate);
         delegateProxy->addDelegate(eMyMoney::Delegates::Types::SpecialDateDelegate, specialDatesDelegate);
         delegateProxy->addDelegate(eMyMoney::Delegates::Types::SchedulesDelegate, journalDelegate);
         delegateProxy->addDelegate(eMyMoney::Delegates::Types::ReconciliationDelegate, reconciliationDelegate);
@@ -523,6 +526,7 @@ public:
     LedgerView* q;
     JournalDelegate* journalDelegate;
     OnlineBalanceDelegate* onlineBalanceDelegate;
+    StatementBalanceDelegate* statementBalanceDelegate;
     SpecialDateDelegate* specialDatesDelegate;
     ReconciliationDelegate* reconciliationDelegate;
     SecurityAccountNameDelegate* securityAccuntNameDelegate;

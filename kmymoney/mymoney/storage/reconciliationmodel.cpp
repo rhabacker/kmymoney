@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QFont>
 #include <QString>
+#include <kmymoneysettings.h>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -112,10 +113,10 @@ void ReconciliationModel::doLoad()
     const int maxJournalRows = file->journalModel()->rowCount();
 
     for (auto& account : accountList) {
-        const auto history = account.reconciliationHistory();
-        if (!history.isEmpty()) {
+        const auto reconciliationHistory = account.reconciliationHistory();
+        if (!reconciliationHistory.isEmpty()) {
             const auto& accountId = account.id();
-            const auto rows = history.count();
+            const auto rows = reconciliationHistory.count();
             insertRows(0, rows);
 
             int reconciliationRow = 0;
@@ -123,7 +124,7 @@ void ReconciliationModel::doLoad()
             MyMoneyMoney nextReconciliationStartAmount;
 
             QMap<QDate, MyMoneyMoney>::const_iterator it;
-            for (it = history.cbegin(); it != history.cend(); ++it) {
+            for (it = reconciliationHistory.cbegin(); it != reconciliationHistory.cend(); ++it) {
                 MyMoneyMoney reconciledBalance = nextReconciliationStartAmount;
                 const auto reconciliationReferenceDate = it.key();
                 auto journalRow = nextReconciliationStartRow;
@@ -172,10 +173,31 @@ void ReconciliationModel::doLoad()
                                           ((reconciliationRow + 1) < rows) ? eMyMoney::Model::StdFilter : eMyMoney::Model::DontFilterLast);
                 entry.setBackgroundColorRole((reconciledBalance == *it) ? KColorScheme::PositiveBackground : KColorScheme::NegativeBackground);
                 auto nextIt = it;
-                entry.setLastReconciliation(++nextIt == history.cend());
+                entry.setLastReconciliation(++nextIt == reconciliationHistory.cend());
 
                 static_cast<TreeItem<ReconciliationEntry>*>(index(reconciliationRow, 0).internalPointer())->dataRef() = entry;
                 ++reconciliationRow;
+            }
+        }
+
+        const auto statementBalanceHistory = account.statementBalanceHistory();
+        if (!statementBalanceHistory.isEmpty()) {
+            const auto& accountId = account.id();
+            const auto rows = statementBalanceHistory.count();
+            insertRows(0, rows);
+
+            int row = 0;
+            QMap<QDate, MyMoneyMoney>::const_iterator it;
+            for (it = statementBalanceHistory.constBegin(); it != statementBalanceHistory.constEnd(); ++it) {
+                ReconciliationEntry entry(nextId(),
+                                          accountId,
+                                          it.key(),
+                                          *it,
+                                          ((row + 1) < rows) ? eMyMoney::Model::StdFilter : eMyMoney::Model::DontFilterLast,
+                                          false,
+                                          ReconciliationEntry::Type::StatementBalance);
+                static_cast<TreeItem<ReconciliationEntry>*>(index(row, 0).internalPointer())->dataRef() = entry;
+                ++row;
             }
         }
         // in active reconciliation, the lastReconciledBalance is empty,
@@ -272,6 +294,9 @@ QVariant ReconciliationModel::data(const QModelIndex& idx, int role) const
     case eMyMoney::Model::ReconciliationAmountRole:
         return QVariant::fromValue(reconciliationEntry.amount());
 
+    case eMyMoney::Model::ReconciliationTypeRole:
+        return QVariant::fromValue(reconciliationEntry.type());
+
     case eMyMoney::Model::ReconciliationBalanceRole:
         return d->formatValue(reconciliationEntry.accountId(), reconciliationEntry.amount());
 
@@ -280,7 +305,12 @@ QVariant ReconciliationModel::data(const QModelIndex& idx, int role) const
         return QVariant::fromValue<eMyMoney::Split::State>(eMyMoney::Split::State::Reconciled);
 
     case eMyMoney::Model::DelegateRole:
-        return static_cast<int>(eMyMoney::Delegates::Types::ReconciliationDelegate);
+        if (reconciliationEntry.type() == ReconciliationEntry::Type::Default)
+            return static_cast<int>(eMyMoney::Delegates::Types::ReconciliationDelegate);
+        else if (reconciliationEntry.type() == ReconciliationEntry::Type::StatementBalance)
+            return static_cast<int>(eMyMoney::Delegates::Types::StatementBalanceDelegate);
+        else
+            return {};
 
     case eMyMoney::Model::ReconciliationFilterHintRole:
         return QVariant::fromValue<eMyMoney::Model::ReconciliationFilterHint>(reconciliationEntry.filterHint());

@@ -27,6 +27,11 @@
 class /* no export here on purpose */ ReconciliationEntry
 {
 public:
+    enum class Type {
+        Default,
+        StatementBalance,
+    };
+
     explicit ReconciliationEntry()
     {
     }
@@ -38,6 +43,7 @@ public:
         , m_reconciliationInProgress(other.m_reconciliationInProgress)
         , m_filterHint(other.m_filterHint)
         , m_backgroundRole(other.m_backgroundRole)
+        , m_type(other.m_type)
     {
     }
 
@@ -46,7 +52,8 @@ public:
                         const QDate& date,
                         const MyMoneyMoney& amount,
                         eMyMoney::Model::ReconciliationFilterHint filterHint,
-                        bool inProgress = false)
+                        bool inProgress = false,
+                        Type type = Type::Default)
         : m_id(id)
         , m_accountId(accountId)
         , m_amount(amount)
@@ -55,6 +62,7 @@ public:
         , m_lastReconciliation(false)
         , m_filterHint(filterHint)
         , m_backgroundRole(KColorScheme::PositiveBackground)
+        , m_type(type)
     {
     }
 
@@ -69,6 +77,10 @@ public:
     inline const MyMoneyMoney& amount() const
     {
         return m_amount;
+    }
+    inline const Type& type() const
+    {
+        return m_type;
     }
     inline const QDate& date() const
     {
@@ -120,7 +132,9 @@ private:
     bool m_lastReconciliation; ///< set to true for the last record in history
     eMyMoney::Model::ReconciliationFilterHint m_filterHint; ///< hint for filtering records
     KColorScheme::BackgroundRole m_backgroundRole; ///< background color control
+    Type m_type;
 };
+Q_DECLARE_METATYPE(ReconciliationEntry::Type);
 
 class QUndoStack;
 /**
