@@ -90,6 +90,8 @@ enum class Account {
     OnlineBanking,
     ReconciliationHistory,
     ReconciliationEntry,
+    StatementBalanceHistory,
+    StatementBalanceEntry,
     // insert new entries above this line
     LastElement,
 };
@@ -207,6 +209,11 @@ enum class Account {
 };
 
 enum class Reconciliation {
+    Date,
+    Amount,
+};
+
+enum class StatementBalance {
     Date,
     Amount,
 };
@@ -361,6 +368,7 @@ QString attributeName(Attribute::OnlineJob attributeID);
 
 QString attributeName(Attribute::CostCenter attributeID);
 QString attributeName(Attribute::Reconciliation attributeID);
+QString attributeName(Attribute::StatementBalance attributeID);
 
 QString tagName(Tag tagID);
 QString nodeName(Node nodeID);

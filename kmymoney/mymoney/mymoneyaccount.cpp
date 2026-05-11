@@ -639,6 +639,28 @@ QMap<QDate, MyMoneyMoney> MyMoneyAccount::reconciliationHistory() const
     return d->m_reconciliationHistory;
 }
 
+QMap<QDate, MyMoneyMoney> MyMoneyAccount::statementBalanceHistory()
+{
+    Q_D(MyMoneyAccount);
+    return d->m_statementBalanceHistory;
+}
+
+QMap<QDate, MyMoneyMoney> MyMoneyAccount::statementBalanceHistory() const
+{
+    Q_D(const MyMoneyAccount);
+    return d->m_statementBalanceHistory;
+}
+
+bool MyMoneyAccount::addStatementBalance(const QDate& date, const MyMoneyMoney& amount)
+{
+    Q_D(MyMoneyAccount);
+    if (!d->m_statementBalanceHistory.contains(date) || d->m_statementBalanceHistory[date] != amount) {
+        d->m_statementBalanceHistory[date] = amount;
+        return true;
+    } else
+        return false;
+}
+
 /**
  * @todo Improve setting of country for nationalAccount
  */
