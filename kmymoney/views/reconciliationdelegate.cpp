@@ -85,7 +85,7 @@ void ReconciliationDelegate::paint(QPainter* painter, const QStyleOptionViewItem
     const auto reconciliationBalanceValue = index.data(eMyMoney::Model::ReconciliationAmountRole).value<MyMoneyMoney>();
     const auto accountBalance = MyMoneyFile::instance()->balance(index.data(eMyMoney::Model::SplitAccountIdRole).toString(), reconciliationDate);
 
-    const auto backgroundColorRole = static_cast<KColorScheme::BackgroundRole>(index.data(eMyMoney::Model::ReconciliationBackgroundRole).toInt());
+    const auto backgroundColorRole = (accountBalance == reconciliationBalanceValue) ? KColorScheme::PositiveBackground : KColorScheme::NegativeBackground;
     KColorScheme::adjustBackground(opt.palette, backgroundColorRole, QPalette::Base, KColorScheme::View, KSharedConfigPtr());
 
     // opt.rect.setHeight(lineHeight);
