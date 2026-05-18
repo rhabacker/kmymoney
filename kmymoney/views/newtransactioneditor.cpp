@@ -852,6 +852,7 @@ int NewTransactionEditor::Private::editSplits()
         }
         ui->creditDebitEdit->setShares(amountShares);
 
+        updateVAT(ValueUnchanged);
         updateWidgetState();
         updateWidgetAccess();
         checkForValidAmount();
@@ -950,8 +951,27 @@ void NewTransactionEditor::Private::updateVAT(TaxValueChange amountChanged)
     if (m_account.value(QLatin1String("NoVat")).toLower() == QLatin1String("yes"))
         return;
 
-    // more splits than category and tax are not supported
-    if (splitModel.rowCount() > 2) {
+    // process split transactions through the engine VAT updater
+    // and resync editor splits from the resulting transaction.
+    if (splitModel.rowCount() > 1) {
+        auto t = q->transaction();
+        t.setCommodity(m_transaction.commodity());
+        MyMoneyFile::instance()->updateVAT(t);
+
+        MyMoneySplit accountSplit;
+        splitModel.unload();
+        for (const auto& split : t.splits()) {
+            if (split.accountId() == m_account.id()) {
+                accountSplit = split;
+                continue;
+            }
+            splitModel.appendSplit(split);
+        }
+
+        if (!accountSplit.accountId().isEmpty()) {
+            ui->creditDebitEdit->setValue(accountSplit.value(), true);
+            ui->creditDebitEdit->setShares(accountSplit.shares());
+        }
         return;
     }
 
