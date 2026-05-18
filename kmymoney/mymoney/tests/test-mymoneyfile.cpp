@@ -2730,6 +2730,72 @@ void MyMoneyFileTest::testVatAssignment()
     QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1422, 100).toString());
     QCOMPARE(tr.splitByAccount(vat.id()).shares().toString(), MyMoneyMoney(-284, 100).toString());
     QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
+
+    // setup additional categories/VAT account and validate automatic VAT update on mixed splits
+    MyMoneyAccount vatReduced;
+    MyMoneyAccount expense2;
+    MyMoneyAccount expenseExempt;
+    ft.restart();
+    try {
+        vatReduced.setName("VAT reduced");
+        vatReduced.setCurrencyId("EUR");
+        vatReduced.setAccountType(eMyMoney::Account::Type::Expense);
+        vatReduced.setValue(QLatin1String("VatRate"), QLatin1String("10/100"));
+        MyMoneyAccount parent = m->expense();
+        m->addAccount(vatReduced, parent);
+
+        expense2 = expense;
+        expense2.clearId();
+        expense2.setName("Expense2");
+        expense2.deletePair(QLatin1String("VatAmount"));
+        expense2.setValue(QLatin1String("VatAccount"), vatReduced.id());
+        m->addAccount(expense2, parent);
+
+        expenseExempt = expense;
+        expenseExempt.clearId();
+        expenseExempt.setName("Expense exempt");
+        expenseExempt.deletePair(QLatin1String("VatAccount"));
+        expenseExempt.deletePair(QLatin1String("VatAmount"));
+        m->addAccount(expenseExempt, parent);
+        ft.commit();
+    } catch (const MyMoneyException&) {
+        QFAIL("Unexpected exception!");
+    }
+
+    tr.removeSplits();
+    sp.clearId();
+    sp.setAccountId(acc.id());
+    sp.setShares(MyMoneyMoney(0));
+    sp.setValue(sp.shares());
+    tr.addSplit(sp);
+
+    sp.clearId();
+    sp.setAccountId(expense.id()); // net VAT 20%
+    sp.setShares(MyMoneyMoney(-1000, 100));
+    sp.setValue(sp.shares());
+    tr.addSplit(sp);
+
+    sp.clearId();
+    sp.setAccountId(expense2.id()); // gross VAT 10%
+    sp.setShares(MyMoneyMoney(-550, 100));
+    sp.setValue(sp.shares());
+    tr.addSplit(sp);
+
+    sp.clearId();
+    sp.setAccountId(expenseExempt.id()); // tax-exempt split
+    sp.setShares(MyMoneyMoney(-300, 100));
+    sp.setValue(sp.shares());
+    tr.addSplit(sp);
+
+    m->updateVAT(tr);
+    QCOMPARE(tr.splits().count(), 6);
+    QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1000, 100).toString());
+    QCOMPARE(tr.splitByAccount(expense2.id()).shares().toString(), MyMoneyMoney(-500, 100).toString());
+    QCOMPARE(tr.splitByAccount(expenseExempt.id()).shares().toString(), MyMoneyMoney(-300, 100).toString());
+    QCOMPARE(tr.splitByAccount(vat.id()).shares().toString(), MyMoneyMoney(-200, 100).toString());
+    QCOMPARE(tr.splitByAccount(vatReduced.id()).shares().toString(), MyMoneyMoney(-50, 100).toString());
+    QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(2050, 100).toString());
+    QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 }
 
 void MyMoneyFileTest::testEmptyFilter()
