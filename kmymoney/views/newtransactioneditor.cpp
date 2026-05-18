@@ -957,8 +957,14 @@ void NewTransactionEditor::Private::updateVAT(TaxValueChange amountChanged)
         // Keep user edits in sync with the category split before we let
         // the engine recompute VAT for multi-split transactions.
         if (amountChanged == ValueChanged) {
-            if (categoryId.isEmpty() && splitModel.rowCount() > 0) {
-                categoryId = splitModel.index(0, 0).data(eMyMoney::Model::SplitAccountIdRole).toString();
+            if (categoryId.isEmpty()) {
+                for (auto row = 0; row < splitModel.rowCount(); ++row) {
+                    const auto splitCategoryId = splitModel.index(row, 0).data(eMyMoney::Model::SplitAccountIdRole).toString();
+                    if (!splitCategoryId.isEmpty() && splitCategoryId != m_account.id()) {
+                        categoryId = splitCategoryId;
+                        break;
+                    }
+                }
             }
             if (!categoryId.isEmpty()) {
                 categoryChanged(categoryId);
