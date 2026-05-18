@@ -4609,19 +4609,23 @@ void MyMoneyFile::updateVAT(MyMoneyTransaction& transaction) const
 
         const auto vatAccountId = acc.value("VatAccount");
         if (!vatAccountId.isEmpty()) {
-            const auto vatAcc = account(vatAccountId);
-            const MyMoneyMoney vatRate(vatAcc.value("VatRate"));
-            if (!vatRate.isZero()) {
-                if (acc.value("VatAmount").toLower() != QString("net")) {
-                    const auto net = (split.shares() / (MyMoneyMoney::ONE + vatRate)).convert(acc.fraction());
-                    MyMoneySplit catSplit = split;
-                    catSplit.setShares(net);
-                    catSplit.setValue(net);
-                    transaction.modifySplit(catSplit);
-                    taxByVatAccount[vatAccountId] += split.shares() - net;
-                } else {
-                    taxByVatAccount[vatAccountId] += (split.shares() * vatRate).convert(acc.fraction());
+            try {
+                const auto vatAcc = account(vatAccountId);
+                const MyMoneyMoney vatRate(vatAcc.value("VatRate"));
+                if (!vatRate.isZero()) {
+                    if (acc.value("VatAmount").toLower() != QString("net")) {
+                        const auto net = (split.shares() / (MyMoneyMoney::ONE + vatRate)).convert(acc.fraction());
+                        MyMoneySplit catSplit = split;
+                        catSplit.setShares(net);
+                        catSplit.setValue(net);
+                        transaction.modifySplit(catSplit);
+                        taxByVatAccount[vatAccountId] += split.shares() - net;
+                    } else {
+                        taxByVatAccount[vatAccountId] += (split.shares() * vatRate).convert(acc.fraction());
+                    }
                 }
+            } catch (const MyMoneyException&) {
+                // stale/invalid VAT account setting: skip VAT assignment for this category
             }
             continue;
         }
@@ -4637,9 +4641,7 @@ void MyMoneyFile::updateVAT(MyMoneyTransaction& transaction) const
 
     // remove all existing auto-tax splits (they'll be recreated from current categories)
     for (const auto& split : std::as_const(taxSplitsToRemove)) {
-        if (taxByVatAccount.contains(split.accountId())) {
-            transaction.removeSplit(split);
-        }
+        transaction.removeSplit(split);
     }
 
     for (auto it = taxByVatAccount.cbegin(); it != taxByVatAccount.cend(); ++it) {
