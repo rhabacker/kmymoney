@@ -2746,6 +2746,7 @@ void MyMoneyFileTest::testVatAssignment()
 
         expense2 = expense;
         expense2.clearId();
+        expense2.setParentAccountId(QString());
         expense2.setName("Expense2");
         expense2.deletePair(QLatin1String("VatAmount"));
         expense2.setValue(QLatin1String("VatAccount"), vatReduced.id());
@@ -2753,6 +2754,7 @@ void MyMoneyFileTest::testVatAssignment()
 
         expenseExempt = expense;
         expenseExempt.clearId();
+        expenseExempt.setParentAccountId(QString());
         expenseExempt.setName("Expense exempt");
         expenseExempt.deletePair(QLatin1String("VatAccount"));
         expenseExempt.deletePair(QLatin1String("VatAmount"));
@@ -2765,7 +2767,7 @@ void MyMoneyFileTest::testVatAssignment()
     tr.removeSplits();
     sp.clearId();
     sp.setAccountId(acc.id());
-    sp.setShares(MyMoneyMoney(0));
+    sp.setShares(MyMoneyMoney(1850, 100));
     sp.setValue(sp.shares());
     tr.addSplit(sp);
 
@@ -2787,6 +2789,7 @@ void MyMoneyFileTest::testVatAssignment()
     sp.setValue(sp.shares());
     tr.addSplit(sp);
 
+    tr.setCommodity(acc.currencyId());
     m->updateVAT(tr);
     QCOMPARE(tr.splits().count(), 6);
     QCOMPARE(tr.splitByAccount(expense.id()).shares().toString(), MyMoneyMoney(-1000, 100).toString());

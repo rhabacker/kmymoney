@@ -4589,48 +4589,44 @@ void MyMoneyFile::updateVAT(MyMoneyTransaction& transaction) const
     }
 
     MyMoneySplit assetSplit;
-    QHash<QString, MyMoneyMoney> taxByVatAccount;
+    QMap<QString, MyMoneyMoney> taxByVatAccount;
     QList<MyMoneySplit> taxSplitsToRemove;
+    QSet<QString> vatAccountIds;
     const QString currencyId = transaction.commodity();
 
-    for (const auto& split : std::as_const(transaction.splits())) {
+    const auto splits = transaction.splits();
+    for (const auto& split : splits) {
         const auto acc = account(split.accountId());
         // all splits must reference accounts denoted in the same currency
         if (acc.currencyId() != currencyId) {
             return;
         }
-        if (acc.isAssetLiability()) {
-            if (!assetSplit.id().isEmpty()) {
-                return;
+        const auto vatAccountId = acc.value("VatAccount");
+        if (!vatAccountId.isEmpty()) {
+            vatAccountIds.insert(vatAccountId);
+            const auto vatAcc = account(vatAccountId);
+            const MyMoneyMoney vatRate(vatAcc.value("VatRate"));
+            if (!vatRate.isZero()) {
+                if (acc.value("VatAmount").toLower() != QString("net")) {
+                    const auto net = (split.shares() / (MyMoneyMoney::ONE + vatRate)).convert(acc.fraction());
+                    MyMoneySplit catSplit = split;
+                    catSplit.setShares(net);
+                    catSplit.setValue(net);
+                    transaction.modifySplit(catSplit);
+                    taxByVatAccount[vatAccountId] += split.shares() - net;
+                } else {
+                    taxByVatAccount[vatAccountId] += (split.shares() * vatRate).convert(acc.fraction());
+                }
             }
+            continue;
+        }
+
+        if (acc.isAssetLiability() && assetSplit.id().isEmpty()) {
             assetSplit = split;
             continue;
         }
 
-        const auto vatAccountId = acc.value("VatAccount");
-        if (!vatAccountId.isEmpty()) {
-            try {
-                const auto vatAcc = account(vatAccountId);
-                const MyMoneyMoney vatRate(vatAcc.value("VatRate"));
-                if (!vatRate.isZero()) {
-                    if (acc.value("VatAmount").toLower() != QString("net")) {
-                        const auto net = (split.shares() / (MyMoneyMoney::ONE + vatRate)).convert(acc.fraction());
-                        MyMoneySplit catSplit = split;
-                        catSplit.setShares(net);
-                        catSplit.setValue(net);
-                        transaction.modifySplit(catSplit);
-                        taxByVatAccount[vatAccountId] += split.shares() - net;
-                    } else {
-                        taxByVatAccount[vatAccountId] += (split.shares() * vatRate).convert(acc.fraction());
-                    }
-                }
-            } catch (const MyMoneyException&) {
-                // stale/invalid VAT account setting: skip VAT assignment for this category
-            }
-            continue;
-        }
-
-        if (!acc.isInTaxReports()) {
+        if (vatAccountIds.contains(split.accountId()) || !acc.value("VatRate").isEmpty()) {
             taxSplitsToRemove.append(split);
         }
     }
@@ -4641,7 +4637,9 @@ void MyMoneyFile::updateVAT(MyMoneyTransaction& transaction) const
 
     // remove all existing auto-tax splits (they'll be recreated from current categories)
     for (const auto& split : std::as_const(taxSplitsToRemove)) {
-        transaction.removeSplit(split);
+        if (taxByVatAccount.contains(split.accountId())) {
+            transaction.removeSplit(split);
+        }
     }
 
     for (auto it = taxByVatAccount.cbegin(); it != taxByVatAccount.cend(); ++it) {
@@ -4662,6 +4660,7 @@ void MyMoneyFile::updateVAT(MyMoneyTransaction& transaction) const
             splitSum += split.shares();
         }
     }
+
     assetSplit.setShares(-splitSum);
     assetSplit.setValue(assetSplit.shares());
     transaction.modifySplit(assetSplit);
