@@ -27,6 +27,7 @@
 #include "accountsmodel.h"
 #include "icons.h"
 #include "kmmset.h"
+#include "mymoneyexception.h"
 #include "mymoneyfile.h"
 #include "mymoneysecurity.h"
 #include "mymoneytransaction.h"
@@ -289,6 +290,12 @@ void SplitDialog::setModel(SplitModel* model)
 
 void SplitDialog::adjustSummary()
 {
+    // The constructor schedules adjustSummary() before setModel() is called.
+    // In that phase, there is no split model attached yet.
+    if (!d->splitModel || !d->ui->splitView->model()) {
+        return;
+    }
+
     if (!d->updatingVat) {
         MyMoneyTransaction t;
         t.setCommodity(d->commodity.id());
@@ -304,12 +311,15 @@ void SplitDialog::adjustSummary()
 
         if (t.splitCount() > 0) {
             d->updatingVat = true;
-            MyMoneyFile::instance()->updateVAT(t);
+            try {
+                MyMoneyFile::instance()->updateVAT(t);
 
-            QSignalBlocker blocker(d->splitModel);
-            d->splitModel->unload();
-            for (const auto& split : t.splits()) {
-                d->splitModel->appendSplit(split);
+                QSignalBlocker blocker(d->splitModel);
+                d->splitModel->unload();
+                for (const auto& split : t.splits()) {
+                    d->splitModel->appendSplit(split);
+                }
+            } catch (const MyMoneyException&) {
             }
             d->updatingVat = false;
         }
