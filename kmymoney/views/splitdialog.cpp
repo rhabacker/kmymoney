@@ -29,6 +29,7 @@
 #include "kmmset.h"
 #include "mymoneyfile.h"
 #include "mymoneysecurity.h"
+#include "mymoneytransaction.h"
 #include "splitadjustdialog.h"
 #include "splitmodel.h"
 #include "ui_splitdialog.h"
@@ -47,6 +48,7 @@ public:
         , splitModel(nullptr)
         , fraction(100)
         , readOnly(false)
+        , updatingVat(false)
     {
     }
 
@@ -81,6 +83,7 @@ public:
     MyMoneySecurity commodity;
     QString transactionPayeeId;
     bool readOnly;
+    bool updatingVat;
 };
 
 static const int SumRow = 0;
@@ -286,6 +289,32 @@ void SplitDialog::setModel(SplitModel* model)
 
 void SplitDialog::adjustSummary()
 {
+    if (!d->updatingVat) {
+        MyMoneyTransaction t;
+        t.setCommodity(d->commodity.id());
+
+        const auto model = d->ui->splitView->model();
+        for (int row = 0; row < model->rowCount(); ++row) {
+            const auto idx = model->index(row, 0);
+            if (idx.data(eMyMoney::Model::SplitAccountIdRole).toString().isEmpty()) {
+                continue;
+            }
+            t.addSplit(d->splitModel->itemByIndex(idx));
+        }
+
+        if (t.splitCount() > 0) {
+            d->updatingVat = true;
+            MyMoneyFile::instance()->updateVAT(t);
+
+            QSignalBlocker blocker(d->splitModel);
+            d->splitModel->unload();
+            for (const auto& split : t.splits()) {
+                d->splitModel->appendSplit(split);
+            }
+            d->updatingVat = false;
+        }
+    }
+
     // Apply color scheme to the summary panel
     for (int row = 0; row < SummaryRows; row++) {
         for (int col = 0; col < SummaryCols; col++) {
