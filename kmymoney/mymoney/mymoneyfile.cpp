@@ -4631,13 +4631,13 @@ void MyMoneyFile::updateVAT(MyMoneyTransaction& transaction) const
         }
     }
 
-    if (assetSplit.id().isEmpty() || taxByVatAccount.isEmpty()) {
+    if (assetSplit.id().isEmpty()) {
         return;
     }
 
     // remove all existing auto-tax splits (they'll be recreated from current categories)
     for (const auto& split : std::as_const(taxSplitsToRemove)) {
-        if (taxByVatAccount.contains(split.accountId())) {
+        if (vatAccountIds.contains(split.accountId())) {
             transaction.removeSplit(split);
         }
     }
