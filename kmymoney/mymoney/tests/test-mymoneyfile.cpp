@@ -2799,6 +2799,20 @@ void MyMoneyFileTest::testVatAssignment()
     QCOMPARE(tr.splitByAccount(vatReduced.id()).shares().toString(), MyMoneyMoney(-50, 100).toString());
     QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(2050, 100).toString());
     QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
+
+    // switch all category splits to tax-exempt and ensure VAT splits are removed
+    for (const auto& split : tr.splits()) {
+        if (split.accountId() == expense.id() || split.accountId() == expense2.id()) {
+            auto updatedSplit = split;
+            updatedSplit.setAccountId(expenseExempt.id());
+            tr.modifySplit(updatedSplit);
+        }
+    }
+    m->updateVAT(tr);
+    QCOMPARE(tr.splitByAccount(vat.id()).accountId(), QString());
+    QCOMPARE(tr.splitByAccount(vatReduced.id()).accountId(), QString());
+    QCOMPARE(tr.splitByAccount(acc.id()).shares().toString(), MyMoneyMoney(1800, 100).toString());
+    QCOMPARE(tr.splitSum().toString(), MyMoneyMoney().toString());
 }
 
 void MyMoneyFileTest::testEmptyFilter()
