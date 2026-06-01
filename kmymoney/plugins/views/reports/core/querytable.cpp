@@ -724,10 +724,8 @@ void QueryTable::processTransaction(const MyMoneyTransaction& t, ReportSettings&
         qA[ctMonth] = qS[ctMonth] = i18n("Month of %1", QDate(pd.year(), pd.month(), 1).toString(Qt::ISODate));
         qA[ctWeek] = qS[ctWeek] = i18n("Week of %1", pd.addDays(1 - pd.dayOfWeek()).toString(Qt::ISODate));
 
-        if (report.isConvertCurrency())
-            qA[ctCurrency] = qS[ctCurrency] = file->baseCurrency().id();
-        else
-            qA[ctCurrency] = qS[ctCurrency] = t.commodity();
+        QString baseCurrency = report.isConvertCurrency() ? file->baseCurrency().id() : t.commodity();
+        qA[ctCurrency] = qS[ctCurrency] = baseCurrency;
 
         const QList<MyMoneySplit>& splits = t.splits();
 
@@ -769,7 +767,6 @@ void QueryTable::processTransaction(const MyMoneyTransaction& t, ReportSettings&
         int pass = 1;
 
         QString myBeginCurrency;
-        QString baseCurrency = file->baseCurrency().id();
 
         QMap<QString, MyMoneyMoney> xrMap; // container for conversion rates from given currency to myBeginCurrency
 
