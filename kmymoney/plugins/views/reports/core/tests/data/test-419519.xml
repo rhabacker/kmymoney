@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE KMYMONEY-FILE>
+<KMYMONEY-FILE>
+ <FILEINFO>
+  <CREATION_DATE date="2022-03-29"/>
+  <LAST_MODIFIED_DATE date="2022-03-29"/>
+  <VERSION id="1"/>
+  <FIXVERSION id="5"/>
+ </FILEINFO>
+ <USER email="" name="Tester">
+  <ADDRESS county="" city="" telephone="" zipcode="" street=""/>
+ </USER>
+ <INSTITUTIONS count="0"/>
+ <PAYEES count="0"/>
+ <COSTCENTERS count="0"/>
+ <TAGS count="0"/>
+ <ACCOUNTS count="8">
+  <ACCOUNT number="" currency="EGP" institution="" name="Asset" id="AStd::Asset" lastreconciled="" opened="" lastmodified="" parentaccount="" description="" type="9">
+   <SUBACCOUNTS>
+    <SUBACCOUNT id="A000001"/>
+   </SUBACCOUNTS>
+  </ACCOUNT>
+  <ACCOUNT number="" currency="EGP" institution="" name="Liability" id="AStd::Liability" lastreconciled="" opened="" lastmodified="" parentaccount="" description="" type="10"/>
+  <ACCOUNT number="" currency="EGP" institution="" name="Expense" id="AStd::Expense" lastreconciled="" opened="" lastmodified="" parentaccount="" description="" type="13"/>
+  <ACCOUNT number="" currency="EGP" institution="" name="Income" id="AStd::Income" lastreconciled="" opened="" lastmodified="" parentaccount="" description="" type="12">
+   <SUBACCOUNTS>
+    <SUBACCOUNT id="A000002"/>
+    <SUBACCOUNT id="A000003"/>
+   </SUBACCOUNTS>
+  </ACCOUNT>
+  <ACCOUNT number="" currency="EGP" institution="" name="Equity" id="AStd::Equity" lastreconciled="" opened="" lastmodified="" parentaccount="" description="" type="16"/>
+  <ACCOUNT number="" currency="AED" institution="" name="My Bank" id="A000001" lastreconciled="" opened="2022-02-01" lastmodified="2022-03-29" parentaccount="AStd::Asset" description="" type="2">
+   <KEYVALUEPAIRS>
+    <PAIR key="lastNumberUsed" value="1"/>
+   </KEYVALUEPAIRS>
+  </ACCOUNT>
+  <ACCOUNT number="" currency="EGP" institution="" name="Salary" id="A000002" lastreconciled="" opened="1900-01-01" lastmodified="2022-03-29" parentaccount="AStd::Income" description="" type="12"/>
+  <ACCOUNT number="" currency="EGP" institution="" name="Food" id="A000003" lastreconciled="" opened="1900-01-01" lastmodified="" parentaccount="AStd::Income" description="" type="12"/>
+ </ACCOUNTS>
+ <TRANSACTIONS count="1">
+  <TRANSACTION commodity="AED" memo="" entrydate="2022-03-29" id="T000000000000000002" postdate="2022-03-22">
+   <SPLITS>
+    <SPLIT account="A000001" number="" shares="1000/1" payee="" action="" memo="" bankid="" reconcileflag="0" id="S0001" reconciledate="" price="1/1" value="1000/1"/>
+    <SPLIT account="A000002" number="" shares="-5000/1" payee="" action="" memo="" bankid="" reconcileflag="0" id="S0002" reconciledate="" price="1/5" value="-1000/1"/>
+   </SPLITS>
+  </TRANSACTION>
+ </TRANSACTIONS>
+ <KEYVALUEPAIRS>
+  <PAIR key="kmm-baseCurrency" value="AED"/>
+  <PAIR key="kmm-id" value="{9048b545-aaee-43b1-9d67-7d8c2819e133}"/>
+ </KEYVALUEPAIRS>
+ <SCHEDULES count="0"/>
+ <SECURITIES count="0"/>
+ <CURRENCIES count="2">
+  <CURRENCY rounding-method="7" saf="100" scf="100" name="United Arab Emirates Dirham" symbol="AED" id="AED" pp="4" type="3"/>
+  <CURRENCY rounding-method="7" saf="100" scf="100" name="Egyptian Pound" symbol="£" id="EGP" pp="4" type="3"/>
+ </CURRENCIES>
+ <PRICES count="2">
+  <PRICEPAIR to="EGP" from="AED">
+   <PRICE date="2022-01-01" source="User" price="4/1"/>
+   <PRICE date="2022-03-20" source="User" price="5/1"/>
+   <PRICE date="2022-03-22" source="User" price="5/1"/>
+  </PRICEPAIR>
+  <PRICEPAIR to="AED" from="EGP">
+   <PRICE date="2022-01-01" source="User" price="1/4"/>
+   <PRICE date="2022-03-20" source="User" price="1/5"/>
+  </PRICEPAIR>
+ </PRICES>
+ <REPORTS count="1">
+  <REPORT favorite="0" type="querytable 1.15" loans="0" detail="all" rowtype="category" id="R000001" tax="0" querycolumns="number,payee,tag,account" name="Transactions by Category (Customized)" group="Transactions" convertcurrency="1" showcolumntotals="1" investments="0" comment="Custom Report" hidetransactions="0" skipZero="0" includestransfers="0" datelock="yeartodate"/>
+ </REPORTS>
+ <BUDGETS count="0"/>
+ <ONLINEJOBS count="0"/>
+</KMYMONEY-FILE>

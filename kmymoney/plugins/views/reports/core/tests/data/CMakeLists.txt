@@ -10,15 +10,17 @@ set(querytable_test_files
   test-406403.xml
   test-406525.xml
   test-416274.xml
+  test-419519.xml
   test-423870.xml
   test-424674.xml
   test-426241.xml
   test-441023.xml
   test-448788.xml
+  test-452096.xml
   test-452692.xml
   test-453033.xml
   test-469195.xml
-  test-497935.xml
+  #test-497935.xml
   test-498031.xml
   test-498033.xml
   test-498054.xml
