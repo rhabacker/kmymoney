@@ -1248,7 +1248,9 @@ void QueryTable::processTransaction(const MyMoneyTransaction& t, ReportSettings&
         auto rateXr = xr;
         auto valueXr = xr;
         if (m_config.isConvertCurrency() && haveTransactionToBaseRate && !split.value().isZero()) {
-            rateXr = transactionToBaseRate;
+            if (t.commodity() != file->baseCurrency().id()) {
+                rateXr = transactionToBaseRate;
+            }
             if (!split.shares().isZero()) {
                 valueXr = (split.value() * transactionToBaseRate / split.shares()).reduce();
             }
