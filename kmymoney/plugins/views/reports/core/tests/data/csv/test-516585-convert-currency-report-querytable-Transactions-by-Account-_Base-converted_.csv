@@ -3,7 +3,7 @@ Date,Category,Account,Memo,Rate,Amount,Balance
 "2024-01-01","Opening Balance","checking (EUR)",""," 1.0000",""," 0.00"
 "2024-01-01","expense (EUR)","checking (EUR)",""," 1.0000"," -10,124.00"," -10,124.00"
 "2024-09-08","Transfer to checking (USD)","checking (EUR)","from EUR to USD account"," 1.0000"," -80,924.00"," -91,048.00"
-"2024-10-14","Transfer from checking (USD)","checking (EUR)","from USD to EUR account"," 1.1573"," 121,856.04"," 30,808.04"
+"2024-10-14","Transfer from checking (USD)","checking (EUR)","from USD to EUR account"," 0.8641"," 121,856.04"," 30,808.04"
 "2024-10-14","Closing Balance","checking (EUR)",""," 1.0000",""," 30,808.04"
 Total checking (EUR),,,,," 30,808.04",
 "checking (USD)"

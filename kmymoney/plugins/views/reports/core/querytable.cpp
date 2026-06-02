@@ -756,6 +756,8 @@ void QueryTable::addTransactionRow(const TableRow& row)
 void QueryTable::setupReferenceSplitRow(const MyMoneySplit& split,
                                         const ReportAccount& splitAcc,
                                         const MyMoneyMoney& xr,
+                                        const MyMoneyMoney& rateXr,
+                                        const MyMoneyMoney& valueXr,
                                         int fraction,
                                         ReportSettings& settings)
 {
@@ -798,7 +800,7 @@ void QueryTable::setupReferenceSplitRow(const MyMoneySplit& split,
         qA[ctInvestAccount] = splitAcc.parent().name();
     } else {
         qA[ctPrice].clear();
-        qA[ctRate] = xr.convertPrecision(splitAcc.currency().pricePrecision()).toString();
+        qA[ctRate] = rateXr.convertPrecision(splitAcc.currency().pricePrecision()).toString();
         qA.addSourceLine(ctRate, __LINE__);
     }
 
@@ -816,7 +818,7 @@ void QueryTable::setupReferenceSplitRow(const MyMoneySplit& split,
 
     qA[ctMemo] = settings.referenceMemo;
 
-    qA[ctValue] = (split.shares() * xr).convert(fraction).toString();
+    qA[ctValue] = (split.shares() * valueXr).convert(fraction).toString();
     qA.addSourceLine(ctValue, __LINE__);
 
     qS[ctReconcileDate] = qA[ctReconcileDate];
@@ -829,7 +831,7 @@ void QueryTable::setupReferenceSplitRow(const MyMoneySplit& split,
 
 void QueryTable::processIncludedReferenceSplit(const MyMoneySplit& split,
                                                const ReportAccount& splitAcc,
-                                               const MyMoneyMoney& xr,
+                                               const MyMoneyMoney& valueXr,
                                                int fraction,
                                                int splitCount,
                                                ReportSettings& settings)
@@ -842,7 +844,7 @@ void QueryTable::processIncludedReferenceSplit(const MyMoneySplit& split,
 
     if (settings.loanSpecialCase) {
         // put the principal amount in the "value" column and convert to lowest fraction
-        qA[ctValue] = (split.shares() * xr).convert(fraction).toString();
+        qA[ctValue] = (split.shares() * valueXr).convert(fraction).toString();
         qA.addSourceLine(ctValue, __LINE__);
         qA[ctRank] = FIRST_SPLIT_RANK;
         qA[ctSplit].clear();
@@ -867,7 +869,7 @@ void QueryTable::processIncludedReferenceSplit(const MyMoneySplit& split,
         case eMyMoney::Report::RowType::Payee:
             if (splitAcc.isAssetLiability()) {
                 qA[ctValue] =
-                    (split.shares() * xr).convert(fraction).toString(); // needed for category reports, in case of multicurrency transaction it breaks it
+                    (split.shares() * valueXr).convert(fraction).toString(); // needed for category reports, in case of multicurrency transaction it breaks it
                 qA.addSourceLine(ctValue, __LINE__);
                 // make sure we use the right currency of the category
                 // (will be ignored when converting to base currency)
@@ -890,6 +892,7 @@ void QueryTable::processFurtherSplit(const MyMoneyTransaction& t,
                                      const MyMoneySplit& split,
                                      const ReportAccount& splitAcc,
                                      const MyMoneyMoney& xr,
+                                     const MyMoneyMoney& valueXr,
                                      int fraction,
                                      int splitCount,
                                      ReportSettings& settings)
@@ -903,7 +906,7 @@ void QueryTable::processFurtherSplit(const MyMoneyTransaction& t,
     }
 
     if (settings.loanSpecialCase) {
-        MyMoneyMoney value = -((split.shares() * xr).convert(fraction));
+        MyMoneyMoney value = -((split.shares() * valueXr).convert(fraction));
 
         if (split.action() == MyMoneySplit::actionName(eMyMoney::Split::Action::Amortization)) {
             // put the amortization in the "payment" column. Since the split for
@@ -943,7 +946,7 @@ void QueryTable::processFurtherSplit(const MyMoneyTransaction& t,
         qA.addSourceLine(ctValue, __LINE__);
 
         // convert to lowest fraction
-        qA[ctSplit] = (-split.shares() * xr).convert(fraction).toString();
+        qA[ctSplit] = (-split.shares() * valueXr).convert(fraction).toString();
         qA[ctRank] = SECONDARY_SPLIT_RANK;
     } else {
         // this applies when the transaction has only 2 splits, or each split is going to be
@@ -956,7 +959,7 @@ void QueryTable::processFurtherSplit(const MyMoneyTransaction& t,
             if (splitAcc.isIncomeExpense()) {
                 // if the currency of the split is different from the currency of the main split,
                 // then convert to the currency of the main split
-                MyMoneyMoney ieXr(xr);
+                MyMoneyMoney ieXr(valueXr);
                 if (m_config.isConvertCurrency() && splitAcc.currency().id() != settings.baseCurrency) {
                     ieXr = (xr * splitAcc.foreignCurrencyPrice(settings.baseCurrency, t.postDate())).reduce();
                     qA[ctCurrency] = file->account(referenceSplit.accountId()).currencyId();
@@ -1010,6 +1013,8 @@ void QueryTable::processFurtherSplit(const MyMoneyTransaction& t,
 void QueryTable::processTransferSplit(const MyMoneySplit& split,
                                       const ReportAccount& splitAcc,
                                       const MyMoneyMoney& xr,
+                                      const MyMoneyMoney& rateXr,
+                                      const MyMoneyMoney& valueXr,
                                       int fraction,
                                       int splitCount,
                                       const QString& institution,
@@ -1041,12 +1046,12 @@ void QueryTable::processTransferSplit(const MyMoneySplit& split,
         qS[ctRate] = rate.convertPrecision(splitAcc.currency().pricePrecision()).toString();
     } else {
         qS[ctPrice].clear();
-        qS[ctRate] = xr.convertPrecision(splitAcc.currency().pricePrecision()).toString();
+        qS[ctRate] = rateXr.convertPrecision(splitAcc.currency().pricePrecision()).toString();
     }
     qS.addSourceLine(ctRate, __LINE__);
 
     // multiply by currency and convert to lowest fraction
-    qS[ctValue] = (split.shares() * xr).convert(fraction).toString();
+    qS[ctValue] = (split.shares() * valueXr).convert(fraction).toString();
     qS.addSourceLine(ctValue, __LINE__);
 
     // also keep the value in the "payment" column for loan payment reports
@@ -1161,17 +1166,40 @@ void QueryTable::processTransaction(const MyMoneyTransaction& t, ReportSettings&
     int pass = 1;
     QMap<QString, MyMoneyMoney> xrMap; // container for conversion rates from given currency to referenceCurrency
 
+    auto splitCurrencyId = [file](const MyMoneySplit& split) {
+        const ReportAccount splitAcc(split.accountId());
+        if (splitAcc.isInvest())
+            return file->account(file->account(split.accountId()).parentAccountId()).currencyId();
+        return file->account(split.accountId()).currencyId();
+    };
+
+    auto transactionToBaseRate = MyMoneyMoney::ONE;
+    auto haveTransactionToBaseRate = true;
+    if (m_config.isConvertCurrency() && t.commodity() != file->baseCurrency().id()) {
+        haveTransactionToBaseRate = false;
+        for (const auto& rateSplit : splits) {
+            if (splitCurrencyId(rateSplit) == file->baseCurrency().id() && !rateSplit.value().isZero() && !rateSplit.shares().isZero()) {
+                transactionToBaseRate = (rateSplit.shares() / rateSplit.value()).reduce();
+                haveTransactionToBaseRate = true;
+                break;
+            }
+        }
+        if (!haveTransactionToBaseRate) {
+            const auto price = file->price(t.commodity(), file->baseCurrency().id(), t.postDate());
+            if (price.isValid()) {
+                transactionToBaseRate = price.rate(file->baseCurrency().id()).reduce();
+                haveTransactionToBaseRate = true;
+            }
+        }
+    }
+
     do {
         MyMoneyMoney xr;
         const MyMoneySplit& split = *it_split;
         ReportAccount splitAcc(split.accountId());
         qA[csID] = qS[csID] = split.id();
 
-        QString splitCurrency;
-        if (splitAcc.isInvest())
-            splitCurrency = file->account(file->account(split.accountId()).parentAccountId()).currencyId();
-        else
-            splitCurrency = file->account(split.accountId()).currencyId();
+        QString splitCurrency = splitCurrencyId(split);
         if (it_split == myBegin)
             settings.referenceCurrency = splitCurrency;
 
@@ -1217,14 +1245,23 @@ void QueryTable::processTransaction(const MyMoneyTransaction& t, ReportSettings&
             xr = MyMoneyMoney::ONE;
         }
 
+        auto rateXr = xr;
+        auto valueXr = xr;
+        if (m_config.isConvertCurrency() && haveTransactionToBaseRate && !split.value().isZero()) {
+            rateXr = transactionToBaseRate;
+            if (!split.shares().isZero()) {
+                valueXr = (split.value() * transactionToBaseRate / split.shares()).reduce();
+            }
+        }
+
         qA[ctTag] = split.tagIdList().join(tagSeparator);
 
         if (it_split == myBegin && splits.count() > 1) {
-            setupReferenceSplitRow(split, splitAcc, xr, fraction, settings);
-            processIncludedReferenceSplit(split, splitAcc, xr, fraction, splits.count(), settings);
+            setupReferenceSplitRow(split, splitAcc, xr, rateXr, valueXr, fraction, settings);
+            processIncludedReferenceSplit(split, splitAcc, valueXr, fraction, splits.count(), settings);
         } else {
-            processFurtherSplit(t, *myBegin, split, splitAcc, xr, fraction, splits.count(), settings);
-            processTransferSplit(split, splitAcc, xr, fraction, splits.count(), institution, payee, tagIdList, settings);
+            processFurtherSplit(t, *myBegin, split, splitAcc, xr, valueXr, fraction, splits.count(), settings);
+            processTransferSplit(split, splitAcc, xr, rateXr, valueXr, fraction, splits.count(), institution, payee, tagIdList, settings);
         }
 
         ++it_split;
