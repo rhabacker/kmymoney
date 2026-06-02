@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iterator>
 
 // ----------------------------------------------------------------------------
 // QT Includes
@@ -66,6 +67,19 @@ public:
     bool includeReferenceAccount = true;
     bool transactionTextMatches = false;
     bool loanSpecialCase = false;
+
+    void resetTransactionState()
+    {
+        referenceRow.clear();
+        splitRow.clear();
+        pendingRows.clear();
+        includeReferenceAccount = true;
+        transactionTextMatches = false;
+        loanSpecialCase = false;
+        referenceAccountFullName.clear();
+        referenceMemo.clear();
+        referenceCurrency.clear();
+    }
 };
 
 // ****************************************************************************
@@ -615,6 +629,15 @@ void QueryTable::prepareReport(ReportSettings& settings)
     }
 }
 
+QString splitCurrencyId(const MyMoneySplit& split)
+{
+    const auto file = MyMoneyFile::instance();
+    const ReportAccount splitAcc(split.accountId());
+    if (splitAcc.isInvest())
+        return file->account(file->account(split.accountId()).parentAccountId()).currencyId();
+    return file->account(split.accountId()).currencyId();
+}
+
 bool findTaxAccount(const QList<MyMoneySplit>& splits)
 {
     QList<MyMoneySplit>::const_iterator it_split;
@@ -1108,15 +1131,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& t, ReportSettings&
 {
     const MyMoneyFile* file = MyMoneyFile::instance();
     const MyMoneyReport& report = settings.report;
-    settings.referenceRow.clear();
-    settings.splitRow.clear();
-    settings.pendingRows.clear();
-    settings.includeReferenceAccount = true;
-    settings.transactionTextMatches = false;
-    settings.loanSpecialCase = false;
-    settings.referenceAccountFullName.clear();
-    settings.referenceMemo.clear();
-    settings.referenceCurrency.clear();
+    settings.resetTransactionState();
 
     TableRow& qA = settings.referenceRow;
     TableRow& qS = settings.splitRow;
@@ -1150,28 +1165,18 @@ void QueryTable::processTransaction(const MyMoneyTransaction& t, ReportSettings&
         return;
     }
 
-    // use refSplitIt as your reference split
-    auto myBegin = refSplitIt;
-    auto it_split = refSplitIt;
+    const auto referenceSplitIndex = std::distance(splits.cbegin(), refSplitIt);
+    const auto splitCount = splits.count();
+    const auto& referenceSplit = splits.at(referenceSplitIndex);
 
     // for "loan" reports, the loan transaction gets special treatment.
     // the splits of a loan transaction are placed on one line in the
     // reference (loan) account (qA). however, we process the matching
     // split entries (qS) normally.
     if (m_config.queryColumns() & eMyMoney::Report::QueryColumn::Loan) {
-        ReportAccount splitAcc((*it_split).accountId());
+        ReportAccount splitAcc(referenceSplit.accountId());
         settings.loanSpecialCase = splitAcc.isLoan();
     }
-
-    int pass = 1;
-    QMap<QString, MyMoneyMoney> xrMap; // container for conversion rates from given currency to referenceCurrency
-
-    auto splitCurrencyId = [file](const MyMoneySplit& split) {
-        const ReportAccount splitAcc(split.accountId());
-        if (splitAcc.isInvest())
-            return file->account(file->account(split.accountId()).parentAccountId()).currencyId();
-        return file->account(split.accountId()).currencyId();
-    };
 
     auto transactionToBaseRate = MyMoneyMoney::ONE;
     auto haveTransactionToBaseRate = true;
@@ -1193,14 +1198,16 @@ void QueryTable::processTransaction(const MyMoneyTransaction& t, ReportSettings&
         }
     }
 
-    do {
+    for (int splitOffset = 0; splitOffset < splitCount; ++splitOffset) {
         MyMoneyMoney xr;
-        const MyMoneySplit& split = *it_split;
+        const auto splitIndex = (referenceSplitIndex + splitOffset) % splitCount;
+        const MyMoneySplit& split = splits.at(splitIndex);
+        const bool isReferenceSplit = (splitOffset == 0);
         ReportAccount splitAcc(split.accountId());
         qA[csID] = qS[csID] = split.id();
 
         QString splitCurrency = splitCurrencyId(split);
-        if (it_split == myBegin)
+        if (isReferenceSplit)
             settings.referenceCurrency = splitCurrency;
 
         // get fraction for account
@@ -1217,11 +1224,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& t, ReportSettings&
 
         // convert to base currency
         if (m_config.isConvertCurrency()) {
-            xr = xrMap.value(splitCurrency, xr); // check if there is conversion rate to referenceCurrency already stored...
-            if (xr == MyMoneyMoney()) // ...if not...
-                xr = split.possiblyCalculatedPrice(); // ...take conversion rate to referenceCurrency from split
-            else if (splitAcc.isInvest()) // if it's stock split...
-                xr *= split.possiblyCalculatedPrice(); // ...multiply it by stock price stored in split
+            xr = split.possiblyCalculatedPrice();
 
             if (settings.referenceCurrency != settings.baseCurrency) { // referenceCurrency can differ from baseCurrency...
                 MyMoneyPrice price = file->price(settings.referenceCurrency, settings.baseCurrency,
@@ -1239,7 +1242,7 @@ void QueryTable::processTransaction(const MyMoneyTransaction& t, ReportSettings&
             // currency used for the split to make sure the right one
             // is used in case it should differ from the transaction
             // commodity. see bug #469195
-            if (myBegin == it_split) {
+            if (isReferenceSplit) {
                 qA[ctCurrency] = qS[ctCurrency] = splitCurrency;
             }
             xr = MyMoneyMoney::ONE;
@@ -1258,31 +1261,14 @@ void QueryTable::processTransaction(const MyMoneyTransaction& t, ReportSettings&
 
         qA[ctTag] = split.tagIdList().join(tagSeparator);
 
-        if (it_split == myBegin && splits.count() > 1) {
+        if (isReferenceSplit && splitCount > 1) {
             setupReferenceSplitRow(split, splitAcc, xr, rateXr, valueXr, fraction, settings);
-            processIncludedReferenceSplit(split, splitAcc, valueXr, fraction, splits.count(), settings);
+            processIncludedReferenceSplit(split, splitAcc, valueXr, fraction, splitCount, settings);
         } else {
-            processFurtherSplit(t, *myBegin, split, splitAcc, xr, valueXr, fraction, splits.count(), settings);
-            processTransferSplit(split, splitAcc, xr, rateXr, valueXr, fraction, splits.count(), institution, payee, tagIdList, settings);
+            processFurtherSplit(t, referenceSplit, split, splitAcc, xr, valueXr, fraction, splitCount, settings);
+            processTransferSplit(split, splitAcc, xr, rateXr, valueXr, fraction, splitCount, institution, payee, tagIdList, settings);
         }
-
-        ++it_split;
-
-        // look for wrap-around
-        if (it_split == splits.end())
-            it_split = splits.begin();
-
-        // but terminate if this transaction has only a single split
-        if (splits.count() < 2)
-            break;
-
-        // check if there have been more passes than there are splits
-        // this is to prevent infinite loops in cases of data inconsistency -- asoliverez
-        ++pass;
-        if (pass > splits.count())
-            break;
-
-    } while (it_split != myBegin);
+    }
 
     addPendingTransactionRows(settings);
 }
