@@ -15,6 +15,7 @@ set(querytable_test_files
   test-426241.xml
   test-441023.xml
   test-448788.xml
+  test-452096.xml
   test-452692.xml
   test-453033.xml
   test-469195.xml
