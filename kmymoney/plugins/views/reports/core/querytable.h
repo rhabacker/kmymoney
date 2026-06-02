@@ -23,6 +23,8 @@
 #include "mymoneymoney.h"
 
 class MyMoneyReport;
+class MyMoneySplit;
+class MyMoneyTransaction;
 class CashFlowList;
 
 namespace reports
@@ -58,6 +60,15 @@ protected:
     void prepareReport(ReportSettings& settings);
     void processTransaction(const MyMoneyTransaction& t, ReportSettings& settings);
     void addOpeningClosingBalances(ReportSettings& settings);
+    bool includeReferenceSplitAccount(const ReportAccount& splitAcc) const;
+    bool splitMatchesTransactionFilter(const MyMoneySplit& split, bool transactionTextMatches) const;
+    void updateNonBaseCurrencyStatus(const TableRow& row);
+    void addTransactionRow(const TableRow& row);
+    void setupReferenceSplitRow(const MyMoneySplit& split, const ReportAccount& splitAcc, const MyMoneyMoney& xr, int fraction, ReportSettings& settings);
+    void processIncludedReferenceSplit(const MyMoneySplit& split, const ReportAccount& splitAcc, const MyMoneyMoney& xr, int fraction, int splitCount, ReportSettings& settings);
+    void processFurtherSplit(const MyMoneyTransaction& t, const MyMoneySplit& referenceSplit, const MyMoneySplit& split, const ReportAccount& splitAcc, const MyMoneyMoney& xr, int fraction, int splitCount, ReportSettings& settings);
+    void processTransferSplit(const MyMoneySplit& split, const ReportAccount& splitAcc, const MyMoneyMoney& xr, int fraction, int splitCount, const QString& institution, const QString& payee, const QList<QString>& tagIdList, ReportSettings& settings);
+    void addPendingTransactionRows(ReportSettings& settings);
     void sumInvestmentValues(const ReportAccount &account, QList<CashFlowList> &cfList, QList<MyMoneyMoney> &shList) const;
     void constructPerformanceRow(const ReportAccount& account, TableRow& result, CashFlowList &all) const;
     void constructCapitalGainRow(const ReportAccount& account, TableRow& result) const;
