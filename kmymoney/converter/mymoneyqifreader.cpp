@@ -1971,7 +1971,7 @@ const QString MyMoneyQifReader::processAccountEntry(bool resetAccountId)
   MyMoneyFile* file = MyMoneyFile::instance();
 
   MyMoneyAccount account;
-  QString tmp;
+  QString tmp, balanceValue, balanceDate;
 
   account.setName(extractLine('N'));
   //   qDebug("Process account '%s'", account.name().data());
@@ -1979,12 +1979,16 @@ const QString MyMoneyQifReader::processAccountEntry(bool resetAccountId)
   account.setDescription(extractLine('D'));
 
   tmp = extractLine('$');
-  if (tmp.length() > 0)
+  if (tmp.length() > 0) {
     account.setValue("lastStatementBalance", tmp);
+    balanceValue = tmp;
+  }
 
   tmp = extractLine('/');
-  if (tmp.length() > 0)
+  if (tmp.length() > 0) {
     account.setValue("lastStatementDate", m_qifProfile.date(tmp).toString("yyyy-MM-dd"));
+    balanceDate = tmp;
+  }
 
   QifEntryTypeE transactionType = EntryTransaction;
   QString type = extractLine('T').toLower().remove(QRegExp("\\s+"));
@@ -2069,6 +2073,10 @@ const QString MyMoneyQifReader::processAccountEntry(bool resetAccountId)
     m_account = acc;
     d->st.m_accountId = m_account.id();  //                      needed here for account selection
     d->transactionType = transactionType;
+    if (balanceValue.length() > 0)
+        d->st.m_closingBalance = m_qifProfile.value('T',balanceValue);
+    if (balanceDate.length() > 0)
+        d->st.m_dateEnd = m_qifProfile.date(balanceDate);
   }
   return acc.id();
 }
