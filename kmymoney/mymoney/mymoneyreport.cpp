@@ -54,7 +54,7 @@ MyMoneyReport::MyMoneyReport(eMyMoney::Report::RowType rt,
     d->m_name = name;
     d->m_comment = comment;
     d->m_detailLevel = ss;
-    d->m_investmentSum = ct & eMyMoney::Report::QueryColumn::CapitalGain ? eMyMoney::Report::InvestmentSum::Sold : eMyMoney::Report::InvestmentSum::Period;
+    d->m_investmentSum = d->isCapitalGainReport(rt) ? eMyMoney::Report::InvestmentSum::Sold : eMyMoney::Report::InvestmentSum::Period;
     d->m_reportType = eMyMoney::Report::rowTypeToReportType(rt);
     d->m_rowType = rt;
     d->m_dateLock = dl;
@@ -336,6 +336,18 @@ void MyMoneyReport::setIsBuiltIn()
     d->m_origin = eMyMoney::Report::Origin::BuiltIn;
 }
 
+bool MyMoneyReport::isCapitalGainReport() const
+{
+    Q_D(const MyMoneyReport);
+    return d->isCapitalGainReport(d->m_rowType);
+}
+
+bool MyMoneyReport::isPerformanceReport() const
+{
+    Q_D(const MyMoneyReport);
+    return d->m_rowType == eMyMoney::Report::RowType::PerformanceByTopAccount || d->m_rowType == eMyMoney::Report::RowType::PerformanceByType;
+}
+
 bool MyMoneyReport::isCustom() const
 {
     Q_D(const MyMoneyReport);
@@ -420,6 +432,18 @@ void MyMoneyReport::setInvestmentsOnly(bool f)
     d->m_investments = f;
     if (f)
         d->m_loans = false;
+}
+
+bool MyMoneyReport::isLegacyCapitalGainReport() const
+{
+    return queryColumns() == eMyMoney::Report::QueryColumn::CapitalGain
+        && (rowType() == eMyMoney::Report::RowType::AccountByTopAccount || rowType() == eMyMoney::Report::RowType::EquityType);
+}
+
+bool MyMoneyReport::isLegacyPerformanceReport() const
+{
+    return queryColumns() == eMyMoney::Report::QueryColumn::Performance
+        && (rowType() == eMyMoney::Report::RowType::AccountByTopAccount || rowType() == eMyMoney::Report::RowType::EquityType);
 }
 
 bool MyMoneyReport::isLoansOnly() const
@@ -1224,6 +1248,14 @@ QString MyMoneyReport::toString(eMyMoney::Report::RowType type)
         return "eAccountReconcile";
     case eMyMoney::Report::RowType::CashFlow:
         return "eCashFlow";
+    case eMyMoney::Report::RowType::CapitalGainByTopAccount:
+        return "eCapitalGainByTopAccount";
+    case eMyMoney::Report::RowType::CapitalGainByType:
+        return "eCapitalGainByType";
+    case eMyMoney::Report::RowType::PerformanceByTopAccount:
+        return "ePerformanceByTopAccount";
+    case eMyMoney::Report::RowType::PerformanceByType:
+        return "ePerformanceByType";
     default:
         return "undefined";
     }

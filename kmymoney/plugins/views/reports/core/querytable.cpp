@@ -85,9 +85,13 @@ void QueryTable::init()
     m_rateColumn.clear();
     switch (m_config.rowType()) {
     case eMyMoney::Report::RowType::AccountByTopAccount:
+    case eMyMoney::Report::RowType::CapitalGainByTopAccount:
+    case eMyMoney::Report::RowType::CapitalGainByType:
     case eMyMoney::Report::RowType::EquityType:
     case eMyMoney::Report::RowType::AccountType:
     case eMyMoney::Report::RowType::Institution:
+    case eMyMoney::Report::RowType::PerformanceByTopAccount:
+    case eMyMoney::Report::RowType::PerformanceByType:
         constructAccountTable();
         m_columns << ctAccount;
         break;
@@ -148,9 +152,13 @@ void QueryTable::init()
         m_group << ctWeek;
         break;
     case eMyMoney::Report::RowType::AccountByTopAccount:
+    case eMyMoney::Report::RowType::CapitalGainByTopAccount:
+    case eMyMoney::Report::RowType::PerformanceByTopAccount:
         m_group << ctTopAccount;
         break;
+    case eMyMoney::Report::RowType::CapitalGainByType:
     case eMyMoney::Report::RowType::EquityType:
+    case eMyMoney::Report::RowType::PerformanceByType:
         m_group << ctEquityType;
         break;
     case eMyMoney::Report::RowType::AccountType:
@@ -168,9 +176,13 @@ void QueryTable::init()
     m_columns.clear();
     switch (m_config.rowType()) {
     case eMyMoney::Report::RowType::AccountByTopAccount:
+    case eMyMoney::Report::RowType::CapitalGainByTopAccount:
+    case eMyMoney::Report::RowType::CapitalGainByType:
     case eMyMoney::Report::RowType::EquityType:
     case eMyMoney::Report::RowType::AccountType:
     case eMyMoney::Report::RowType::Institution:
+    case eMyMoney::Report::RowType::PerformanceByTopAccount:
+    case eMyMoney::Report::RowType::PerformanceByType:
         m_columns << ctAccount;
         break;
 
@@ -204,7 +216,7 @@ void QueryTable::init()
     // Automatically adding the rate column makes sense if there is actually more than one currency in the report.
     if (qc & eMyMoney::Report::QueryColumn::Rate || (m_config.isConvertCurrency() && m_config.hasMultipleCurrencies()))
         m_rateColumn << ctRate;
-    if (qc & eMyMoney::Report::QueryColumn::Performance) {
+    if (m_config.isPerformanceReport()) {
         m_subtotal.clear();
         m_rateColumn.clear();
         m_columns.removeAll(ctRate);
@@ -229,7 +241,7 @@ void QueryTable::init()
             m_subtotal << ctStartingMarketValue << ctBuys << ctSells << ctReinvestIncome << ctCashIncome << ctEndingMarketValue << commonPerformanceColumns;
             break;
         }
-    } else if (qc & eMyMoney::Report::QueryColumn::CapitalGain) {
+    } else if (m_config.isCapitalGainReport()) {
         m_subtotal.clear();
         m_rateColumn.clear();
         m_columns.removeAll(ctRate);
@@ -1343,7 +1355,7 @@ void QueryTable::sumInvestmentValues(const ReportAccount& account, QList<CashFlo
     newStartingDate = startingDate;
     newEndingDate = endingDate;
 
-    if (report.queryColumns() & eMyMoney::Report::QueryColumn::CapitalGain) {
+    if (report.isCapitalGainReport()) {
         // Saturday and Sunday aren't valid settlement dates
         if (endingDate.dayOfWeek() == Qt::Saturday)
             endingDate = endingDate.addDays(-1);
@@ -1769,8 +1781,7 @@ void QueryTable::constructAccountTable()
             ReportAccount account(*it_account);
             TableRow qaccountrow;
             CashFlowList accountCashflow; // for total calculation
-            const auto queryColumns = m_config.queryColumns();
-            if (queryColumns & eMyMoney::Report::QueryColumn::Performance) {
+            if (m_config.isPerformanceReport()) {
                 constructPerformanceRow(account, qaccountrow, accountCashflow);
                 if (!qaccountrow.isEmpty()) {
                     // assuming that that report is grouped by topaccount
@@ -1787,7 +1798,7 @@ void QueryTable::constructAccountTable()
                         currencyCashFlow[qaccountrow.value(ctCurrency)][qaccountrow.value(ctTopAccount)] +=
                             accountCashflow; // ...or add cashflow for known account
                 }
-            } else if (queryColumns & eMyMoney::Report::QueryColumn::CapitalGain) {
+            } else if (m_config.isCapitalGainReport()) {
                 constructCapitalGainRow(account, qaccountrow);
             } else {
                 // get fraction for account
@@ -1834,7 +1845,7 @@ void QueryTable::constructAccountTable()
         }
     }
 
-    if (m_config.queryColumns() == eMyMoney::Report::QueryColumn::Performance && m_config.isShowingColumnTotals()) {
+    if (m_config.isPerformanceReport() && m_config.isShowingColumnTotals()) {
         TableRow qtotalsrow;
         qtotalsrow[ctRank] = BASE_CURRENCY_TOTAL_RANK; // add identification of row as total
         QMap<QString, CashFlowList> currencyGrandCashFlow;
