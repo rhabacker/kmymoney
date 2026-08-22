@@ -224,18 +224,18 @@ public:
     }
 
     /**
-     * returns the current file fix version of the loaded data
+     * returns the current fix version of the loaded file
      *
-     * @sa setFileFixVersion(), availableFixVersion()
+     * @sa setFixVersion(), availableFixVersion()
      */
-    int fileFixVersion() const;
+    int fixVersion() const;
 
     /**
      * Sets the file fix level to @a version
      *
-     * @sa fileFixVersion(), availableFixVersion()
+     * @sa fixVersion(), availableFixVersion()
      */
-    void setFileFixVersion(int version);
+    void setFixVersion(int version);
 
     // general get functions
     MyMoneyPayee user() const;

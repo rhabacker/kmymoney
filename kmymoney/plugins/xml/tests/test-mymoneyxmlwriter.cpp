@@ -145,7 +145,7 @@ void MyMoneyXmlWriterTest::testWriteFileInfo()
     writeAndCompare(m_file, QLatin1String("testfile1.xml"));
 
     MyMoneyFileTransaction ft1;
-    m_file->setFileFixVersion(1);
+    m_file->setFixVersion(1);
     ft1.commit();
 
     writeAndCompare(m_file, QLatin1String("testfile2.xml"));

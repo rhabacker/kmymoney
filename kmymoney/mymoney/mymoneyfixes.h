@@ -27,12 +27,12 @@ public:
     {
     }
 
-    virtual int fileFixVersion() const = 0;
+    virtual int fixVersion() const = 0;
     virtual int availableFixVersion() const = 0;
     virtual void* initFix() = 0;
     virtual void commitFix(void* p) = 0;
-    virtual void setFileFixVersion(int version) = 0;
-    virtual bool applyFileFixes(bool expertMode) = 0;
+    virtual void setFixVersion(int version) = 0;
+    virtual bool applyFixes(bool expertMode) = 0;
     virtual int upgradeToV11() = 0;
     virtual int upgradeToV10() = 0;
     virtual int upgradeToV9() = 0;

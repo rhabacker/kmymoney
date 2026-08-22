@@ -435,7 +435,7 @@ public:
         return m_file->availableFixVersion();
     }
 
-    int fileFixVersion() const override
+    int fixVersion() const override
     {
         QString version = fileInfoModel.itemById(m_file->fixedKey(MyMoneyFile::FileFixVersion)).value();
         if (version.isEmpty()) {
@@ -444,7 +444,7 @@ public:
         return version.toInt();
     }
 
-    void setFileFixVersion(int version) override
+    void setFixVersion(int version) override
     {
         if (version > availableFixVersion())
             version = availableFixVersion();
@@ -462,57 +462,57 @@ public:
         delete static_cast<MyMoneyFileTransaction*>(p);
     }
 
-    bool applyFileFixes(bool expertMode) override
+    bool applyFixes(bool expertMode) override
     {
         void* p = initFix();
         try {
             // Check if we have to modify the file before we allow to work with it
-            while (fileFixVersion() < availableFixVersion()) {
-                qDebug() << "testing fileFixVersion" << fileFixVersion() << "<" << availableFixVersion();
-                switch (fileFixVersion()) {
+            while (fixVersion() < availableFixVersion()) {
+                qDebug() << "testing fixVersion" << fixVersion() << "<" << availableFixVersion();
+                switch (fixVersion()) {
                 case 0:
                     upgradeToV1();
-                    setFileFixVersion(1);
+                    setFixVersion(1);
                     break;
 
                 case 1:
                     upgradeToV2(expertMode);
-                    setFileFixVersion(2);
+                    setFixVersion(2);
                     break;
 
                 case 2:
                     upgradeToV3();
-                    setFileFixVersion(3);
+                    setFixVersion(3);
                     break;
 
                 case 3:
                     upgradeToV4();
-                    setFileFixVersion(4);
+                    setFixVersion(4);
                     break;
 
                 case 4:
                     upgradeToV5();
-                    setFileFixVersion(5);
+                    setFixVersion(5);
                     break;
 
                 case 5:
                     upgradeToV6();
-                    setFileFixVersion(6);
+                    setFixVersion(6);
                     break;
 
                 case 6:
                     upgradeToV7();
-                    setFileFixVersion(7);
+                    setFixVersion(7);
                     break;
 
                 case 7:
                     upgradeToV8();
-                    setFileFixVersion(8);
+                    setFixVersion(8);
                     break;
 
                 case 8:
                     upgradeToV9();
-                    setFileFixVersion(9);
+                    setFixVersion(9);
                     break;
 
                 case 9:
@@ -537,6 +537,8 @@ public:
             createMissingObjects();
 
             commitFix(p);
+            m_file->parametersModel()->addItem(QLatin1String("Version"), QString::number(fixVersion()));
+
         } catch (const MyMoneyException&) {
             return false;
         }
@@ -546,6 +548,21 @@ public:
     /* DO NOT ADD code to these functions or any of it's called ones.
        Instead, create a new function, fixFile_n, and modify the applyFileFixes()
        logic above to call it */
+
+    int upgradeToV14() override
+    {
+        return 0;
+    }
+
+    int upgradeToV13() override
+    {
+        return 0;
+    }
+
+    int upgradeToV12() override
+    {
+        return 0;
+    }
 
     void upgradeToV11() override
     {
@@ -622,6 +639,7 @@ public:
             }
             qDebug() << count << "reports(s) fixed in" << __FUNCTION__;
         }
+        return 0;
     }
 
     int upgradeToV8() override
@@ -1307,14 +1325,14 @@ void MyMoneyFile::unload()
     d->m_dirty = false;
 }
 
-int MyMoneyFile::fileFixVersion() const
+int MyMoneyFile::fixVersion() const
 {
-    return d->fileFixVersion();
+    return d->fixVersion();
 }
 
-void MyMoneyFile::setFileFixVersion(int version)
+void MyMoneyFile::setFixVersion(int version)
 {
-    return d->setFileFixVersion(version);
+    return d->setFixVersion(version);
 }
 
 #if 0
@@ -5143,7 +5161,7 @@ QUndoStack* MyMoneyFile::undoStack() const
 
 bool MyMoneyFile::applyFileFixes(bool expertMode)
 {
-    return d->applyFileFixes(expertMode);
+    return d->applyFixes(expertMode);
 }
 
 class MyMoneyFileTransactionPrivate
