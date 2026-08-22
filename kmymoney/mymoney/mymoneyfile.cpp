@@ -43,6 +43,7 @@
 #include "mymoneycostcenter.h"
 #include "mymoneyenums.h"
 #include "mymoneyexception.h"
+#include "mymoneyfixes.h"
 #include "mymoneyforecast.h"
 #include "mymoneyinstitution.h"
 #include "mymoneypayee.h"
@@ -157,7 +158,7 @@ public Q_SLOTS:
     }
 };
 
-class MyMoneyFile::Private
+class MyMoneyFile::Private : public MyMoneyFixes
 {
 public:
     Private(MyMoneyFile* qq)
@@ -429,71 +430,103 @@ public:
         }
     }
 
-    bool applyFileFixes(bool expertMode)
+    int availableFixVersion() const override
     {
-        MyMoneyFileTransaction ft;
+        return m_file->availableFixVersion();
+    }
+
+    int fileFixVersion() const override
+    {
+        QString version = fileInfoModel.itemById(m_file->fixedKey(MyMoneyFile::FileFixVersion)).value();
+        if (version.isEmpty()) {
+            return availableFixVersion();
+        }
+        return version.toInt();
+    }
+
+    void setFileFixVersion(int version) override
+    {
+        if (version > availableFixVersion())
+            version = availableFixVersion();
+        fileInfoModel.addItem(m_file->fixedKey(MyMoneyFile::FileFixVersion), QString("%1").arg(version));
+    }
+
+    void* initFix() override
+    {
+        return new MyMoneyFileTransaction;
+    }
+
+    void commitFix(void* p) override
+    {
+        static_cast<MyMoneyFileTransaction*>(p)->commit();
+        delete static_cast<MyMoneyFileTransaction*>(p);
+    }
+
+    bool applyFileFixes(bool expertMode) override
+    {
+        void* p = initFix();
         try {
             // Check if we have to modify the file before we allow to work with it
-            while (m_file->fileFixVersion() < availableFixVersion()) {
-                qDebug() << "testing fileFixVersion" << m_file->fileFixVersion() << "<" << availableFixVersion();
-                switch (m_file->fileFixVersion()) {
+            while (fileFixVersion() < availableFixVersion()) {
+                qDebug() << "testing fileFixVersion" << fileFixVersion() << "<" << availableFixVersion();
+                switch (fileFixVersion()) {
                 case 0:
-                    fixFile_0();
-                    m_file->setFileFixVersion(1);
+                    upgradeToV1();
+                    setFileFixVersion(1);
                     break;
 
                 case 1:
-                    fixFile_1(expertMode);
-                    m_file->setFileFixVersion(2);
+                    upgradeToV2(expertMode);
+                    setFileFixVersion(2);
                     break;
 
                 case 2:
-                    fixFile_2();
-                    m_file->setFileFixVersion(3);
+                    upgradeToV3();
+                    setFileFixVersion(3);
                     break;
 
                 case 3:
-                    fixFile_3();
-                    m_file->setFileFixVersion(4);
+                    upgradeToV4();
+                    setFileFixVersion(4);
                     break;
 
                 case 4:
-                    fixFile_4();
-                    m_file->setFileFixVersion(5);
+                    upgradeToV5();
+                    setFileFixVersion(5);
                     break;
 
                 case 5:
-                    fixFile_5();
-                    m_file->setFileFixVersion(6);
+                    upgradeToV6();
+                    setFileFixVersion(6);
                     break;
 
                 case 6:
-                    fixFile_6();
-                    m_file->setFileFixVersion(7);
+                    upgradeToV7();
+                    setFileFixVersion(7);
                     break;
 
                 case 7:
-                    fixFile_7();
-                    m_file->setFileFixVersion(8);
+                    upgradeToV8();
+                    setFileFixVersion(8);
                     break;
 
                 case 8:
-                    fixFile_8();
-                    m_file->setFileFixVersion(9);
+                    upgradeToV9();
+                    setFileFixVersion(9);
                     break;
 
                 case 9:
-                    fixFile_9();
-                    m_file->setFileFixVersion(10);
+                    upgradeToV10();
+                    setFileFixVersion(10);
                     break;
 
                 case 10:
-                    fixFile_10();
-                    m_file->setFileFixVersion(11);
+                    upgradeToV11();
+                    setFileFixVersion(11);
                     break;
 
-                // add new levels above. Don't forget to add a corresponding fix routine
-                // to MyMoneyStorageSqlPrivate::upgradeDb()
+                // add new levels above, in mymoneyfixes.h and other storage backends
+                // Don't forget to increase availableFixVersion()
                 default:
                     throw MYMONEYEXCEPTION(QString::fromLatin1("Unknown fix level in input file"));
                 }
@@ -503,7 +536,7 @@ public:
             // earlier versions.
             createMissingObjects();
 
-            ft.commit();
+            commitFix(p);
         } catch (const MyMoneyException&) {
             return false;
         }
@@ -514,7 +547,7 @@ public:
        Instead, create a new function, fixFile_n, and modify the applyFileFixes()
        logic above to call it */
 
-    void fixFile_10()
+    void upgradeToV11() override
     {
         const auto file = MyMoneyFile::instance();
         const auto model = file->reportsModel();
@@ -545,7 +578,7 @@ public:
         qDebug() << count << "reports(s) fixed in" << __FUNCTION__;
     }
 
-    void fixFile_9()
+    void upgradeToV10() override
     {
         const auto file = MyMoneyFile::instance();
         auto count = 0;
@@ -566,7 +599,7 @@ public:
         qDebug() << count << "schedule(s) fixed in" << __FUNCTION__;
     }
 
-    void fixFile_8()
+    int upgradeToV9() override
     {
         const auto file = MyMoneyFile::instance();
         const auto model = file->reportsModel();
@@ -591,7 +624,7 @@ public:
         }
     }
 
-    void fixFile_7()
+    int upgradeToV8() override
     {
         const auto file = MyMoneyFile::instance();
         const auto model = file->reportsModel();
@@ -618,9 +651,10 @@ public:
             }
         }
         qDebug() << count << "reports(s) fixed in" << __FUNCTION__;
+        return 0;
     }
 
-    void fixFile_6()
+    int upgradeToV7() override
     {
         const auto file = MyMoneyFile::instance();
         const auto model = file->reportsModel();
@@ -640,9 +674,10 @@ public:
             ++count;
         }
         qDebug() << count << "reports(s) fixed in" << __FUNCTION__;
+        return 0;
     }
 
-    void fixFile_5()
+    int upgradeToV6() override
     {
         const auto file = MyMoneyFile::instance();
         const auto model = file->journalModel();
@@ -667,9 +702,10 @@ public:
             row += splitCount;
         }
         qDebug() << count << "transaction(s) fixed in" << __FUNCTION__;
+        return 0;
     }
 
-    void fixFile_4()
+    int upgradeToV5() override
     {
         auto file = MyMoneyFile::instance();
         const QList<MyMoneySecurity> currencies = file->currencyList();
@@ -688,15 +724,17 @@ public:
                 }
             }
         }
+        return 0;
     }
 
-    void fixFile_3()
+    int upgradeToV4() override
     {
         // make sure each storage object contains a (unique) id
         MyMoneyFile::instance()->storageId();
+        return 0;
     }
 
-    void fixFile_2()
+    int upgradeToV3() override
     {
         auto file = MyMoneyFile::instance();
         MyMoneyTransactionFilter filter;
@@ -737,9 +775,10 @@ public:
             }
         }
         qDebug("%d transactions fixed in fixFile_2", count);
+        return 0;
     }
 
-    void fixFile_1(bool expertMode)
+    int upgradeToV2(bool expertMode) override
     {
         // we need to fix reports. If the account filter list contains
         // investment accounts, we need to add the stock accounts to the list
@@ -772,9 +811,10 @@ public:
             } catch (const MyMoneyException&) {
             }
         }
+        return 0;
     }
 
-    void fixFile_0()
+    int upgradeToV1() override
     {
         /* (Ace) I am on a crusade against file fixups.  Whenever we have to fix the
          * file, it is really a warning.  So I'm going to print a debug warning, and
@@ -819,6 +859,7 @@ public:
         }
 
         fixTransactions_0();
+        return 0;
     }
 
     void fixSchedule_0(MyMoneySchedule sched)
@@ -1268,18 +1309,12 @@ void MyMoneyFile::unload()
 
 int MyMoneyFile::fileFixVersion() const
 {
-    QString version = d->fileInfoModel.itemById(fixedKey(FileFixVersion)).value();
-    if (version.isEmpty()) {
-        return availableFixVersion();
-    }
-    return version.toInt();
+    return d->fileFixVersion();
 }
 
 void MyMoneyFile::setFileFixVersion(int version)
 {
-    if (version > availableFixVersion())
-        version = availableFixVersion();
-    d->fileInfoModel.addItem(fixedKey(FileFixVersion), QString("%1").arg(version));
+    return d->setFileFixVersion(version);
 }
 
 #if 0
