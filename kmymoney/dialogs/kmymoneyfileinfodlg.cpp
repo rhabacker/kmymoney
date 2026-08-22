@@ -43,6 +43,8 @@ KMyMoneyFileInfoDlg::KMyMoneyFileInfoDlg(QWidget* parent)
     const auto file = MyMoneyFile::instance();
     ui->m_creationDate->setText(file->fileInfoModel()->itemById(file->fixedKey(MyMoneyFile::CreationDate)).value());
     ui->m_lastModificationDate->setText(file->fileInfoModel()->itemById(file->fixedKey(MyMoneyFile::LastModificationDate)).value());
+    ui->m_version->setText(file->parametersModel()->itemById(QLatin1String("Version")).value());
+    ui->m_fixVersion->setText(file->fileInfoModel()->itemById(file->fixedKey(MyMoneyFile::FileFixVersion)).value());
     ui->m_baseCurrency->setText(file->baseCurrency().name());
 
     ui->m_payeeCount->setText(QString::fromLatin1("%1").arg(file->payeesModel()->rowCount()));
