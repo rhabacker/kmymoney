@@ -27,6 +27,7 @@
 #include "mymoneyfile.h"
 #include "mymoneysecurity.h"
 #include "mymoneyutils.h"
+#include "reportdebug.h"
 
 reports::ReportTable::ReportTable(const MyMoneyReport& _report)
     : m_reportStyleSheet("reportstylesheet")
@@ -80,6 +81,8 @@ QString reports::ReportTable::renderFooter()
 
 QString reports::ReportTable::renderReport(const QString& type, const QByteArray& encoding, const QString& title)
 {
+    TRACE_TIME();
+
     MyMoneyFile* file = MyMoneyFile::instance();
     QString result;
 

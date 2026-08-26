@@ -27,6 +27,7 @@
 #include "kreportsview_p.h"
 #include "mymoneyexception.h"
 #include "reportcontrolimpl.h"
+#include "reportdebug.h"
 
 /**
  * KReportTab Implementation
@@ -255,6 +256,8 @@ void KReportTab::showEvent(QShowEvent* event)
 
 void KReportTab::updateReport()
 {
+    ScopeTimer t1("reload report");
+
     m_isChartViewValid = false;
     m_isTableViewValid = false;
     // reload the report from the engine. It might have
@@ -269,6 +272,7 @@ void KReportTab::updateReport()
 
     delete m_table;
     m_table = nullptr;
+    ScopeTimer t2("create table");
 
     if (m_report.reportType() == eMyMoney::Report::ReportType::PivotTable) {
         m_table = new PivotTable(m_report, KMyMoneyUtils::forecastConfig());
@@ -284,6 +288,7 @@ void KReportTab::updateReport()
     m_control->ui->buttonChart->setEnabled(m_chartEnabled);
 
     m_showingChart = !m_showingChart;
+    ScopeTimer t3("toggle chart");
     toggleChart();
 }
 
@@ -357,9 +362,11 @@ void KReportTab::toggleChart()
 
     if (m_showingChart) {
         if (!m_isTableViewValid) {
+            ScopeTimer t("toogleChart::setHtml");
             m_tableView->setHtml(m_table->renderReport(QLatin1String("html"), m_encoding, m_report.name()));
         }
         m_isTableViewValid = true;
+        ScopeTimer t("toogleChart::show");
         m_tableView->show();
         m_chartView->hide();
 

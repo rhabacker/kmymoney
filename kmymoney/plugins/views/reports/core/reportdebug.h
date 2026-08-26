@@ -9,6 +9,8 @@
 
 // ----------------------------------------------------------------------------
 // QT Includes
+#include <QDebug>
+#include <QElapsedTimer>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -70,6 +72,27 @@ public:
         m_sEnableKey = _s;
     }
 };
+
+class ScopeTimer
+{
+public:
+    explicit ScopeTimer(const char* name = Q_FUNC_INFO)
+        : m_name(name)
+    {
+        m_timer.start();
+    }
+
+    ~ScopeTimer()
+    {
+        qDebug().noquote() << m_name << ":" << m_timer.elapsed() << "ms";
+    }
+
+private:
+    const char* m_name;
+    QElapsedTimer m_timer;
+};
+
+#define TRACE_TIME() ScopeTimer scopeTimer(Q_FUNC_INFO)
 
 } // end namespace reports
 

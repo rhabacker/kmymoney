@@ -21,6 +21,7 @@ kmm_add_tests(${tests_sources}
 
 set(tests_gui_sources
   test-chart.cpp
+  test-qtextbrowser.cpp
 )
 
 # do not run this test on KDE CI, as it is broken for unknown reason
