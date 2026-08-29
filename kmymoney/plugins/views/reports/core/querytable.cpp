@@ -291,27 +291,34 @@ void QueryTable::init()
         m_subtotal.clear();
         m_rateColumn.clear();
         m_columns.removeAll(ctRate);
-        QList<cellTypeE> commonPerformanceColumns = QList<cellTypeE>()
-            << ctReturn << ctReturnInvestment << ctAnnualizedReturn << ctExtendedInternalRateOfReturn;
+        QList<cellTypeE> performanceColumns;
+        auto selectedPerformanceColumns = qc & (eMyMoney::Report::performanceColumns() | eMyMoney::Report::Performance);
+        selectedPerformanceColumns = eMyMoney::Report::expandPerformanceColumns(selectedPerformanceColumns);
+        auto addPerformanceColumn = [&](eMyMoney::Report::QueryColumn column, cellTypeE cellType) {
+            if (selectedPerformanceColumns == 0 || qc & column)
+                performanceColumns << cellType;
+        };
+
         switch (m_config.investmentSum()) {
-        case eMyMoney::Report::InvestmentSum::OwnedAndSold:
-            m_columns << ctBuys << ctSells << ctReinvestIncome << ctCashIncome << ctEndingMarketValue << commonPerformanceColumns;
-            m_subtotal << ctBuys << ctSells << ctReinvestIncome << ctCashIncome << ctEndingMarketValue << commonPerformanceColumns;
-            break;
-        case eMyMoney::Report::InvestmentSum::Owned:
-            m_columns << ctBuys << ctReinvestIncome << ctCashIncome << ctEndingMarketValue << commonPerformanceColumns;
-            m_subtotal << ctBuys << ctReinvestIncome << ctCashIncome << ctEndingMarketValue << commonPerformanceColumns;
-            break;
-        case eMyMoney::Report::InvestmentSum::Sold:
-            m_columns << ctBuys << ctSells << ctCashIncome << commonPerformanceColumns;
-            m_subtotal << ctBuys << ctSells << ctCashIncome << commonPerformanceColumns;
-            break;
         case eMyMoney::Report::InvestmentSum::Period:
         default:
-            m_columns << ctStartingMarketValue << ctBuys << ctSells << ctReinvestIncome << ctCashIncome << ctEndingMarketValue << commonPerformanceColumns;
-            m_subtotal << ctStartingMarketValue << ctBuys << ctSells << ctReinvestIncome << ctCashIncome << ctEndingMarketValue << commonPerformanceColumns;
+            addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceStartingMarketValue, ctStartingMarketValue);
             break;
         }
+        addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceBuys, ctBuys);
+        if (m_config.investmentSum() != eMyMoney::Report::InvestmentSum::Owned)
+            addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceSells, ctSells);
+        if (m_config.investmentSum() != eMyMoney::Report::InvestmentSum::Sold)
+            addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceReinvestIncome, ctReinvestIncome);
+        addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceCashIncome, ctCashIncome);
+        if (m_config.investmentSum() != eMyMoney::Report::InvestmentSum::Sold)
+            addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceEndingMarketValue, ctEndingMarketValue);
+        addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceReturn, ctReturn);
+        addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceReturnInvestment, ctReturnInvestment);
+        addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceAnnualizedReturn, ctAnnualizedReturn);
+        addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceExtendedInternalRateOfReturn, ctExtendedInternalRateOfReturn);
+        m_columns << performanceColumns;
+        m_subtotal << performanceColumns;
     } else if (m_config.isCapitalGainReport()) {
         m_subtotal.clear();
         m_rateColumn.clear();

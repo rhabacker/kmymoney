@@ -287,6 +287,16 @@ QHash<eMyMoney::Report::QueryColumn, QString> queryColumnsLUT()
         {eMyMoney::Report::QueryColumn::Balance,     QStringLiteral("balance")},
         {eMyMoney::Report::QueryColumn::CapitalGain, QStringLiteral("capitalgain")},
         {eMyMoney::Report::QueryColumn::Rate,        QStringLiteral("rate")},
+        {eMyMoney::Report::QueryColumn::PerformanceStartingMarketValue, QStringLiteral("performance-startingmarketvalue")},
+        {eMyMoney::Report::QueryColumn::PerformanceBuys, QStringLiteral("performance-buys")},
+        {eMyMoney::Report::QueryColumn::PerformanceSells, QStringLiteral("performance-sells")},
+        {eMyMoney::Report::QueryColumn::PerformanceReinvestIncome, QStringLiteral("performance-reinvestincome")},
+        {eMyMoney::Report::QueryColumn::PerformanceCashIncome, QStringLiteral("performance-cashincome")},
+        {eMyMoney::Report::QueryColumn::PerformanceEndingMarketValue, QStringLiteral("performance-endingmarketvalue")},
+        {eMyMoney::Report::QueryColumn::PerformanceReturn, QStringLiteral("performance-return")},
+        {eMyMoney::Report::QueryColumn::PerformanceReturnInvestment, QStringLiteral("performance-returninvestment")},
+        {eMyMoney::Report::QueryColumn::PerformanceAnnualizedReturn, QStringLiteral("performance-annualizedreturn")},
+        {eMyMoney::Report::QueryColumn::PerformanceExtendedInternalRateOfReturn, QStringLiteral("performance-extendedinternalrateofreturn")},
     };
     // clang-format on
     return lut;
