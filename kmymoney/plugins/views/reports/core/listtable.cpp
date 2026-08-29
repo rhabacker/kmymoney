@@ -720,9 +720,9 @@ QString ListTable::tableHeader(const cellTypeE cellType)
     case ctNetInvValue:
         return i18n("Net Value");
     case ctBuys:
-        return i18n("Buy Value");
+        return i18n("Buys");
     case ctSells:
-        return i18n("Sell Value");
+        return i18n("Sells");
     case ctBuysST:
         return i18n("Short-term Buy Value");
     case ctSellsST:
@@ -732,9 +732,9 @@ QString ListTable::tableHeader(const cellTypeE cellType)
     case ctSellsLT:
         return i18n("Long-term Sell Value");
     case ctReinvestIncome:
-        return i18n("Dividends Reinvested");
+        return i18n("Reinvested Div.");
     case ctCashIncome:
-        return i18n("Dividends Paid Out");
+        return i18n("Paid Div.");
     case ctStartingBalance:
         return i18n("Starting Balance");
     case ctEndingBalance:
@@ -742,13 +742,13 @@ QString ListTable::tableHeader(const cellTypeE cellType)
     case ctMarketValue:
         return i18n("Market Value");
     case ctAnnualizedReturn:
-        return i18n("Annualized Return");
+        return i18n("Annual Return");
     case ctExtendedInternalRateOfReturn:
-        return i18n("Extended internal rate of return");
+        return i18n("Extended IRR");
     case ctReturn:
         return i18n("Return");
     case ctReturnInvestment:
-        return i18n("Return On Investment");
+        return i18n("ROI");
     case ctFees:
         return i18n("Fees");
     case ctInterest:
@@ -812,9 +812,9 @@ QString ListTable::tableHeader(const cellTypeE cellType)
     case ctCapitalGainLT:
         return i18n("Long-term Gain");
     case ctStartingMarketValue:
-        return i18n("Starting Market Value");
+        return i18n("Start Value");
     case ctEndingMarketValue:
-        return i18n("Ending Market Value");
+        return i18n("End Value");
     case ctRate:
         return i18nc("Exchange rate", "Rate");
     default:
@@ -826,8 +826,26 @@ QString ListTable::tableHeader(const cellTypeE cellType)
 QString ListTable::tableToolTip(const cellTypeE cellType)
 {
     switch (cellType) {
+    case ctAnnualizedReturn:
+        return i18nc("Investment performance table tooltip", "Annualized Return");
+    case ctBuys:
+        return i18nc("Investment performance table tooltip", "Buy Value");
+    case ctCashIncome:
+        return i18nc("Investment performance table tooltip", "Dividends Paid Out");
+    case ctEndingMarketValue:
+        return i18nc("Investment performance table tooltip", "Ending Market Value");
+    case ctExtendedInternalRateOfReturn:
+        return i18nc("Investment performance table tooltip", "Extended internal rate of return");
     case ctRate:
         return i18nc("Exchange rate", "The applied currency exchange rate used in the conversion");
+    case ctReinvestIncome:
+        return i18nc("Investment performance table tooltip", "Dividends Reinvested");
+    case ctReturnInvestment:
+        return i18nc("Investment performance table tooltip", "Return On Investment");
+    case ctSells:
+        return i18nc("Investment performance table tooltip", "Sell Value");
+    case ctStartingMarketValue:
+        return i18nc("Investment performance table tooltip", "Starting Market Value");
     default:
         break;
     }
