@@ -232,6 +232,7 @@ protected:
 private:
     enum cellGroupE { cgMoney, cgShares, cgPercent, cgDate, cgPrice, cgMisc };
     static cellGroupE cellGroup(const cellTypeE cellType);
+    static QString tableShortHeader(const cellTypeE cellType);
     static QString tableHeader(const cellTypeE cellType);
     static QString tableToolTip(const cellTypeE cellType);
 };
