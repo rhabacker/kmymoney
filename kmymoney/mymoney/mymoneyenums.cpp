@@ -44,4 +44,14 @@ eMyMoney::Report::ReportType rowTypeToReportType(eMyMoney::Report::RowType rowTy
     return reportTypes.value(rowType, eMyMoney::Report::ReportType::Invalid);
 }
 
+eMyMoney::Report::QueryColumn performanceColumns()
+{
+    return static_cast<eMyMoney::Report::QueryColumn>(
+        eMyMoney::Report::QueryColumn::PerformanceStartingMarketValue | eMyMoney::Report::QueryColumn::PerformanceBuys
+        | eMyMoney::Report::QueryColumn::PerformanceSells | eMyMoney::Report::QueryColumn::PerformanceReinvestIncome
+        | eMyMoney::Report::QueryColumn::PerformanceCashIncome | eMyMoney::Report::QueryColumn::PerformanceEndingMarketValue
+        | eMyMoney::Report::QueryColumn::PerformanceReturn | eMyMoney::Report::QueryColumn::PerformanceReturnInvestment
+        | eMyMoney::Report::QueryColumn::PerformanceAnnualizedReturn | eMyMoney::Report::QueryColumn::PerformanceExtendedInternalRateOfReturn);
+}
+
 }}
