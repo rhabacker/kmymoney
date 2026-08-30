@@ -62,6 +62,8 @@ bool ReportTabRowColPerformance::apply(MyMoneyReport* reportState)
         qc |= eMyMoney::Report::QueryColumn::PerformanceAnnualizedReturn;
     if (ui->m_checkExtendedInternalRateOfReturn->isVisible() && ui->m_checkExtendedInternalRateOfReturn->isChecked())
         qc |= eMyMoney::Report::QueryColumn::PerformanceExtendedInternalRateOfReturn;
+    if (ui->m_checkNetCashFlow->isVisible() && ui->m_checkNetCashFlow->isChecked())
+        qc |= eMyMoney::Report::QueryColumn::PerformanceNetCashFlow;
 
     qc = eMyMoney::Report::collapsePerformanceColumns(qc);
 
@@ -86,6 +88,7 @@ bool ReportTabRowColPerformance::load(MyMoneyReport* report)
     ui->m_checkReturnInvestment->setChecked(qc & eMyMoney::Report::QueryColumn::PerformanceReturnInvestment);
     ui->m_checkAnnualizedReturn->setChecked(qc & eMyMoney::Report::QueryColumn::PerformanceAnnualizedReturn);
     ui->m_checkExtendedInternalRateOfReturn->setChecked(qc & eMyMoney::Report::QueryColumn::PerformanceExtendedInternalRateOfReturn);
+    ui->m_checkNetCashFlow->setChecked(qc & eMyMoney::Report::QueryColumn::PerformanceNetCashFlow);
     slotUpdatePerformanceColumnVisibility(report->investmentSum());
     m_isModified = false;
     m_isLoading = false;

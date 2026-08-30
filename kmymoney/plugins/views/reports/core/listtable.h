@@ -149,6 +149,7 @@ public:
         csID,
         ctState,
         ctRate,
+        ctNetCashFlow,
     };
     Q_ENUM(cellTypeE)
 

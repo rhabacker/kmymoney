@@ -313,6 +313,7 @@ void QueryTable::init()
         addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceCashIncome, ctCashIncome);
         if (m_config.investmentSum() != eMyMoney::Report::InvestmentSum::Sold)
             addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceEndingMarketValue, ctEndingMarketValue);
+        addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceNetCashFlow, ctNetCashFlow);
         addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceReturn, ctReturn);
         addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceReturnInvestment, ctReturnInvestment);
         addPerformanceColumn(eMyMoney::Report::QueryColumn::PerformanceAnnualizedReturn, ctAnnualizedReturn);
@@ -1836,6 +1837,7 @@ void QueryTable::constructPerformanceRow(const ReportAccount& account, TableRow&
     }
 
     result[ctBuys] = buysTotal.toString();
+    result[ctNetCashFlow] = (buysTotal + sellsTotal).toString();
     result[ctAnnualizedReturn] =
         helperAROI(buysTotal, sellsTotal, reinvestIncomeTotal, cashIncomeTotal, startingMarketValue, endingMarketValue, startingDate, endingDate);
     result[ctExtendedInternalRateOfReturn] = helperXIRR(all);
