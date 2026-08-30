@@ -52,7 +52,7 @@ unsigned int performanceColumns()
                                      | eMyMoney::Report::QueryColumn::PerformanceReturn | eMyMoney::Report::QueryColumn::PerformanceReturnInvestment
                                      | eMyMoney::Report::QueryColumn::PerformanceAnnualizedReturn
                                      | eMyMoney::Report::QueryColumn::PerformanceExtendedInternalRateOfReturn
-                                     | eMyMoney::Report::QueryColumn::PerformanceNetCashFlow);
+                                     | eMyMoney::Report::QueryColumn::PerformanceNetCashFlow | eMyMoney::Report::QueryColumn::PerformanceTotalDividends);
 }
 
 unsigned int expandPerformanceColumns(unsigned int qc)

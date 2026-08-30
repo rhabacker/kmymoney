@@ -150,6 +150,7 @@ public:
         ctState,
         ctRate,
         ctNetCashFlow,
+        ctTotalDividends,
     };
     Q_ENUM(cellTypeE)
 

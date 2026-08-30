@@ -193,7 +193,8 @@ enum QueryColumn : int {
     PerformanceAnnualizedReturn = 0x800000,
     PerformanceExtendedInternalRateOfReturn = 0x1000000,
     PerformanceNetCashFlow = 0x2000000,
-    End = 0x4000000
+    PerformanceTotalDividends = 0x4000000,
+    End = 0x8000000
 };
 
 KMM_MYMONEY_EXPORT unsigned int performanceColumns();

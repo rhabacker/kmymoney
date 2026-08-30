@@ -297,7 +297,8 @@ QHash<eMyMoney::Report::QueryColumn, QString> queryColumnsLUT()
         {eMyMoney::Report::QueryColumn::PerformanceReturnInvestment, QStringLiteral("performance-returninvestment")},
         {eMyMoney::Report::QueryColumn::PerformanceAnnualizedReturn, QStringLiteral("performance-annualizedreturn")},
         {eMyMoney::Report::QueryColumn::PerformanceExtendedInternalRateOfReturn, QStringLiteral("performance-extendedinternalrateofreturn")},
-        {eMyMoney::Report::QueryColumn::PerformanceNetCashFlow, QStringLiteral("performance-netcashflow")}
+        {eMyMoney::Report::QueryColumn::PerformanceNetCashFlow, QStringLiteral("performance-netcashflow")},
+        {eMyMoney::Report::QueryColumn::PerformanceTotalDividends, QStringLiteral("performance-totaldividends")},
     };
     // clang-format on
     return lut;

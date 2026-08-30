@@ -648,6 +648,7 @@ ListTable::cellGroupE ListTable::cellGroup(const cellTypeE cellType)
     case ctStartingMarketValue:
     case ctEndingMarketValue:
     case ctNetCashFlow:
+    case ctTotalDividends:
         return cgMoney;
     case ctRate:
     case ctPrice:
@@ -820,6 +821,8 @@ QString ListTable::tableHeader(const cellTypeE cellType)
         return i18nc("Exchange rate", "Rate");
     case ctNetCashFlow:
         return i18nc("Investment table title", "Net Cash Flow");
+    case ctTotalDividends:
+        return i18nc("Investment table title", "Total Dividends");
     default:
         break;
     }
