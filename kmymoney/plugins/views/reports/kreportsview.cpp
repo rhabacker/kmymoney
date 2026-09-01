@@ -310,6 +310,7 @@ void KReportsView::updateActions(const SelectedObjects& selections)
 
 void KReportsView::slotOpenUrl(const QUrl& url)
 {
+    qDebug() << Q_FUNC_INFO << url;
     QString view = url.fileName();
     if (view.isEmpty())
         return;

@@ -14,6 +14,9 @@
 // ----------------------------------------------------------------------------
 // KDE Includes
 
+#include <alkimia/alkwebpage.h>
+#include <alkimia/alkwebview.h>
+
 #include <KConfigGroup>
 #include <KSharedConfig>
 
@@ -21,7 +24,6 @@
 // Project Includes
 
 #include "kmm_printer.h"
-#include "kmmtextbrowser.h"
 #include "kreportchartview.h"
 #include "kreportsview.h"
 #include "kreportsview_p.h"
@@ -33,7 +35,7 @@
  */
 KReportTab::KReportTab(QTabWidget* parent, const MyMoneyReport& report, const KReportsView* eventHandler, KReportsView::OpenOption openOption)
     : QWidget(parent)
-    , m_tableView(new KMMTextBrowser(this))
+    , m_tableView(new AlkWebView(this))
     , m_chartView(new reports::KReportChartView(this))
     , m_control(new ReportControl(this))
     , m_layout(new QVBoxLayout(this))
@@ -50,9 +52,9 @@ KReportTab::KReportTab(QTabWidget* parent, const MyMoneyReport& report, const KR
     , m_isTableViewValid(false)
     , m_table(nullptr)
 {
+    m_tableView->setWebPage(new AlkWebPage);
+    m_tableView->setZoomFactor(KMyMoneySettings::zoomFactor());
     m_layout->setSpacing(6);
-    // TODO
-    //    m_tableView->setZoomFactor(KMyMoneySettings::zoomFactor());
 
     // set button icons
     m_control->ui->buttonChart->setIcon(Icons::get(Icon::OfficeCharBar));
@@ -76,7 +78,6 @@ KReportTab::KReportTab(QTabWidget* parent, const MyMoneyReport& report, const KR
     m_chartView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_chartView->hide();
     m_tableView->hide();
-    m_tableView->setOpenLinks(false);
 
     m_viewLayout->setContentsMargins(0, 0, 0, 0);
     m_viewLayout->addWidget(m_tableView);
@@ -100,7 +101,7 @@ KReportTab::KReportTab(QTabWidget* parent, const MyMoneyReport& report, const KR
         button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     }
 
-    connect(m_tableView, &KMMTextBrowser::anchorClicked, eventHandler, &KReportsView::slotOpenUrl);
+    connect(m_tableView->webPage(), &AlkWebPage::urlChanged, eventHandler, &KReportsView::slotOpenUrl);
 
     // if this is a default report, then you can't delete it!
     if (report.id().isEmpty())
@@ -118,6 +119,7 @@ KReportTab::~KReportTab()
 {
     saveState();
     delete m_table;
+    delete m_tableView->webPage();
 }
 
 void KReportTab::wheelEvent(QWheelEvent* event)
@@ -125,14 +127,13 @@ void KReportTab::wheelEvent(QWheelEvent* event)
     // Zoom text on Ctrl + Scroll
     if (event->modifiers() & Qt::CTRL) {
         if (!m_showingChart) {
-            // TODO
-            //            qreal factor = m_tableView->zoomFactor();
-            if (event->angleDelta().y() > 0)
-                //                factor += 0.1;
-                //            else if (event->delta() < 0)
-                //                factor -= 0.1;
-                //            m_tableView->setZoomFactor(factor);
-                event->accept();
+            int delta = event->angleDelta().y();
+            qreal factor = m_tableView->zoomFactor();
+            if (delta > 0)
+                factor += 0.1;
+            else if (delta < 0)
+                factor -= 0.1;
+            m_tableView->setZoomFactor(factor);
             return;
         }
     }
@@ -157,7 +158,7 @@ void KReportTab::print()
                     painter.drawText(0, painter.window().height(), file.toLocalFile());
                 }
             } else {
-                m_tableView->print(printer);
+                m_tableView->page()->print(printer, [=](bool) {});
             }
         }
     }
@@ -178,7 +179,7 @@ void KReportTab::printPreview()
         if (m_tableView) {
             QPrintPreviewDialog dlg(KMyMoneyPrinter::instance(), m_tableView);
             connect(&dlg, &QPrintPreviewDialog::paintRequested, m_tableView, [&](QPrinter* printer) {
-                m_tableView->print(printer);
+                m_tableView->page()->print(printer, [=](bool) {});
             });
             dlg.exec();
         }
@@ -191,7 +192,7 @@ void KReportTab::saveAs(const QString& filename, const QString& selectedMimeType
         auto printer = KMyMoneyPDFPrinter::startPrint(m_report.name());
         if (printer != nullptr) {
             printer->setOutputFileName(filename);
-            m_tableView->print(printer);
+            m_tableView->page()->print(printer, [=](bool) {});
         }
         return;
     }
@@ -227,9 +228,9 @@ void KReportTab::copyToClipboard()
             copyData = m_table->renderReport(QLatin1String("csv"), m_encoding, QString());
         }
     }
-    if (copyData.isEmpty() && m_tableView) {
-        copyData = m_tableView->toPlainText();
-    }
+    // if (copyData.isEmpty() && m_tableView) {
+    //     copyData = m_tableView->toPlainText();
+    // }
     if (!copyData.isEmpty()) {
         QApplication::clipboard()->setText(copyData);
     }
@@ -357,7 +358,9 @@ void KReportTab::toggleChart()
 
     if (m_showingChart) {
         if (!m_isTableViewValid) {
-            m_tableView->setHtml(m_table->renderReport(QLatin1String("html"), m_encoding, m_report.name()));
+            const QString html = m_table->renderReport(QLatin1String("html"), m_encoding, m_report.name());
+            qDebug() << html;
+            m_tableView->setHtml(html, QUrl("file://"));
         }
         m_isTableViewValid = true;
         m_tableView->show();

@@ -16,7 +16,7 @@
 #include <QPointer>
 #include <QWidget>
 
-class KMMTextBrowser;
+class AlkWebView;
 namespace reports {
 class KReportChartView;
 }
@@ -36,7 +36,7 @@ class QSplitter;
 class KReportTab : public QWidget
 {
 private:
-    KMMTextBrowser* m_tableView;
+    AlkWebView* m_tableView;
     reports::KReportChartView* m_chartView;
     ReportControl* m_control;
     QVBoxLayout* m_layout;
