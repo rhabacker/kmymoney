@@ -126,7 +126,8 @@ public:
                                     extraColumnModel->proxyColumnForExtraColumn(EquitiesModel::Column::Value),
                                     extraColumnModel->proxyColumnForExtraColumn(EquitiesModel::Column::Quantity),
                                     extraColumnModel->proxyColumnForExtraColumn(EquitiesModel::Column::Price),
-                                    extraColumnModel->proxyColumnForExtraColumn(EquitiesModel::Column::LastPriceUpdate)});
+                                    extraColumnModel->proxyColumnForExtraColumn(EquitiesModel::Column::LastPriceUpdate),
+                                    extraColumnModel->proxyColumnForExtraColumn(EquitiesModel::Column::Id)});
 
         m_equityColumnSelector = new ColumnSelector(ui->m_equitiesTree,
                                                     QStringLiteral("KInvestmentView_Equities"),
@@ -135,6 +136,7 @@ public:
         m_equityColumnSelector->setModel(m_equitiesProxyModel);
 
         m_equityColumnSelector->setAlwaysVisible(QVector<int>({AccountsModel::Column::AccountName}));
+        m_equityColumnSelector->setInitiallyHidden(QVector<int>({EquitiesModel::Column::Id}));
 
         QVector<int> columns;
         columns = m_equityColumnSelector->columns();
