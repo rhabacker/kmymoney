@@ -242,6 +242,9 @@ void PivotTable::init()
         QList<MyMoneyTransaction> transactions;
         m_config.setReportAllSplits(false);
         m_config.setConsiderCategory(true);
+        // see Bug 507425
+        if (!m_config.tags().isEmpty())
+            m_config.setConsiderCategorySplits(true);
         try {
             file->transactionList(transactions, m_config);
         } catch (const MyMoneyException& e) {
