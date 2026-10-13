@@ -10,9 +10,12 @@
 // ----------------------------------------------------------------------------
 // QT Includes
 #include <QFile>
+#include <QHash>
 #include <QList>
 #include <QRegularExpression>
+#include <QSet>
 #include <QTextStream>
+#include <QVector>
 
 // ----------------------------------------------------------------------------
 // KDE Includes
@@ -756,6 +759,33 @@ void PivotTable::calculateOpeningBalances()
         lastRow = journalModel->rowCount() - 1;
     }
 
+    // One pass over the journal gives the balance of every account before the
+    // report starts, and which accounts have activity inside the report window.
+    // The accounts that have a stock split are left to MyMoneyFile::balance()
+    // because the split is rounded according to the security.
+    auto rowsBeforeStart = journalModel->MyMoneyModelBase::lowerBound(journalModel->keyForDate(from)).row();
+    if (rowsBeforeStart == -1) {
+        rowsBeforeStart = journalModel->rowCount();
+    }
+    QHash<QString, MyMoneyMoney> balanceBeforeStart;
+    QSet<QString> accountsWithStockSplit;
+    QSet<QString> activeInWindow;
+    for (int row = 0; row < journalModel->rowCount(); ++row) {
+        const auto idx = journalModel->index(row, 0);
+        const auto accountId = idx.data(eMyMoney::Model::SplitAccountIdRole).toString();
+        const auto shares = idx.data(eMyMoney::Model::SplitSharesRole).value<MyMoneyMoney>();
+        if (row < rowsBeforeStart) {
+            if (idx.data(eMyMoney::Model::TransactionIsStockSplitRole).toBool()) {
+                accountsWithStockSplit.insert(accountId);
+            } else {
+                balanceBeforeStart[accountId] += shares;
+            }
+        }
+        if (row >= firstRow && row <= lastRow && !shares.isZero()) {
+            activeInWindow.insert(accountId);
+        }
+    }
+
     while (it_account != accounts.cend()) {
         ReportAccount account(*it_account);
 
@@ -763,24 +793,10 @@ void PivotTable::calculateOpeningBalances()
         // and if the report includes this account
         if (m_config.includes(*it_account)) {
             // do not include account if it is closed and it has no transactions in the report period
-            if (account.isClosed()) {
-                // check if the account has transactions for the report timeframe
-                QModelIndex idx;
-                bool canSkip = true;
-                for (int row = firstRow; canSkip && (row <= lastRow); ++row) {
-                    idx = journalModel->index(row, 0);
-                    if (idx.data(eMyMoney::Model::SplitAccountIdRole).toString() == account.id()) {
-                        if (!idx.data(eMyMoney::Model::SplitSharesRole).value<MyMoneyMoney>().isZero()) {
-                            canSkip = false;
-                            break;
-                        }
-                    }
-                }
-                if (canSkip) {
-                    DEBUG_OUTPUT(QString("DOES NOT INCLUDE account %1").arg(account.name()));
-                    ++it_account;
-                    continue;
-                }
+            if (account.isClosed() && !activeInWindow.contains(account.id())) {
+                DEBUG_OUTPUT(QString("DOES NOT INCLUDE account %1").arg(account.name()));
+                ++it_account;
+                continue;
             }
 
             DEBUG_OUTPUT(QString("Includes account %1").arg(account.name()));
@@ -792,7 +808,8 @@ void PivotTable::calculateOpeningBalances()
             // date
 
             // this is in the underlying currency
-            MyMoneyMoney value = file->balance(account.id(), from.addDays(-1));
+            MyMoneyMoney value =
+                accountsWithStockSplit.contains(account.id()) ? file->balance(account.id(), from.addDays(-1)) : balanceBeforeStart.value(account.id());
 
             if ((columnValue(from) == columnValue(account.openingDate())) && value.isZero()) {
                 auto tid = file->openingBalanceTransaction(account);
