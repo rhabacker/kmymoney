@@ -1170,19 +1170,6 @@ void PivotTable::calculateBudgetMapping()
     } // end if there was a budget
 }
 
-namespace {
-/**
- * The conversion factors of one currency or security for each column of the
- * pivot table. The factor depends only on the currency or security of the row
- * and on the date of the column, so it is looked up once for all rows that
- * share them, and only when a value is not zero.
- */
-struct ConversionFactors {
-    QVector<MyMoneyMoney> values;
-    QVector<bool> known;
-};
-} // namespace
-
 void PivotTable::convertToBaseCurrency()
 {
     DEBUG_ENTER(Q_FUNC_INFO);
@@ -1194,74 +1181,51 @@ void PivotTable::convertToBaseCurrency()
 
     rowTypeList.removeOne(eAverage);
 
-    // the date of a column is the same for every row
-    QList<QDate> columnDates;
-    columnDates.reserve(m_numColumns);
-    for (int column = 0; column < m_numColumns; ++column) {
-        columnDates.append(columnDate(column));
-    }
-
-    // rows that share a currency or security share the factor of a column
-    QHash<QString, ConversionFactors> factorsByCurrency;
-
     PivotGrid::iterator it_outergroup = m_grid.begin();
     while (it_outergroup != m_grid.end()) {
         PivotOuterGroup::iterator it_innergroup = (*it_outergroup).begin();
         while (it_innergroup != (*it_outergroup).end()) {
             PivotInnerGroup::iterator it_row = (*it_innergroup).begin();
             while (it_row != (*it_innergroup).end()) {
-                PivotGridRowSet& rowSet = it_row.value();
-                if (rowSet[eActual].count() < m_numColumns)
-                    throw MYMONEYEXCEPTION(QString::fromLatin1("Column %1 out of grid range (%2) in PivotTable::convertToBaseCurrency")
-                                               .arg(rowSet[eActual].count())
-                                               .arg(rowSet[eActual].count()));
+                auto column = 0;
+                while (column < m_numColumns) {
+                    if (it_row.value()[eActual].count() <= column)
+                        throw MYMONEYEXCEPTION(QString::fromLatin1("Column %1 out of grid range (%2) in PivotTable::convertToBaseCurrency")
+                                                   .arg(column)
+                                                   .arg(it_row.value()[eActual].count()));
 
-                // the base price depends on the trading currency of the row, which is
-                // shared by all securities traded in it
-                ConversionFactors& factors = factorsByCurrency[it_row.key().currency().id()];
-                if (factors.values.isEmpty()) {
-                    factors.values.resize(m_numColumns);
-                    factors.known.fill(false, m_numColumns);
-                }
+                    QDate valuedate = columnDate(column);
 
-                int pricePrecision;
-                if (it_row.key().isInvest()) {
-                    const QString currencyId = it_row.key().currencyId();
-                    if (!securityCache.contains(currencyId)) {
-                        securityCache[currencyId] = file->security(currencyId);
-                    }
-                    pricePrecision = securityCache[currencyId].pricePrecision();
-                } else
-                    pricePrecision = MyMoneyMoney::denomToPrec(fraction);
-
-                QList<PivotGridRow*> rowCells;
-                for (const auto& rowType : std::as_const(rowTypeList)) {
-                    rowCells.append(&rowSet[rowType]);
-                }
-
-                for (int column = 0; column < m_numColumns; ++column) {
-                    const QDate valuedate = columnDates.at(column);
-
-                    for (int i = 0; i < rowTypeList.size(); ++i) {
-                        PivotCell& cell = (*rowCells.at(i))[column];
-
-                        // calculate base value, the price is only needed for values that are not zero
-                        const MyMoneyMoney oldval = cell;
-                        MyMoneyMoney value = oldval;
-                        if (!oldval.isZero()) {
-                            if (!factors.known.at(column)) {
-                                factors.values[column] = it_row.key().baseCurrencyPrice(valuedate, m_config.isSkippingZero());
-                                factors.known[column] = true;
-                            }
-                            value = (oldval * factors.values.at(column)).reduce();
+                    // get base price for that date
+                    MyMoneyMoney conversionfactor = it_row.key().baseCurrencyPrice(valuedate, m_config.isSkippingZero());
+                    int pricePrecision;
+                    if (it_row.key().isInvest()) {
+                        const auto currencyId = it_row.key().currencyId();
+                        if (!securityCache.contains(currencyId)) {
+                            securityCache[currencyId] = file->security(it_row.key().currencyId());
                         }
+                        pricePrecision = securityCache[currencyId].pricePrecision();
+                    } else
+                        pricePrecision = MyMoneyMoney::denomToPrec(fraction);
+
+                    for (const auto& rowType : std::as_const(rowTypeList)) {
+                        // calculate base value
+                        MyMoneyMoney oldval = it_row.value()[rowType][column];
+                        MyMoneyMoney value = (oldval * conversionfactor).reduce();
 
                         // convert to lowest fraction
-                        if (rowTypeList.at(i) == ePrice)
-                            cell = PivotCell(MyMoneyMoney(value.convertPrecision(pricePrecision)), valuedate);
+                        if (rowType == ePrice)
+                            it_row.value()[rowType][column] = PivotCell(MyMoneyMoney(value.convertPrecision(pricePrecision)), valuedate);
                         else
-                            cell = PivotCell(value.convert(fraction), valuedate);
+                            it_row.value()[rowType][column] = PivotCell(value.convert(fraction), valuedate);
+
+                        DEBUG_OUTPUT_IF(conversionfactor != MyMoneyMoney::ONE,
+                                        QString("Factor of %1, value was %2, now %3")
+                                            .arg(conversionfactor.toDouble())
+                                            .arg(DEBUG_SENSITIVE(oldval.toDouble()))
+                                            .arg(DEBUG_SENSITIVE(it_row.value()[rowType][column].toDouble())));
                     }
+                    ++column;
                 }
                 ++it_row;
             }
@@ -1276,66 +1240,51 @@ void PivotTable::convertToDeepCurrency()
     DEBUG_ENTER(Q_FUNC_INFO);
     MyMoneyFile* file = MyMoneyFile::instance();
 
-    // the date of a column is the same for every row
-    QList<QDate> columnDates;
-    columnDates.reserve(m_numColumns);
-    for (int column = 0; column < m_numColumns; ++column) {
-        columnDates.append(columnDate(column));
-    }
-
-    // rows that share a currency or security share the factor of a column
-    QHash<QString, ConversionFactors> factorsByCurrency;
-
     PivotGrid::iterator it_outergroup = m_grid.begin();
     while (it_outergroup != m_grid.end()) {
         PivotOuterGroup::iterator it_innergroup = (*it_outergroup).begin();
         while (it_innergroup != (*it_outergroup).end()) {
             PivotInnerGroup::iterator it_row = (*it_innergroup).begin();
             while (it_row != (*it_innergroup).end()) {
-                PivotGridRowSet& rowSet = it_row.value();
-                PivotGridRow& actualCells = rowSet[eActual];
-                if (actualCells.count() < m_numColumns)
-                    throw MYMONEYEXCEPTION(QString::fromLatin1("Column %1 out of grid range (%2) in PivotTable::convertToDeepCurrency")
-                                               .arg(actualCells.count())
-                                               .arg(actualCells.count()));
-                PivotGridRow* priceCells = m_config.isIncludingPrice() ? &rowSet[ePrice] : nullptr;
+                auto column = 0;
+                while (column < m_numColumns) {
+                    if (it_row.value()[eActual].count() <= column)
+                        throw MYMONEYEXCEPTION(QString::fromLatin1("Column %1 out of grid range (%2) in PivotTable::convertToDeepCurrency")
+                                                   .arg(column)
+                                                   .arg(it_row.value()[eActual].count()));
 
-                const QString currencyId = it_row.key().currencyId();
-                ConversionFactors& factors = factorsByCurrency[currencyId];
-                if (factors.values.isEmpty()) {
-                    factors.values.resize(m_numColumns);
-                    factors.known.fill(false, m_numColumns);
-                }
+                    QDate valuedate = columnDate(column);
 
-                // use the fraction relevant to the account at hand
-                int fraction = it_row.key().currency().smallestAccountFraction();
+                    // get conversion factor for the account and date
+                    MyMoneyMoney conversionfactor = it_row.key().deepCurrencyPrice(valuedate, m_config.isSkippingZero());
 
-                // use base currency fraction if not initialized
-                if (fraction == -1)
-                    fraction = file->baseCurrency().smallestAccountFraction();
+                    // use the fraction relevant to the account at hand
+                    int fraction = it_row.key().currency().smallestAccountFraction();
 
-                for (int column = 0; column < m_numColumns; ++column) {
-                    const QDate valuedate = columnDates.at(column);
-
-                    const MyMoneyMoney oldval = actualCells[column];
-                    const MyMoneyMoney oldPriceVal = priceCells ? MyMoneyMoney((*priceCells)[column]) : MyMoneyMoney();
-
-                    // get conversion factor for the account and date, only needed for values that are not zero
-                    if ((!oldval.isZero() || !oldPriceVal.isZero()) && !factors.known.at(column)) {
-                        factors.values[column] = it_row.key().deepCurrencyPrice(valuedate, m_config.isSkippingZero());
-                        factors.known[column] = true;
-                    }
+                    // use base currency fraction if not initialized
+                    if (fraction == -1)
+                        fraction = file->baseCurrency().smallestAccountFraction();
 
                     // convert to deep currency
-                    const MyMoneyMoney value = oldval.isZero() ? oldval : (oldval * factors.values.at(column)).reduce();
+                    MyMoneyMoney oldval = it_row.value()[eActual][column];
+                    MyMoneyMoney value = (oldval * conversionfactor).reduce();
                     // reduce to lowest fraction
-                    actualCells[column] = PivotCell(value.convert(fraction), valuedate);
+                    it_row.value()[eActual][column] = PivotCell(value.convert(fraction), valuedate);
 
                     // convert price data
-                    if (priceCells) {
-                        const MyMoneyMoney priceValue = oldPriceVal.isZero() ? oldPriceVal : (oldPriceVal * factors.values.at(column)).reduce();
-                        (*priceCells)[column] = PivotCell(priceValue.convert(10000), valuedate);
+                    if (m_config.isIncludingPrice()) {
+                        MyMoneyMoney oldPriceVal = it_row.value()[ePrice][column];
+                        MyMoneyMoney priceValue = (oldPriceVal * conversionfactor).reduce();
+                        it_row.value()[ePrice][column] = PivotCell(priceValue.convert(10000), valuedate);
                     }
+
+                    DEBUG_OUTPUT_IF(conversionfactor != MyMoneyMoney::ONE,
+                                    QString("Factor of %1, value was %2, now %3")
+                                        .arg(conversionfactor.toDouble())
+                                        .arg(DEBUG_SENSITIVE(oldval.toDouble()))
+                                        .arg(DEBUG_SENSITIVE(it_row.value()[eActual][column].toDouble())));
+
+                    ++column;
                 }
                 ++it_row;
             }
