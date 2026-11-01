@@ -1,14 +1,14 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2017, 2018.
-# SPDX-FileCopyrightText: 2022, 2025, 2026 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+# SPDX-FileCopyrightText: 2022, 2025-2026 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-29 00:53+0000\n"
-"PO-Revision-Date: 2026-09-26 16:23+0400\n"
+"POT-Creation-Date: 2026-11-01 00:55+0000\n"
+"PO-Revision-Date: 2026-10-31 18:55+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Lokalize 25.12.3\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -9318,11 +9318,10 @@ msgid "ID"
 msgstr "المعرّف"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:82
-#, fuzzy, kde-format
-#| msgid "Type"
+#, kde-format
 msgctxt "@title column: Report type"
 msgid "Type"
-msgstr "النّوع"
+msgstr "النوع"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:118
 #: kmymoney/plugins/views/reports/core/listtable.cpp:807
@@ -9331,22 +9330,19 @@ msgid "Capital Gain"
 msgstr "أرباح رأسمالية"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:120
-#, fuzzy, kde-format
-#| msgid "Performance-Test"
+#, kde-format
 msgid "Performance"
-msgstr "اختبار الأداء"
+msgstr "الأداء"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:122
-#, fuzzy, kde-format
-#| msgid "Capital Gain"
+#, kde-format
 msgid "Capital Gain (Legacy)"
-msgstr "أرباح رأسمالية"
+msgstr "مكاسب رأس المال (قديم)"
 
 #: kmymoney/mymoney/storage/reportsmodel.cpp:124
-#, fuzzy, kde-format
-#| msgid "Performance-Test"
+#, kde-format
 msgid "Performance (Legacy)"
-msgstr "اختبار الأداء"
+msgstr "الأداء (قديم)"
 
 #: kmymoney/mymoney/storage/schedulesmodel.cpp:147
 #, kde-format
@@ -15870,12 +15866,12 @@ msgstr "المتوسّط"
 #: kmymoney/plugins/views/reports/core/kreportchartview.cpp:473
 #: kmymoney/plugins/views/reports/core/listtable.cpp:318
 #: kmymoney/plugins/views/reports/core/listtable.cpp:319
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:1561
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:1700
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:1750
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:1827
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:2005
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:2076
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:1629
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:1768
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:1818
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:1895
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:2073
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:2144
 #, kde-format
 msgctxt "Total balance"
 msgid "Total"
@@ -16133,8 +16129,8 @@ msgstr "الرّصيد الختاميّ"
 
 #: kmymoney/plugins/views/reports/core/listtable.cpp:322
 #: kmymoney/plugins/views/reports/core/listtable.cpp:323
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:1774
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:2113
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:1842
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:2181
 #, kde-format
 msgid "Grand Total"
 msgstr "المجموع الكلي"
@@ -16504,56 +16500,56 @@ msgid "Yes"
 msgstr "نعم"
 
 #. i18n: ectx: property (text), item, widget (KComboBox, m_typeBox)
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:408
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:411
 #: kmymoney/widgets/ktransactionfilter.ui:648
 #, kde-format
 msgid "Transfers"
 msgstr "الحوّالات"
 
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:608
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:611
 #, kde-format
 msgctxt "@title:column Report heading"
 msgid "Opening"
 msgstr "الافتتاح"
 
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:1547
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:1814
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:1615
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:1882
 #, kde-format
 msgctxt "@title:column report header"
 msgid "Account"
 msgstr "الحساب"
 
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:2329
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:2397
 #, kde-format
 msgctxt "@title:column report header"
 msgid "Actual"
 msgstr "الفعلي"
 
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:2334
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:2402
 #, kde-format
 msgctxt "@title:column report header"
 msgid "Budget"
 msgstr "الموازنة"
 
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:2339
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:2407
 #, kde-format
 msgctxt "@title:column report header"
 msgid "Difference"
 msgstr "الفرق"
 
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:2344
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:2412
 #, kde-format
 msgctxt "@title:column report header"
 msgid "Forecast"
 msgstr "التّنبّؤ"
 
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:2349
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:2417
 #, kde-format
 msgctxt "@title:column report header"
 msgid "Moving Average"
 msgstr "المتوسط المتحرك"
 
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:2354
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:2422
 #, kde-format
 msgctxt "@title:column report header"
 msgid "Moving Average Price"
@@ -16561,7 +16557,7 @@ msgstr "متوسط السعر المتحرك"
 
 # غالبا سنواجه خطأ ما بسبب كثرة استخدامه في كل مكان
 # قد نحتاج سياقا
-#: kmymoney/plugins/views/reports/core/pivottable.cpp:2359
+#: kmymoney/plugins/views/reports/core/pivottable.cpp:2427
 #, kde-format
 msgctxt "@title:column report header"
 msgid "Price"
@@ -21500,15 +21496,13 @@ msgid "Accept or unmatch transaction"
 msgstr "اقبل أو أزل مطابقة المعاملة"
 
 #: kmymoney/views/ledgerview.cpp:1476
-#, fuzzy, kde-format
-#| msgid "Category"
+#, kde-format
 msgctxt "@title:column Category"
 msgid "Category"
 msgstr "الفئة"
 
 #: kmymoney/views/ledgerview.cpp:1476
-#, fuzzy, kde-format
-#| msgid "Detail"
+#, kde-format
 msgctxt "@title:column Ledger not only category"
 msgid "Detail"
 msgstr "التفاصيل"
@@ -26168,18 +26162,14 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, qLabel1)
 #: kmymoney/wizards/newuserwizard/kpreferencepage.ui:20
-#, fuzzy, kde-format
-#| msgid ""
-#| "If you would like to review or change any preference settings for "
-#| "KMyMoney after finishing this wizard, you can do so by checking this box. "
-#| "If not just click <b>Next</b>."
+#, kde-format
 msgid ""
 "If you would like to review or change any preference settings for KMyMoney "
 "after finishing this wizard, you can do so by checking this box. If not just "
 "click <b>Finish</b>."
 msgstr ""
 "إذا أردت مراجعة أو تغيير أي تشكيلات مفضّلة لـ «أموالك» «أموالك» بعد الانتهاء "
-"من هذا المعالج، يمكنك فعل ذلك بتحديد هذا المربع. وإلا فقط انقر <b>التالي</b>."
+"من هذا المعالج، يمكنك فعل ذلك بتحديد هذا المربع. وإلا فقط انقر <b>أنهِ</b>."
 
 #. i18n: ectx: property (text), widget (QCheckBox, m_openConfigAfterFinished)
 #: kmymoney/wizards/newuserwizard/kpreferencepage.ui:32
