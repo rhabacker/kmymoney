@@ -45,6 +45,7 @@ distro_kf5_leap:
   #when: manual
   image: rhabacker/suse_leap_kf5_qt515
   variables:
+    ci_cmake_options: "-DEXCLUDE_LANGUAGES=ar"
     ci_parallel: "16"
     ci_sudo: "yes"
     ci_variant: "kf5"
@@ -60,6 +61,7 @@ distro_kf6_leap_16:
   #when: manual
   image: rhabacker/suse_leap_16_kf6_qt6
   variables:
+    ci_cmake_options: "-DEXCLUDE_LANGUAGES=ar"
     ci_parallel: "16"
     ci_sudo: "yes"
     ci_variant: "kf6"
