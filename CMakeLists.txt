@@ -117,6 +117,7 @@ set(APPLE_SUPPRESS_X11_WARNING TRUE)
 
 find_package(ECM ${KF_MIN_VERSION} REQUIRED NO_MODULE)
 list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+include(KDocToolsMacros)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 
@@ -631,7 +632,7 @@ add_subdirectory( kmymoney )
 if(KF${QT_MAJOR_VERSION}DocTools_FOUND)
   add_subdirectory( doc )
   if (${KMM_I18N_GENERATION})
-    kdoctools_install( po )
+    kmm_kdoctools_install( po EXCLUDE_LANGUAGE ${EXCLUDE_LANGUAGES})
   endif()
 endif()
 
